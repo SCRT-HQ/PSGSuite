@@ -38,9 +38,11 @@
         }
     }
 
+#Initialize the config variable
     Try
     {
         #Import the config
+        if ($PSGoogle){Remove-Variable PSGoogle}
         $PSGoogle = Get-PSGoogleConfig -Source "PSGoogle.xml" -ErrorAction Stop
 
     }
