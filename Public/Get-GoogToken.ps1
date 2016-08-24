@@ -138,11 +138,16 @@ $fields = [Ordered]@{grant_type='urn:ietf:params:oauth:grant-type:jwt-bearer';as
  
 try
     {
-    $response = Invoke-RestMethod -Uri "https://www.googleapis.com/oauth2/v4/token" -Method Post -Body $fields -ContentType "application/x-www-form-urlencoded" -ErrorAction Stop
-    return $response | Select-Object -ExpandProperty access_token
+    $response = Invoke-RestMethod -Uri "https://www.googleapis.com/oauth2/v4/token" -Method Post -Body $fields -ContentType "application/x-www-form-urlencoded" -ErrorAction Stop | Select-Object -ExpandProperty access_token
     }
 catch
     {
-    throw $Error[0]
+    $result = $_.Exception.Response.GetResponseStream()
+    $reader = New-Object System.IO.StreamReader($result)
+    $reader.BaseStream.Position = 0
+    $reader.DiscardBufferedData()
+    $response = $reader.ReadToEnd() | ConvertFrom-Json | 
+        Select-Object @{N="Error";E={$Error[0]}},@{N="Code";E={$_.error.Code}},@{N="Message";E={$_.error.Message}},@{N="Domain";E={$_.error.errors.domain}},@{N="Reason";E={$_.error.errors.reason}}
     }
+return $response
 }
