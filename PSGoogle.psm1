@@ -42,7 +42,7 @@
     Try
     {
         #Import the config
-        if ($PSGoogle){Remove-Variable PSGoogle}
+        if ($PSGoogle){Remove-Variable PSGoogle -ErrorAction SilentlyContinue}
         $PSGoogle = Get-PSGoogleConfig -Source "PSGoogle.xml" -ErrorAction Stop
 
     }

@@ -19,8 +19,8 @@ Param
 
   [parameter(Mandatory=$false)]
   [ValidateNotNullOrEmpty()]
-  [String[]]
-  $Scopes = $Script:PSGoogle.Scopes,
+  [string[]]
+  $Scopes = $($Script:PSGoogle.Scopes -split ","),
 
   [parameter(Mandatory=$false)]
   [ValidateNotNullOrEmpty()]
@@ -32,7 +32,6 @@ Param
   [String]
   $AdminEmail = $Script:PSGoogle.AdminEmail
 )
-
 #MS Owin for base64url encoding
 $NugetDir="$(Get-Module PSGoogle | Select-Object -ExpandProperty ModuleBase)\nuget"
 Add-Type -Path "$NugetDir\owin.1.0.0\lib\net40\Owin.dll"
@@ -125,11 +124,7 @@ $sig = $encoder.Encode($rsa.SignData($toSign,"SHA256"))
 # jwt is the header, claims and signature, separated by a period
  
 $jwt = $header + "." + $claims + "." + $sig
-
-Write-Verbose "jwt: $jwt
-"
- 
- 
+  
 ## request
  
 $fields = [Ordered]@{grant_type='urn:ietf:params:oauth:grant-type:jwt-bearer';assertion=$jwt}
@@ -146,8 +141,9 @@ catch
     $reader = New-Object System.IO.StreamReader($result)
     $reader.BaseStream.Position = 0
     $reader.DiscardBufferedData()
-    $response = $reader.ReadToEnd() | ConvertFrom-Json | 
-        Select-Object @{N="Error";E={$Error[0]}},@{N="Code";E={$_.error.Code}},@{N="Message";E={$_.error.Message}},@{N="Domain";E={$_.error.errors.domain}},@{N="Reason";E={$_.error.errors.reason}}
+    $response = $reader.ReadToEnd() | 
+        ConvertFrom-Json | 
+        Select-Object @{N="WebError";E={$Error[0]}},@{N="Code";E={"401"}},@{N="Error";E={$_.error}},@{N="Description";E={$_.error_description}}
     }
 return $response
 }

@@ -54,12 +54,12 @@
         }
         Import-Clixml -Path $Path |
             Select -Property @{N='P12KeyPath';E={Decrypt $_.P12KeyPath}},
-                @{N='Scopes';E={@((Decrypt $_.Scopes) -split ",")}},
+                @{N='Scopes';E={(Decrypt $_.Scopes) -split ","}},
                 @{N='AppEmail';E={Decrypt $_.AppEmail}},
                 @{N='AdminEmail';E={Decrypt $_.AdminEmail}},
                 @{N='CustomerID';E={Decrypt $_.CustomerID}},
                 @{N='Domain';E={Decrypt $_.Domain}},
-                @{N='Preference';E={Encrypt $_.Preference}}
+                @{N='Preference';E={Decrypt $_.Preference}}
     }
 
 }
