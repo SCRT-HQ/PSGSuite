@@ -10,10 +10,13 @@
       [parameter(Mandatory=$false)]
       [String[]]
       $ParentID,
-      [parameter(Mandatory=$true)]
+      [parameter(Mandatory=$false)]
       [ValidateSet("Audio","Docs","Drawing","DriveFile","DriveFolder","Form","FusionTables","Map","Photo","Slides","AppsScript","Sites","Sheets","Unknown","Video")]
       [String]
-      $Type
+      $Type,
+      [parameter(Mandatory=$false)]
+      [String]
+      $CustomMimeType
     )
 $header = @{
     Authorization="Bearer $AccessToken"
@@ -38,8 +41,9 @@ $mimeHash=@{
     }
 $body = @{
     name=$Name
-    mimeType=$mimeHash.Item($Type)
 }
+if($Type){$body.Add("mimeType",$mimeHash.Item($Type))}
+elseif($CustomMimeType){$body.Add("mimeType",$CustomMimeType)}
 if($ParentID){$body.Add("parents",@($ParentID))}
 $body = $body | ConvertTo-Json
 $URI = "https://www.googleapis.com/drive/v3/files"

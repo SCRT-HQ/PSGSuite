@@ -1,17 +1,28 @@
-﻿function Get-GoogDriveFileList {
+﻿function Update-GoogUser {
     Param
     (
       [parameter(Mandatory=$true)]
       [String]
-      $AccessToken
+      $AccessToken,
+      [parameter(Mandatory=$true)]
+      [String]
+      $User,
+      [parameter(Mandatory=$false)]
+      [String]
+      $OrgUnitPath
     )
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/drive/v3/files"
+$body = @{
+    orgUnitPath="$OrgUnitPath"
+    }
+#if($ParentID){$body.Add("parents",@($ParentID))}
+$body = $body | ConvertTo-Json
+$URI = "https://www.googleapis.com/admin/directory/v1/users/$User"
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" | select -ExpandProperty files
+    $response = Invoke-RestMethod -Method Patch -Uri $URI -Headers $header -Body $body -ContentType "application/json"
     }
 catch
     {
