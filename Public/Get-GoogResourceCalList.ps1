@@ -12,9 +12,6 @@
     [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
     (
-      [parameter(Mandatory=$true)]
-      [String]
-      $CustomerID,
       [parameter(Mandatory=$false)]
       [ValidateScript({[int]$_ -le 500})]
       [Int]
@@ -33,7 +30,10 @@
       [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
-      $AdminEmail = $Script:PSGoogle.AdminEmail
+      $AdminEmail = $Script:PSGoogle.AdminEmail,
+      [parameter(Mandatory=$false)]
+      [String]
+      $CustomerID=$Script:PSGoogle.CustomerID
     )
 if (!$AccessToken)
     {

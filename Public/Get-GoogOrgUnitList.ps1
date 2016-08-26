@@ -56,7 +56,7 @@ elseif (!$BaseOrgUnitPath -and $Type){$URI = "$URI`?type=$Type"}
 try
     {
     Write-Verbose "Constructed URI: $URI"
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false | Select-Object -ExpandProperty organizationUnits
     }
 catch
     {

@@ -7,6 +7,7 @@
 .EXAMPLE
    New-GoogOrganizationalUnit -AccessToken $(Get-GoogToken @TokenParams) -CustomerID $Customer -Name "Test Org" -ParentOrgUnitPath "/Testing" -Description "This is a test OrgUnit"
 #>
+    [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
     (
       [parameter(Mandatory=$true)]

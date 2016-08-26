@@ -1,4 +1,5 @@
 ﻿function New-GoogDriveFile {
+    [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
     (
       [parameter(Mandatory=$true)]
