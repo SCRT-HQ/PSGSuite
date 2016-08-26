@@ -9,33 +9,9 @@
 .EXAMPLE
    Get-GoogUserList -AccessToken $(Get-GoogToken @TokenParams)
 #>
+    [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
     (
-      [parameter(Mandatory=$false,HelpMessage="What is the full path to your Google Service Account's P12 key file?")]
-      [ValidateNotNullOrEmpty()]
-      [String]
-      $P12KeyPath = $Script:PSGoogle.P12KeyPath,
-      [parameter(Mandatory=$false)]
-      [ValidateNotNullOrEmpty()]
-      [String]
-      $AppEmail = $Script:PSGoogle.AppEmail,
-      [parameter(Mandatory=$false)]
-      [ValidateNotNullOrEmpty()]
-      [String]
-      $AdminEmail = $Script:PSGoogle.AdminEmail,
-      [parameter(Mandatory=$false)]
-      [String]
-      $AccessToken,
-      [parameter(Mandatory=$false)]
-      [String]
-      $CustomerID=$Script:PSGoogle.CustomerID,
-      [parameter(Mandatory=$false)]
-      [String]
-      $Domain=$Script:PSGoogle.Domain,
-      [parameter(Mandatory=$false)]
-      [ValidateSet("Domain","CustomerID")]
-      [String]
-      $Preference=$Script:PSGoogle.Preference,
       [parameter(Mandatory=$false)]
       [ValidateScript({[int]$_ -le 500})]
       [Int]
@@ -50,19 +26,39 @@
       $SortOrder,
       [parameter(Mandatory=$false)]
       [String[]]
-      $Query
+      $Query,
+      [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
+      [String]
+      $AccessToken,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $P12KeyPath = $Script:PSGoogle.P12KeyPath,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $AppEmail = $Script:PSGoogle.AppEmail,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $AdminEmail = $Script:PSGoogle.AdminEmail,
+      [parameter(Mandatory=$false)]
+      [String]
+      $CustomerID=$Script:PSGoogle.CustomerID,
+      [parameter(Mandatory=$false)]
+      [String]
+      $Domain=$Script:PSGoogle.Domain,
+      [parameter(Mandatory=$false)]
+      [ValidateSet("Domain","CustomerID")]
+      [String]
+      $Preference=$Script:PSGoogle.Preference
     )
-if ($AccessToken)
+if (!$AccessToken)
     {
-    $header = @{
-        Authorization="Bearer $AccessToken"
-        }
+    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/admin.directory.user.readonly" -AppEmail $AppEmail -AdminEmail $AdminEmail
     }
-else
-    {
-    $header = @{
-        Authorization="Bearer $(Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/admin.directory.user.readonly" -AppEmail $AppEmail -AdminEmail $AdminEmail)"
-        }
+$header = @{
+    Authorization="Bearer $AccessToken"
     }
 if ($Preference -eq "Domain")
     {
@@ -85,30 +81,50 @@ if ($Query)
     $Query = $($Query -join " ")
     $URI = "$URI&query=$Query"
     }
-
-Write-Verbose "Constructed URI: $URI"
-
-$results = @()
-[int]$i=1
-do
+try
     {
-    if ($i -eq 1)
+    Write-Verbose "Constructed URI: $URI"
+    $response = @()
+    [int]$i=1
+    do
         {
-        $users = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false
+        if ($i -eq 1)
+            {
+            $result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false
+            }
+        else
+            {
+            $result = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
+            }
+        $response += $result.users
+        $returnSize = $result.users.Count
+        $pageToken="$($result.nextPageToken)"
+        [int]$retrieved = ($i + $result.users.Count) - 1
+        Write-Verbose "Retrieved users $i - $retrieved..."
+        [int]$i = $i + $result.users.Count
         }
-    else
-        {
-        $users = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
-        }
-    $results += $users.users
-    $returnSize = $users.users.Count
-    $pageToken="$($users.nextPageToken)"
-    [int]$retrieved = ($i + $users.users.Count) - 1
-    Write-Verbose "Retrieved users $i - $retrieved..."
-    [int]$i = $i + $users.users.Count
+    until 
+        ($returnSize -lt $PageSize)
     }
-until 
-    ($returnSize -lt $PageSize)
-
-return $results
+catch
+    {
+    try
+        {
+        $result = $_.Exception.Response.GetResponseStream()
+        $reader = New-Object System.IO.StreamReader($result)
+        $reader.BaseStream.Position = 0
+        $reader.DiscardBufferedData()
+        $resp = $reader.ReadToEnd()
+        $response = $resp | ConvertFrom-Json | 
+            Select-Object @{N="Error";E={$Error[0]}},@{N="Code";E={$_.error.Code}},@{N="Message";E={$_.error.Message}},@{N="Domain";E={$_.error.errors.domain}},@{N="Reason";E={$_.error.errors.reason}}
+        Write-Error "$(Get-HTTPStatus -Code $response.Code): $($response.Domain) / $($response.Message) / $($response.Reason)"
+        return
+        }
+    catch
+        {
+        Write-Error $resp
+        return
+        }
+    }
+return $response
 }

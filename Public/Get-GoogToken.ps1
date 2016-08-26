@@ -10,28 +10,25 @@
    $token = Get-GoogToken
 #>
 
-Param
-(
-  [parameter(Mandatory=$false,HelpMessage="What is the full path to your Google Service Account's P12 key file?")]
-  [ValidateNotNullOrEmpty()]
-  [String]
-  $P12KeyPath = $Script:PSGoogle.P12KeyPath,
-
-  [parameter(Mandatory=$false)]
-  [ValidateNotNullOrEmpty()]
-  [string[]]
-  $Scopes = $($Script:PSGoogle.Scopes -split ","),
-
-  [parameter(Mandatory=$false)]
-  [ValidateNotNullOrEmpty()]
-  [String]
-  $AppEmail = $Script:PSGoogle.AppEmail,
-
-  [parameter(Mandatory=$false)]
-  [ValidateNotNullOrEmpty()]
-  [String]
-  $AdminEmail = $Script:PSGoogle.AdminEmail
-)
+    Param
+    (
+      [parameter(Mandatory=$false,HelpMessage="What is the full path to your Google Service Account's P12 key file?")]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $P12KeyPath = $Script:PSGoogle.P12KeyPath,
+      [parameter(Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [string[]]
+      $Scopes = $($Script:PSGoogle.Scopes -split ","),
+      [parameter(Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $AppEmail = $Script:PSGoogle.AppEmail,
+      [parameter(Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $AdminEmail = $Script:PSGoogle.AdminEmail
+    )
 #MS Owin for base64url encoding
 $NugetDir="$(Get-Module PSGoogle | Select-Object -ExpandProperty ModuleBase)\nuget"
 Add-Type -Path "$NugetDir\owin.1.0.0\lib\net40\Owin.dll"
@@ -49,9 +46,6 @@ $googleCert = New-Object System.Security.Cryptography.X509Certificates.X509Certi
  
 # get just the private key
 $rsaPrivate = $googleCert.PrivateKey
-
-Write-Verbose "rsaPrivate: $rsaPrivate
-"
  
 # get a new RSA provider
 $rsa = New-Object System.Security.Cryptography.RSACryptoServiceProvider
@@ -72,9 +66,6 @@ $rawheader = [Ordered]@{
 # we then serialize to UTF-8 bytes, then base64url encode the header
 $header = $encoder.Encode([System.Text.Encoding]::UTF8.GetBytes($rawheader))
 
-Write-Verbose "header: $header
-"
-
 ## claims
 # iss The email address of the service account.
 # scope A SPACE-delimited list of the permissions that the application requests.
@@ -89,10 +80,6 @@ Write-Verbose "header: $header
 $now = (Get-Date).ToUniversalTime()
 $createDate = [Math]::Floor([decimal](Get-Date($now) -UFormat "%s"))
 $expiryDate = [Math]::Floor([decimal](Get-Date($now.AddMinutes(59)) -UFormat "%s"))
-
-Write-Verbose "createDate: $createDate
-expiryDate: $expiryDate
-"
  
 # claims set.
 # Google's documentation isn't clear on the sub field. It reads as if you'll only need it if you're acting on behalf of a user.
@@ -134,9 +121,12 @@ $fields = [Ordered]@{grant_type='urn:ietf:params:oauth:grant-type:jwt-bearer';as
 try
     {
     $response = Invoke-RestMethod -Uri "https://www.googleapis.com/oauth2/v4/token" -Method Post -Body $fields -ContentType "application/x-www-form-urlencoded" -ErrorAction Stop | Select-Object -ExpandProperty access_token
+    Write-Verbose "Access token acquired!"
+    return $response
     }
 catch
     {
+    Write-Verbose "Failed to acquire access token!"
     $result = $_.Exception.Response.GetResponseStream()
     $reader = New-Object System.IO.StreamReader($result)
     $reader.BaseStream.Position = 0
@@ -144,6 +134,6 @@ catch
     $response = $reader.ReadToEnd() | 
         ConvertFrom-Json | 
         Select-Object @{N="WebError";E={$Error[0]}},@{N="Code";E={"401"}},@{N="Error";E={$_.error}},@{N="Description";E={$_.error_description}}
+    throw "$($MyInvocation.MyCommand) : $(Get-HTTPStatus -Code $response.Code): $($response.Error) / $($response.Description)"
     }
-return $response
 }

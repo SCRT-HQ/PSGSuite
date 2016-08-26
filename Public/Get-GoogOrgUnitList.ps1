@@ -9,14 +9,10 @@
 .EXAMPLE
    Get-GoogOrgUnitList -AccessToken $(Get-GoogToken @TokenParams) -CustomerID c22jaaesx
 #>
+    [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
     (
-      [parameter(Mandatory=$true)]
-      [String]
-      $AccessToken,
-      [parameter(Mandatory=$true)]
-      [String]
-      $CustomerID,
+      
       [parameter(Mandatory=$false)]
       [Alias("SearchBase")]
       [String]
@@ -25,25 +21,62 @@
       [Alias("SearchScope")]
       [ValidateSet("All","Children")]
       [String]
-      $Type="All"
+      $Type="All",
+      [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
+      [String]
+      $AccessToken,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $P12KeyPath = $Script:PSGoogle.P12KeyPath,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $AppEmail = $Script:PSGoogle.AppEmail,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $AdminEmail = $Script:PSGoogle.AdminEmail,
+      [parameter(Mandatory=$false)]
+      [String]
+      $CustomerID=$Script:PSGoogle.CustomerID
     )
 
-$header = @{Authorization="Bearer $AccessToken"}
-
+if (!$AccessToken)
+    {
+    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/admin.directory.orgunit" -AppEmail $AppEmail -AdminEmail $AdminEmail
+    }
+$header = @{
+    Authorization="Bearer $AccessToken"
+    }
 $URI = "https://www.googleapis.com/admin/directory/v1/customer/$CustomerID/orgunits"
-
-
-
 if ($BaseOrgUnitPath -and $Type){$URI = "$URI`?&orgUnitPath=$BaseOrgUnitPath&type=$Type"}
 elseif ($BaseOrgUnitPath -and !$Type){$URI = "$URI`?&orgUnitPath=$BaseOrgUnitPath"}
 elseif (!$BaseOrgUnitPath -and $Type){$URI = "$URI`?type=$Type"}
-
-Write-Verbose "Constructed URI: $URI"
-
-$results = @()
-$result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false
-$results += $result.organizationUnits
-Write-Verbose "Retrieved organizationUnits $i - $($result.organizationUnits.Count)..."
-
-return $results
+try
+    {
+    Write-Verbose "Constructed URI: $URI"
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false
+    }
+catch
+    {
+    try
+        {
+        $result = $_.Exception.Response.GetResponseStream()
+        $reader = New-Object System.IO.StreamReader($result)
+        $reader.BaseStream.Position = 0
+        $reader.DiscardBufferedData()
+        $resp = $reader.ReadToEnd()
+        $response = $resp | ConvertFrom-Json | 
+            Select-Object @{N="Error";E={$Error[0]}},@{N="Code";E={$_.error.Code}},@{N="Message";E={$_.error.Message}},@{N="Domain";E={$_.error.errors.domain}},@{N="Reason";E={$_.error.errors.reason}}
+        Write-Error "$(Get-HTTPStatus -Code $response.Code): $($response.Domain) / $($response.Message) / $($response.Reason)"
+        return
+        }
+    catch
+        {
+        Write-Error $resp
+        return
+        }
+    }
+return $response
 }

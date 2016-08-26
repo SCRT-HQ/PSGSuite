@@ -9,69 +9,113 @@
 .EXAMPLE
    Get-GoogGroupList -AccessToken $(Get-GoogToken @TokenParams)
 #>
+    [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
     (
-      [parameter(Mandatory=$true)]
-      [String]
-      $AccessToken,
       [parameter(Mandatory=$false)]
       [String]
-      $CustomerID="my_customer",
-      [parameter(Mandatory=$false)]
-      [String]
-      $Domain,
+      $Where_IsAMember,
       [parameter(Mandatory=$false)]
       [ValidateScript({[int]$_ -le 200})]
       [Int]
-      $MaxResults="200",
+      $PageSize="200",
+      [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
+      [String]
+      $AccessToken,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $P12KeyPath = $Script:PSGoogle.P12KeyPath,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $AppEmail = $Script:PSGoogle.AppEmail,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $AdminEmail = $Script:PSGoogle.AdminEmail,
       [parameter(Mandatory=$false)]
       [String]
-      $Where_IsAMember
+      $CustomerID=$Script:PSGoogle.CustomerID,
+      [parameter(Mandatory=$false)]
+      [String]
+      $Domain=$Script:PSGoogle.Domain,
+      [parameter(Mandatory=$false)]
+      [ValidateSet("Domain","CustomerID")]
+      [String]
+      $Preference=$Script:PSGoogle.Preference
     )
-
-$header = @{Authorization="Bearer $AccessToken"}
-
+if (!$AccessToken)
+    {
+    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/admin.directory.group" -AppEmail $AppEmail -AdminEmail $AdminEmail
+    }
+$header = @{
+    Authorization="Bearer $AccessToken"
+    }
 if ($Where_IsAMember)
     {
     $URI = "https://www.googleapis.com/admin/directory/v1/groups?userKey=$($Where_IsAMember)"
     }
 else
     {
-    if ($Domain)
+    if ($Preference -eq "Domain")
         {
         $URI = "https://www.googleapis.com/admin/directory/v1/groups?domain=$Domain"
         }
-    else
+    elseif($Preference -eq "CustomerID")
         {
         $URI = "https://www.googleapis.com/admin/directory/v1/groups?customer=$CustomerID"
         }
-    }
-
-
-if ($MaxResults){$URI = "$URI&maxResults=$MaxResults"}
-
-Write-Verbose "Constructed URI: $URI"
-
-$results = @()
-[int]$i=1
-do
-    {
-    if ($i -eq 1)
-        {
-        $result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false
-        }
     else
         {
-        $result = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
+        $URI = "https://www.googleapis.com/admin/directory/v1/groups?customer=my_customer"
         }
-    $results += $result.groups
-    $pageToken="$($result.nextPageToken)"
-    [int]$retrieved = ($i + $result.groups.Count) - 1
-    Write-Verbose "Retrieved groups $i - $retrieved..."
-    [int]$i = $i + $result.groups.Count
     }
-until 
-    ($result.groups.Count -lt $MaxResults)
-
-return $results
+if ($PageSize){$URI = "$URI&maxResults=$PageSize"}
+try
+    {
+    Write-Verbose "Constructed URI: $URI"
+    $response = @()
+    [int]$i=1
+    do
+        {
+        if ($i -eq 1)
+            {
+            $result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false
+            }
+        else
+            {
+            $result = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
+            }
+        $response += $result.groups
+        $returnSize = $result.groups.Count
+        $pageToken="$($result.nextPageToken)"
+        [int]$retrieved = ($i + $result.groups.Count) - 1
+        Write-Verbose "Retrieved groups $i - $retrieved..."
+        [int]$i = $i + $result.groups.Count
+        }
+    until 
+        ($returnSize -lt $PageSize)
+    }
+catch
+    {
+    try
+        {
+        $result = $_.Exception.Response.GetResponseStream()
+        $reader = New-Object System.IO.StreamReader($result)
+        $reader.BaseStream.Position = 0
+        $reader.DiscardBufferedData()
+        $resp = $reader.ReadToEnd()
+        $response = $resp | ConvertFrom-Json | 
+            Select-Object @{N="Error";E={$Error[0]}},@{N="Code";E={$_.error.Code}},@{N="Message";E={$_.error.Message}},@{N="Domain";E={$_.error.errors.domain}},@{N="Reason";E={$_.error.errors.reason}}
+        Write-Error "$(Get-HTTPStatus -Code $response.Code): $($response.Domain) / $($response.Message) / $($response.Reason)"
+        return
+        }
+    catch
+        {
+        Write-Error $resp
+        return
+        }
+    }
+return $response
 }

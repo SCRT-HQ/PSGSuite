@@ -1,9 +1,8 @@
 ﻿function Get-GoogDriveFile {
+
+    [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
-    (
-      [parameter(Mandatory=$true)]
-      [String]
-      $AccessToken,
+    (      
       [parameter(Mandatory=$true)]
       [String]
       $ID,
@@ -13,13 +12,32 @@
       $Type,
       [parameter(Mandatory=$true)]
       [String]
-      $OutFilePath
+      $OutFilePath,
+      [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
+      [String]
+      $AccessToken,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $P12KeyPath = $Script:PSGoogle.P12KeyPath,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $AppEmail = $Script:PSGoogle.AppEmail,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $AdminEmail = $Script:PSGoogle.AdminEmail
+      
 
     )
+if (!$AccessToken)
+    {
+    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $AdminEmail
+    }
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-
 $mimeHash=@{
     CSV="text/csv"
     HTML="text/html"

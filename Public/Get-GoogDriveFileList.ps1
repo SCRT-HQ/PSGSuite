@@ -1,21 +1,7 @@
 ﻿function Get-GoogDriveFileList {
+    [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
     (
-      [parameter(Mandatory=$false,HelpMessage="What is the full path to your Google Service Account's P12 key file?")]
-      [ValidateNotNullOrEmpty()]
-      [String]
-      $P12KeyPath = $Script:PSGoogle.P12KeyPath,
-      [parameter(Mandatory=$false)]
-      [ValidateNotNullOrEmpty()]
-      [String]
-      $AppEmail = $Script:PSGoogle.AppEmail,
-      [parameter(Mandatory=$false)]
-      [ValidateNotNullOrEmpty()]
-      [String]
-      $AdminEmail = $Script:PSGoogle.AdminEmail,
-      [parameter(Mandatory=$false)]
-      [String]
-      $AccessToken,
       [parameter(Mandatory=$true)]
       [string]
       $Owner,
@@ -29,57 +15,65 @@
       $OrderBy,
       [parameter(Mandatory=$false)]
       [String]
-      $Query
+      $Query,
+      [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
+      [String]
+      $AccessToken,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $P12KeyPath = $Script:PSGoogle.P12KeyPath,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $AppEmail = $Script:PSGoogle.AppEmail,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $AdminEmail = $Script:PSGoogle.AdminEmail
     )
-if ($AccessToken)
+if (!$AccessToken)
     {
-    $header = @{
-        Authorization="Bearer $AccessToken"
-        }
+    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $AdminEmail
     }
-else
-    {
-    $header = @{
-        Authorization="Bearer $(Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $AdminEmail)"
-        }
+$header = @{
+    Authorization="Bearer $AccessToken"
     }
 $URI = "https://www.googleapis.com/drive/v3/files?pageSize=$PageSize&q='$($Owner)'+in+owners"
+if ($Query)
+    {
+    $Query = $($Query -join "AND")
+    $URI = "$URI`AND$Query"
+    }
 if ($OrderBy)
     {
     $OrderByJoined = $OrderBy -join ','
     $URI = "$URI&orderBy=$OrderByJoined"
     }
-if ($Query)
-    {
-    $Query = $($Query -join " ")
-    $URI = "$URI&query=$Query"
-    }
 try
     {
     Write-Verbose "Constructed URI: $URI"
-
-    $results = @()
+    $response = @()
     [int]$i=1
     do
         {
         if ($i -eq 1)
             {
-            $files = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false
+            $result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false
             }
         else
             {
-            $files = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
+            $result = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
             }
-        $response += $files.files
-        $returnSize = $files.files.Count
-        $pageToken="$($files.nextPageToken)"
-        [int]$retrieved = ($i + $files.files.Count) - 1
+        $response += $result.files
+        $returnSize = $result.files.Count
+        $pageToken="$($result.nextPageToken)"
+        [int]$retrieved = ($i + $result.files.Count) - 1
         Write-Verbose "Retrieved files $i - $retrieved..."
-        [int]$i = $i + $files.files.Count
+        [int]$i = $i + $result.files.Count
         }
     until 
         ($returnSize -lt $PageSize)
-
     return $response    
     }
 catch
@@ -93,10 +87,13 @@ catch
         $resp = $reader.ReadToEnd()
         $response = $resp | ConvertFrom-Json | 
             Select-Object @{N="Error";E={$Error[0]}},@{N="Code";E={$_.error.Code}},@{N="Message";E={$_.error.Message}},@{N="Domain";E={$_.error.errors.domain}},@{N="Reason";E={$_.error.errors.reason}}
+        Write-Error "$(Get-HTTPStatus -Code $response.Code): $($response.Domain) / $($response.Message) / $($response.Reason)"
+        return
         }
     catch
         {
-        $response = $resp
+        Write-Error $resp
+        return
         }
     }
 return $response
