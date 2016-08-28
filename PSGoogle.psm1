@@ -17,11 +17,11 @@
     }
 
 #Create / Read config
-    if(-not (Test-Path -Path "$PSScriptRoot\$env:USERNAME-PSGoogle.xml" -ErrorAction SilentlyContinue))
+    if(-not (Test-Path -Path "$PSScriptRoot\$env:USERNAME-$env:COMPUTERNAME-PSGoogle.xml" -ErrorAction SilentlyContinue))
     {
         Try
         {
-            Write-Warning "Did not find config file $PSScriptRoot\$env:USERNAME-PSGoogle.xml, attempting to create"
+            Write-Warning "Did not find config file $PSScriptRoot\$env:USERNAME-$env:COMPUTERNAME-PSGoogle.xml, attempting to create"
             [pscustomobject]@{
                 P12KeyPath = $null
                 Scopes = $null
@@ -30,11 +30,11 @@
                 CustomerID = $null
                 Domain = $null
                 Preference = $null
-            } | Export-Clixml -Path "$PSScriptRoot\$env:USERNAME-PSGoogle.xml" -Force -ErrorAction Stop
+            } | Export-Clixml -Path "$PSScriptRoot\$env:USERNAME-$env:COMPUTERNAME-PSGoogle.xml" -Force -ErrorAction Stop
         }
         Catch
         {
-            Write-Warning "Failed to create config file $PSScriptRoot\$env:USERNAME-PSGoogle.xml: $_"
+            Write-Warning "Failed to create config file $PSScriptRoot\$env:USERNAME-$env:COMPUTERNAME-PSGoogle.xml: $_"
         }
     }
 

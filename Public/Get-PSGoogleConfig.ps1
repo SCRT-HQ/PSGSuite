@@ -34,7 +34,7 @@
 
         [parameter(ParameterSetName='path')]
         [parameter(ParameterSetName='source')]
-        $Path = "$ModuleRoot\$env:USERNAME-PSGoogle.xml"
+        $Path = "$ModuleRoot\$env:USERNAME-$env:COMPUTERNAME-PSGoogle.xml"
     )
     
     if($PSCmdlet.ParameterSetName -eq 'source' -and $Source -eq "PSGoogle" -and -not $PSBoundParameters.ContainsKey('Path'))

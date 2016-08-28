@@ -62,7 +62,7 @@
         [string]$AdminEmail,
         [string]$CustomerID,
         [string]$Domain,
-        [string]$Path = "$ModuleRoot\$env:USERNAME-PSGoogle.xml",
+        [string]$Path = "$ModuleRoot\$env:USERNAME-$env:COMPUTERNAME-PSGoogle.xml",
         [ValidateSet("Domain","CustomerID")]
         [string]$Preference="CustomerID"
     )
