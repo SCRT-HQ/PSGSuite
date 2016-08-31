@@ -1,20 +1,17 @@
-﻿function Update-GoogUser {
+﻿function New-GoogUser {
     [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
     (
       [parameter(Mandatory=$true)]
       [String]
-      $User,
-      [parameter(Mandatory=$false)]
-      [String]
       $PrimaryEmail,
-      [parameter(Mandatory=$false)]
+      [parameter(Mandatory=$true)]
       [String]
       $GivenName,
-      [parameter(Mandatory=$false)]
+      [parameter(Mandatory=$true)]
       [String]
       $FamilyName,
-      [parameter(Mandatory=$false)]
+      [parameter(Mandatory=$true)]
       [String]
       $Password,
       [parameter(Mandatory=$false)]
@@ -59,15 +56,13 @@ if (!$AccessToken)
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$body = @{}
-if($PrimaryEmail){$body.Add("primaryEmail",$PrimaryEmail)}
-if($Password){$body.Add("password",$Password)}
-if ($GivenName -or $FamilyName)
-    {
-    $name = @{}
-    if ($GivenName){$name.Add("givenName",$GivenName)}
-    if ($FamilyName){$name.Add("familyName",$FamilyName)}
-    $body.Add("name",$name)
+$body = @{
+    primaryEmail = $PrimaryEmail
+    password = $Password
+    name = @{
+        familyName = $FamilyName
+        givenName = $GivenName
+        }
     }
 
 if($OrgUnitPath){$body.Add("orgUnitPath",$OrgUnitPath)}
@@ -80,11 +75,12 @@ elseif($IncludeInGlobalAddressList -eq $false){$body.Add("includeInGlobalAddress
 if($IPWhitelisted -eq $true){$body.Add("ipWhitelisted",$true)}
 elseif($IPWhitelisted -eq $false){$body.Add("ipWhitelisted",$false)}
 
+
 $body = $body | ConvertTo-Json
-$URI = "https://www.googleapis.com/admin/directory/v1/users/$User"
+$URI = "https://www.googleapis.com/admin/directory/v1/users"
 try
     {
-    $response = Invoke-RestMethod -Method Patch -Uri $URI -Headers $header -Body $body -ContentType "application/json"
+    $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/json"
     }
 catch
     {
