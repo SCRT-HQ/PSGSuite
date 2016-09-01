@@ -26,7 +26,7 @@ In order to use this module, you'll need to have the following:
   * **Admin SDK** (Anything user, group, directory related -- HIGHLY recommend!)
   * Apps Activity API (Drive file activity reports)
   * Contacts API (Google Contact management)
-  * **Drive API** (Drive file management -- HIHGLY recommend)
+  * **Drive API** (Drive file management -- HIGHLY recommend)
   * Enterprise License Manager API (user license management API)
   * Gmail API (Gmail management)
   * **Calendar API** (Google Calendar management -- HIGHLY recommend)
@@ -50,10 +50,10 @@ In order to use this module, you'll need to have the following:
 3. Expand 'Advanced Settings'
 4. Click 'Manage API client access'
 5. Open your Developer's Console tab back up to the API Manager >> Credentials tab
-6. Under OAuth 2.0 client IDs, find the Service Account associated with your OAuth 2.0. It will be named 'Client for <service account name>' and have a type of 'Service account client'
+6. Under OAuth 2.0 client IDs, find the Service Account associated with your OAuth 2.0. It will be named 'Client for [service account name]' and have a type of 'Service account client'
 7. Click the Service Account Client name to open up the details
 8. Copy the Client ID, then switch tabs back to the Admin Console
 9. Paste the Client ID in the left field for 'Client Name'
 10. Copy / paste the following scopes on the right field for 'One or more API scopes':
 
-<more to come soon!>
+[more to come soon!]
