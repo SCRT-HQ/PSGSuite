@@ -52,12 +52,12 @@ else{$URI = "$URI`?singleEvents=$false"}
 if ($OrderBy){$URI = "$URI&orderBy=$OrderBy"}
 if ($TimeMin)
     {
-    $timeMinConverted = Get-Date $TimeMin -Format "yyyy-MM-ddTHH:mm:ssZ"
+    $timeMinConverted = Get-Date $((Get-Date $TimeMin).ToUniversalTime()) -Format "yyyy-MM-ddTHH:mm:ssZ"
     $URI = "$URI&timeMin=$timeMinConverted"
     }
 if ($TimeMax)
     {
-    $timeMaxConverted = Get-Date $TimeMax -Format "yyyy-MM-ddTHH:mm:ssZ"
+    $timeMaxConverted = Get-Date $((Get-Date $TimeMax).ToUniversalTime()) -Format "yyyy-MM-ddTHH:mm:ssZ"
     $URI = "$URI&timeMax=$timeMaxConverted"
     }
 if ($PageSize){$URI = "$URI&maxResults=$PageSize"}
