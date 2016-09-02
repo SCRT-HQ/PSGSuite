@@ -7,7 +7,7 @@
 $res = 'application/unknown' 
 try 
     { 
-    $rk = [Microsoft.Win32.Registry]::ClassesRoot.OpenSubKey(($ext = ([IO.FileInfo](($File = cvpa $File))).Extension.ToLower())) 
+    $rk = [Microsoft.Win32.Registry]::ClassesRoot.OpenSubKey((([IO.FileInfo](($File = Convert-Path $File))).Extension.ToLower()))
     } 
 finally 
     { 
@@ -15,7 +15,7 @@ finally
         { 
         if (![String]::IsNullOrEmpty(($cur = $rk.GetValue('Content Type')))) 
             { 
-            $res = $cur 
+            $res = $cur
             } 
         $rk.Close() 
         } 
