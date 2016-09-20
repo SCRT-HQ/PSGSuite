@@ -1,24 +1,11 @@
-﻿function Get-GoogUser {
+﻿function Get-GoogDriveACLList {
+
     [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
-    (
+    (      
       [parameter(Mandatory=$true)]
       [String]
-      $User,
-      [parameter(Mandatory=$false)]
-      [ValidateSet("Basic","Custom","Full")]
-      [string]
-      $Projection="Full",
-      [parameter(Mandatory=$false)]
-      [String]
-      $CustomFieldMask,
-      [parameter(Mandatory=$false)]
-      [ValidateSet("Admin_View","Domain_Public")]
-      [String]
-      $ViewType="Admin_View",
-      [parameter(Mandatory=$false)]
-      [String[]]
-      $Fields,
+      $ID,
       [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
       [String]
       $AccessToken,
@@ -37,24 +24,16 @@
     )
 if (!$AccessToken)
     {
-    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/admin.directory.user" -AppEmail $AppEmail -AdminEmail $AdminEmail
+    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $AdminEmail
     }
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/admin/directory/v1/users/$User`?projection=$Projection"
-if ($CustomFieldMask){$URI = "$URI&customFieldMask=$CustomFieldMask"}
-if ($ViewType){$URI = "$URI&viewType=$ViewType"}
-if ($Fields)
-    {
-    $URI = "$URI&fields="
-    $Fields | % {$URI = "$URI$_,"}
-    }
-
-Write-Verbose "Constructed URI: $URI"
+if($Type){$mimeType = $mimeHash.Item($Type)}
+$URI = "https://www.googleapis.com/drive/v2/files/$ID/permissions"
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" | Select-Object -ExpandProperty items
     }
 catch
     {
@@ -67,13 +46,10 @@ catch
         $resp = $reader.ReadToEnd()
         $response = $resp | ConvertFrom-Json | 
             Select-Object @{N="Error";E={$Error[0]}},@{N="Code";E={$_.error.Code}},@{N="Message";E={$_.error.Message}},@{N="Domain";E={$_.error.errors.domain}},@{N="Reason";E={$_.error.errors.reason}}
-        Write-Error "$(Get-HTTPStatus -Code $response.Code): $($response.Domain) / $($response.Message) / $($response.Reason)"
-        return
         }
     catch
         {
-        Write-Error $resp
-        return
+        $response = $resp
         }
     }
 return $response
