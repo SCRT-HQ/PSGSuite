@@ -2,9 +2,9 @@
     [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
     (
-      [parameter(Mandatory=$true)]
+      [parameter(Mandatory=$false)]
       [string]
-      $Owner,
+      $Owner = $Script:PSGoogle.AdminEmail,
       [parameter(Mandatory=$false)]
       [ValidateScript({[int]$_ -le 1000})]
       [Int]
@@ -26,15 +26,11 @@
       [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
-      $AppEmail = $Script:PSGoogle.AppEmail,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
-      [ValidateNotNullOrEmpty()]
-      [String]
-      $AdminEmail = $Script:PSGoogle.AdminEmail
+      $AppEmail = $Script:PSGoogle.AppEmail
     )
 if (!$AccessToken)
     {
-    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $AdminEmail
+    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $Owner
     }
 $header = @{
     Authorization="Bearer $AccessToken"

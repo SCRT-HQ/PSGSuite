@@ -1,11 +1,17 @@
 ﻿function Get-GoogDriveACLList {
-
     [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
-    (      
+    ( 
+      [parameter(Mandatory=$false)]
+      [string]
+      $Owner = $Script:PSGoogle.AdminEmail,  
       [parameter(Mandatory=$true)]
       [String]
-      $ID,
+      $FileID,
+      [parameter(Mandatory=$false)]
+      [ValidateSet("v2","v3")]
+      [string]
+      $APIVersion="v2",
       [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
       [String]
       $AccessToken,
@@ -16,24 +22,19 @@
       [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
-      $AppEmail = $Script:PSGoogle.AppEmail,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
-      [ValidateNotNullOrEmpty()]
-      [String]
-      $AdminEmail = $Script:PSGoogle.AdminEmail
+      $AppEmail = $Script:PSGoogle.AppEmail
     )
 if (!$AccessToken)
     {
-    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $AdminEmail
+    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $Owner
     }
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-if($Type){$mimeType = $mimeHash.Item($Type)}
-$URI = "https://www.googleapis.com/drive/v2/files/$ID/permissions"
+$URI = "https://www.googleapis.com/drive/$APIVersion/files/$FileID/permissions"
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" | Select-Object -ExpandProperty items
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" | Select-Object -ExpandProperty $(if($APIVersion -eq "v3"){"permissions"}elseif($APIVersion -eq "v2"){"items"})
     }
 catch
     {

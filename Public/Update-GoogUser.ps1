@@ -71,14 +71,10 @@ if ($GivenName -or $FamilyName)
     }
 
 if($OrgUnitPath){$body.Add("orgUnitPath",$OrgUnitPath)}
-if($ChangePasswordAtNextLogin -eq $true){$body.Add("changePasswordAtNextLogin",$true)}
-elseif($ChangePasswordAtNextLogin -eq $false){$body.Add("changePasswordAtNextLogin",$false)}
-if($Suspended -eq $true){$body.Add("suspended",$true)}
-elseif($Suspended -eq $false){$body.Add("suspended",$false)}
-if($IncludeInGlobalAddressList -eq $true){$body.Add("includeInGlobalAddressList",$true)}
-elseif($IncludeInGlobalAddressList -eq $false){$body.Add("includeInGlobalAddressList",$false)}
-if($IPWhitelisted -eq $true){$body.Add("ipWhitelisted",$true)}
-elseif($IPWhitelisted -eq $false){$body.Add("ipWhitelisted",$false)}
+if($ChangePasswordAtNextLogin -eq $true -or $ChangePasswordAtNextLogin -eq $false){$body.Add("changePasswordAtNextLogin",$ChangePasswordAtNextLogin)}
+if($Suspended -eq $true -or $Suspended -eq $false){$body.Add("suspended",$Suspended)}
+if($IncludeInGlobalAddressList -eq $true -or $IncludeInGlobalAddressList -eq $false){$body.Add("includeInGlobalAddressList",$IncludeInGlobalAddressList)}
+if($IPWhitelisted -eq $true -or $IPWhitelisted -eq $false){$body.Add("ipWhitelisted",$IPWhitelisted)}
 
 $body = $body | ConvertTo-Json
 $URI = "https://www.googleapis.com/admin/directory/v1/users/$User"

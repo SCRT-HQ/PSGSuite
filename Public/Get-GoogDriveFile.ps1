@@ -5,7 +5,7 @@
     (      
       [parameter(Mandatory=$true)]
       [String]
-      $ID,
+      $FileID,
       [parameter(Mandatory=$false)]
       [ValidateSet("CSV","HTML","JPEG","JSON","MSExcel","MSPowerPoint","MSWordDoc","OpenOfficeDoc","OpenOfficeSheet","PDF","PlainText","PNG","RichText","SVG")]
       [String]
@@ -55,7 +55,7 @@ $mimeHash=@{
     SVG="image/svg+xml"
     }
 if($Type){$mimeType = $mimeHash.Item($Type)}
-$URI = "https://www.googleapis.com/drive/v3/files/$ID/export?mimeType=$mimeType"
+$URI = "https://www.googleapis.com/drive/v3/files/$FileID/export?mimeType=$mimeType"
 try
     {
     $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" -OutFile $OutFilePath | Select *,@{N="Filepath";E={$OutFilePath}}
