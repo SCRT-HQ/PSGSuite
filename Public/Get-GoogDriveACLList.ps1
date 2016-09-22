@@ -11,7 +11,7 @@
       [parameter(Mandatory=$false)]
       [ValidateSet("v2","v3")]
       [string]
-      $APIVersion="v2",
+      $APIVersion="v3",
       [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
       [String]
       $AccessToken,
@@ -32,6 +32,10 @@ $header = @{
     Authorization="Bearer $AccessToken"
     }
 $URI = "https://www.googleapis.com/drive/$APIVersion/files/$FileID/permissions"
+if($APIVersion -eq "v3")
+    {
+    $URI = "$URI`?fields=permissions"
+    }
 try
     {
     $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" | Select-Object -ExpandProperty $(if($APIVersion -eq "v3"){"permissions"}elseif($APIVersion -eq "v2"){"items"})

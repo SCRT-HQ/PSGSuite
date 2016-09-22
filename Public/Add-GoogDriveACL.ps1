@@ -71,6 +71,10 @@ $header = @{
     Authorization="Bearer $AccessToken"
     }
 $URI = "https://www.googleapis.com/drive/$APIVersion/files/$FileID/permissions?sendNotificationEmail=$SendNotificationEmail"
+if($APIVersion -eq "v3")
+    {
+    $URI = "$URI`?fields=permissions"
+    }
 if ($EmailMessage)
     {
     $URI = "$URI&emailMessage=$($EmailMessage -replace " ","+")"
