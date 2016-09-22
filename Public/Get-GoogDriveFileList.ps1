@@ -14,7 +14,7 @@
       [String[]]
       $OrderBy,
       [parameter(Mandatory=$false)]
-      [String]
+      [String[]]
       $Query,
       [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
       [String]
@@ -35,11 +35,11 @@ if (!$AccessToken)
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/drive/v3/files?pageSize=$PageSize&q='$($Owner)'+in+owners"
+$URI = "https://www.googleapis.com/drive/v3/files?pageSize=$PageSize&fields=files%2Ckind%2CnextPageToken"
 if ($Query)
     {
-    $Query = $($Query -join "AND")
-    $URI = "$URI`AND$Query"
+    $Query = $($Query -join " and ")
+    $URI = "$URI&q=$Query"
     }
 if ($OrderBy)
     {

@@ -62,15 +62,15 @@ $header = @{
     }
 if ($Preference -eq "Domain")
     {
-    $URI = "https://www.googleapis.com/admin/directory/v1/users?domain=$Domain"
+    $URI = "https://www.googleapis.com/admin/directory/v1/users?domain=$Domain&projection=full"
     }
 elseif($Preference -eq "CustomerID")
     {
-    $URI = "https://www.googleapis.com/admin/directory/v1/users?customer=$CustomerID"
+    $URI = "https://www.googleapis.com/admin/directory/v1/users?customer=$CustomerID&projection=full"
     }
 else
     {
-    $URI = "https://www.googleapis.com/admin/directory/v1/users?customer=my_customer"
+    $URI = "https://www.googleapis.com/admin/directory/v1/users?customer=my_customer&projection=full"
     }
 
 if ($PageSize){$URI = "$URI&maxResults=$PageSize"}
