@@ -1,10 +1,10 @@
-﻿function Get-GoogUserSchemaList {
+﻿function Get-GoogGroupSettings {
     [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
     (
-      [parameter(Mandatory=$false)]
+      [parameter(Mandatory=$true)]
       [String]
-      $CustomerID=$Script:PSGoogle.CustomerID,
+      $GroupEmail,
       [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
       [String]
       $AccessToken,
@@ -23,15 +23,15 @@
     )
 if (!$AccessToken)
     {
-    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/admin.directory.userschema" -AppEmail $AppEmail -AdminEmail $AdminEmail
+    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/apps.groups.settings" -AppEmail $AppEmail -AdminEmail $AdminEmail
     }
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/admin/directory/v1/customer/$CustomerID/schemas?fields=schemas"
+$URI = "https://www.googleapis.com/groups/v1/groups/$GroupEmail"
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose | Select-Object -ExpandProperty schemas
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" -Verbose | Select-Object -ExpandProperty entry
     }
 catch
     {
