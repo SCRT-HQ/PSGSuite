@@ -1,28 +1,13 @@
-﻿function Get-GoogGroupMembers {
-<#
-.Synopsis
-   Gets the group member list for a given group in Google Apps
-.DESCRIPTION
-   Retrieves the full group list for the entire account
-.EXAMPLE
-   Get-GoogGroupMembers -AccessToken $(Get-GoogToken @TokenParams) -GroupEmail "my.group@domain.com" -MaxResults 10
-.EXAMPLE
-   Get-GoogGroupMembers -AccessToken $(Get-GoogToken @TokenParams)
-#>
+﻿function Remove-GoogGroupMember {
     [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
     (
       [parameter(Mandatory=$true)]
       [String]
       $GroupEmail,
-      [parameter(Mandatory=$false)]
-      [ValidateSet("Owner","Manager","Member")]
-      [String[]]
-      $Roles,
-      [parameter(Mandatory=$false)]
-      [ValidateScript({[int]$_ -le 200})]
-      [Int]
-      $PageSize="200",
+      [parameter(Mandatory=$true)]
+      [String]
+      $UserEmail,
       [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
       [String]
       $AccessToken,
@@ -48,35 +33,11 @@ $header = @{
     Authorization="Bearer $AccessToken"
     }
 
-$URI = "https://www.googleapis.com/admin/directory/v1/groups/$($GroupEmail)/members"
+$URI = "https://www.googleapis.com/admin/directory/v1/groups/$($GroupEmail)/members/$($UserEmail)"
 
-if ($Roles){$URI = "$URI`?roles=$($Roles -join ",")"}
-if ($Roles -and $PageSize){$URI = "$URI&maxResults=$PageSize"}
-elseif ($PageSize){$URI = "$URI`?&maxResults=$PageSize"}
 try
     {
-    Write-Verbose "Constructed URI: $URI"
-    $response = @()
-    [int]$i=1
-    do
-        {
-        if ($i -eq 1)
-            {
-            $result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false
-            }
-        else
-            {
-            $result = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
-            }
-        $response += $result.members
-        $pageToken="$($result.nextPageToken)"
-        $returnSize = $result.members.Count
-        [int]$retrieved = ($i + $result.members.Count) - 1
-        Write-Verbose "Retrieved groups $i - $retrieved..."
-        [int]$i = $i + $result.members.Count
-        }
-    until 
-        ($returnSize -lt $PageSize)
+    $response = Invoke-RestMethod -Method Delete -Uri $URI -Headers $header
     }
 catch
     {
