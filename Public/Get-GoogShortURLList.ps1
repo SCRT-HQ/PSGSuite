@@ -1,21 +1,11 @@
-﻿function Get-GoogResourceCalList {
-<#
-.Synopsis
-   Gets the resource calendar list for a given account in Google Apps
-.DESCRIPTION
-   Retrieves the full resource calendar list for the entire account. 
-.EXAMPLE
-   Get-GoogResourceCalList -AccessToken $(Get-GoogToken @TokenParams) -CustomerID C22jaaesx -BaseOrgUnitPath "/Users" -Type Children
-.EXAMPLE
-   Get-GoogResourceCalList -AccessToken $(Get-GoogToken @TokenParams) -CustomerID c22jaaesx
-#>
+﻿function Get-GoogShortURLList {
     [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
     (
       [parameter(Mandatory=$false)]
-      [ValidateScript({[int]$_ -le 500})]
-      [Int]
-      $PageSize="500",
+      [ValidateSet("Full","Analytics_Clicks")]
+      [string]
+      $Projection="Full",
       [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
       [String]
       $AccessToken,
@@ -30,20 +20,18 @@
       [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
-      $AdminEmail = $Script:PSGoogle.AdminEmail,
-      [parameter(Mandatory=$false)]
-      [String]
-      $CustomerID=$Script:PSGoogle.CustomerID
+      $AdminEmail = $Script:PSGoogle.AdminEmail
     )
 if (!$AccessToken)
     {
-    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/admin.directory.resource.calendar" -AppEmail $AppEmail -AdminEmail $AdminEmail
+    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/urlshortener" -AppEmail $AppEmail -AdminEmail $AdminEmail
     }
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/admin/directory/v1/customer/$CustomerID/resources/calendars"
-if ($PageSize){$URI = "$URI`?&MaxResults=$PageSize"}
+
+$URI = "https://www.googleapis.com/urlshortener/v1/url/history?projection=$($Projection.ToUpper())"
+
 try
     {
     Write-Verbose "Constructed URI: $URI"
@@ -57,17 +45,17 @@ try
             }
         else
             {
-            $result = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
+            $result = Invoke-RestMethod -Method Get -Uri "$URI&start-token=$pageToken" -Headers $header -Verbose:$false
             }
         $response += $result.items
-        $returnSize = $result.items.Count
+        $returnSize = $result.totalItems
         $pageToken="$($result.nextPageToken)"
-        [int]$retrieved = ($i + $result.items.Count) - 1
-        Write-Verbose "Retrieved resources $i - $retrieved..."
-        [int]$i = $i + $result.items.Count
+        [int]$retrieved = ($i + $result.totalItems) - 1
+        Write-Verbose "Retrieved $retrieved ShortURLs..."
+        [int]$i = $i + $result.totalItems
         }
     until 
-        ($returnSize -lt $PageSize)
+        ($result.totalItems -lt $result.itemsPerPage)
     }
 catch
     {

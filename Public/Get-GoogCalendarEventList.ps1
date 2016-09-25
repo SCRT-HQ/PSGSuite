@@ -80,7 +80,7 @@ try
         $returnSize = $result.items.Count
         $pageToken="$($result.nextPageToken)"
         [int]$retrieved = ($i + $result.items.Count) - 1
-        Write-Verbose "Retrieved events $i - $retrieved..."
+        Write-Verbose "Retrieved $retrieved events..."
         [int]$i = $i + $result.items.Count
         }
     until 

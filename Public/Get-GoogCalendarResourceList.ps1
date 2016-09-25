@@ -1,21 +1,11 @@
-﻿function Get-GoogDriveFileList {
+﻿function Get-GoogCalendarResourceList {
     [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
     (
       [parameter(Mandatory=$false)]
-      [string]
-      $Owner = $Script:PSGoogle.AdminEmail,
-      [parameter(Mandatory=$false)]
-      [ValidateScript({[int]$_ -le 1000})]
+      [ValidateScript({[int]$_ -le 500})]
       [Int]
-      $PageSize="1000",
-      [parameter(Mandatory=$false)]
-      [ValidateSet('createdTime','folder','modifiedByMeTime','modifiedTime','name','quotaBytesUsed','recency','sharedWithMeTime','starred','viewedByMeTime')]
-      [String[]]
-      $OrderBy,
-      [parameter(Mandatory=$false)]
-      [String[]]
-      $Query,
+      $PageSize="500",
       [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
       [String]
       $AccessToken,
@@ -26,26 +16,24 @@
       [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
-      $AppEmail = $Script:PSGoogle.AppEmail
+      $AppEmail = $Script:PSGoogle.AppEmail,
+      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $AdminEmail = $Script:PSGoogle.AdminEmail,
+      [parameter(Mandatory=$false)]
+      [String]
+      $CustomerID=$Script:PSGoogle.CustomerID
     )
 if (!$AccessToken)
     {
-    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $Owner
+    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/admin.directory.resource.calendar" -AppEmail $AppEmail -AdminEmail $AdminEmail
     }
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/drive/v3/files?pageSize=$PageSize&fields=files%2Ckind%2CnextPageToken"
-if ($Query)
-    {
-    $Query = $($Query -join " and ")
-    $URI = "$URI&q=$Query"
-    }
-if ($OrderBy)
-    {
-    $OrderByJoined = $OrderBy -join ','
-    $URI = "$URI&orderBy=$OrderByJoined"
-    }
+$URI = "https://www.googleapis.com/admin/directory/v1/customer/$CustomerID/resources/calendars"
+if ($PageSize){$URI = "$URI`?&MaxResults=$PageSize"}
 try
     {
     Write-Verbose "Constructed URI: $URI"
@@ -61,16 +49,15 @@ try
             {
             $result = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
             }
-        $response += $result.files
-        $returnSize = $result.files.Count
+        $response += $result.items
+        $returnSize = $result.items.Count
         $pageToken="$($result.nextPageToken)"
-        [int]$retrieved = ($i + $result.files.Count) - 1
-        Write-Verbose "Retrieved $retrieved files..."
-        [int]$i = $i + $result.files.Count
+        [int]$retrieved = ($i + $result.items.Count) - 1
+        Write-Verbose "Retrieved $retrieved resources..."
+        [int]$i = $i + $result.items.Count
         }
     until 
         ($returnSize -lt $PageSize)
-    return $response    
     }
 catch
     {

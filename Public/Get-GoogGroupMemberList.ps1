@@ -72,7 +72,7 @@ try
         $pageToken="$($result.nextPageToken)"
         $returnSize = $result.members.Count
         [int]$retrieved = ($i + $result.members.Count) - 1
-        Write-Verbose "Retrieved groups $i - $retrieved..."
+        Write-Verbose "Retrieved $retrieved groups..."
         [int]$i = $i + $result.members.Count
         }
     until 

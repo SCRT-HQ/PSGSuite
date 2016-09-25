@@ -70,7 +70,7 @@ try
         $returnSize = $result.messages.Count
         $pageToken="$($result.nextPageToken)"
         [int]$retrieved = ($i + $result.messages.Count) - 1
-        Write-Verbose "Retrieved messages $i - $retrieved..."
+        Write-Verbose "Retrieved $retrieved messages..."
         [int]$i = $i + $result.messages.Count
         }
     until 
