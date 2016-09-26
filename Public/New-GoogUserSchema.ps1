@@ -1,22 +1,36 @@
-﻿function Get-GoogUserSchemaList {
-    [cmdletbinding(DefaultParameterSetName='InternalToken')]
+﻿function New-GoogUserSchema {
+    [cmdletbinding()]
     Param
     (
+      [parameter(Mandatory=$true)]
+      [String]
+      $SchemaName,
+      [parameter(Mandatory=$true)]
+      [string[]]
+      $FieldName,
+      [parameter(Mandatory=$true)]
+      [ValidateSet("BOOL","DATE","DOUBLE","EMAIL","INT64","PHONE","STRING")]
+      [string]
+      $FieldType,
+      [parameter(Mandatory=$false)]
+      [ValidateSet("ADMINS_AND_SELF","ALL_DOMAIN_USERS")]
+      [string]
+      $FieldReadAccessType="ADMINS_AND_SELF",
       [parameter(Mandatory=$false)]
       [String]
       $CustomerID=$Script:PSGoogle.CustomerID,
-      [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $P12KeyPath = $Script:PSGoogle.P12KeyPath,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $AppEmail = $Script:PSGoogle.AppEmail,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $AdminEmail = $Script:PSGoogle.AdminEmail
@@ -28,10 +42,25 @@ if (!$AccessToken)
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/admin/directory/v1/customer/$CustomerID/schemas?fields=schemas"
+$body = @{
+    schemaName = $SchemaName
+    }
+$fields = @()
+foreach ($FName in $FieldName)
+    {
+    $fields += [pscustomobject]@{
+        fieldName = $FName
+        fieldType = $FieldType
+        readAccessType = $FieldReadAccessType
+        }
+    }
+$body.Add("fields",$fields)
+$body = $body | ConvertTo-Json
+$URI = "https://www.googleapis.com/admin/directory/v1/customer/$CustomerID/schemas"
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header | Select-Object -ExpandProperty schemas
+    $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/json" | Select-Object -ExpandProperty fields
+    $response | Add-Member -MemberType NoteProperty -Name schemaName -Value $SchemaName
     }
 catch
     {
