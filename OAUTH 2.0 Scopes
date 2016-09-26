@@ -1,4 +1,4 @@
-OAUTH 2.0 Scopes
+OAUTH 2.0 Scopes (client type "Other" -- i.e. 51383842929-dkfdkasdfflklk.apps.googleusercontent.com)
 https://mail.google.com/,
 https://sites.google.com/feeds,
 https://www.googleapis.com/auth/activity,
@@ -22,7 +22,7 @@ https://www.googleapis.com/auth/urlshortener,
 https://www.googleapis.com/auth/apps.licensing
 
 
-Service Account Client Scopes
+Service Account Client Scopes (client type "Service account client" -- i.e. 12385839292300348843453)
 https://mail.google.com/,
 https://sites.google.com/feeds,
 https://www.google.com/m8/feeds/contacts,
