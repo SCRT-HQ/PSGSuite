@@ -37,6 +37,7 @@ $URI = "https://www.googleapis.com/apps/licensing/v1/product/$productId/sku/$Lic
 try
     {
     $response = Invoke-RestMethod -Method Delete -Uri $URI -Headers $header -ContentType "application/json"
+    if (!$response){Write-Verbose "$License successfully removed from $User"}
     }
 catch
     {

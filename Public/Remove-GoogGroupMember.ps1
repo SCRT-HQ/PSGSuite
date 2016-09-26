@@ -3,10 +3,10 @@
     Param
     (
       [parameter(Mandatory=$true)]
-      [String]
+      [String[]]
       $GroupEmail,
       [parameter(Mandatory=$true)]
-      [String]
+      [String[]]
       $UserEmail,
       [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
       [String]
@@ -32,31 +32,36 @@ if (!$AccessToken)
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-
-$URI = "https://www.googleapis.com/admin/directory/v1/groups/$($GroupEmail)/members/$($UserEmail)"
-
-try
+foreach ($Group in $GroupEmail)
     {
-    $response = Invoke-RestMethod -Method Delete -Uri $URI -Headers $header
-    }
-catch
-    {
-    try
+    foreach ($User in $UserEmail)
         {
-        $result = $_.Exception.Response.GetResponseStream()
-        $reader = New-Object System.IO.StreamReader($result)
-        $reader.BaseStream.Position = 0
-        $reader.DiscardBufferedData()
-        $resp = $reader.ReadToEnd()
-        $response = $resp | ConvertFrom-Json | 
-            Select-Object @{N="Error";E={$Error[0]}},@{N="Code";E={$_.error.Code}},@{N="Message";E={$_.error.Message}},@{N="Domain";E={$_.error.errors.domain}},@{N="Reason";E={$_.error.errors.reason}}
-        Write-Error "$(Get-HTTPStatus -Code $response.Code): $($response.Domain) / $($response.Message) / $($response.Reason)"
-        return
-        }
-    catch
-        {
-        Write-Error $resp
-        return
+        $URI = "https://www.googleapis.com/admin/directory/v1/groups/$($Group)/members/$($User)"
+        try
+            {
+            $response = Invoke-RestMethod -Method Delete -Uri $URI -Headers $header
+            if (!$response){Write-Verbose "$User successfully removed from $Group"}
+            }
+        catch
+            {
+            try
+                {
+                $result = $_.Exception.Response.GetResponseStream()
+                $reader = New-Object System.IO.StreamReader($result)
+                $reader.BaseStream.Position = 0
+                $reader.DiscardBufferedData()
+                $resp = $reader.ReadToEnd()
+                $response = $resp | ConvertFrom-Json | 
+                    Select-Object @{N="Error";E={$Error[0]}},@{N="Code";E={$_.error.Code}},@{N="Message";E={$_.error.Message}},@{N="Domain";E={$_.error.errors.domain}},@{N="Reason";E={$_.error.errors.reason}}
+                Write-Error "$(Get-HTTPStatus -Code $response.Code): $($response.Domain) / $($response.Message) / $($response.Reason)"
+                break
+                }
+            catch
+                {
+                Write-Error $resp
+                break
+                }
+            }
         }
     }
 return $response
