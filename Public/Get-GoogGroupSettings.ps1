@@ -2,9 +2,9 @@
     [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
     (
-      [parameter(Mandatory=$true)]
+      [parameter(Position=0,Mandatory=$true)]
       [String]
-      $GroupEmail,
+      $Group,
       [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
       [String]
       $AccessToken,
@@ -28,10 +28,10 @@ if (!$AccessToken)
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/groups/v1/groups/$GroupEmail"
+$URI = "https://www.googleapis.com/groups/v1/groups/$Group"
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" -Verbose | Select-Object -ExpandProperty entry
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" | Select-Object -ExpandProperty entry | Select-Object email,name,description,whoCanJoin,whoCanViewMembership,whoCanViewGroup,whoCanInvite,whoCanAdd,allowExternalMembers,whoCanPostMessage,allowWebPosting,maxMessageBytes,isArchived,archiveOnly,messageModerationLevel,spamModerationLevel,replyTo,customReplyTo,includeCustomFooter,customFooterText,sendMessageDenyNotification,defaultMessageDenyNotificationText,showInGroupDirectory,allowGoogleCommunication,membersCanPostAsTheGroup,messageDisplayFont,includeInGlobalAddressList,whoCanLeaveGroup,whoCanContactOwner
     }
 catch
     {
