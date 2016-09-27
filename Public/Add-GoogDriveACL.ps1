@@ -24,7 +24,7 @@
       $EmailMessage,
       [parameter(Mandatory=$false)]
       [switch]
-      $SendNotificationEmail=$true,
+      $SendNotificationEmail,
       [parameter(Mandatory=$false)]
       [ValidateSet($true,$false)]
       [String]
@@ -73,11 +73,15 @@ $header = @{
 $URI = "https://www.googleapis.com/drive/$APIVersion/files/$FileID/permissions?sendNotificationEmail=$SendNotificationEmail"
 if($APIVersion -eq "v3")
     {
-    $URI = "$URI`?fields=permissions"
+    $URI = "$URI&fields=permissions"
     }
 if ($EmailMessage)
     {
     $URI = "$URI&emailMessage=$($EmailMessage -replace " ","+")"
+    }
+if ($ConfirmTransferOfOwnership)
+    {
+    $URI = "$URI&transferOwnership=$ConfirmTransferOfOwnership"
     }
 $body = @{
     role = $Role.ToLower()
