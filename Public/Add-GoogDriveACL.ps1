@@ -1,5 +1,5 @@
 ﻿function Add-GoogDriveACL {
-    [cmdletbinding(DefaultParameterSetName='InternalToken')]
+    [cmdletbinding()]
     Param
     ( 
       [parameter(Mandatory=$false)]
@@ -36,14 +36,14 @@
       [ValidateSet("v2","v3")]
       [string]
       $APIVersion="v3",
-      [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $P12KeyPath = $Script:PSGoogle.P12KeyPath,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $AppEmail = $Script:PSGoogle.AppEmail
@@ -70,6 +70,7 @@ if (!$AccessToken)
 $header = @{
     Authorization="Bearer $AccessToken"
     }
+if ($ConfirmTransferOfOwnership){$SendNotificationEmail = $true; Write-Warning "Setting SendNotificationEmail to 'True' to prevent errors -- Required for Ownership transfers"}
 $URI = "https://www.googleapis.com/drive/$APIVersion/files/$FileID/permissions?sendNotificationEmail=$SendNotificationEmail"
 if($APIVersion -eq "v3")
     {
