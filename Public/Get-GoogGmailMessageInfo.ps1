@@ -1,4 +1,4 @@
-﻿function Get-GoogGmailMessageDetails {
+﻿function Get-GoogGmailMessageInfo {
     [cmdletbinding(DefaultParameterSetName='InternalToken')]
     Param
     (
