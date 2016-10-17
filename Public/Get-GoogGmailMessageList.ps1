@@ -45,7 +45,7 @@ $URI = "https://www.googleapis.com/gmail/v1/users/$user/messages?maxResults=$Pag
 if ($IncludeSpamTrash){$URI = "$URI&includeSpamTrash=$true"}
 else {$URI = "$URI&includeSpamTrash=$false"}
 if ($LabelID){$LabelID | % {$URI = "$URI&labelIds=$_"}}
-if ($ExcludeChats){if($Query){$Query+="-in:chats"}}else{$Query="-in:chats"}
+if ($ExcludeChats){if($Query){$Query+="-in:chats"}else{$Query="-in:chats"}}
 if ($Query)
     {
     $Query = $Query -join " "
