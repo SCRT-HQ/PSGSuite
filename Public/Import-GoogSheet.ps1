@@ -1,5 +1,5 @@
 ﻿function Import-GoogSheet {
-    [cmdletbinding()]
+    [cmdletbinding(DefaultParameterSetName="Formatted")]
     Param
     (      
       [parameter(Mandatory=$true)]
@@ -25,7 +25,10 @@
       [ValidateSet("ROWS","COLUMNS","DIMENSION_UNSPECIFIED")]
       [string]
       $MajorDimension="ROWS",
-      [parameter(Mandatory=$false)]
+      [parameter(ParameterSetName="Formatted",Mandatory=$false)]
+      [int]
+      $RowStart=1,
+      [parameter(ParameterSetName="Raw",Mandatory=$false)]
       [switch]
       $Raw,
       [parameter(Mandatory=$false)]
@@ -62,9 +65,9 @@ try
     $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json"
     if (!$Raw)
         {
-        $response = $response.values | 
+        $response = $(if ($RowStart){$response.values | Select -Skip $([int]$RowStart -1)}else{$response.values}) | 
             % {
-                $i=0            
+                $i=0
                 $cont = $true
                 if ($_[$i])
                     {
