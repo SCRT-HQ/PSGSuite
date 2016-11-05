@@ -1,22 +1,24 @@
-﻿function Get-GoogDriveFile {
-
+﻿function Get-GoogSheetInfo {
     [cmdletbinding()]
     Param
     (      
       [parameter(Mandatory=$true)]
       [String]
-      $FileID,
+      $SpreadsheetId,
       [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $Owner = $Script:PSGoogle.AdminEmail,
       [parameter(Mandatory=$false)]
-      [ValidateSet("CSV","HTML","JPEG","JSON","MSExcel","MSPowerPoint","MSWordDoc","OpenOfficeDoc","OpenOfficeSheet","PDF","PlainText","PNG","RichText","SVG")]
-      [String]
-      $Type,
-      [parameter(Mandatory=$true)]
-      [String]
-      $OutFilePath,
+      [string]
+      $Range,
+      [parameter(Mandatory=$false)]
+      [ValidateSet($false,$true)]
+      [string]
+      $IncludeGridData=$false,
+      [parameter(Mandatory=$false)]
+      [switch]
+      $Raw,
       [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
@@ -32,8 +34,6 @@
       [ValidateNotNullOrEmpty()]
       [String]
       $AdminEmail = $Script:PSGoogle.AdminEmail
-      
-
     )
 if (!$AccessToken)
     {
@@ -42,27 +42,20 @@ if (!$AccessToken)
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$mimeHash=@{
-    CSV="text/csv"
-    HTML="text/html"
-    JPEG="image/jpeg"
-    JSON="application/vnd.google-apps.script+json"
-    MSExcel="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    MSPowerPoint="application/vnd.openxmlformats-officedocument.presentationml.presentation"
-    MSWordDoc="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    OpenOfficeDoc="application/vnd.oasis.opendocument.text"
-    OpenOfficeSheet="application/x-vnd.oasis.opendocument.spreadsheet"
-    PDF="application/pdf"
-    PlainText="text/plain"
-    PNG="image/png"
-    RichText="application/rtf"
-    SVG="image/svg+xml"
-    }
-if($Type){$mimeType = $mimeHash.Item($Type)}
-$URI = "https://www.googleapis.com/drive/v3/files/$FileID/export?mimeType=$mimeType"
+$URI = "https://sheets.googleapis.com/v4/spreadsheets/$SpreadsheetId`?includeGridData=$($IncludeGridData.ToLower())"
+if ($Range){$URI = "$URI&ranges=$Range"}
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" -OutFile $OutFilePath | Select *,@{N="Filepath";E={$OutFilePath}}
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json"
+    if (!$Raw)
+        {
+        $response = $response | 
+            Select-Object @{N="spreadsheetId";E={$_.spreadsheetId}},
+                          @{N="title";E={$_.properties.title}},
+                          @{N="maxRows";E={[int]($_.sheets.properties.gridProperties.rowCount | Sort-Object | Select-Object -Last 1)}},
+                          @{N="maxColumns";E={[int]($_.sheets.properties.gridProperties.columnCount | Sort-Object | Select-Object -Last 1)}},
+                          @{N="RAWDATA";E={$_}}
+        }
     }
 catch
     {

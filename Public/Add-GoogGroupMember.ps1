@@ -1,14 +1,17 @@
-﻿function Remove-GoogGroupMember {
+﻿function Add-GoogGroupMember {
     [cmdletbinding()]
     Param
     (
-      [parameter(Mandatory=$true)]
+      [parameter(Position=0,Mandatory=$true)]
       [String[]]
       $GroupEmail,
-      [parameter(Mandatory=$true)]
-      [Alias()]
+      [parameter(Mandatory=$true,ValueFromPipeline=$true)]
       [String[]]
       $UserEmail,
+      [parameter(Mandatory=$false)]
+      [ValidateSet("MEMBER","MANAGER","OWNER")]
+      [String]
+      $Role="MEMBER",
       [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
@@ -27,6 +30,7 @@
     )
 Begin
     {
+    $response = @()
     if (!$AccessToken)
         {
         $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/admin.directory.group" -AppEmail $AppEmail -AdminEmail $AdminEmail -Verbose:$false
@@ -39,14 +43,19 @@ Process
     {
     foreach ($Group in $GroupEmail)
         {
-        foreach ($User in $UserEmail)
+        foreach ($Member in $UserEmail)
             {
-            Write-Verbose "Removing $User from $Group"
-            $URI = "https://www.googleapis.com/admin/directory/v1/groups/$($Group)/members/$($User)"
+            Write-Verbose "Adding $Member to $Group as $Role"
+            $body = @{
+                email=$Member
+                role=$Role
+                } | ConvertTo-Json
+
+            $URI = "https://www.googleapis.com/admin/directory/v1/groups/$Group/members"
             try
                 {
-                $response = Invoke-RestMethod -Method Delete -Uri $URI -Headers $header
-                if (!$response){Write-Verbose "$User successfully removed from $Group"}
+                $result = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/json" -Verbose:$false
+                $response += $result
                 }
             catch
                 {
@@ -60,12 +69,12 @@ Process
                     $response = $resp | ConvertFrom-Json | 
                         Select-Object @{N="Error";E={$Error[0]}},@{N="Code";E={$_.error.Code}},@{N="Message";E={$_.error.Message}},@{N="Domain";E={$_.error.errors.domain}},@{N="Reason";E={$_.error.errors.reason}}
                     Write-Error "$(Get-HTTPStatus -Code $response.Code): $($response.Domain) / $($response.Message) / $($response.Reason)"
-                    break
+                    return
                     }
                 catch
                     {
                     Write-Error $resp
-                    break
+                    return
                     }
                 }
             }

@@ -1,11 +1,20 @@
-﻿function Get-GoogCalendarResourceList {
+﻿function Update-GoogCalendarResource {
     [cmdletbinding()]
     Param
     (
+      [parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$true)]
+      [Alias("ID")]
+      [String]
+      $ResourceID,
       [parameter(Mandatory=$false)]
-      [ValidateScript({[int]$_ -le 500})]
-      [Int]
-      $PageSize="500",
+      [String]
+      $Name,
+      [parameter(Mandatory=$false)]
+      [String]
+      $Description,
+      [parameter(Mandatory=$false)]
+      [String]
+      $Type,
       [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
@@ -32,32 +41,16 @@ if (!$AccessToken)
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/admin/directory/v1/customer/$CustomerID/resources/calendars"
-if ($PageSize){$URI = "$URI`?&MaxResults=$PageSize"}
+$body = @{}
+if($Name){$body.Add("resourceName",$Name)}
+if($Description){$body.Add("resourceDescription",$Description)}
+if($Type){$body.Add("resourceType",$Type)}
+
+$body = $body | ConvertTo-Json
+$URI = "https://www.googleapis.com/admin/directory/v1/customer/$CustomerID/resources/calendars/$ResourceID"
 try
     {
-    Write-Verbose "Constructed URI: $URI"
-    $response = @()
-    [int]$i=1
-    do
-        {
-        if ($i -eq 1)
-            {
-            $result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false
-            }
-        else
-            {
-            $result = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
-            }
-        $response += $result.items
-        $returnSize = $result.items.Count
-        $pageToken="$($result.nextPageToken)"
-        [int]$retrieved = ($i + $result.items.Count) - 1
-        Write-Verbose "Retrieved $retrieved resources..."
-        [int]$i = $i + $result.items.Count
-        }
-    until 
-        ($returnSize -lt $PageSize)
+    $response = Invoke-RestMethod -Method Patch -Uri $URI -Headers $header -Body $body -ContentType "application/json"
     }
 catch
     {
