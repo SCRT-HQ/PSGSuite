@@ -11,11 +11,15 @@
       $Owner = $Script:PSGoogle.AdminEmail,
       [parameter(Mandatory=$false)]
       [string]
-      $Range,
+      $Range="A1:Z1000",
       [parameter(Mandatory=$false)]
       [ValidateSet($false,$true)]
       [string]
       $IncludeGridData=$false,
+      [parameter(Mandatory=$false)]
+      [ValidateSet("namedRanges","properties","sheets","spreadsheetId")]
+      [string[]]
+      $Fields,
       [parameter(Mandatory=$false)]
       [switch]
       $Raw,
@@ -44,6 +48,7 @@ $header = @{
     }
 $URI = "https://sheets.googleapis.com/v4/spreadsheets/$SpreadsheetId`?includeGridData=$($IncludeGridData.ToLower())"
 if ($Range){$URI = "$URI&ranges=$Range"}
+if ($Fields){$URI = "$URI&fields=$($Fields -join '%2C')"}
 try
     {
     $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json"

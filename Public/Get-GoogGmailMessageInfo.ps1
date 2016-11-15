@@ -5,7 +5,8 @@
       [parameter(Mandatory=$false)]
       [string]
       $User=$Script:PSGoogle.AdminEmail,
-      [parameter(Mandatory=$true)]
+      [parameter(Mandatory=$true,ValueFromPipelineByPropertyName=$True)]
+      [Alias('id')]
       [String[]]
       $MessageID,
       [parameter(Mandatory=$false)]
@@ -24,16 +25,20 @@
       [String]
       $AppEmail = $Script:PSGoogle.AppEmail
     )
-if (!$AccessToken)
+Begin
     {
-    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://mail.google.com/" -AppEmail $AppEmail -AdminEmail $User
+    if (!$AccessToken)
+        {
+        $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://mail.google.com/" -AppEmail $AppEmail -AdminEmail $User
+        }
+    $header = @{
+        Authorization="Bearer $AccessToken"
+        }
+    $response = @()
     }
-$header = @{
-    Authorization="Bearer $AccessToken"
-    }
-$response = @()
-$MessageID | ForEach-Object {
-    $URI = "https://www.googleapis.com/gmail/v1/users/$User/messages/$($_)?format=$Format"
+Process
+    {
+    $URI = "https://www.googleapis.com/gmail/v1/users/$User/messages/$($MessageID)?format=$Format"
     try
         {
         $result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header
@@ -60,5 +65,8 @@ $MessageID | ForEach-Object {
             }
         }
     }
-return $response
+End
+    {
+    return $response
+    }
 }

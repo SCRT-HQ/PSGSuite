@@ -96,5 +96,5 @@ catch
         return
         }
     }
-return $response
+return $response | Select *,@{N="user";E={$User}}
 }

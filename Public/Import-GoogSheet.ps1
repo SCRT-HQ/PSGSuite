@@ -6,6 +6,9 @@
       [String]
       $SpreadsheetId,
       [parameter(Mandatory=$false)]
+      [String]
+      $SheetName,
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $Owner = $Script:PSGoogle.AdminEmail,
@@ -90,40 +93,30 @@ else
     $header = @{
         Authorization="Bearer $AccessToken"
         }
-    $URI = "https://sheets.googleapis.com/v4/spreadsheets/$SpreadsheetId/values/$SpecifyRange`?dateTimeRenderOption=$DateTimeRenderOption&majorDimension=$MajorDimension&valueRenderOption=$ValueRenderOption"
+    if ($SheetName)
+        {
+        if ($SpecifyRange -like "'*'!*")
+            {
+            Write-Error "SpecifyRange formatting error! When using the SheetName parameter, please exclude the SheetName when formatting the SpecifyRange value (i.e. 'A1:Z1000')"
+            return
+            }
+        else
+            {
+            $SpecifyRange = "'$($SheetName)'!$SpecifyRange"
+            }
+        }
+    $URI = "https://sheets.googleapis.com/v4/spreadsheets/$SpreadsheetId/values:batchGet?ranges=$SpecifyRange&dateTimeRenderOption=$DateTimeRenderOption&majorDimension=$MajorDimension&valueRenderOption=$ValueRenderOption"
     try
         {
         $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json"
         if (!$Raw)
             {
-            $response = $(if ($RowStart){$response.values | Select -Skip $([int]$RowStart -1)}else{$response.values}) | 
+            $full = @()
+            $(if ($RowStart){$response.valueRanges.values | Select-Object -Skip $([int]$RowStart -1)}else{$response.valueRanges.values}) | 
                 % {
-                    $i=0
-                    $cont = $true
-                    if ($_[$i])
-                        {
-                        $row="`"$($_[$i])`""
-                        $i++
-                        }
-                    else
-                        {
-                        $cont = $false
-                        }
-                    while ($cont)
-                        {
-                        if ($_[$i])
-                            {
-                            $row+=",`"$($_[$i])`""
-                            }
-                        else
-                            {
-                            $cont = $false
-                            }
-                        $i++
-                        }
-                    $row
-                    } | 
-                ConvertFrom-Csv
+                    $full += $($_ -replace "`t","  ") -join "`t"
+                    }
+            $response = $full | ConvertFrom-Csv -Delimiter "`t"
             }
         }
     catch
