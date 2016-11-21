@@ -1,10 +1,13 @@
 ﻿function Copy-ArrayToGoogSheet {
-    [cmdletbinding()]
+    [cmdletbinding(DefaultParameterSetName="CreateNewSheet")]
     Param
     (      
-      [parameter(Mandatory=$true,Position=0)]
+      [parameter(Mandatory=$true,Position=0,ParameterSetName="UseExisting")]
       [String]
       $SpreadsheetId,
+      [parameter(Mandatory=$true,Position=0,ParameterSetName="CreateNewSheet")]
+      [switch]
+      $CreateNewSheet,
       [parameter(Mandatory=$true,Position=1)]
       [object[]]
       $ArrayToCopy,
@@ -12,9 +15,12 @@
       [ValidateNotNullOrEmpty()]
       [String]
       $Owner = $Script:PSGoogle.AdminEmail,
-      [parameter(Mandatory=$false)]
+      [parameter(Mandatory=$false,ParameterSetName="UseExisting")]
       [String]
       $SheetName,
+      [parameter(Mandatory=$false,ParameterSetName="CreateNewSheet")]
+      [String]
+      $SheetTitle,
       [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [string]
@@ -49,6 +55,28 @@
 if (!$AccessToken)
     {
     $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $Owner
+    }
+if ($PSCmdlet.ParameterSetName -eq "CreateNewSheet")
+    {
+    if (!$CreateNewSheet)
+        {
+        Write-Warning "-CreateNewSheet parameter auto-sets to $True when the CreateNewSheet parameter set is used. A new sheet will be created due to this."
+        }
+    $NewSheetParams = @{
+        Owner=$Owner
+        AccessToken=$AccessToken
+        }
+    if ($SheetTitle)
+        {
+        Write-Verbose "Creating new spreadsheet titled: $SheetTitle"
+        $NewSheetParams.Add("SheetTitle",$SheetTitle)
+        }
+    else
+        {
+        Write-Verbose "Creating new untitled spreadsheet"
+        }
+    $SpreadsheetId = New-GoogSheet @NewSheetParams -Verbose:$false | Select-Object -ExpandProperty spreadsheetId
+    Write-Verbose "New spreadsheet ID: $SpreadsheetId"
     }
 $header = @{
     Authorization="Bearer $AccessToken"
