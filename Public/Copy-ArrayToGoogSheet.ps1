@@ -22,11 +22,14 @@
       [parameter(Mandatory=$false)]
       [ValidateSet("INPUT_VALUE_OPTION_UNSPECIFIED","RAW","USER_ENTERED")]
       [string]
-      $ValueInputOption="RAW",
+      $ValueInputOption="USER_ENTERED",
       [parameter(Mandatory=$false)]
       [ValidateSet($true,$false)]
       [string]
       $IncludeValuesInResponse=$true,
+      [parameter(Mandatory=$false)]
+      [switch]
+      $Raw,
       [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
@@ -87,6 +90,15 @@ $URI = "https://sheets.googleapis.com/v4/spreadsheets/$SpreadsheetId/values:batc
 try
     {
     $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/json"
+    if (!$Raw)
+        {
+        $full = @()
+        $response.responses.updatedData.values | 
+            % {
+                $full += $($_ -replace "`t","  ") -join "`t"
+                }
+        $response | Add-Member -MemberType NoteProperty -Name "updatedData" -Value $($full | ConvertFrom-Csv -Delimiter "`t")
+        }
     }
 catch
     {
