@@ -81,7 +81,7 @@ if ($UseDriveAPI)
     }
 else
     {
-    if ($MajorDimension -ne "ROWS")
+    if ($MajorDimension -ne "ROWS" -and !$Raw)
         {
         $Raw = $true
         Write-Warning "Setting -Raw to True -- Parsing requires the MajorDimension to be set to ROWS (default value)"
