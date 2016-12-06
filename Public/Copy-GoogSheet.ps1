@@ -1,38 +1,26 @@
-﻿function Copy-ArrayToGoogSheet {
-    [cmdletbinding(DefaultParameterSetName="CreateNewSheet")]
+﻿function Copy-GoogSheet {
+    [cmdletbinding(DefaultParameterSetName="UseExisting")]
     Param
     (      
-      [parameter(Mandatory=$true,Position=0,ParameterSetName="UseExisting")]
+      [parameter(Mandatory=$true,Position=0)]
       [String]
-      $SpreadsheetId,
-      [parameter(Mandatory=$true,Position=0,ParameterSetName="CreateNewSheet")]
+      $SourceSpreadsheetId,
+      [parameter(Mandatory=$true,Position=1)]
+      [String]
+      $SourceSheetId,
+      [parameter(Mandatory=$true,Position=2,ParameterSetName="UseExisting")]
+      [String]
+      $DestinationSpreadsheetId,
+      [parameter(Mandatory=$true,Position=2,ParameterSetName="CreateNewSheet")]
       [switch]
       $CreateNewSheet,
-      [parameter(Mandatory=$true,Position=1)]
-      [object[]]
-      $ArrayToCopy,
-      [parameter(Mandatory=$false)]
-      [ValidateNotNullOrEmpty()]
-      [String]
-      $Owner = $Script:PSGoogle.AdminEmail,
-      [parameter(Mandatory=$false,ParameterSetName="UseExisting")]
-      [String]
-      $SheetName,
       [parameter(Mandatory=$false,ParameterSetName="CreateNewSheet")]
       [String]
       $SheetTitle,
       [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
-      [string]
-      $SpecifyRange="A1:ZZ10000",
-      [parameter(Mandatory=$false)]
-      [ValidateSet("INPUT_VALUE_OPTION_UNSPECIFIED","RAW","USER_ENTERED")]
-      [string]
-      $ValueInputOption="RAW",
-      [parameter(Mandatory=$false)]
-      [ValidateSet($true,$false)]
-      [string]
-      $IncludeValuesInResponse=$true,
+      [String]
+      $Owner = $Script:PSGoogle.AdminEmail,
       [parameter(Mandatory=$false)]
       [switch]
       $Raw,
@@ -75,57 +63,23 @@ if ($PSCmdlet.ParameterSetName -eq "CreateNewSheet")
         {
         Write-Verbose "Creating new untitled spreadsheet"
         }
-    $SpreadsheetId = New-GoogSheet @NewSheetParams -Verbose:$false | Select-Object -ExpandProperty spreadsheetId
-    Write-Verbose "New spreadsheet ID: $SpreadsheetId"
+    $DestinationSpreadsheetId = New-GoogSheet @NewSheetParams -Verbose:$false | Select-Object -ExpandProperty spreadsheetId
+    Write-Verbose "New spreadsheet ID: $DestinationSpreadsheetId"
     }
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-if ($SheetName)
-    {
-    if ($SpecifyRange -like "'*'!*")
-        {
-        Write-Error "SpecifyRange formatting error! When using the SheetName parameter, please exclude the SheetName when formatting the SpecifyRange value (i.e. 'A1:Z1000')"
-        return
-        }
-    else
-        {
-        $SpecifyRange = "'$($SheetName)'!$SpecifyRange"
-        }
-    }
-$values = @()
-$propArray = ($ArrayToCopy | Select -First 1).PSObject.Properties.Name
-$values+=,$propArray
-foreach ($object in $ArrayToCopy)
-    {
-    $valueArray = @($object.PSobject.Properties.Value)
-    $values+=,$valueArray
-    }
 $body = @{
-    valueInputOption=$ValueInputOption
-    includeValuesInResponse=$IncludeValuesInResponse
-    data=@(
-        @{
-            majorDimension="ROWS"
-            range=$SpecifyRange
-            values=$values
-            }
-        )
-    } | ConvertTo-Json -Depth 4
+    destinationSpreadsheetId=$DestinationSpreadsheetId
+    } | ConvertTo-Json
 
-
-$URI = "https://sheets.googleapis.com/v4/spreadsheets/$SpreadsheetId/values:batchUpdate"
+$URI = "https://sheets.googleapis.com/v4/spreadsheets/$SourceSpreadsheetId/sheets/$SourceSheetId`:copyTo"
 try
     {
     $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/json"
     if (!$Raw)
         {
-        $full = @()
-        $response.responses.updatedData.values | 
-            % {
-                $full += $($_ -replace "`t","  ") -join "`t"
-                }
-        $response | Add-Member -MemberType NoteProperty -Name "updatedData" -Value $($full | ConvertFrom-Csv -Delimiter "`t")
+
         }
     }
 catch
