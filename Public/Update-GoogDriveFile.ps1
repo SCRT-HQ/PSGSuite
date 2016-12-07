@@ -1,10 +1,14 @@
-﻿function Copy-GoogDriveFile {
+﻿function Update-GoogDriveFile {
     [cmdletbinding()]
     Param
     (
       [parameter(Mandatory=$true)]
       [String]
       $FileId,
+      [parameter(Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $Owner = $Script:PSGoogle.AdminEmail,
       [parameter(Mandatory=$false)]
       [String]
       $Name,
@@ -13,7 +17,10 @@
       $Description,
       [parameter(Mandatory=$false)]
       [String[]]
-      $Parents,
+      $AddParents,
+      [parameter(Mandatory=$false)]
+      [String[]]
+      $RemoveParents,
       [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
@@ -24,15 +31,11 @@
       [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
-      $AppEmail = $Script:PSGoogle.AppEmail,
-      [parameter(Mandatory=$false)]
-      [ValidateNotNullOrEmpty()]
-      [String]
-      $AdminEmail = $Script:PSGoogle.AdminEmail
+      $AppEmail = $Script:PSGoogle.AppEmail
     )
 if (!$AccessToken)
     {
-    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $AdminEmail
+    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $Owner
     }
 $header = @{
     Authorization="Bearer $AccessToken"
@@ -41,12 +44,24 @@ $header = @{
 $body = @{}
 if($Name){$body.Add("name",$Name)}
 if($Description){$body.Add("description",$Description)}
-if($Parents){$body.Add("parents",@($Parents))}
 $body = $body | ConvertTo-Json
-$URI = "https://www.googleapis.com/drive/v3/files/$FileId/copy"
+$URI = "https://www.googleapis.com/drive/v3/files/$FileId"
+if ($AddParents)
+    {
+    $URI = "$URI`?addParents=$($AddParents -join ",")"
+    if ($RemoveParents)
+        {
+        $URI = "$URI&removeParents=$($RemoveParents -join ",")"
+        }
+    }
+elseif ($RemoveParents)
+    {
+    $URI = "$URI`?removeParents=$($RemoveParents -join ",")"
+    }
+
 try
     {
-    $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/json"
+    $response = Invoke-RestMethod -Method Patch -Uri $URI -Headers $header -Body $body -ContentType "application/json"
     }
 catch
     {
