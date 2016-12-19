@@ -1,5 +1,5 @@
 ﻿function Get-GoogGmailMessageInfo {
-    [cmdletbinding(DefaultParameterSetName='InternalToken')]
+    [cmdletbinding()]
     Param
     (
       [parameter(Mandatory=$false)]
@@ -13,14 +13,17 @@
       [ValidateSet("Full","Metadata","Minimal","Raw")]
       [string]
       $Format="Full",
-      [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
+      [switch]
+      $HighLevelView,
+      [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $P12KeyPath = $Script:PSGoogle.P12KeyPath,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $AppEmail = $Script:PSGoogle.AppEmail
@@ -42,7 +45,26 @@ Process
     try
         {
         $result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header
-        $response += $result
+        if ($HighLevelView)
+            {
+            $bodyParts = $result.payload.parts | % {ConvertFrom-Base64String -Base64String $($_.body.data) -FromWebSafeBase64}
+            $tempObj = New-Object psobject
+            $tempObj | Add-Member -MemberType NoteProperty -Name id -Value $result.id -Force -ErrorAction SilentlyContinue
+            $tempObj | Add-Member -MemberType NoteProperty -Name threadId -Value $result.threadId -Force -ErrorAction SilentlyContinue
+            $tempObj | Add-Member -MemberType NoteProperty -Name labelIds -Value $($result.labelIds -join ", ") -Force -ErrorAction SilentlyContinue
+            $tempObj | Add-Member -MemberType NoteProperty -Name snippet -Value $result.snippet -Force -ErrorAction SilentlyContinue
+            $tempObj | Add-Member -MemberType NoteProperty -Name internalDate -Value $(Convert-EpochToDate -EpochString $result.internalDate -UnitOfTime Milliseconds | Select-Object -ExpandProperty Converted) -Force -ErrorAction SilentlyContinue
+            $tempObj | Add-Member -MemberType NoteProperty -Name sizeEstimate -Value $result.sizeEstimate -Force -ErrorAction SilentlyContinue
+            $result.payload.headers | ForEach-Object {$tempObj | Add-Member -MemberType NoteProperty -Name $_.name -Value $_.value -Force} -ErrorAction SilentlyContinue
+            $tempObj | Add-Member -MemberType NoteProperty -Name BodyNonHtml -Value $(($bodyParts | ? {$_ -notlike "<html>*"}) -join "`n`n") -Force -ErrorAction SilentlyContinue
+            $tempObj | Add-Member -MemberType NoteProperty -Name BodyHtml -Value $(($bodyParts | ? {$_ -like "<html>*"}) -join "`n`n") -Force -ErrorAction SilentlyContinue
+            $tempObj | Add-Member -MemberType NoteProperty -Name BodyRaw -Value $($bodyParts -join "`n`n") -Force -ErrorAction SilentlyContinue
+            $response += $tempObj
+            }
+        else
+            {
+            $response += $result
+            }
         }
     catch
         {

@@ -11,7 +11,10 @@
       $Owner = $Script:PSGoogle.AdminEmail,
       [parameter(Mandatory=$false)]
       [string]
-      $Range="A1:Z1000",
+      $SpecifyRange,
+      [parameter(Mandatory=$false)]
+      [String]
+      $SheetName,
       [parameter(Mandatory=$false)]
       [ValidateSet($false,$true)]
       [string]
@@ -45,6 +48,18 @@ if (!$AccessToken)
     }
 $header = @{
     Authorization="Bearer $AccessToken"
+    }
+if ($SheetName)
+    {
+    if ($SpecifyRange -like "'*'!*")
+        {
+        Write-Error "SpecifyRange formatting error! When using the SheetName parameter, please exclude the SheetName when formatting the SpecifyRange value (i.e. 'A1:Z1000')"
+        return
+        }
+    elseif ($SpecifyRange)
+        {
+        $SpecifyRange = "'$($SheetName)'!$SpecifyRange"
+        }
     }
 $URI = "https://sheets.googleapis.com/v4/spreadsheets/$SpreadsheetId`?includeGridData=$($IncludeGridData.ToLower())"
 if ($Range){$URI = "$URI&ranges=$Range"}

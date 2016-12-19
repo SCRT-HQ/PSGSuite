@@ -1,8 +1,8 @@
 ﻿function Get-GoogUser {
-    [cmdletbinding(DefaultParameterSetName='InternalToken')]
+    [cmdletbinding()]
     Param
     (
-      [parameter(Mandatory=$true)]
+      [parameter(Mandatory=$true,Position=0)]
       [String]
       $User,
       [parameter(Mandatory=$false)]
@@ -19,18 +19,18 @@
       [parameter(Mandatory=$false)]
       [String[]]
       $Fields,
-      [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $P12KeyPath = $Script:PSGoogle.P12KeyPath,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $AppEmail = $Script:PSGoogle.AppEmail,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $AdminEmail = $Script:PSGoogle.AdminEmail

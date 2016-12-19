@@ -15,6 +15,9 @@
       [ValidateNotNullOrEmpty()]
       [String]
       $Owner = $Script:PSGoogle.AdminEmail,
+      [parameter(Mandatory=$false)]
+      [switch]
+      $Append,
       [parameter(Mandatory=$false,ParameterSetName="UseExisting")]
       [String]
       $SheetName,
@@ -94,8 +97,11 @@ if ($SheetName)
         }
     }
 $values = @()
-$propArray = ($ArrayToCopy | Select -First 1).PSObject.Properties.Name
-$values+=,$propArray
+if (!$Append)
+    {
+    $propArray = ($ArrayToCopy | Select -First 1).PSObject.Properties.Name
+    $values+=,$propArray
+    }
 foreach ($object in $ArrayToCopy)
     {
     $valueArray = @($object.PSobject.Properties.Value)
