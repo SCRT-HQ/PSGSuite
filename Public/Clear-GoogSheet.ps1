@@ -49,9 +49,13 @@ if ($SheetName)
         Write-Error "SpecifyRange formatting error! When using the SheetName parameter, please exclude the SheetName when formatting the SpecifyRange value (i.e. 'A1:Z1000')"
         return
         }
-    else
+    elseif ($SpecifyRange)
         {
         $SpecifyRange = "'$($SheetName)'!$SpecifyRange"
+        }
+    else
+        {
+        $SpecifyRange = "$SheetName"
         }
     }
 $URI = "https://sheets.googleapis.com/v4/spreadsheets/$SpreadsheetId/values/$SpecifyRange`:clear"

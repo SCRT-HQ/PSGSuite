@@ -100,9 +100,13 @@ else
             Write-Error "SpecifyRange formatting error! When using the SheetName parameter, please exclude the SheetName when formatting the SpecifyRange value (i.e. 'A1:Z1000')"
             return
             }
-        else
+        elseif ($SpecifyRange)
             {
             $SpecifyRange = "'$($SheetName)'!$SpecifyRange"
+            }
+        else
+            {
+            $SpecifyRange = "$SheetName"
             }
         }
     $URI = "https://sheets.googleapis.com/v4/spreadsheets/$SpreadsheetId/values:batchGet?ranges=$SpecifyRange&dateTimeRenderOption=$DateTimeRenderOption&majorDimension=$MajorDimension&valueRenderOption=$ValueRenderOption"
@@ -111,13 +115,24 @@ else
         $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json"
         if (!$Raw)
             {
-            $full = @()
-            $(if ($RowStart){$response.valueRanges.values | Select-Object -Skip $([int]$RowStart -1)}else{$response.valueRanges.values}) | 
-                % {
-                    $full += $($_ -replace "`t","  ") -join "`t"
+            $i=0
+            $datatable = New-Object System.Data.Datatable
+            $(if ($RowStart){$response.valueRanges.values | Select-Object -Skip $([int]$RowStart -1)}else{$response.valueRanges.values}) | % {
+                if ($i -eq 0)
+                    {
+                    foreach ($col in $_)
+                        {
+                        [void]$datatable.Columns.Add("$col")
+                        }
                     }
-            $response = $full | ConvertFrom-Csv -Delimiter "`t"
+                else
+                    {
+                    [void]$datatable.Rows.Add($_)
+                    }
+                $i++
+                }
             }
+        return $datatable
         }
     catch
         {

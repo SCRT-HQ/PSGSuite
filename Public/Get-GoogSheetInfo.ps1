@@ -60,6 +60,10 @@ if ($SheetName)
         {
         $SpecifyRange = "'$($SheetName)'!$SpecifyRange"
         }
+    else
+        {
+        $SpecifyRange = "$SheetName"
+        }
     }
 $URI = "https://sheets.googleapis.com/v4/spreadsheets/$SpreadsheetId`?includeGridData=$($IncludeGridData.ToLower())"
 if ($Range){$URI = "$URI&ranges=$Range"}
