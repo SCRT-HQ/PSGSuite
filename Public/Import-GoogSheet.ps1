@@ -35,6 +35,9 @@
       [int]
       $RowStart=1,
       [parameter(ParameterSetName="SheetsAPI",Mandatory=$false)]
+      [string[]]
+      $Headers,
+      [parameter(ParameterSetName="SheetsAPI",Mandatory=$false)]
       [switch]
       $Raw,
       [parameter(Mandatory=$false)]
@@ -88,7 +91,17 @@ else
         }
     if (!$AccessToken)
         {
-        $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $Owner
+        Write-Verbose "Acquiring token"
+        $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $Owner -Verbose:$false
+        if ($AccessToken)
+            {
+            Write-Verbose "Token acquired!"
+            }
+        else
+            {
+            Write-Error $Error[0]
+            return
+            }
         }
     $header = @{
         Authorization="Bearer $AccessToken"
@@ -117,6 +130,14 @@ else
             {
             $i=0
             $datatable = New-Object System.Data.Datatable
+            if ($Headers)
+                {
+                foreach ($col in $Headers)
+                    {
+                    [void]$datatable.Columns.Add("$col")
+                    }
+                $i++
+                }
             $(if ($RowStart){$response.valueRanges.values | Select-Object -Skip $([int]$RowStart -1)}else{$response.valueRanges.values}) | % {
                 if ($i -eq 0)
                     {
@@ -132,6 +153,7 @@ else
                 $i++
                 }
             }
+        Write-Verbose "Created DataTable object with $($i - 1) Rows"
         return $datatable
         }
     catch

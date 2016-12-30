@@ -1,4 +1,4 @@
-﻿function Copy-ArrayToGoogSheet {
+﻿function Update-GoogSheetValue {
     [cmdletbinding(DefaultParameterSetName="CreateNewSheet")]
     Param
     (      
@@ -8,9 +8,12 @@
       [parameter(Mandatory=$true,Position=0,ParameterSetName="CreateNewSheet")]
       [switch]
       $CreateNewSheet,
-      [parameter(Mandatory=$true,Position=1)]
+      [parameter(Mandatory=$false,Position=1)]
       [object[]]
-      $ArrayToCopy,
+      $Array,
+      [parameter(Mandatory=$false,Position=2)]
+      [string]
+      $Value,
       [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
@@ -24,10 +27,10 @@
       [parameter(Mandatory=$false,ParameterSetName="CreateNewSheet")]
       [String]
       $SheetTitle,
-      [parameter(Mandatory=$false)]
+      [parameter(Mandatory=$true)]
       [ValidateNotNullOrEmpty()]
       [string]
-      $SpecifyRange="A1:ZZ10000",
+      $SpecifyRange,
       [parameter(Mandatory=$false)]
       [ValidateSet("INPUT_VALUE_OPTION_UNSPECIFIED","RAW","USER_ENTERED")]
       [string]
@@ -55,9 +58,24 @@
       [String]
       $AdminEmail = $Script:PSGoogle.AdminEmail
     )
+if (!$Array -and !$Value)
+    {
+    Write-Error "This function requires either providing an Array to update multiple cells OR a Value if only updating one cell. Neither Parameter is currently in use."
+    return
+    }
+if ($Array -and $Value)
+    {
+    Write-Error "This function requires either providing an Array to update multiple cells OR a Value if only updating one cell. Both Parameters are currently in use."
+    return
+    }
 if (!$AccessToken)
     {
-    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $Owner
+    Write-Verbose "Acquiring token"
+    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $Owner -Verbose:$false
+    if ($AccessToken)
+        {
+        Write-Verbose "Token acquired!"
+        }
     }
 if ($PSCmdlet.ParameterSetName -eq "CreateNewSheet")
     {
@@ -96,13 +114,18 @@ if ($SheetName)
         $SpecifyRange = "'$($SheetName)'!$SpecifyRange"
         }
     }
+if ($Value)
+    {
+    $Array = $([pscustomobject]@{Value="$Value"})
+    $Append = $true
+    }
 $values = @()
 if (!$Append)
     {
-    $propArray = ($ArrayToCopy | Select -First 1).PSObject.Properties.Name
+    $propArray = ($Array | Select -First 1).PSObject.Properties.Name
     $values+=,$propArray
     }
-foreach ($object in $ArrayToCopy)
+foreach ($object in $Array)
     {
     $valueArray = @($object.PSobject.Properties.Value)
     $values+=,$valueArray
