@@ -23,8 +23,9 @@
       [string]
       $EmailMessage,
       [parameter(Mandatory=$false)]
-      [switch]
-      $SendNotificationEmail,
+      [ValidateSet($true,$false)]
+      [String]
+      $SendNotificationEmail="$false",
       [parameter(Mandatory=$false)]
       [ValidateSet($true,$false)]
       [String]
@@ -63,6 +64,7 @@ if (($Type -eq "User" -or $Type -eq "Group") -and ($AllowFileDiscovery -eq $true
     Write-Warning "The AllowFileDiscovery parameter is only applicable for types 'Domain' or 'Anyone' This parameter will be excluded from this request."
     Remove-Variable AllowFileDiscovery
     }
+
 if (!$AccessToken)
     {
     $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $Owner
@@ -70,12 +72,11 @@ if (!$AccessToken)
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-if ($ConfirmTransferOfOwnership){$SendNotificationEmail = $true; Write-Warning "Setting SendNotificationEmail to 'True' to prevent errors -- Required for Ownership transfers"}
-$URI = "https://www.googleapis.com/drive/$APIVersion/files/$FileID/permissions?sendNotificationEmail=$SendNotificationEmail"
-if($APIVersion -eq "v3")
+if ($ConfirmTransferOfOwnership -and !$SendNotificationEmail)
     {
-    $URI = "$URI&fields=permissions"
+    $SendNotificationEmail = $true; Write-Warning "Setting SendNotificationEmail to 'True' to prevent errors -- Required for Ownership transfers"
     }
+$URI = "https://www.googleapis.com/drive/$APIVersion/files/$FileID/permissions?sendNotificationEmail=$SendNotificationEmail"
 if ($EmailMessage)
     {
     $URI = "$URI&emailMessage=$($EmailMessage -replace " ","+")"
