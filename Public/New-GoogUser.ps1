@@ -1,5 +1,14 @@
 ﻿function New-GoogUser {
-    [cmdletbinding(DefaultParameterSetName='InternalToken')]
+<#
+.Synopsis
+   Create a new Google user
+.DESCRIPTION
+   Create a new Google user, allowing for full property setting on creation
+.EXAMPLE
+   New-GoogUser -PrimaryEmail john.smith@domain.com -GivenName John -FamilyName Smith -Password Password123 -ChangePasswordAtNextLogin True -OrgUnitPath "/Users/New Hires" -IncludeInGlobalAddressList True
+#>
+    
+    [cmdletbinding()]
     Param
     (
       [parameter(Mandatory=$true)]
@@ -33,18 +42,18 @@
       [ValidateSet($true,$false)]
       [String]
       $IPWhitelisted,
-      [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $P12KeyPath = $Script:PSGoogle.P12KeyPath,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $AppEmail = $Script:PSGoogle.AppEmail,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $AdminEmail = $Script:PSGoogle.AdminEmail

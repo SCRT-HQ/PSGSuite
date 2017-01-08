@@ -1,5 +1,13 @@
 ﻿function Update-GoogUser {
-    [cmdletbinding(DefaultParameterSetName='InternalToken')]
+<#
+.Synopsis
+   Updates an existing Google user
+.DESCRIPTION
+   Updates an existing Google user
+.EXAMPLE
+   Update-GoogUser -User john.smith@domain.com -PrimaryEmail johnathan.smith@domain.com -GivenName Johnathan -Suspended False
+#>
+    [cmdletbinding()]
     Param
     (
       [parameter(Mandatory=$true)]
@@ -36,18 +44,18 @@
       [ValidateSet($true,$false)]
       [String]
       $IPWhitelisted,
-      [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $P12KeyPath = $Script:PSGoogle.P12KeyPath,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $AppEmail = $Script:PSGoogle.AppEmail,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $AdminEmail = $Script:PSGoogle.AdminEmail
