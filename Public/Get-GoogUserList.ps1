@@ -5,13 +5,16 @@
 .DESCRIPTION
    Retrieves the full user list for the entire account. Accepts standard Google queries as a string or array of strings.
 .EXAMPLE
-   Get-GoogUserList -AccessToken $(Get-GoogToken @TokenParams) -MaxResults 300 -Query "orgUnitPath=/Users","email=domain.user2@domain.com"
+   Get-GoogUserList -MaxResults 300 -Query "orgUnitPath=/Users","email=domain.user2@domain.com"
 .EXAMPLE
-   Get-GoogUserList -AccessToken $(Get-GoogToken @TokenParams)
+   Get-GoogUserList -Verbose
 #>
-    [cmdletbinding(DefaultParameterSetName='InternalToken')]
+    [cmdletbinding()]
     Param
     (
+      [parameter(Mandatory=$false)]
+      [String[]]
+      $Query,
       [parameter(Mandatory=$false)]
       [ValidateScript({[int]$_ -le 500})]
       [Int]
@@ -25,20 +28,17 @@
       [String]
       $SortOrder,
       [parameter(Mandatory=$false)]
-      [String[]]
-      $Query,
-      [parameter(ParameterSetName='ExternalToken',Mandatory=$false)]
       [String]
       $AccessToken,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $P12KeyPath = $Script:PSGoogle.P12KeyPath,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $AppEmail = $Script:PSGoogle.AppEmail,
-      [parameter(ParameterSetName='InternalToken',Mandatory=$false)]
+      [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
       $AdminEmail = $Script:PSGoogle.AdminEmail,

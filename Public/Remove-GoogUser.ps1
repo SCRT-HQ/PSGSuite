@@ -1,13 +1,20 @@
-﻿function Remove-GoogGmailMessage {
+﻿function Remove-GoogUser {
+<#
+.Synopsis
+   Removes an existing Google user
+.DESCRIPTION
+   Removes an existing Google user
+.EXAMPLE
+   Remove-GoogUser -User john.smith@domain.com -WhatIf
+.EXAMPLE
+   Remove-GoogUser -User john.smith@domain.com -Confirm:$false
+#>
     [cmdletbinding(SupportsShouldProcess=$true,ConfirmImpact="High")]
     Param
     (
       [parameter(Mandatory=$true)]
       [String]
-      $User=$Script:PSGoogle.AdminEmail,
-      [parameter(Mandatory=$true)]
-      [String]
-      $MessageID,
+      $User,
       [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
@@ -18,23 +25,26 @@
       [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
-      $AppEmail = $Script:PSGoogle.AppEmail
+      $AppEmail = $Script:PSGoogle.AppEmail,
+      [parameter(Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $AdminEmail = $Script:PSGoogle.AdminEmail
     )
-
 if (!$AccessToken)
     {
-    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://mail.google.com/" -AppEmail $AppEmail -AdminEmail $User
+    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/admin.directory.user" -AppEmail $AppEmail -AdminEmail $AdminEmail
     }
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/gmail/v1/users/$User/messages/$MessageID"
-if ($PSCmdlet.ShouldProcess("Removing MsgID $MessageID from $User's inbox"))
+$URI = "https://www.googleapis.com/admin/directory/v1/users/$User"
+if ($PSCmdlet.ShouldProcess($User))
     {
     try
         {
         $response = Invoke-RestMethod -Method Delete -Uri $URI -Headers $header -ContentType "application/json"
-        if (!$response){Write-Host "Messaged ID $MessageID successfully removed from $User's inbox"}
+        if (!$response){Write-Host "User $User successfully removed from the domain"}
         }
     catch
         {
@@ -48,12 +58,12 @@ if ($PSCmdlet.ShouldProcess("Removing MsgID $MessageID from $User's inbox"))
             $response = $resp | ConvertFrom-Json | 
                 Select-Object @{N="Error";E={$Error[0]}},@{N="Code";E={$_.error.Code}},@{N="Message";E={$_.error.Message}},@{N="Domain";E={$_.error.errors.domain}},@{N="Reason";E={$_.error.errors.reason}}
             Write-Error "$(Get-HTTPStatus -Code $response.Code): $($response.Domain) / $($response.Message) / $($response.Reason)"
-            break
+            return
             }
         catch
             {
             Write-Error $resp
-            break
+            return
             }
         }
     }

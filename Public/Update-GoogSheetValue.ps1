@@ -70,12 +70,7 @@ if ($Array -and $Value)
     }
 if (!$AccessToken)
     {
-    Write-Verbose "Acquiring token"
-    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $Owner -Verbose:$false
-    if ($AccessToken)
-        {
-        Write-Verbose "Token acquired!"
-        }
+    $AccessToken = Get-GoogToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/drive" -AppEmail $AppEmail -AdminEmail $Owner
     }
 if ($PSCmdlet.ParameterSetName -eq "CreateNewSheet")
     {
