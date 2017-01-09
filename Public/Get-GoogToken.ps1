@@ -120,7 +120,7 @@ $fields = [Ordered]@{grant_type='urn:ietf:params:oauth:grant-type:jwt-bearer';as
  
 try
     {
-    Write-Verbose "Acquiring token..."
+    Write-Verbose "Acquiring access token..."
     $response = Invoke-RestMethod -Uri "https://www.googleapis.com/oauth2/v4/token" -Method Post -Body $fields -ContentType "application/x-www-form-urlencoded" -ErrorAction Stop -Verbose:$false | Select-Object -ExpandProperty access_token
     Write-Verbose "Access token acquired!"
     return $response
