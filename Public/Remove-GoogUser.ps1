@@ -12,7 +12,7 @@
     [cmdletbinding(SupportsShouldProcess=$true,ConfirmImpact="High")]
     Param
     (
-      [parameter(Mandatory=$true)]
+      [parameter(Mandatory=$true,Position=0)]
       [String]
       $User,
       [parameter(Mandatory=$false)]
