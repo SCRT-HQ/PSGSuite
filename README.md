@@ -6,7 +6,7 @@ For setup help, please visit the [PSGoogle Wiki](https://github.com/nferrell/PSG
 ## Prerequisites
 In order to use this module, you'll need to have the following:
 * **Powershell 3.0 or higher** (module makes heavy use of Invoke-RestMethod).
-* Service Account Key created and downloaded as **a P12 key file**.
+* Service Account Key created and key downloaded as **a P12 key file**.
 * API Client access allowed for the Service Account that will be used towards the API scopes that you intend to utilize
 * Domain-Wide Delegation enabled for the service account
 
