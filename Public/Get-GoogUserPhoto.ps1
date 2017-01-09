@@ -2,7 +2,7 @@
     [cmdletbinding()]
     Param
     (      
-      [parameter(Mandatory=$true)]
+      [parameter(Mandatory=$true,Position=0)]
       [String]
       $User,
       [parameter(Mandatory=$false)]
