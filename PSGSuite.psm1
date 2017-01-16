@@ -4,15 +4,15 @@
     $ModuleRoot = $PSScriptRoot
 
 #Dot source the files
-    Foreach($import in @($Public + $Private))
+Foreach($import in @($Public + $Private))
     {
-        Try
+    Try
         {
-            . $import.fullname
+        . $import.fullname
         }
-        Catch
+    Catch
         {
-            Write-Error -Message "Failed to import function $($import.fullname): $_"
+        Write-Error -Message "Failed to import function $($import.fullname): $_"
         }
     }
 
@@ -23,39 +23,38 @@ if (!$env:PSGSuiteDefaultDomain)
     }
 
 #Create / Read config
-    if(-not (Test-Path -Path "$PSScriptRoot\$env:USERNAME-$env:COMPUTERNAME-$env:PSGSuiteDefaultDomain-PSGSuite.xml" -ErrorAction SilentlyContinue))
+if(-not (Test-Path -Path "$PSScriptRoot\$env:USERNAME-$env:COMPUTERNAME-$env:PSGSuiteDefaultDomain-PSGSuite.xml" -ErrorAction SilentlyContinue))
     {
-        Try
+    Try
         {
-            Write-Warning "Did not find config file $PSScriptRoot\$env:USERNAME-$env:COMPUTERNAME-$env:PSGSuiteDefaultDomain-PSGSuite.xml, attempting to create"
-            [pscustomobject]@{
-                P12KeyPath = $null
-                AppEmail = $null
-                AdminEmail = $null
-                CustomerID = $null
-                Domain = $null
-                Preference = $null
-                ServiceAccountClientID = $null
+        Write-Warning "Did not find config file $PSScriptRoot\$env:USERNAME-$env:COMPUTERNAME-$env:PSGSuiteDefaultDomain-PSGSuite.xml, attempting to create"
+        [pscustomobject]@{
+            P12KeyPath = $null
+            AppEmail = $null
+            AdminEmail = $null
+            CustomerID = $null
+            Domain = $null
+            Preference = $null
+            ServiceAccountClientID = $null
             } | Export-Clixml -Path "$PSScriptRoot\$env:USERNAME-$env:COMPUTERNAME-$env:PSGSuiteDefaultDomain-PSGSuite.xml" -Force -ErrorAction Stop
         }
-        Catch
+    Catch
         {
-            Write-Warning "Failed to create config file $PSScriptRoot\$env:USERNAME-$env:COMPUTERNAME-$env:PSGSuiteDefaultDomain-PSGSuite.xml: $_"
+        Write-Warning "Failed to create config file $PSScriptRoot\$env:USERNAME-$env:COMPUTERNAME-$env:PSGSuiteDefaultDomain-PSGSuite.xml: $_"
         }
     }
 #>
 
 #Initialize the config variable
-    Try
+Try
     {
-        #Import the config
-        $PSGSuite = $null
-        $PSGSuite = Get-PSGSuiteConfig -Source "PSGSuite.xml" -ErrorAction Stop
-
+    #Import the config
+    $PSGSuite = $null
+    $PSGSuite = Get-PSGSuiteConfig -Source "PSGSuite.xml" -ErrorAction Stop
     }
-    Catch
+Catch
     {   
-        Write-Warning "Error importing PSGSuite config: $_"
+    Write-Warning "Error importing PSGSuite config: $_"
     }
     
 Export-ModuleMember -Function $Public.Basename

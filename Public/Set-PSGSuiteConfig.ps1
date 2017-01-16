@@ -89,7 +89,6 @@
     #Write the global variable and the xml
     $Script:PSGSuite |
         Select -Property @{N='P12KeyPath';E={Encrypt $_.P12KeyPath}},
-            @{N='Scopes';E={Encrypt $_.Scopes}},
             @{N='AppEmail';E={Encrypt $_.AppEmail}},
             @{N='AdminEmail';E={Encrypt $_.AdminEmail}},
             @{N='CustomerID';E={Encrypt $_.CustomerID}},
