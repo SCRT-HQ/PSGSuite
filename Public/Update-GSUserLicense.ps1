@@ -1,4 +1,4 @@
-function Update-GSLicense {
+function Update-GSUserLicense {
     [cmdletbinding()]
     Param
     (

@@ -1,4 +1,4 @@
-function Get-GSLicenseInfo {
+function Get-GSUserLicenseInfo {
     [cmdletbinding()]
     Param
     (

@@ -1,4 +1,4 @@
-function Set-GSLicense {
+function Remove-GSUserLicense {
     [cmdletbinding()]
     Param
     (
@@ -33,13 +33,11 @@ if (!$AccessToken)
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$body = @{
-    userId = $User
-    } | ConvertTo-Json
-$URI = "https://www.googleapis.com/apps/licensing/v1/product/$productId/sku/$License/user"
+$URI = "https://www.googleapis.com/apps/licensing/v1/product/$productId/sku/$License/user/$User"
 try
     {
-    $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/json"
+    $response = Invoke-RestMethod -Method Delete -Uri $URI -Headers $header -ContentType "application/json"
+    if (!$response){Write-Verbose "$License successfully removed from $User"}
     }
 catch
     {
