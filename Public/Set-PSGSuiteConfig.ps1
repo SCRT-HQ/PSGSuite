@@ -10,7 +10,7 @@
     .DESCRIPTION
         Set PSGSuite module configuration, and $PSGSuite module variable.
 
-        This data is used as the default info for the Get-GoogToken function to get and access token.
+        This data is used as the default info for the Get-GSToken function to get and access token.
 
         If a command takes either a token or a uri, tokens take precedence.
 
@@ -46,7 +46,7 @@
         Encrypted with the DPAPI
 
     .PARAMETER Path
-        If specified, save config file to this file path.  Defaults to "$env:USERNAME-PSGSuite.xml" in the module root.
+        If specified, save config file to this file path.  Defaults to "$ModuleRoot\$env:USERNAME-$env:COMPUTERNAME-$env:PSGSuiteDefaultDomain-PSGSuite.xml"
 
     .PARAMETER Preference
         Preference of either Domain or CustomerID where either or is an option
@@ -66,7 +66,15 @@
         [string]$Preference="CustomerID",
         [string]$ServiceAccountClientID
     )
-
+    if ($env:PSGSuiteDefaultDomain -eq "Default" -and $Domain -ne "Default" -and ![string]::IsNullOrWhiteSpace($Domain))
+        {
+        Set-PSGSuiteDefaultDomain -Domain $Domain
+        if ($Path -eq "$ModuleRoot\$env:USERNAME-$env:COMPUTERNAME-Default-PSGSuite.xml")
+            {
+            $Path = "$ModuleRoot\$env:USERNAME-$env:COMPUTERNAME-$env:PSGSuiteDefaultDomain-PSGSuite.xml"
+            }
+        Write-Verbose "Cleaning up the default config: '$ModuleRoot\$env:USERNAME-$env:COMPUTERNAME-Default-PSGSuite.xml'"
+        }
     Switch ($PSBoundParameters.Keys)
     {
         'P12KeyPath'{$Script:PSGSuite.P12KeyPath = $P12KeyPath}
