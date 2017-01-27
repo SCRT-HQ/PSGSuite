@@ -1,10 +1,16 @@
-function Get-GSGmailFilterList {
+﻿function Get-GSUserASP {
     [cmdletbinding()]
     Param
     (
-      [parameter(Mandatory=$false,Position=0)]
-      [string]
+      [parameter(Mandatory=$false,Position=0,ValueFromPipelineByPropertyName=$true)]
+      [Alias("primaryEmail")]
+      [ValidateNotNullOrEmpty()]
+      [String]
       $User=$Script:PSGSuite.AdminEmail,
+      [parameter(Mandatory=$false,Position=1,ValueFromPipelineByPropertyName=$true)]
+      [ValidateNotNullOrEmpty()]
+      [int]
+      $CodeID,
       [parameter(Mandatory=$false)]
       [switch]
       $Raw,
@@ -18,27 +24,23 @@ function Get-GSGmailFilterList {
       [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
-      $AppEmail = $Script:PSGSuite.AppEmail
+      $AppEmail = $Script:PSGSuite.AppEmail,
+      [parameter(Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [string]
+      $AdminEmail=$Script:PSGSuite.AdminEmail
     )
 if (!$AccessToken)
     {
-    $AccessToken = Get-GSToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/gmail.settings.basic" -AppEmail $AppEmail -AdminEmail $User
+    $AccessToken = Get-GSToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/admin.directory.user.security" -AppEmail $AppEmail -AdminEmail $AdminEmail
     }
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/gmail/v1/users/$user/settings/filters"
+$URI = "https://www.googleapis.com/admin/directory/v1/users/$User/asps/$CodeID"
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json"
-    if (!$Raw -and $response.filter)
-        {
-        $response = $response | Select-Object -ExpandProperty filter | Select-Object @{N="user";E={$user}},id,@{N="from";E={$_.criteria.from}},@{N="to";E={$_.criteria.to}},@{N="subject";E={$_.criteria.subject}},@{N="query";E={$_.criteria.query}},@{N="negatedQuery";E={$_.criteria.negatedQuery}},@{N="hasAttachment";E={$_.criteria.hasAttachment}},@{N="excludeChats";E={$_.criteria.excludeChats}},@{N="size";E={$_.criteria.size}},@{N="sizeComparison";E={$_.criteria.sizeComparison}},@{N="addLabelIds";E={$_.action.addLabelIds}},@{N="removeLabelIds";E={$_.action.removeLabelIds}},@{N="forward";E={$_.action.forward}}
-        }
-    elseif (!$response.filter)
-        {
-        Write-Warning "No filters found for user $user!"
-        }
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" | Select-Object @{N="user";E={$User}},*
     }
 catch
     {

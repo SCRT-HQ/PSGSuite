@@ -1,15 +1,24 @@
-﻿function Get-GSDataTransferApplicationList {
+﻿function Add-GSGmailDelegate {
     [cmdletbinding()]
     Param
     (
-      [parameter(Mandatory=$false)]
+      [parameter(Mandatory=$true,Position=0)]
+      [Alias("From","Delegator")]
       [ValidateNotNullOrEmpty()]
       [String]
-      $CustomerID = $Script:PSGSuite.CustomerID,
+      $User,
+      [parameter(Mandatory=$true,Position=1)]
+      [Alias("To")]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $Delegate,
       [parameter(Mandatory=$false)]
-      [ValidateScript({[int]$_ -le 500 -and [int]$_ -ge 1})]
-      [Int]
-      $PageSize="500",
+      [ValidateNotNullOrEmpty()]
+      [string]
+      $Domain = $Script:PSGSuite.Domain,
+      [parameter(Mandatory=$false)]
+      [switch]
+      $Raw,
       [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
@@ -28,44 +37,22 @@
     )
 if (!$AccessToken)
     {
-    $AccessToken = Get-GSToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/admin.datatransfer" -AppEmail $AppEmail -AdminEmail $AdminEmail
+    $AccessToken = Get-GSToken -P12KeyPath $P12KeyPath -Scopes "https://apps-apis.google.com/a/feeds/emailsettings/2.0/" -AppEmail $AppEmail -AdminEmail $AdminEmail
     }
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/admin/datatransfer/v1/applications"
-if($CustomerID)
-    {
-    $URI = "$URI`?customer=$CustomerID&maxResults=$PageSize"
-    }
-else
-    {
-    $URI = "$URI`?customer=my_customer&maxResults=$PageSize"
-    }
+$URI = "https://apps-apis.google.com/a/feeds/emailsettings/2.0/$Domain/$($User -replace "@$Domain",'')/delegation"
+$body = @"
+<?xml version="1.0" encoding="utf-8"?>
+<atom:entry xmlns:atom="http://www.w3.org/2005/Atom" xmlns:apps="http://schemas.google.com/apps/2006">
+<apps:property name="address" value="$Delegate" />
+</atom:entry>
+"@
 try
     {
-    Write-Verbose "Constructed URI: $URI"
-    $response = @()
-    [int]$i=1
-    do
-        {
-        if ($i -eq 1)
-            {
-            $result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false
-            }
-        else
-            {
-            $result = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
-            }
-        $response += $result.applications
-        $returnSize = $result.applications.Count
-        $pageToken="$($result.nextPageToken)"
-        [int]$retrieved = ($i + $result.applications.Count) - 1
-        Write-Verbose "Retrieved $retrieved applications..."
-        [int]$i = $i + $result.applications.Count
-        }
-    until 
-        ($returnSize -lt $PageSize)
+    $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/atom+xml"
+    if ($response){Write-Host "Delegate access for $User's inbox added for $Delegate"}
     }
 catch
     {

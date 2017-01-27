@@ -1,10 +1,16 @@
-function Get-GSGmailFilterList {
+﻿function Get-GSGmailDelegates {
     [cmdletbinding()]
     Param
     (
       [parameter(Mandatory=$false,Position=0)]
+      [Alias("Delegator")]
+      [ValidateNotNullOrEmpty()]
+      [String]
+      $User = $Script:PSGSuite.AdminEmail,
+      [parameter(Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
       [string]
-      $User=$Script:PSGSuite.AdminEmail,
+      $Domain = $Script:PSGSuite.Domain,
       [parameter(Mandatory=$false)]
       [switch]
       $Raw,
@@ -18,26 +24,37 @@ function Get-GSGmailFilterList {
       [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
       [String]
-      $AppEmail = $Script:PSGSuite.AppEmail
+      $AppEmail = $Script:PSGSuite.AppEmail,
+      [parameter(Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
+      [string]
+      $AdminEmail=$Script:PSGSuite.AdminEmail
     )
 if (!$AccessToken)
     {
-    $AccessToken = Get-GSToken -P12KeyPath $P12KeyPath -Scopes "https://www.googleapis.com/auth/gmail.settings.basic" -AppEmail $AppEmail -AdminEmail $User
+    $AccessToken = Get-GSToken -P12KeyPath $P12KeyPath -Scopes "https://apps-apis.google.com/a/feeds/emailsettings/2.0/" -AppEmail $AppEmail -AdminEmail $AdminEmail
     }
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/gmail/v1/users/$user/settings/filters"
+$URI = "https://apps-apis.google.com/a/feeds/emailsettings/2.0/$Domain/$($User -replace "@$Domain",'')/delegation"
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json"
-    if (!$Raw -and $response.filter)
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/atom+xml"
+    if (!$Raw -and $response)
         {
-        $response = $response | Select-Object -ExpandProperty filter | Select-Object @{N="user";E={$user}},id,@{N="from";E={$_.criteria.from}},@{N="to";E={$_.criteria.to}},@{N="subject";E={$_.criteria.subject}},@{N="query";E={$_.criteria.query}},@{N="negatedQuery";E={$_.criteria.negatedQuery}},@{N="hasAttachment";E={$_.criteria.hasAttachment}},@{N="excludeChats";E={$_.criteria.excludeChats}},@{N="size";E={$_.criteria.size}},@{N="sizeComparison";E={$_.criteria.sizeComparison}},@{N="addLabelIds";E={$_.action.addLabelIds}},@{N="removeLabelIds";E={$_.action.removeLabelIds}},@{N="forward";E={$_.action.forward}}
-        }
-    elseif (!$response.filter)
-        {
-        Write-Warning "No filters found for user $user!"
+        $result = @()
+        foreach ($dele in $response)
+            {
+            $deleObj = New-Object psobject
+            for ($i=0;$i -lt $dele.property.length;$i++)
+                {
+                $deleObj | Add-Member -MemberType NoteProperty -Name $dele.property[$i].name -Value $dele.property[$i].value
+                }
+            $result += $deleObj
+            Remove-Variable deleObj -ErrorAction SilentlyContinue
+            }
+        return $result
         }
     }
 catch
