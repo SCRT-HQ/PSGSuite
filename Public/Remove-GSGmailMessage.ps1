@@ -2,7 +2,8 @@ function Remove-GSGmailMessage {
     [cmdletbinding(SupportsShouldProcess=$true,ConfirmImpact="High")]
     Param
     (
-      [parameter(Mandatory=$true)]
+      [parameter(Mandatory=$false)]
+      [ValidateNotNullOrEmpty()]
       [String]
       $User=$Script:PSGSuite.AdminEmail,
       [parameter(Mandatory=$true)]
@@ -34,7 +35,7 @@ if ($PSCmdlet.ShouldProcess("Removing MsgID $MessageID from $User's inbox"))
     try
         {
         $response = Invoke-RestMethod -Method Delete -Uri $URI -Headers $header -ContentType "application/json"
-        if (!$response){Write-Host "Messaged ID $MessageID successfully removed from $User's inbox"}
+        if (!$response){Write-Host "Message ID '$MessageID' successfully removed from $User's inbox"}
         }
     catch
         {

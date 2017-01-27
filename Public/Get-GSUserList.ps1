@@ -16,7 +16,7 @@ function Get-GSUserList {
       [String[]]
       $Query,
       [parameter(Mandatory=$false)]
-      [ValidateScript({[int]$_ -le 500})]
+      [ValidateScript({[int]$_ -le 500 -and [int]$_ -ge 1})]
       [Int]
       $PageSize="500",
       [parameter(Mandatory=$false)]
