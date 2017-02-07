@@ -41,12 +41,17 @@ $URI = "https://apps-apis.google.com/a/feeds/emailsettings/2.0/$Domain/$($User -
 try
     {
     $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/atom+xml"
-    if (!$Raw -and $response)
+    if (!$response)
+        {
+        Write-Warning "No delegates found for user '$User'"
+        }
+    elseif (!$Raw)
         {
         $result = @()
         foreach ($dele in $response)
             {
             $deleObj = New-Object psobject
+            $deleObj | Add-Member -MemberType NoteProperty -Name delegator -Value $User
             for ($i=0;$i -lt $dele.property.length;$i++)
                 {
                 $deleObj | Add-Member -MemberType NoteProperty -Name $dele.property[$i].name -Value $dele.property[$i].value
