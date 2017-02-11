@@ -1,5 +1,5 @@
 function Get-GSGmailMessageInfo {
-    [cmdletbinding()]
+    [cmdletbinding(DefaultParameterSetName="Format")]
     Param
     (
       [parameter(Mandatory=$false)]
@@ -9,13 +9,17 @@ function Get-GSGmailMessageInfo {
       [Alias('id')]
       [String[]]
       $MessageID,
-      [parameter(Mandatory=$false)]
+      [parameter(Mandatory=$false,ParameterSetName="ParseMessage")]
+      [switch]
+      $ParseMessage,
+      [parameter(Mandatory=$false,ParameterSetName="ParseMessage")]
+      [ValidateScript({Test-Path $_})]
+      [string]
+      $AttachmentOutputPath,
+      [parameter(Mandatory=$false,ParameterSetName="Format")]
       [ValidateSet("Full","Metadata","Minimal","Raw")]
       [string]
       $Format="Full",
-      [parameter(Mandatory=$false)]
-      [switch]
-      $HighLevelView,
       [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
@@ -37,6 +41,14 @@ Begin
     $header = @{
         Authorization="Bearer $AccessToken"
         }
+    if ($ParseMessage)
+        {
+        $Format = "Raw"
+        }
+    if ($AttachmentOutputPath)
+        {
+        [System.Reflection.Assembly]::LoadWithPartialName('System.IO') | Out-Null
+        }
     $response = @()
     }
 Process
@@ -45,21 +57,20 @@ Process
     try
         {
         $result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header
-        if ($HighLevelView)
+        if ($ParseMessage)
             {
-            $bodyParts = $result.payload.parts | % {ConvertFrom-Base64String -Base64String $($_.body.data) -FromWebSafeBase64}
-            $tempObj = New-Object psobject
-            $tempObj | Add-Member -MemberType NoteProperty -Name id -Value $result.id -Force -ErrorAction SilentlyContinue
-            $tempObj | Add-Member -MemberType NoteProperty -Name threadId -Value $result.threadId -Force -ErrorAction SilentlyContinue
-            $tempObj | Add-Member -MemberType NoteProperty -Name labelIds -Value $($result.labelIds -join ", ") -Force -ErrorAction SilentlyContinue
-            $tempObj | Add-Member -MemberType NoteProperty -Name snippet -Value $result.snippet -Force -ErrorAction SilentlyContinue
-            $tempObj | Add-Member -MemberType NoteProperty -Name internalDate -Value $(Convert-EpochToDate -EpochString $result.internalDate -UnitOfTime Milliseconds | Select-Object -ExpandProperty Converted) -Force -ErrorAction SilentlyContinue
-            $tempObj | Add-Member -MemberType NoteProperty -Name sizeEstimate -Value $result.sizeEstimate -Force -ErrorAction SilentlyContinue
-            $result.payload.headers | ForEach-Object {$tempObj | Add-Member -MemberType NoteProperty -Name $_.name -Value $_.value -Force} -ErrorAction SilentlyContinue
-            $tempObj | Add-Member -MemberType NoteProperty -Name BodyNonHtml -Value $(($bodyParts | ? {$_ -notlike "<html>*"}) -join "`n`n") -Force -ErrorAction SilentlyContinue
-            $tempObj | Add-Member -MemberType NoteProperty -Name BodyHtml -Value $(($bodyParts | ? {$_ -like "<html>*"}) -join "`n`n") -Force -ErrorAction SilentlyContinue
-            $tempObj | Add-Member -MemberType NoteProperty -Name BodyRaw -Value $($bodyParts -join "`n`n") -Force -ErrorAction SilentlyContinue
-            $response += $tempObj
+            $converted = Read-MimeMessage -String $(Convert-Base64 -From WebSafeBase64String -To NormalString -String $result.raw)
+            $response += $converted
+            if ($AttachmentOutputPath)
+                {
+                $attachments = $det.BodyParts | ? {![string]::IsNullOrEmpty($_.FileName)}
+                foreach ($att in $attachments)
+                    {
+                    $fileName = "$AttachmentOutputPath\$($att.FileName)"
+                    $stream = [IO.File]::Create($fileName)
+                    $att.ContentObject.DecodeTo($stream)
+                    }
+                }
             }
         else
             {
