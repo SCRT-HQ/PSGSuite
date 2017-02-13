@@ -26,6 +26,13 @@
       [string[]]
       $BCC,
       [parameter(Mandatory=$false)]
+      [ValidateScript({Test-Path $_})]
+      [string[]]
+      $Attachment,
+      [parameter(Mandatory=$false)]
+      [switch]
+      $BodyAsHtml,
+      [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
       [parameter(Mandatory=$false)]
@@ -46,20 +53,30 @@ $header = @{
     }
 $URI = "https://www.googleapis.com/gmail/v1/users/$User/messages/send"
 
-$raw = "Subject: $Subject
-From: $From
-To: $($To -join ",")
-"
-if ($CC){$raw += "Cc: $($CC -join ",")
-"}
-if ($BCC){$raw += "Bcc: $($BCC -join ",")
-"}
-$raw += "Content-Type: text/plain
-
-$Body"
-
-$raw = ($raw -join "`n") | Convert-Base64 -From NormalString -To WebSafeBase64String
-
+$messageParams = @{
+    From = $From
+    To = @($To)
+    Subject = $Subject
+    Body = $Body
+    ReturnConstructedMessage = $true
+    }
+if ($CC)
+    {
+    $messageParams.Add("CC",@($CC))
+    }
+if ($BCC)
+    {
+    $messageParams.Add("BCC",@($BCC))
+    }
+if ($Attachment)
+    {
+    $messageParams.Add("Attachment",@($Attachment))
+    }
+if ($BodyAsHtml)
+    {
+    $messageParams.Add("BodyAsHtml",$true)
+    }
+$raw = New-MimeMessage @messageParams | Convert-Base64 -From NormalString -To WebSafeBase64String
 $reqBody = @{
     raw = $raw
     } | ConvertTo-Json

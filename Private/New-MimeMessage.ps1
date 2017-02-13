@@ -32,8 +32,7 @@
       [switch]
       $BodyAsHtml
     )
-#[System.Reflection.Assembly]::LoadFrom("$ModuleRoot\nuget\MimeKit.1.10.1\lib\net451\MimeKit.dll") | Out-Null
-[System.Reflection.Assembly]::LoadFrom("C:\GDrive\PSModules\PSGSuite\nuget\MimeKit.1.10.1\lib\net451\MimeKit.dll") | Out-Null
+[System.Reflection.Assembly]::LoadFrom("$ModuleRoot\nuget\MimeKit.1.10.1\lib\net451\MimeKit.dll") | Out-Null
 $message = [MimeKit.MimeMessage]::new()
 $message.From.Add($From)
 $message.Subject = $Subject

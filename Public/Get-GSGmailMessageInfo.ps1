@@ -63,13 +63,17 @@ Process
             $response += $converted
             if ($AttachmentOutputPath)
                 {
+                Write-Warning "Attachement saving still being built! This section will be skipped for now."
+                <#
                 $attachments = $det.BodyParts | ? {![string]::IsNullOrEmpty($_.FileName)}
                 foreach ($att in $attachments)
                     {
                     $fileName = "$AttachmentOutputPath\$($att.FileName)"
-                    $stream = [IO.File]::Create($fileName)
+                    [IO.File]::Create($fileName)
+                    $stream = New-Object System.IO.MemoryStream
                     $att.ContentObject.DecodeTo($stream)
                     }
+                #>
                 }
             }
         else
