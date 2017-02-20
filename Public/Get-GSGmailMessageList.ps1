@@ -60,13 +60,13 @@ try
         {
         if ($i -eq 1)
             {
-            $result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false
+            $result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false | ForEach-Object {$_.PSObject.TypeNames.Insert(0,"Google.Gmail.Message");$_}
             }
         else
             {
-            $result = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
+            $result = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false | ForEach-Object {$_.PSObject.TypeNames.Insert(0,"Google.Gmail.Message");$_}
             }
-        $response += $result.messages
+        $response += $result.messages | ForEach-Object {$_.PSObject.TypeNames.Insert(0,"Google.Gmail.Message");$_}
         $returnSize = $result.messages.Count
         $pageToken="$($result.nextPageToken)"
         [int]$retrieved = ($i + $result.messages.Count) - 1
@@ -96,5 +96,5 @@ catch
         return
         }
     }
-return $response | Select *,@{N="user";E={$User}}
+return $response | Select *,@{N="user";E={$User}} | ForEach-Object {$_.PSObject.TypeNames.Insert(0,"Google.Gmail.Message");$_}
 }
