@@ -62,7 +62,7 @@ if($Type){$mimeType = $mimeHash.Item($Type)}
 $URI = "https://www.googleapis.com/drive/v3/files/$FileID/export?mimeType=$mimeType"
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" -OutFile $OutFilePath | Select *,@{N="Filepath";E={$OutFilePath}}
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" -OutFile $OutFilePath | Select *,@{N="Filepath";E={$OutFilePath}} | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
     }
 catch
     {

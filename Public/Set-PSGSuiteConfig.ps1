@@ -74,6 +74,7 @@
             $Path = "$ModuleRoot\$env:USERNAME-$env:COMPUTERNAME-$env:PSGSuiteDefaultDomain-PSGSuite.xml"
             }
         Write-Verbose "Cleaning up the default config: '$ModuleRoot\$env:USERNAME-$env:COMPUTERNAME-Default-PSGSuite.xml'"
+        Remove-Item "$ModuleRoot\$env:USERNAME-$env:COMPUTERNAME-Default-PSGSuite.xml" -Force
         }
     Switch ($PSBoundParameters.Keys)
     {

@@ -51,11 +51,9 @@ if ($Fields)
     $URI = "$URI&fields="
     $Fields | % {$URI = "$URI$_,"}
     }
-
-Write-Verbose "Constructed URI: $URI"
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
     }
 catch
     {

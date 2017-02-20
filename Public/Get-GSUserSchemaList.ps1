@@ -31,7 +31,7 @@ $header = @{
 $URI = "https://www.googleapis.com/admin/directory/v1/customer/$CustomerID/schemas?fields=schemas"
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header | Select-Object -ExpandProperty schemas
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header | Select-Object -ExpandProperty schemas | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
     }
 catch
     {

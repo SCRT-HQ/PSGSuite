@@ -31,7 +31,7 @@ $header = @{
 $URI = "https://www.googleapis.com/groups/v1/groups/$Group"
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" | Select-Object -ExpandProperty entry | Select-Object email,name,description,whoCanJoin,whoCanViewMembership,whoCanViewGroup,whoCanInvite,whoCanAdd,allowExternalMembers,whoCanPostMessage,allowWebPosting,maxMessageBytes,isArchived,archiveOnly,messageModerationLevel,spamModerationLevel,replyTo,customReplyTo,includeCustomFooter,customFooterText,sendMessageDenyNotification,defaultMessageDenyNotificationText,showInGroupDirectory,allowGoogleCommunication,membersCanPostAsTheGroup,messageDisplayFont,includeInGlobalAddressList,whoCanLeaveGroup,whoCanContactOwner
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" | Select-Object -ExpandProperty entry | Select-Object @{N="kind";E={"admin#directory#group#settings"}},email,name,description,whoCanJoin,whoCanViewMembership,whoCanViewGroup,whoCanInvite,whoCanAdd,allowExternalMembers,whoCanPostMessage,allowWebPosting,maxMessageBytes,isArchived,archiveOnly,messageModerationLevel,spamModerationLevel,replyTo,customReplyTo,includeCustomFooter,customFooterText,sendMessageDenyNotification,defaultMessageDenyNotificationText,showInGroupDirectory,allowGoogleCommunication,membersCanPostAsTheGroup,messageDisplayFont,includeInGlobalAddressList,whoCanLeaveGroup,whoCanContactOwner | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
     }
 catch
     {

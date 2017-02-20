@@ -36,7 +36,7 @@ $header = @{
 $URI = "https://www.googleapis.com/apps/licensing/v1/product/$productId/sku/$License/user/$User"
 try
     {
-    $response = Invoke-RestMethod -Method Patch -Uri $URI -Headers $header -ContentType "application/json"
+    $response = Invoke-RestMethod -Method Patch -Uri $URI -Headers $header -ContentType "application/json" | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
     }
 catch
     {

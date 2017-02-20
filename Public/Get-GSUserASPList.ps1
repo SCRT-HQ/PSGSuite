@@ -36,10 +36,10 @@ $header = @{
 $URI = "https://www.googleapis.com/admin/directory/v1/users/$User/asps"
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json"
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
     if (!$Raw -and $response.items)
         {
-        $response = $response | Select-Object -ExpandProperty items | Select-Object @{N="user";E={$User}},*
+        $response = $response | Select-Object -ExpandProperty items | Select-Object @{N="user";E={$User}},* | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
         }
     elseif (!$response.items)
         {

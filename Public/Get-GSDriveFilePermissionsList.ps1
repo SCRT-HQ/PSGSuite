@@ -38,7 +38,7 @@ if($APIVersion -eq "v3")
     }
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" | Select-Object -ExpandProperty $(if($APIVersion -eq "v3"){"permissions"}elseif($APIVersion -eq "v2"){"items"})
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" | Select-Object -ExpandProperty $(if($APIVersion -eq "v3"){"permissions"}elseif($APIVersion -eq "v2"){"items"}) | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
     }
 catch
     {

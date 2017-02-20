@@ -134,7 +134,7 @@ Process
         } | ConvertTo-Json -Depth 4
     try
         {
-        $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/json"
+        $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/json" | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
         if (!$Raw)
             {
             $response = $response | Select-Object @{N="user";E={$user}},id,@{N="from";E={$_.criteria.from}},@{N="to";E={$_.criteria.to}},@{N="subject";E={$_.criteria.subject}},@{N="query";E={$_.criteria.query}},@{N="negatedQuery";E={$_.criteria.negatedQuery}},@{N="hasAttachment";E={$_.criteria.hasAttachment}},@{N="excludeChats";E={$_.criteria.excludeChats}},@{N="size";E={$_.criteria.size}},@{N="sizeComparison";E={$_.criteria.sizeComparison}},@{N="addLabelIds";E={$_.action.addLabelIds}},@{N="removeLabelIds";E={$_.action.removeLabelIds}},@{N="forward";E={$_.action.forward}}

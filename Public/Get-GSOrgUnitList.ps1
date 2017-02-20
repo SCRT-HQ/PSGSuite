@@ -56,7 +56,7 @@ elseif (!$BaseOrgUnitPath -and $Type){$URI = "$URI`?type=$Type"}
 try
     {
     Write-Verbose "Constructed URI: $URI"
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false | Select-Object -ExpandProperty organizationUnits
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose:$false | Select-Object -ExpandProperty organizationUnits | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
     }
 catch
     {

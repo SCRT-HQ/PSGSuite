@@ -56,14 +56,14 @@ Process
     $URI = "https://www.googleapis.com/gmail/v1/users/$User/messages/$($MessageID)?format=$Format"
     try
         {
-        $result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header
+        $result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header | ForEach-Object {$_.PSObject.TypeNames.Insert(0,"Google.Gmail.Message");$_}
         if ($ParseMessage)
             {
             $converted = Read-MimeMessage -String $(Convert-Base64 -From WebSafeBase64String -To NormalString -String $result.raw)
-            $response += $converted
+            $response += $converted | ForEach-Object {$_.PSObject.TypeNames.Insert(0,"Google.Gmail.Message");$_}
             if ($AttachmentOutputPath)
                 {
-                Write-Warning "Attachement saving still being built! This section will be skipped for now."
+                Write-Warning "Attachment saving still being built! This section will be skipped for now."
                 <#
                 $attachments = $det.BodyParts | ? {![string]::IsNullOrEmpty($_.FileName)}
                 foreach ($att in $attachments)

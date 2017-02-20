@@ -57,7 +57,7 @@ try
             {
             $result = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
             }
-        $response += $result.applications
+        $response += $result.applications | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
         $returnSize = $result.applications.Count
         $pageToken="$($result.nextPageToken)"
         [int]$retrieved = ($i + $result.applications.Count) - 1

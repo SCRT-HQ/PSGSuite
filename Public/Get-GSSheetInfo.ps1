@@ -70,7 +70,7 @@ if ($Range){$URI = "$URI&ranges=$Range"}
 if ($Fields){$URI = "$URI&fields=$($Fields -join '%2C')"}
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json"
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
     if (!$Raw)
         {
         $response = $response | 

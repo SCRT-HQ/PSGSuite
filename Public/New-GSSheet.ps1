@@ -52,7 +52,7 @@ if ($SheetTitle)
     }
 try
     {
-    $response = Invoke-RestMethod @RestParams
+    $response = Invoke-RestMethod @RestParams | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
     if (!$Raw)
         {
 

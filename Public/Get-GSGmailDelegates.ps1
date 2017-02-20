@@ -56,7 +56,7 @@ try
                 {
                 $deleObj | Add-Member -MemberType NoteProperty -Name $dele.property[$i].name -Value $dele.property[$i].value
                 }
-            $result += $deleObj
+            $result += $deleObj | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
             Remove-Variable deleObj -ErrorAction SilentlyContinue
             }
         return $result

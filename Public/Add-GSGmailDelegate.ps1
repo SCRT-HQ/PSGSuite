@@ -51,7 +51,7 @@ $body = @"
 "@
 try
     {
-    $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/atom+xml"
+    $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/atom+xml" | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
     if ($response){Write-Host "Delegate access for $User's inbox added for $Delegate"}
     }
 catch

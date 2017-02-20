@@ -125,7 +125,7 @@ else
     $URI = "https://sheets.googleapis.com/v4/spreadsheets/$SpreadsheetId/values:batchGet?ranges=$SpecifyRange&dateTimeRenderOption=$DateTimeRenderOption&majorDimension=$MajorDimension&valueRenderOption=$ValueRenderOption"
     try
         {
-        $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json"
+        $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/json" | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
         if (!$Raw)
             {
             $i=0

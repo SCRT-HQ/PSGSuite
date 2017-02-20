@@ -83,7 +83,7 @@ $reqBody = @{
 try
     {
     Write-Verbose "Constructed URI: $URI"
-    $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $reqBody -ContentType "application/json" -Verbose:$false
+    $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $reqBody -ContentType "application/json" -Verbose:$false | ForEach-Object {$_.PSObject.TypeNames.Insert(0,"Google.Gmail.Message");$_}
     }
 catch
     {

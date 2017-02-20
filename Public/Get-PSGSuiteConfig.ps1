@@ -70,7 +70,7 @@
             {
             try
                 {
-                Write-Warning "Did not find config file $PSScriptRoot\$env:USERNAME-$env:COMPUTERNAME-$env:PSGSuiteDefaultDomain-PSGSuite.xml, attempting to create"
+                Write-Warning "Did not find config file $Path, attempting to create"
                 [pscustomobject]@{
                     P12KeyPath = $null
                     AppEmail = $null
@@ -79,11 +79,11 @@
                     Domain = $null
                     Preference = $null
                     ServiceAccountClientID = $null
-                    } | Export-Clixml -Path "$PSScriptRoot\$env:USERNAME-$env:COMPUTERNAME-$env:PSGSuiteDefaultDomain-PSGSuite.xml" -Force -ErrorAction Stop
+                    } | Export-Clixml -Path $Path -Force -ErrorAction Stop
                 }
             catch
                 {
-                    Write-Warning "Failed to create config file $PSScriptRoot\$env:USERNAME-$env:COMPUTERNAME-$env:PSGSuiteDefaultDomain-PSGSuite.xml: $_"
+                    Write-Warning "Failed to create config file $Path`: $_"
                 }
             }
         }

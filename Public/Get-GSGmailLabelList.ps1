@@ -30,7 +30,7 @@ $header = @{
 $URI = "https://www.googleapis.com/gmail/v1/users/$user/labels"
 try
     {
-    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header | Select-Object -ExpandProperty labels
+    $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header | Select-Object -ExpandProperty labels | ForEach-Object {$_.PSObject.TypeNames.Insert(0,"Google.Gmail.Settings.Label");$_}
     }
 catch
     {

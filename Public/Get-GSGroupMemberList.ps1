@@ -68,11 +68,11 @@ try
             {
             $result = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
             }
-        $response += $result.members
+        $response += $result.members | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
         $pageToken="$($result.nextPageToken)"
         $returnSize = $result.members.Count
         [int]$retrieved = ($i + $result.members.Count) - 1
-        Write-Verbose "Retrieved $retrieved groups..."
+        Write-Verbose "Retrieved $retrieved members..."
         [int]$i = $i + $result.members.Count
         }
     until 

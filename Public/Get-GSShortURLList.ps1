@@ -47,7 +47,7 @@ try
             {
             $result = Invoke-RestMethod -Method Get -Uri "$URI&start-token=$pageToken" -Headers $header -Verbose:$false
             }
-        $response += $result.items
+        $response += $result.items | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
         $returnSize = $result.totalItems
         $pageToken="$($result.nextPageToken)"
         [int]$retrieved = ($i + $result.totalItems) - 1

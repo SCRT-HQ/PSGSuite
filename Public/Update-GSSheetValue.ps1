@@ -141,15 +141,35 @@ $body = @{
 $URI = "https://sheets.googleapis.com/v4/spreadsheets/$SpreadsheetId/values:batchUpdate"
 try
     {
-    $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/json"
+    $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/json" | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
     if (!$Raw)
         {
-        $full = @()
-        $response.responses.updatedData.values | 
-            % {
-                $full += $($_ -replace "`t","  ") -join "`t"
+        $i=0
+        $datatable = New-Object System.Data.Datatable
+        if ($Headers)
+            {
+            foreach ($col in $Headers)
+                {
+                [void]$datatable.Columns.Add("$col")
                 }
-        $response | Add-Member -MemberType NoteProperty -Name "updatedData" -Value $($full | ConvertFrom-Csv -Delimiter "`t")
+            $i++
+            }
+        $(if ($RowStart){$response.valueRanges.values | Select-Object -Skip $([int]$RowStart -1)}else{$response.valueRanges.values}) | % {
+            if ($i -eq 0)
+                {
+                foreach ($col in $_)
+                    {
+                    [void]$datatable.Columns.Add("$col")
+                    }
+                }
+            else
+                {
+                [void]$datatable.Rows.Add($_)
+                }
+            $i++
+            }
+        Write-Verbose "Created DataTable object with $($i - 1) Rows"
+        return $datatable
         }
     }
 catch

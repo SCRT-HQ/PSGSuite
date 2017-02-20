@@ -96,7 +96,7 @@ $body = $body | ConvertTo-Json
 
 try
     {
-    $response = Invoke-RestMethod -Method POST -Uri $URI -Headers $header -ContentType "application/json" -Body $body
+    $response = Invoke-RestMethod -Method POST -Uri $URI -Headers $header -ContentType "application/json" -Body $body | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
     }
 catch
     {

@@ -43,7 +43,7 @@ foreach ($Sch in $Schema)
         {
         $result = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -Verbose | Select-Object -ExpandProperty fields
         $result | Add-Member -MemberType NoteProperty -Name schemaName -Value $Sch
-        $response += $result
+        $response += $result | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
         }
     catch
         {

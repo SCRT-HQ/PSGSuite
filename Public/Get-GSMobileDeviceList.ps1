@@ -85,7 +85,7 @@ try
             {
             $result = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
             }
-        $response += $result.mobiledevices
+        $response += $result.mobiledevices | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
         $returnSize = $result.mobiledevices.Count
         $pageToken="$($result.nextPageToken)"
         [int]$retrieved = ($i + $result.mobiledevices.Count) - 1
