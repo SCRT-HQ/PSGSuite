@@ -102,37 +102,7 @@ PowerShellVersion = '3.0'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Add-GSDriveFilePermissions', 'Add-GSGmailDelegate', 
-               'Add-GSGmailFilter', 'Add-GSGroupMember', 'Clear-GSSheet', 
-               'Copy-GSDriveFile', 'Copy-GSSheet', 'Get-GSCalendarEventList', 
-               'Get-GSCalendarResourceList', 'Get-GSDataTransferApplicationList', 
-               'Get-GSDriveFile', 'Get-GSDriveFileInfo', 'Get-GSDriveFileList', 
-               'Get-GSDriveFilePermissionsList', 'Get-GSGmailDelegates', 
-               'Get-GSGmailFilterList', 'Get-GSGmailLabelList', 
-               'Get-GSGmailMessageInfo', 'Get-GSGmailMessageList', 
-               'Get-GSGmailSettings', 'Get-GSGroupList', 'Get-GSGroupMemberList', 
-               'Get-GSGroupSettings', 'Get-GSMobileDeviceList', 'Get-GSOrgUnitList', 
-               'Get-GSSheetInfo', 'Get-GSShortURLInfo', 'Get-GSShortURLList', 
-               'Get-GSToken', 'Get-GSUser', 'Get-GSUserASP', 'Get-GSUserASPList', 
-               'Get-GSUserLicenseInfo', 'Get-GSUserLicenseList', 'Get-GSUserList', 
-               'Get-GSUserPhoto', 'Get-GSUserSchemaInfo', 'Get-GSUserSchemaList', 
-               'Get-GSUserToken', 'Get-GSUserTokenList', 
-               'Get-GSUserVerificationCodes', 'Get-PSGSuiteConfig', 'Import-GSSheet', 
-               'New-GSCalendarEvent', 'New-GSCalendarResource', 'New-GSDriveFile', 
-               'New-GSGroup', 'New-GSOrganizationalUnit', 'New-GSSheet', 
-               'New-GSShortURL', 'New-GSUser', 'New-GSUserSchema', 
-               'New-GSUserVerificationCodes', 'Remove-GSGmailDelegate', 
-               'Remove-GSGmailFilter', 'Remove-GSGmailMessage', 
-               'Remove-GSGroupMember', 'Remove-GSMobileDevice', 'Remove-GSUser', 
-               'Remove-GSUserASP', 'Remove-GSUserLicense', 'Remove-GSUserSchema', 
-               'Remove-GSUserToken', 'Restore-GSUser', 'Revoke-GSToken', 
-               'Revoke-GSUserVerificationCodes', 'Send-GmailMessage', 
-               'Set-GSUserLicense', 'Set-PSGSuiteConfig', 
-               'Set-PSGSuiteDefaultDomain', 'Start-GSDataTransfer', 
-               'Switch-PSGSuiteDomain', 'Update-GSCalendarResource', 
-               'Update-GSDriveFile', 'Update-GSGroupSettings', 
-               'Update-GSOrganizationalUnit', 'Update-GSSheetValue', 'Update-GSUser', 
-               'Update-GSUserLicense', 'Update-GSUserSchema'
+FunctionsToExport = '*'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
