@@ -76,6 +76,18 @@
         Write-Verbose "Cleaning up the default config: '$ModuleRoot\$env:USERNAME-$env:COMPUTERNAME-Default-PSGSuite.xml'"
         Remove-Item "$ModuleRoot\$env:USERNAME-$env:COMPUTERNAME-Default-PSGSuite.xml" -Force
         }
+    if (!$Script:PSGSuite)
+        {
+        $Script:PSGSuite = [pscustomobject][ordered]@{
+            P12KeyPath = $null
+            AppEmail = $null
+            AdminEmail = $null
+            CustomerID = $null
+            Domain = $null
+            Preference = $null
+            ServiceAccountClientID = $null
+            }
+        }
     Switch ($PSBoundParameters.Keys)
     {
         'P12KeyPath'{$Script:PSGSuite.P12KeyPath = $P12KeyPath}
