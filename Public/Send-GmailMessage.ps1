@@ -4,10 +4,6 @@
     (
       [parameter(Mandatory=$false)]
       [ValidateNotNullOrEmpty()]
-      [string]
-      $User=$Script:PSGSuite.AdminEmail,
-      [parameter(Mandatory=$false)]
-      [ValidateNotNullOrEmpty()]
       [String]
       $From=$Script:PSGSuite.AdminEmail,
       [parameter(Mandatory=$true)]
@@ -46,12 +42,12 @@
     )
 if (!$AccessToken)
     {
-    $AccessToken = Get-GSToken -P12KeyPath $P12KeyPath -Scopes "https://mail.google.com/" -AppEmail $AppEmail -AdminEmail $User
+    $AccessToken = Get-GSToken -P12KeyPath $P12KeyPath -Scopes "https://mail.google.com/" -AppEmail $AppEmail -AdminEmail $From
     }
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/gmail/v1/users/$User/messages/send"
+$URI = "https://www.googleapis.com/gmail/v1/users/$From/messages/send"
 
 $messageParams = @{
     From = $From

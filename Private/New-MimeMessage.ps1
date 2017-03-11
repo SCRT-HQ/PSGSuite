@@ -30,7 +30,10 @@
       $Attachment,
       [parameter(Mandatory=$false)]
       [switch]
-      $BodyAsHtml
+      $BodyAsHtml,
+      [parameter(Mandatory=$false)]
+      [switch]
+      $ReturnConstructedMessage
     )
 [System.Reflection.Assembly]::LoadFrom("$ModuleRoot\nuget\MimeKit.1.10.1\lib\net451\MimeKit.dll") | Out-Null
 $message = [MimeKit.MimeMessage]::new()
@@ -84,5 +87,12 @@ else
     {
     $message.Body = $TextPart
     }
-return $message
+if ($ReturnConstructedMessage)
+    {
+    return $message.ToString()
+    }
+else
+    {
+    return $message
+    }
 }
