@@ -32,7 +32,7 @@ if (!$AccessToken)
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/drive/v3/teamdrives/$TeamDriveID"
+$URI = "https://www.googleapis.com/drive/v3/teamdrives/$TeamDriveID`?fields=capabilities%2Cid%2Ckind%2Cname"
 
 try
     {

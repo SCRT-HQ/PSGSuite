@@ -101,7 +101,7 @@ if($CanRenameTeamDrive -eq $true -or $CanRenameTeamDrive -eq $false){$body["capa
 if($CanShare -eq $true -or $CanShare -eq $false){$body["capabilities"].Add("canShare",$CanShare)}
 
 $body = $body | ConvertTo-Json
-$URI = "https://www.googleapis.com/drive/v3/teamdrives/$TeamDriveID"
+$URI = "https://www.googleapis.com/drive/v3/teamdrives/$TeamDriveID`?fields=capabilities%2Cid%2Ckind%2Cname"
 try
     {
     $response = Invoke-RestMethod -Method Patch -Uri $URI -Headers $header -Body $body -ContentType "application/json" | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}

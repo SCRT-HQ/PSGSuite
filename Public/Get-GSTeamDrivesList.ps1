@@ -28,7 +28,7 @@ if (!$AccessToken)
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/drive/v3/teamdrives?pageSize=$PageSize"
+$URI = "https://www.googleapis.com/drive/v3/teamdrives?pageSize=$PageSize&fields=kind%2CnextPageToken%2CteamDrives"
 if ($Query)
     {
     $Query = $($Query -join " and ")
