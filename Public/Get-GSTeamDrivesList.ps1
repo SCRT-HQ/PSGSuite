@@ -1,21 +1,14 @@
-function Get-GSDriveFileList {
+function Get-GSTeamDrivesList {
     [cmdletbinding()]
     Param
     (
-      [parameter(Mandatory=$false,Position=0)]
+      [parameter(Mandatory=$false)]
       [string]
       $Owner = $Script:PSGSuite.AdminEmail,
       [parameter(Mandatory=$false)]
-      [String[]]
-      $Query,
-      [parameter(Mandatory=$false)]
-      [ValidateScript({[int]$_ -le 1000})]
+      [ValidateScript({[int]$_ -le 100})]
       [Int]
-      $PageSize="1000",
-      [parameter(Mandatory=$false)]
-      [ValidateSet('createdTime','folder','modifiedByMeTime','modifiedTime','name','quotaBytesUsed','recency','sharedWithMeTime','starred','viewedByMeTime')]
-      [String[]]
-      $OrderBy,
+      $PageSize="100",
       [parameter(Mandatory=$false)]
       [String]
       $AccessToken,
@@ -35,7 +28,7 @@ if (!$AccessToken)
 $header = @{
     Authorization="Bearer $AccessToken"
     }
-$URI = "https://www.googleapis.com/drive/v3/files?pageSize=$PageSize&fields=files%2Ckind%2CnextPageToken"
+$URI = "https://www.googleapis.com/drive/v3/teamdrives?pageSize=$PageSize"
 if ($Query)
     {
     $Query = $($Query -join " and ")
@@ -61,12 +54,12 @@ try
             {
             $result = Invoke-RestMethod -Method Get -Uri "$URI&pageToken=$pageToken" -Headers $header -Verbose:$false
             }
-        $response += $result.files | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
-        $returnSize = $result.files.Count
+        $response += $result.teamDrives | ForEach-Object {if($_.kind -like "*#*"){$_.PSObject.TypeNames.Insert(0,$(Convert-KindToType -Kind $_.kind));$_}else{$_}}
+        $returnSize = $result.teamDrives.Count
         $pageToken="$($result.nextPageToken)"
-        [int]$retrieved = ($i + $result.files.Count) - 1
-        Write-Verbose "Retrieved $retrieved files..."
-        [int]$i = $i + $result.files.Count
+        [int]$retrieved = ($i + $result.teamDrives.Count) - 1
+        Write-Verbose "Retrieved $retrieved Team Drives..."
+        [int]$i = $i + $result.teamDrives.Count
         }
     until 
         ($returnSize -lt $PageSize)

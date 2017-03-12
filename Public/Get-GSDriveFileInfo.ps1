@@ -2,7 +2,7 @@ function Get-GSDriveFileInfo {
     [cmdletbinding(DefaultParameterSetName="Depth")]
     Param
     (      
-      [parameter(Mandatory=$true)]
+      [parameter(Mandatory=$true,Position=0)]
       [String]
       $FileID,
       [parameter(Mandatory=$false)]
