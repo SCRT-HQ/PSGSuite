@@ -70,7 +70,6 @@ Process
                 $_ | Add-Member -MemberType NoteProperty -Name internalDate -Value $result.internalDate -Force
                 $_ | Add-Member -MemberType NoteProperty -Name internalDateConverted -Value (Convert-EpochToDate -EpochString $result.internalDate) -Force
                 $_ | Add-Member -MemberType NoteProperty -Name sizeEstimate -Value $result.sizeEstimate -Force
-                $_ | Add-Member -MemberType NoteProperty -Name raw -Value $result.raw -Force
                 $_.PSObject.TypeNames.Insert(0,"Google.Gmail.Message")
                 $_
             }

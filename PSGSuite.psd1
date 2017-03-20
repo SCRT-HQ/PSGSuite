@@ -37,30 +37,30 @@ Powershell module wrapping G Suite (Google Apps) API calls in handy functions. A
 
 In order to use this module, you''ll need to have the following:
 
-• Powershell 3.0 or higher (module makes heavy use of Invoke-RestMethod).
-• API Access Enabled in the Admin Console under Security
-• Service Account key created and downloaded as a P12 key file.
-• API Client access allowed for the Service Account that will be used towards the API scopes that you intend to utilize
-• Domain-Wide Delegation enabled for the service account
+ï¿½ Powershell 3.0 or higher (module makes heavy use of Invoke-RestMethod).
+ï¿½ API Access Enabled in the Admin Console under Security
+ï¿½ Service Account key created and downloaded as a P12 key file.
+ï¿½ API Client access allowed for the Service Account that will be used towards the API scopes that you intend to utilize
+ï¿½ Domain-Wide Delegation enabled for the service account
 
 
 
 ~~ Tips & Tricks ~~
 
-• All functions support pre-acquired Access Tokens (using the AccessToken parameter).
-	• This is useful if you have a lot of recurring commands that leverage the same admin and scope(s) so you do not overrun the user API call quota, i.e. pulling info for a large set of emails in a user''s inbox.
-• If the access token is not pre-acquired, then the P12KeyPath, AppEmail, AdminEmail, CustomerID, and Domain parameters will default to reading from the PSGSuite config file (these can also be named in each function call, if preferred).
-• If you plan on using this module on multiple computers or between multiple accounts on the same computer, you will need a new PSGoogle config created for each computer / user account pair.
+ï¿½ All functions support pre-acquired Access Tokens (using the AccessToken parameter).
+	ï¿½ This is useful if you have a lot of recurring commands that leverage the same admin and scope(s) so you do not overrun the user API call quota, i.e. pulling info for a large set of emails in a user''s inbox.
+ï¿½ If the access token is not pre-acquired, then the P12KeyPath, AppEmail, AdminEmail, CustomerID, and Domain parameters will default to reading from the PSGSuite config file (these can also be named in each function call, if preferred).
+ï¿½ If you plan on using this module on multiple computers or between multiple accounts on the same computer, you will need a new PSGoogle config created for each computer / user account pair.
 
 
 
 ~~ Credits ~~
 
-• Handling the Service Account OAuth procedure in Powershell:
-	• http://www.thingsthatmademeangry.com/2014/11/google-apps-oauth2-service-account.html
+ï¿½ Handling the Service Account OAuth procedure in Powershell:
+	ï¿½ http://www.thingsthatmademeangry.com/2014/11/google-apps-oauth2-service-account.html
 
-• Initial expoloration into Google Apps management via command line:
-	• https://github.com/jay0lee/GAM (thank you for all of your help along the way Jay & Ross!)'
+ï¿½ Initial expoloration into Google Apps management via command line:
+	ï¿½ https://github.com/jay0lee/GAM (thank you for all of your help along the way Jay & Ross!)'
 
 # Minimum version of the Windows PowerShell engine required by this module
 PowerShellVersion = '3.0'
@@ -108,7 +108,7 @@ CmdletsToExport = @()
 VariablesToExport = @()
 
 # Aliases to export from this module
-AliasesToExport = @()
+AliasesToExport = '*'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
