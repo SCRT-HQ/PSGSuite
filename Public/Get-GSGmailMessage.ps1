@@ -1,4 +1,5 @@
-function Get-GSGmailMessageInfo {
+function Get-GSGmailMessage {
+    [Alias("Get-GmailMessage","Get-GSGmailMessageInfo")]
     [cmdletbinding(DefaultParameterSetName="Format")]
     Param
     (
@@ -60,7 +61,19 @@ Process
         if ($ParseMessage)
             {
             $converted = Read-MimeMessage -String $(Convert-Base64 -From WebSafeBase64String -To NormalString -String $result.raw)
-            $response += $converted | ForEach-Object {$_.PSObject.TypeNames.Insert(0,"Google.Gmail.Message");$_}
+            $response += $converted | ForEach-Object {
+                $_ | Add-Member -MemberType NoteProperty -Name id -Value $result.id -Force
+                $_ | Add-Member -MemberType NoteProperty -Name threadId -Value $result.threadId -Force
+                $_ | Add-Member -MemberType NoteProperty -Name labelIds -Value $result.labelIds -Force
+                $_ | Add-Member -MemberType NoteProperty -Name snippet -Value $result.snippet -Force
+                $_ | Add-Member -MemberType NoteProperty -Name historyId -Value $result.historyId -Force
+                $_ | Add-Member -MemberType NoteProperty -Name internalDate -Value $result.internalDate -Force
+                $_ | Add-Member -MemberType NoteProperty -Name internalDateConverted -Value (Convert-EpochToDate -EpochString $result.internalDate) -Force
+                $_ | Add-Member -MemberType NoteProperty -Name sizeEstimate -Value $result.sizeEstimate -Force
+                $_ | Add-Member -MemberType NoteProperty -Name raw -Value $result.raw -Force
+                $_.PSObject.TypeNames.Insert(0,"Google.Gmail.Message")
+                $_
+            }
             if ($AttachmentOutputPath)
                 {
                 Write-Warning "Attachment saving still being built! This section will be skipped for now."
