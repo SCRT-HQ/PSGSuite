@@ -5,7 +5,7 @@ function Get-GSTeamDrive {
       [parameter(Mandatory=$true,Position=0)]
       [String]
       $TeamDriveID,
-      [parameter(Mandatory=$false)]
+      [parameter(Mandatory=$false)] 
       [ValidateNotNullOrEmpty()]
       [String]
       $Owner = $Script:PSGSuite.AdminEmail,
