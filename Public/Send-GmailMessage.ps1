@@ -66,7 +66,7 @@ if ($BCC)
     }
 if ($Attachments)
     {
-    $messageParams.Add("Attachment",@($Attachments))
+    $messageParams.Add("Attachment",@($Attachments)) 
     }
 if ($BodyAsHtml)
     {
