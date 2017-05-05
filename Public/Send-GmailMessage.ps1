@@ -24,7 +24,7 @@
       [parameter(Mandatory=$false)]
       [ValidateScript({Test-Path $_})]
       [string[]]
-      $Attachment,
+      $Attachments,
       [parameter(Mandatory=$false)]
       [switch]
       $BodyAsHtml,
@@ -64,9 +64,9 @@ if ($BCC)
     {
     $messageParams.Add("BCC",@($BCC))
     }
-if ($Attachment)
+if ($Attachments)
     {
-    $messageParams.Add("Attachment",@($Attachment))
+    $messageParams.Add("Attachment",@($Attachments))
     }
 if ($BodyAsHtml)
     {
