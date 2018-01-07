@@ -1,0 +1,339 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Google.Apis.Script.v1</name>
+    </assembly>
+    <members>
+        <member name="T:Google.Apis.Script.v1.ScriptService">
+            <summary>The Script Service.</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptService.Version">
+            <summary>The API version.</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptService.DiscoveryVersionUsed">
+            <summary>The discovery version used to generate this service.</summary>
+        </member>
+        <member name="M:Google.Apis.Script.v1.ScriptService.#ctor">
+            <summary>Constructs a new service.</summary>
+        </member>
+        <member name="M:Google.Apis.Script.v1.ScriptService.#ctor(Google.Apis.Services.BaseClientService.Initializer)">
+            <summary>Constructs a new service.</summary>
+            <param name="initializer">The service initializer.</param>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptService.Features">
+            <summary>Gets the service supported features.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptService.Name">
+            <summary>Gets the service name.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptService.BaseUri">
+            <summary>Gets the service base URI.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptService.BasePath">
+            <summary>Gets the service base path.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptService.BatchUri">
+            <summary>Gets the batch base URI; <c>null</c> if unspecified.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptService.BatchPath">
+            <summary>Gets the batch base path; <c>null</c> if unspecified.</summary>
+        </member>
+        <member name="T:Google.Apis.Script.v1.ScriptService.Scope">
+            <summary>Available OAuth 2.0 scopes for use with the Google Apps Script API.</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptService.Scope.MailGoogleCom">
+            <summary>Read, send, delete, and manage your email</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptService.Scope.WwwGoogleComCalendarFeeds">
+            <summary>Manage your calendars</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptService.Scope.WwwGoogleComM8Feeds">
+            <summary>Manage your contacts</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptService.Scope.AdminDirectoryGroup">
+            <summary>View and manage the provisioning of groups on your domain</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptService.Scope.AdminDirectoryUser">
+            <summary>View and manage the provisioning of users on your domain</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptService.Scope.Drive">
+            <summary>View and manage the files in your Google Drive</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptService.Scope.Forms">
+            <summary>View and manage your forms in Google Drive</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptService.Scope.FormsCurrentonly">
+            <summary>View and manage forms that this application has been installed in</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptService.Scope.Groups">
+            <summary>View and manage your Google Groups</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptService.Scope.Spreadsheets">
+            <summary>View and manage your spreadsheets in Google Drive</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptService.Scope.UserinfoEmail">
+            <summary>View your email address</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptService.Scripts">
+            <summary>Gets the Scripts resource.</summary>
+        </member>
+        <member name="T:Google.Apis.Script.v1.ScriptBaseServiceRequest`1">
+            <summary>A base abstract class for Script requests.</summary>
+        </member>
+        <member name="M:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new ScriptBaseServiceRequest instance.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.Xgafv">
+            <summary>V1 error format.</summary>
+        </member>
+        <member name="T:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.XgafvEnum">
+            <summary>V1 error format.</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.XgafvEnum.Value1">
+            <summary>v1 error format</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.XgafvEnum.Value2">
+            <summary>v2 error format</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.AccessToken">
+            <summary>OAuth access token.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.Alt">
+            <summary>Data format for response.</summary>
+            [default: json]
+        </member>
+        <member name="T:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.AltEnum">
+            <summary>Data format for response.</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.AltEnum.Json">
+            <summary>Responses with Content-Type of application/json</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.AltEnum.Media">
+            <summary>Media download with context-dependent Content-Type</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.AltEnum.Proto">
+            <summary>Responses with Content-Type of application/x-protobuf</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.BearerToken">
+            <summary>OAuth bearer token.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.Callback">
+            <summary>JSONP</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.Fields">
+            <summary>Selector specifying which fields to include in a partial response.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.Key">
+            <summary>API key. Your API key identifies your project and provides you with API access, quota, and reports.
+            Required unless you provide an OAuth 2.0 token.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.OauthToken">
+            <summary>OAuth 2.0 token for the current user.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.Pp">
+            <summary>Pretty-print response.</summary>
+            [default: true]
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.PrettyPrint">
+            <summary>Returns response with indentations and line breaks.</summary>
+            [default: true]
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.QuotaUser">
+            <summary>Available to use for quota purposes for server-side applications. Can be any arbitrary string
+            assigned to a user, but should not exceed 40 characters.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.UploadType">
+            <summary>Legacy upload protocol for media (e.g. "media", "multipart").</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.UploadProtocol">
+            <summary>Upload protocol for media (e.g. "raw", "multipart").</summary>
+        </member>
+        <member name="M:Google.Apis.Script.v1.ScriptBaseServiceRequest`1.InitParameters">
+            <summary>Initializes Script parameter list.</summary>
+        </member>
+        <member name="T:Google.Apis.Script.v1.ScriptsResource">
+            <summary>The "scripts" collection of methods.</summary>
+        </member>
+        <member name="F:Google.Apis.Script.v1.ScriptsResource.service">
+            <summary>The service which this resource belongs to.</summary>
+        </member>
+        <member name="M:Google.Apis.Script.v1.ScriptsResource.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new resource.</summary>
+        </member>
+        <member name="M:Google.Apis.Script.v1.ScriptsResource.Run(Google.Apis.Script.v1.Data.ExecutionRequest,System.String)">
+             <summary>Runs a function in an Apps Script project. The project must be deployed for use with the Apps
+             Script API.
+            
+             This method requires authorization with an OAuth 2.0 token that includes at least one of the scopes listed
+             in the [Authorization](#authorization) section; script projects that do not require authorization cannot be
+             executed through this API. To find the correct scopes to include in the authentication token, open the
+             project in the script editor, then select **File > Project properties** and click the **Scopes**
+             tab.</summary>
+             <param name="body">The body of the request.</param>
+             <param name="scriptId">The script ID of the script to be executed. To find the script ID, open the project in the
+             script editor and select **File > Project properties**.</param>
+        </member>
+        <member name="T:Google.Apis.Script.v1.ScriptsResource.RunRequest">
+             <summary>Runs a function in an Apps Script project. The project must be deployed for use with the Apps
+             Script API.
+            
+             This method requires authorization with an OAuth 2.0 token that includes at least one of the scopes listed
+             in the [Authorization](#authorization) section; script projects that do not require authorization cannot be
+             executed through this API. To find the correct scopes to include in the authentication token, open the
+             project in the script editor, then select **File > Project properties** and click the **Scopes**
+             tab.</summary>
+        </member>
+        <member name="M:Google.Apis.Script.v1.ScriptsResource.RunRequest.#ctor(Google.Apis.Services.IClientService,Google.Apis.Script.v1.Data.ExecutionRequest,System.String)">
+            <summary>Constructs a new Run request.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptsResource.RunRequest.ScriptId">
+            <summary>The script ID of the script to be executed. To find the script ID, open the project in the
+            script editor and select **File > Project properties**.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptsResource.RunRequest.Body">
+            <summary>Gets or sets the body of this request.</summary>
+        </member>
+        <member name="M:Google.Apis.Script.v1.ScriptsResource.RunRequest.GetBody">
+            <summary>Returns the body of the request.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptsResource.RunRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptsResource.RunRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.ScriptsResource.RunRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Script.v1.ScriptsResource.RunRequest.InitParameters">
+            <summary>Initializes Run parameter list.</summary>
+        </member>
+        <member name="T:Google.Apis.Script.v1.Data.ExecutionError">
+            <summary>An object that provides information about the nature of an error resulting from an attempted execution
+            of a script function using the Apps Script API. If a run call succeeds but the script function (or Apps Script
+            itself) throws an exception, the response body's error field contains a Status object. The `Status` object's
+            `details` field contains an array with a single one of these `ExecutionError` objects.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.ExecutionError.ErrorMessage">
+            <summary>The error message thrown by Apps Script, usually localized into the user's language.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.ExecutionError.ErrorType">
+            <summary>The error type, for example `TypeError` or `ReferenceError`. If the error type is unavailable, this
+            field is not included.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.ExecutionError.ScriptStackTraceElements">
+            <summary>An array of objects that provide a stack trace through the script to show where the execution
+            failed, with the deepest call first.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.ExecutionError.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Script.v1.Data.ExecutionRequest">
+            <summary>A request to run the function in a script. The script is identified by the specified `script_id`.
+            Executing a function on a script returns results based on the implementation of the script.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.ExecutionRequest.DevMode">
+            <summary>If `true` and the user is an owner of the script, the script runs at the most recently saved
+            version rather than the version deployed for use with the Apps Script API. Optional; default is
+            `false`.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.ExecutionRequest.Function">
+            <summary>The name of the function to execute in the given script. The name does not include parentheses or
+            parameters.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.ExecutionRequest.Parameters">
+            <summary>The parameters to be passed to the function being executed. The object type for each parameter
+            should match the expected type in Apps Script. Parameters cannot be Apps Script-specific object types (such
+            as a `Document` or a `Calendar`); they can only be primitive types such as `string`, `number`, `array`,
+            `object`, or `boolean`. Optional.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.ExecutionRequest.SessionState">
+            <summary>For Android add-ons only. An ID that represents the user's current session in the Android app for
+            Google Docs or Sheets, included as extra data in the [Intent](https://developer.android.com/guide/components
+            /intents-filters.html) that launches the add-on. When an Android add-on is run with a session state, it
+            gains the privileges of a [bound](https://developers.google.com/apps-script/guides/bound) scriptthat is, it
+            can access information like the user's current cursor position (in Docs) or selected cell (in Sheets). To
+            retrieve the state, call `Intent.getStringExtra("com.google.android.apps.docs.addons.SessionState")`.
+            Optional.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.ExecutionRequest.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Script.v1.Data.ExecutionResponse">
+            <summary>An object that provides the return value of a function executed using the Apps Script API. If the
+            script function returns successfully, the response body's response field contains this `ExecutionResponse`
+            object.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.ExecutionResponse.Result">
+            <summary>The return value of the script function. The type matches the object type returned in Apps Script.
+            Functions called using the Apps Script API cannot return Apps Script-specific objects (such as a `Document`
+            or a `Calendar`); they can only return primitive types such as a `string`, `number`, `array`, `object`, or
+            `boolean`.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.ExecutionResponse.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Script.v1.Data.Operation">
+            <summary>A representation of a execution of an Apps Script function that is started using run. The execution
+            response does not arrive until the function finishes executing. The maximum execution runtime is listed in the
+            [Apps Script quotas guide](/apps-script/guides/services/quotas#current_limitations). After the execution is
+            started, it can have one of four outcomes:   If the script function returns successfully, the response field
+            contains an ExecutionResponse object with the function's return value in the object's `result` field. If the
+            script function (or Apps Script itself) throws an exception, the error field contains a Status object. The
+            `Status` object's `details` field contains an array with a single ExecutionError object that provides
+            information about the nature of the error. If the execution has not yet completed, the done field is `false` and
+            the neither the `response` nor `error` fields are present. If the `run` call itself fails (for example, because
+            of a malformed request or an authorization error), the method returns an HTTP response code in the 4XX range
+            with a different format for the response body. Client libraries automatically convert a 4XX response into an
+            exception class. </summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.Operation.Done">
+            <summary>This field indicates whether the script execution has completed. A completed execution has a
+            populated `response` field containing the ExecutionResponse from function that was executed.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.Operation.Error">
+            <summary>If a `run` call succeeds but the script function (or Apps Script itself) throws an exception, this
+            field contains a Status object. The `Status` object's `details` field contains an array with a single
+            ExecutionError object that provides information about the nature of the error.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.Operation.Response">
+            <summary>If the script function returns successfully, this field contains an ExecutionResponse object with
+            the function's return value.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.Operation.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Script.v1.Data.ScriptStackTraceElement">
+            <summary>A stack trace through the script that shows where the execution failed.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.ScriptStackTraceElement.Function">
+            <summary>The name of the function that failed.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.ScriptStackTraceElement.LineNumber">
+            <summary>The line number where the script failed.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.ScriptStackTraceElement.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Script.v1.Data.Status">
+            <summary>If a `run` call succeeds but the script function (or Apps Script itself) throws an exception, the
+            response body's error field contains this `Status` object.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.Status.Code">
+            <summary>The status code. For this API, this value either:   3, indicating an `INVALID_ARGUMENT` error, or
+            1, indicating a `CANCELLED` execution. </summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.Status.Details">
+            <summary>An array that contains a single ExecutionError object that provides information about the nature of
+            the error.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.Status.Message">
+            <summary>A developer-facing error message, which is in English. Any user-facing error message is localized
+            and sent in the [google.rpc.Status.details](google.rpc.Status.details) field, or localized by the
+            client.</summary>
+        </member>
+        <member name="P:Google.Apis.Script.v1.Data.Status.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+    </members>
+</doc>

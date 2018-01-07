@@ -1,0 +1,378 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Google.Apis.Admin.DataTransfer.datatransfer_v1</name>
+    </assembly>
+    <members>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService">
+            <summary>The DataTransfer Service.</summary>
+        </member>
+        <member name="F:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService.Version">
+            <summary>The API version.</summary>
+        </member>
+        <member name="F:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService.DiscoveryVersionUsed">
+            <summary>The discovery version used to generate this service.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService.#ctor">
+            <summary>Constructs a new service.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService.#ctor(Google.Apis.Services.BaseClientService.Initializer)">
+            <summary>Constructs a new service.</summary>
+            <param name="initializer">The service initializer.</param>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService.Features">
+            <summary>Gets the service supported features.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService.Name">
+            <summary>Gets the service name.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService.BaseUri">
+            <summary>Gets the service base URI.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService.BasePath">
+            <summary>Gets the service base path.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService.BatchUri">
+            <summary>Gets the batch base URI; <c>null</c> if unspecified.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService.BatchPath">
+            <summary>Gets the batch base path; <c>null</c> if unspecified.</summary>
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService.Scope">
+            <summary>Available OAuth 2.0 scopes for use with the Admin Data Transfer API.</summary>
+        </member>
+        <member name="F:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService.Scope.AdminDatatransfer">
+            <summary>View and manage data transfers between users in your organization</summary>
+        </member>
+        <member name="F:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService.Scope.AdminDatatransferReadonly">
+            <summary>View data transfers between users in your organization</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService.Applications">
+            <summary>Gets the Applications resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService.Transfers">
+            <summary>Gets the Transfers resource.</summary>
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferBaseServiceRequest`1">
+            <summary>A base abstract class for DataTransfer requests.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferBaseServiceRequest`1.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new DataTransferBaseServiceRequest instance.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferBaseServiceRequest`1.Alt">
+            <summary>Data format for the response.</summary>
+            [default: json]
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferBaseServiceRequest`1.AltEnum">
+            <summary>Data format for the response.</summary>
+        </member>
+        <member name="F:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferBaseServiceRequest`1.AltEnum.Json">
+            <summary>Responses with Content-Type of application/json</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferBaseServiceRequest`1.Fields">
+            <summary>Selector specifying which fields to include in a partial response.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferBaseServiceRequest`1.Key">
+            <summary>API key. Your API key identifies your project and provides you with API access, quota, and reports.
+            Required unless you provide an OAuth 2.0 token.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferBaseServiceRequest`1.OauthToken">
+            <summary>OAuth 2.0 token for the current user.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferBaseServiceRequest`1.PrettyPrint">
+            <summary>Returns response with indentations and line breaks.</summary>
+            [default: true]
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferBaseServiceRequest`1.QuotaUser">
+            <summary>Available to use for quota purposes for server-side applications. Can be any arbitrary string
+            assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferBaseServiceRequest`1.UserIp">
+            <summary>IP address of the site where the request originates. Use this if you want to enforce per-user
+            limits.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferBaseServiceRequest`1.InitParameters">
+            <summary>Initializes DataTransfer parameter list.</summary>
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource">
+            <summary>The "applications" collection of methods.</summary>
+        </member>
+        <member name="F:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.service">
+            <summary>The service which this resource belongs to.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new resource.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.Get(System.Int64)">
+            <summary>Retrieves information about an application for the given application ID.</summary>
+            <param name="applicationId">ID of the application resource to be retrieved.</param>
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.GetRequest">
+            <summary>Retrieves information about an application for the given application ID.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.GetRequest.#ctor(Google.Apis.Services.IClientService,System.Int64)">
+            <summary>Constructs a new Get request.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.GetRequest.ApplicationId">
+            <summary>ID of the application resource to be retrieved.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.GetRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.GetRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.GetRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.GetRequest.InitParameters">
+            <summary>Initializes Get parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.List">
+            <summary>Lists the applications available for data transfer for a customer.</summary>
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.ListRequest">
+            <summary>Lists the applications available for data transfer for a customer.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.ListRequest.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new List request.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.ListRequest.CustomerId">
+            <summary>Immutable ID of the Google Apps account.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.ListRequest.MaxResults">
+            <summary>Maximum number of results to return. Default is 100.</summary>
+            [minimum: 1]
+            [maximum: 500]
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.ListRequest.PageToken">
+            <summary>Token to specify next page in the list.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.ListRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.ListRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.ListRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.ApplicationsResource.ListRequest.InitParameters">
+            <summary>Initializes List parameter list.</summary>
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource">
+            <summary>The "transfers" collection of methods.</summary>
+        </member>
+        <member name="F:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.service">
+            <summary>The service which this resource belongs to.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new resource.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.Get(System.String)">
+            <summary>Retrieves a data transfer request by its resource ID.</summary>
+            <param name="dataTransferId">ID of the resource to be retrieved. This is returned in the response from the insert
+            method.</param>
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.GetRequest">
+            <summary>Retrieves a data transfer request by its resource ID.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.GetRequest.#ctor(Google.Apis.Services.IClientService,System.String)">
+            <summary>Constructs a new Get request.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.GetRequest.DataTransferId">
+            <summary>ID of the resource to be retrieved. This is returned in the response from the insert
+            method.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.GetRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.GetRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.GetRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.GetRequest.InitParameters">
+            <summary>Initializes Get parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.Insert(Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfer)">
+            <summary>Inserts a data transfer request.</summary>
+            <param name="body">The body of the request.</param>
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.InsertRequest">
+            <summary>Inserts a data transfer request.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.InsertRequest.#ctor(Google.Apis.Services.IClientService,Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfer)">
+            <summary>Constructs a new Insert request.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.InsertRequest.Body">
+            <summary>Gets or sets the body of this request.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.InsertRequest.GetBody">
+            <summary>Returns the body of the request.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.InsertRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.InsertRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.InsertRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.InsertRequest.InitParameters">
+            <summary>Initializes Insert parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.List">
+            <summary>Lists the transfers for a customer by source user, destination user, or status.</summary>
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.ListRequest">
+            <summary>Lists the transfers for a customer by source user, destination user, or status.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.ListRequest.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new List request.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.ListRequest.CustomerId">
+            <summary>Immutable ID of the Google Apps account.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.ListRequest.MaxResults">
+            <summary>Maximum number of results to return. Default is 100.</summary>
+            [minimum: 1]
+            [maximum: 500]
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.ListRequest.NewOwnerUserId">
+            <summary>Destination user's profile ID.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.ListRequest.OldOwnerUserId">
+            <summary>Source user's profile ID.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.ListRequest.PageToken">
+            <summary>Token to specify the next page in the list.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.ListRequest.Status">
+            <summary>Status of the transfer.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.ListRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.ListRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.ListRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Admin.DataTransfer.datatransfer_v1.TransfersResource.ListRequest.InitParameters">
+            <summary>Initializes List parameter list.</summary>
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.Application">
+            <summary>The JSON template for an Application resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.Application.ETag">
+            <summary>Etag of the resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.Application.Id">
+            <summary>The application's ID.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.Application.Kind">
+            <summary>Identifies the resource as a DataTransfer Application Resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.Application.Name">
+            <summary>The application's name.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.Application.TransferParams">
+            <summary>The list of all possible transfer parameters for this application. These parameters can be used to
+            select the data of the user in this application to be transfered.</summary>
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationDataTransfer">
+            <summary>Template to map fields of ApplicationDataTransfer resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationDataTransfer.ApplicationId">
+            <summary>The application's ID.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationDataTransfer.ApplicationTransferParams">
+            <summary>The transfer parameters for the application. These parameters are used to select the data which
+            will get transfered in context of this application.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationDataTransfer.ApplicationTransferStatus">
+            <summary>Current status of transfer for this application. (Read-only)</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationDataTransfer.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationTransferParam">
+            <summary>Template for application transfer parameters.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationTransferParam.Key">
+            <summary>The type of the transfer parameter. eg: 'PRIVACY_LEVEL'</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationTransferParam.Value">
+            <summary>The value of the coressponding transfer parameter. eg: 'PRIVATE' or 'SHARED'</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationTransferParam.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationsListResponse">
+            <summary>Template for a collection of Applications.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationsListResponse.Applications">
+            <summary>List of applications that support data transfer and are also installed for the customer.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationsListResponse.ETag">
+            <summary>ETag of the resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationsListResponse.Kind">
+            <summary>Identifies the resource as a collection of Applications.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationsListResponse.NextPageToken">
+            <summary>Continuation token which will be used to specify next page in list API.</summary>
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfer">
+            <summary>The JSON template for a DataTransfer resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfer.ApplicationDataTransfers">
+            <summary>List of per application data transfer resources. It contains data transfer details of the
+            applications associated with this transfer resource. Note that this list is also used to specify the
+            applications for which data transfer has to be done at the time of the transfer resource creation.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfer.ETag">
+            <summary>ETag of the resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfer.Id">
+            <summary>The transfer's ID (Read-only).</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfer.Kind">
+            <summary>Identifies the resource as a DataTransfer request.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfer.NewOwnerUserId">
+            <summary>ID of the user to whom the data is being transfered.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfer.OldOwnerUserId">
+            <summary>ID of the user whose data is being transfered.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfer.OverallTransferStatusCode">
+            <summary>Overall transfer status (Read-only).</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfer.RequestTimeRaw">
+            <summary>The time at which the data transfer was requested (Read-only).</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfer.RequestTime">
+            <summary><seealso cref="T:System.DateTime"/> representation of <see cref="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfer.RequestTimeRaw"/>.</summary>
+        </member>
+        <member name="T:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfersListResponse">
+            <summary>Template for a collection of DataTransfer resources.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfersListResponse.DataTransfers">
+            <summary>List of data transfer requests.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfersListResponse.ETag">
+            <summary>ETag of the resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfersListResponse.Kind">
+            <summary>Identifies the resource as a collection of data transfer requests.</summary>
+        </member>
+        <member name="P:Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfersListResponse.NextPageToken">
+            <summary>Continuation token which will be used to specify next page in list API.</summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,300 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Google.Apis.Urlshortener.v1</name>
+    </assembly>
+    <members>
+        <member name="T:Google.Apis.Urlshortener.v1.UrlshortenerService">
+            <summary>The Urlshortener Service.</summary>
+        </member>
+        <member name="F:Google.Apis.Urlshortener.v1.UrlshortenerService.Version">
+            <summary>The API version.</summary>
+        </member>
+        <member name="F:Google.Apis.Urlshortener.v1.UrlshortenerService.DiscoveryVersionUsed">
+            <summary>The discovery version used to generate this service.</summary>
+        </member>
+        <member name="M:Google.Apis.Urlshortener.v1.UrlshortenerService.#ctor">
+            <summary>Constructs a new service.</summary>
+        </member>
+        <member name="M:Google.Apis.Urlshortener.v1.UrlshortenerService.#ctor(Google.Apis.Services.BaseClientService.Initializer)">
+            <summary>Constructs a new service.</summary>
+            <param name="initializer">The service initializer.</param>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlshortenerService.Features">
+            <summary>Gets the service supported features.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlshortenerService.Name">
+            <summary>Gets the service name.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlshortenerService.BaseUri">
+            <summary>Gets the service base URI.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlshortenerService.BasePath">
+            <summary>Gets the service base path.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlshortenerService.BatchUri">
+            <summary>Gets the batch base URI; <c>null</c> if unspecified.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlshortenerService.BatchPath">
+            <summary>Gets the batch base path; <c>null</c> if unspecified.</summary>
+        </member>
+        <member name="T:Google.Apis.Urlshortener.v1.UrlshortenerService.Scope">
+            <summary>Available OAuth 2.0 scopes for use with the URL Shortener API.</summary>
+        </member>
+        <member name="F:Google.Apis.Urlshortener.v1.UrlshortenerService.Scope.Urlshortener">
+            <summary>Manage your goo.gl short URLs</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlshortenerService.Url">
+            <summary>Gets the Url resource.</summary>
+        </member>
+        <member name="T:Google.Apis.Urlshortener.v1.UrlshortenerBaseServiceRequest`1">
+            <summary>A base abstract class for Urlshortener requests.</summary>
+        </member>
+        <member name="M:Google.Apis.Urlshortener.v1.UrlshortenerBaseServiceRequest`1.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new UrlshortenerBaseServiceRequest instance.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlshortenerBaseServiceRequest`1.Alt">
+            <summary>Data format for the response.</summary>
+            [default: json]
+        </member>
+        <member name="T:Google.Apis.Urlshortener.v1.UrlshortenerBaseServiceRequest`1.AltEnum">
+            <summary>Data format for the response.</summary>
+        </member>
+        <member name="F:Google.Apis.Urlshortener.v1.UrlshortenerBaseServiceRequest`1.AltEnum.Json">
+            <summary>Responses with Content-Type of application/json</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlshortenerBaseServiceRequest`1.Fields">
+            <summary>Selector specifying which fields to include in a partial response.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlshortenerBaseServiceRequest`1.Key">
+            <summary>API key. Your API key identifies your project and provides you with API access, quota, and reports.
+            Required unless you provide an OAuth 2.0 token.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlshortenerBaseServiceRequest`1.OauthToken">
+            <summary>OAuth 2.0 token for the current user.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlshortenerBaseServiceRequest`1.PrettyPrint">
+            <summary>Returns response with indentations and line breaks.</summary>
+            [default: true]
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlshortenerBaseServiceRequest`1.QuotaUser">
+            <summary>Available to use for quota purposes for server-side applications. Can be any arbitrary string
+            assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlshortenerBaseServiceRequest`1.UserIp">
+            <summary>IP address of the site where the request originates. Use this if you want to enforce per-user
+            limits.</summary>
+        </member>
+        <member name="M:Google.Apis.Urlshortener.v1.UrlshortenerBaseServiceRequest`1.InitParameters">
+            <summary>Initializes Urlshortener parameter list.</summary>
+        </member>
+        <member name="T:Google.Apis.Urlshortener.v1.UrlResource">
+            <summary>The "url" collection of methods.</summary>
+        </member>
+        <member name="F:Google.Apis.Urlshortener.v1.UrlResource.service">
+            <summary>The service which this resource belongs to.</summary>
+        </member>
+        <member name="M:Google.Apis.Urlshortener.v1.UrlResource.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new resource.</summary>
+        </member>
+        <member name="M:Google.Apis.Urlshortener.v1.UrlResource.Get(System.String)">
+            <summary>Expands a short URL or gets creation time and analytics.</summary>
+            <param name="shortUrl">The short URL, including the protocol.</param>
+        </member>
+        <member name="T:Google.Apis.Urlshortener.v1.UrlResource.GetRequest">
+            <summary>Expands a short URL or gets creation time and analytics.</summary>
+        </member>
+        <member name="M:Google.Apis.Urlshortener.v1.UrlResource.GetRequest.#ctor(Google.Apis.Services.IClientService,System.String)">
+            <summary>Constructs a new Get request.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlResource.GetRequest.ShortUrl">
+            <summary>The short URL, including the protocol.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlResource.GetRequest.Projection">
+            <summary>Additional information to return.</summary>
+        </member>
+        <member name="T:Google.Apis.Urlshortener.v1.UrlResource.GetRequest.ProjectionEnum">
+            <summary>Additional information to return.</summary>
+        </member>
+        <member name="F:Google.Apis.Urlshortener.v1.UrlResource.GetRequest.ProjectionEnum.ANALYTICSCLICKS">
+            <summary>Returns only click counts.</summary>
+        </member>
+        <member name="F:Google.Apis.Urlshortener.v1.UrlResource.GetRequest.ProjectionEnum.ANALYTICSTOPSTRINGS">
+            <summary>Returns only top string counts.</summary>
+        </member>
+        <member name="F:Google.Apis.Urlshortener.v1.UrlResource.GetRequest.ProjectionEnum.FULL">
+            <summary>Returns the creation timestamp and all available analytics.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlResource.GetRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlResource.GetRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlResource.GetRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Urlshortener.v1.UrlResource.GetRequest.InitParameters">
+            <summary>Initializes Get parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Urlshortener.v1.UrlResource.Insert(Google.Apis.Urlshortener.v1.Data.Url)">
+            <summary>Creates a new short URL.</summary>
+            <param name="body">The body of the request.</param>
+        </member>
+        <member name="T:Google.Apis.Urlshortener.v1.UrlResource.InsertRequest">
+            <summary>Creates a new short URL.</summary>
+        </member>
+        <member name="M:Google.Apis.Urlshortener.v1.UrlResource.InsertRequest.#ctor(Google.Apis.Services.IClientService,Google.Apis.Urlshortener.v1.Data.Url)">
+            <summary>Constructs a new Insert request.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlResource.InsertRequest.Body">
+            <summary>Gets or sets the body of this request.</summary>
+        </member>
+        <member name="M:Google.Apis.Urlshortener.v1.UrlResource.InsertRequest.GetBody">
+            <summary>Returns the body of the request.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlResource.InsertRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlResource.InsertRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlResource.InsertRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Urlshortener.v1.UrlResource.InsertRequest.InitParameters">
+            <summary>Initializes Insert parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Urlshortener.v1.UrlResource.List">
+            <summary>Retrieves a list of URLs shortened by a user.</summary>
+        </member>
+        <member name="T:Google.Apis.Urlshortener.v1.UrlResource.ListRequest">
+            <summary>Retrieves a list of URLs shortened by a user.</summary>
+        </member>
+        <member name="M:Google.Apis.Urlshortener.v1.UrlResource.ListRequest.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new List request.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlResource.ListRequest.Projection">
+            <summary>Additional information to return.</summary>
+        </member>
+        <member name="T:Google.Apis.Urlshortener.v1.UrlResource.ListRequest.ProjectionEnum">
+            <summary>Additional information to return.</summary>
+        </member>
+        <member name="F:Google.Apis.Urlshortener.v1.UrlResource.ListRequest.ProjectionEnum.ANALYTICSCLICKS">
+            <summary>Returns short URL click counts.</summary>
+        </member>
+        <member name="F:Google.Apis.Urlshortener.v1.UrlResource.ListRequest.ProjectionEnum.FULL">
+            <summary>Returns short URL click counts.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlResource.ListRequest.StartToken">
+            <summary>Token for requesting successive pages of results.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlResource.ListRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlResource.ListRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.UrlResource.ListRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Urlshortener.v1.UrlResource.ListRequest.InitParameters">
+            <summary>Initializes List parameter list.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.AnalyticsSnapshot.Browsers">
+            <summary>Top browsers, e.g. "Chrome"; sorted by (descending) click counts. Only present if this data is
+            available.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.AnalyticsSnapshot.Countries">
+            <summary>Top countries (expressed as country codes), e.g. "US" or "DE"; sorted by (descending) click counts.
+            Only present if this data is available.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.AnalyticsSnapshot.LongUrlClicks">
+            <summary>Number of clicks on all goo.gl short URLs pointing to this long URL.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.AnalyticsSnapshot.Platforms">
+            <summary>Top platforms or OSes, e.g. "Windows"; sorted by (descending) click counts. Only present if this
+            data is available.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.AnalyticsSnapshot.Referrers">
+            <summary>Top referring hosts, e.g. "www.google.com"; sorted by (descending) click counts. Only present if
+            this data is available.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.AnalyticsSnapshot.ShortUrlClicks">
+            <summary>Number of clicks on this short URL.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.AnalyticsSnapshot.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.AnalyticsSummary.AllTime">
+            <summary>Click analytics over all time.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.AnalyticsSummary.Day">
+            <summary>Click analytics over the last day.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.AnalyticsSummary.Month">
+            <summary>Click analytics over the last month.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.AnalyticsSummary.TwoHours">
+            <summary>Click analytics over the last two hours.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.AnalyticsSummary.Week">
+            <summary>Click analytics over the last week.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.AnalyticsSummary.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.StringCount.Count">
+            <summary>Number of clicks for this top entry, e.g. for this particular country or browser.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.StringCount.Id">
+            <summary>Label assigned to this top entry, e.g. "US" or "Chrome".</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.StringCount.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.Url.Analytics">
+            <summary>A summary of the click analytics for the short and long URL. Might not be present if not requested
+            or currently unavailable.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.Url.Created">
+            <summary>Time the short URL was created; ISO 8601 representation using the yyyy-MM-dd'T'HH:mm:ss.SSSZZ
+            format, e.g. "2010-10-14T19:01:24.944+00:00".</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.Url.Id">
+            <summary>Short URL, e.g. "http://goo.gl/l6MS".</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.Url.Kind">
+            <summary>The fixed string "urlshortener#url".</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.Url.LongUrl">
+            <summary>Long URL, e.g. "http://www.google.com/". Might not be present if the status is "REMOVED".</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.Url.Status">
+            <summary>Status of the target URL. Possible values: "OK", "MALWARE", "PHISHING", or "REMOVED". A URL might
+            be marked "REMOVED" if it was flagged as spam, for example.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.Url.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.UrlHistory.Items">
+            <summary>A list of URL resources.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.UrlHistory.ItemsPerPage">
+            <summary>Number of items returned with each full "page" of results. Note that the last page could have fewer
+            items than the "itemsPerPage" value.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.UrlHistory.Kind">
+            <summary>The fixed string "urlshortener#urlHistory".</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.UrlHistory.NextPageToken">
+            <summary>A token to provide to get the next page of results.</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.UrlHistory.TotalItems">
+            <summary>Total number of short URLs associated with this user (may be approximate).</summary>
+        </member>
+        <member name="P:Google.Apis.Urlshortener.v1.Data.UrlHistory.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,426 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Google.Apis.Licensing.v1</name>
+    </assembly>
+    <members>
+        <member name="T:Google.Apis.Licensing.v1.LicensingService">
+            <summary>The Licensing Service.</summary>
+        </member>
+        <member name="F:Google.Apis.Licensing.v1.LicensingService.Version">
+            <summary>The API version.</summary>
+        </member>
+        <member name="F:Google.Apis.Licensing.v1.LicensingService.DiscoveryVersionUsed">
+            <summary>The discovery version used to generate this service.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicensingService.#ctor">
+            <summary>Constructs a new service.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicensingService.#ctor(Google.Apis.Services.BaseClientService.Initializer)">
+            <summary>Constructs a new service.</summary>
+            <param name="initializer">The service initializer.</param>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicensingService.Features">
+            <summary>Gets the service supported features.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicensingService.Name">
+            <summary>Gets the service name.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicensingService.BaseUri">
+            <summary>Gets the service base URI.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicensingService.BasePath">
+            <summary>Gets the service base path.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicensingService.BatchUri">
+            <summary>Gets the batch base URI; <c>null</c> if unspecified.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicensingService.BatchPath">
+            <summary>Gets the batch base path; <c>null</c> if unspecified.</summary>
+        </member>
+        <member name="T:Google.Apis.Licensing.v1.LicensingService.Scope">
+            <summary>Available OAuth 2.0 scopes for use with the Enterprise License Manager API.</summary>
+        </member>
+        <member name="F:Google.Apis.Licensing.v1.LicensingService.Scope.AppsLicensing">
+            <summary>View and manage G Suite licenses for your domain</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicensingService.LicenseAssignments">
+            <summary>Gets the LicenseAssignments resource.</summary>
+        </member>
+        <member name="T:Google.Apis.Licensing.v1.LicensingBaseServiceRequest`1">
+            <summary>A base abstract class for Licensing requests.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicensingBaseServiceRequest`1.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new LicensingBaseServiceRequest instance.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicensingBaseServiceRequest`1.Alt">
+            <summary>Data format for the response.</summary>
+            [default: json]
+        </member>
+        <member name="T:Google.Apis.Licensing.v1.LicensingBaseServiceRequest`1.AltEnum">
+            <summary>Data format for the response.</summary>
+        </member>
+        <member name="F:Google.Apis.Licensing.v1.LicensingBaseServiceRequest`1.AltEnum.Json">
+            <summary>Responses with Content-Type of application/json</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicensingBaseServiceRequest`1.Fields">
+            <summary>Selector specifying which fields to include in a partial response.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicensingBaseServiceRequest`1.Key">
+            <summary>API key. Your API key identifies your project and provides you with API access, quota, and reports.
+            Required unless you provide an OAuth 2.0 token.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicensingBaseServiceRequest`1.OauthToken">
+            <summary>OAuth 2.0 token for the current user.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicensingBaseServiceRequest`1.PrettyPrint">
+            <summary>Returns response with indentations and line breaks.</summary>
+            [default: true]
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicensingBaseServiceRequest`1.QuotaUser">
+            <summary>Available to use for quota purposes for server-side applications. Can be any arbitrary string
+            assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicensingBaseServiceRequest`1.UserIp">
+            <summary>IP address of the site where the request originates. Use this if you want to enforce per-user
+            limits.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicensingBaseServiceRequest`1.InitParameters">
+            <summary>Initializes Licensing parameter list.</summary>
+        </member>
+        <member name="T:Google.Apis.Licensing.v1.LicenseAssignmentsResource">
+            <summary>The "licenseAssignments" collection of methods.</summary>
+        </member>
+        <member name="F:Google.Apis.Licensing.v1.LicenseAssignmentsResource.service">
+            <summary>The service which this resource belongs to.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new resource.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.Delete(System.String,System.String,System.String)">
+            <summary>Revoke License.</summary>
+            <param name="productId">Name for product</param>
+            <param name="skuId">Name for sku</param>
+            <param
+            name="userId">email id or unique Id of the user</param>
+        </member>
+        <member name="T:Google.Apis.Licensing.v1.LicenseAssignmentsResource.DeleteRequest">
+            <summary>Revoke License.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.DeleteRequest.#ctor(Google.Apis.Services.IClientService,System.String,System.String,System.String)">
+            <summary>Constructs a new Delete request.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.DeleteRequest.ProductId">
+            <summary>Name for product</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.DeleteRequest.SkuId">
+            <summary>Name for sku</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.DeleteRequest.UserId">
+            <summary>email id or unique Id of the user</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.DeleteRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.DeleteRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.DeleteRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.DeleteRequest.InitParameters">
+            <summary>Initializes Delete parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.Get(System.String,System.String,System.String)">
+            <summary>Get license assignment of a particular product and sku for a user</summary>
+            <param name="productId">Name for product</param>
+            <param name="skuId">Name for sku</param>
+            <param
+            name="userId">email id or unique Id of the user</param>
+        </member>
+        <member name="T:Google.Apis.Licensing.v1.LicenseAssignmentsResource.GetRequest">
+            <summary>Get license assignment of a particular product and sku for a user</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.GetRequest.#ctor(Google.Apis.Services.IClientService,System.String,System.String,System.String)">
+            <summary>Constructs a new Get request.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.GetRequest.ProductId">
+            <summary>Name for product</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.GetRequest.SkuId">
+            <summary>Name for sku</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.GetRequest.UserId">
+            <summary>email id or unique Id of the user</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.GetRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.GetRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.GetRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.GetRequest.InitParameters">
+            <summary>Initializes Get parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.Insert(Google.Apis.Licensing.v1.Data.LicenseAssignmentInsert,System.String,System.String)">
+            <summary>Assign License.</summary>
+            <param name="body">The body of the request.</param>
+            <param name="productId">Name for product</param>
+            <param name="skuId">Name for sku</param>
+        </member>
+        <member name="T:Google.Apis.Licensing.v1.LicenseAssignmentsResource.InsertRequest">
+            <summary>Assign License.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.InsertRequest.#ctor(Google.Apis.Services.IClientService,Google.Apis.Licensing.v1.Data.LicenseAssignmentInsert,System.String,System.String)">
+            <summary>Constructs a new Insert request.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.InsertRequest.ProductId">
+            <summary>Name for product</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.InsertRequest.SkuId">
+            <summary>Name for sku</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.InsertRequest.Body">
+            <summary>Gets or sets the body of this request.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.InsertRequest.GetBody">
+            <summary>Returns the body of the request.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.InsertRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.InsertRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.InsertRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.InsertRequest.InitParameters">
+            <summary>Initializes Insert parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProduct(System.String,System.String)">
+            <summary>List license assignments for given product of the customer.</summary>
+            <param name="productId">Name for product</param>
+            <param name="customerId">CustomerId represents the customer
+            for whom licenseassignments are queried</param>
+        </member>
+        <member name="T:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductRequest">
+            <summary>List license assignments for given product of the customer.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductRequest.#ctor(Google.Apis.Services.IClientService,System.String,System.String)">
+            <summary>Constructs a new ListForProduct request.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductRequest.ProductId">
+            <summary>Name for product</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductRequest.CustomerId">
+            <summary>CustomerId represents the customer for whom licenseassignments are queried</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductRequest.MaxResults">
+            <summary>Maximum number of campaigns to return at one time. Must be positive. Optional. Default value is
+            100.</summary>
+            [default: 100]
+            [minimum: 1]
+            [maximum: 1000]
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductRequest.PageToken">
+            <summary>Token to fetch the next page.Optional. By default server will return first page</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductRequest.InitParameters">
+            <summary>Initializes ListForProduct parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductAndSku(System.String,System.String,System.String)">
+            <summary>List license assignments for given product and sku of the customer.</summary>
+            <param name="productId">Name for product</param>
+            <param name="skuId">Name for sku</param>
+            <param
+            name="customerId">CustomerId represents the customer for whom licenseassignments are queried</param>
+        </member>
+        <member name="T:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductAndSkuRequest">
+            <summary>List license assignments for given product and sku of the customer.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductAndSkuRequest.#ctor(Google.Apis.Services.IClientService,System.String,System.String,System.String)">
+            <summary>Constructs a new ListForProductAndSku request.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductAndSkuRequest.ProductId">
+            <summary>Name for product</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductAndSkuRequest.SkuId">
+            <summary>Name for sku</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductAndSkuRequest.CustomerId">
+            <summary>CustomerId represents the customer for whom licenseassignments are queried</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductAndSkuRequest.MaxResults">
+            <summary>Maximum number of campaigns to return at one time. Must be positive. Optional. Default value is
+            100.</summary>
+            [default: 100]
+            [minimum: 1]
+            [maximum: 1000]
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductAndSkuRequest.PageToken">
+            <summary>Token to fetch the next page.Optional. By default server will return first page</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductAndSkuRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductAndSkuRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductAndSkuRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.ListForProductAndSkuRequest.InitParameters">
+            <summary>Initializes ListForProductAndSku parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.Patch(Google.Apis.Licensing.v1.Data.LicenseAssignment,System.String,System.String,System.String)">
+            <summary>Assign License. This method supports patch semantics.</summary>
+            <param name="body">The body of the request.</param>
+            <param name="productId">Name for product</param>
+            <param name="skuId">Name for sku for which license would be
+            revoked</param>
+            <param name="userId">email id or unique Id of the user</param>
+        </member>
+        <member name="T:Google.Apis.Licensing.v1.LicenseAssignmentsResource.PatchRequest">
+            <summary>Assign License. This method supports patch semantics.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.PatchRequest.#ctor(Google.Apis.Services.IClientService,Google.Apis.Licensing.v1.Data.LicenseAssignment,System.String,System.String,System.String)">
+            <summary>Constructs a new Patch request.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.PatchRequest.ProductId">
+            <summary>Name for product</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.PatchRequest.SkuId">
+            <summary>Name for sku for which license would be revoked</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.PatchRequest.UserId">
+            <summary>email id or unique Id of the user</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.PatchRequest.Body">
+            <summary>Gets or sets the body of this request.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.PatchRequest.GetBody">
+            <summary>Returns the body of the request.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.PatchRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.PatchRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.PatchRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.PatchRequest.InitParameters">
+            <summary>Initializes Patch parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.Update(Google.Apis.Licensing.v1.Data.LicenseAssignment,System.String,System.String,System.String)">
+            <summary>Assign License.</summary>
+            <param name="body">The body of the request.</param>
+            <param name="productId">Name for product</param>
+            <param name="skuId">Name for sku for which license would be
+            revoked</param>
+            <param name="userId">email id or unique Id of the user</param>
+        </member>
+        <member name="T:Google.Apis.Licensing.v1.LicenseAssignmentsResource.UpdateRequest">
+            <summary>Assign License.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.UpdateRequest.#ctor(Google.Apis.Services.IClientService,Google.Apis.Licensing.v1.Data.LicenseAssignment,System.String,System.String,System.String)">
+            <summary>Constructs a new Update request.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.UpdateRequest.ProductId">
+            <summary>Name for product</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.UpdateRequest.SkuId">
+            <summary>Name for sku for which license would be revoked</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.UpdateRequest.UserId">
+            <summary>email id or unique Id of the user</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.UpdateRequest.Body">
+            <summary>Gets or sets the body of this request.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.UpdateRequest.GetBody">
+            <summary>Returns the body of the request.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.UpdateRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.UpdateRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.LicenseAssignmentsResource.UpdateRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Licensing.v1.LicenseAssignmentsResource.UpdateRequest.InitParameters">
+            <summary>Initializes Update parameter list.</summary>
+        </member>
+        <member name="T:Google.Apis.Licensing.v1.Data.LicenseAssignment">
+            <summary>Template for LiscenseAssignment Resource</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.Data.LicenseAssignment.Etags">
+            <summary>ETag of the resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.Data.LicenseAssignment.Kind">
+            <summary>Identifies the resource as a LicenseAssignment.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.Data.LicenseAssignment.ProductId">
+            <summary>Id of the product.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.Data.LicenseAssignment.ProductName">
+            <summary>Display Name of the product.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.Data.LicenseAssignment.SelfLink">
+            <summary>Link to this page.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.Data.LicenseAssignment.SkuId">
+            <summary>Id of the sku of the product.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.Data.LicenseAssignment.SkuName">
+            <summary>Display Name of the sku of the product.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.Data.LicenseAssignment.UserId">
+            <summary>Email id of the user.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.Data.LicenseAssignment.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Licensing.v1.Data.LicenseAssignmentInsert">
+            <summary>Template for LicenseAssignment Insert request</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.Data.LicenseAssignmentInsert.UserId">
+            <summary>Email id of the user</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.Data.LicenseAssignmentInsert.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Licensing.v1.Data.LicenseAssignmentList">
+            <summary>LicesnseAssignment List for a given product/sku for a customer.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.Data.LicenseAssignmentList.ETag">
+            <summary>ETag of the resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.Data.LicenseAssignmentList.Items">
+            <summary>The LicenseAssignments in this page of results.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.Data.LicenseAssignmentList.Kind">
+            <summary>Identifies the resource as a collection of LicenseAssignments.</summary>
+        </member>
+        <member name="P:Google.Apis.Licensing.v1.Data.LicenseAssignmentList.NextPageToken">
+            <summary>The continuation token, used to page through large result sets. Provide this value in a subsequent
+            request to return the next page of results.</summary>
+        </member>
+    </members>
+</doc>

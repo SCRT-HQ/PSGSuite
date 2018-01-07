@@ -1,0 +1,265 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Google.Apis.Oauth2.v2</name>
+    </assembly>
+    <members>
+        <member name="T:Google.Apis.Oauth2.v2.Oauth2Service">
+            <summary>The Oauth2 Service.</summary>
+        </member>
+        <member name="F:Google.Apis.Oauth2.v2.Oauth2Service.Version">
+            <summary>The API version.</summary>
+        </member>
+        <member name="F:Google.Apis.Oauth2.v2.Oauth2Service.DiscoveryVersionUsed">
+            <summary>The discovery version used to generate this service.</summary>
+        </member>
+        <member name="M:Google.Apis.Oauth2.v2.Oauth2Service.#ctor">
+            <summary>Constructs a new service.</summary>
+        </member>
+        <member name="M:Google.Apis.Oauth2.v2.Oauth2Service.#ctor(Google.Apis.Services.BaseClientService.Initializer)">
+            <summary>Constructs a new service.</summary>
+            <param name="initializer">The service initializer.</param>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2Service.Features">
+            <summary>Gets the service supported features.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2Service.Name">
+            <summary>Gets the service name.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2Service.BaseUri">
+            <summary>Gets the service base URI.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2Service.BasePath">
+            <summary>Gets the service base path.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2Service.BatchUri">
+            <summary>Gets the batch base URI; <c>null</c> if unspecified.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2Service.BatchPath">
+            <summary>Gets the batch base path; <c>null</c> if unspecified.</summary>
+        </member>
+        <member name="T:Google.Apis.Oauth2.v2.Oauth2Service.Scope">
+            <summary>Available OAuth 2.0 scopes for use with the Google OAuth2 API.</summary>
+        </member>
+        <member name="F:Google.Apis.Oauth2.v2.Oauth2Service.Scope.PlusLogin">
+            <summary>Know the list of people in your circles, your age range, and language</summary>
+        </member>
+        <member name="F:Google.Apis.Oauth2.v2.Oauth2Service.Scope.PlusMe">
+            <summary>Know who you are on Google</summary>
+        </member>
+        <member name="F:Google.Apis.Oauth2.v2.Oauth2Service.Scope.UserinfoEmail">
+            <summary>View your email address</summary>
+        </member>
+        <member name="F:Google.Apis.Oauth2.v2.Oauth2Service.Scope.UserinfoProfile">
+            <summary>View your basic profile info</summary>
+        </member>
+        <member name="M:Google.Apis.Oauth2.v2.Oauth2Service.GetCertForOpenIdConnectRequest.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new GetCertForOpenIdConnect request.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2Service.GetCertForOpenIdConnectRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2Service.GetCertForOpenIdConnectRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2Service.GetCertForOpenIdConnectRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Oauth2.v2.Oauth2Service.GetCertForOpenIdConnectRequest.InitParameters">
+            <summary>Initializes GetCertForOpenIdConnect parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Oauth2.v2.Oauth2Service.TokeninfoRequest.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new Tokeninfo request.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2Service.TokeninfoRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2Service.TokeninfoRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2Service.TokeninfoRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Oauth2.v2.Oauth2Service.TokeninfoRequest.InitParameters">
+            <summary>Initializes Tokeninfo parameter list.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2Service.Userinfo">
+            <summary>Gets the Userinfo resource.</summary>
+        </member>
+        <member name="T:Google.Apis.Oauth2.v2.Oauth2BaseServiceRequest`1">
+            <summary>A base abstract class for Oauth2 requests.</summary>
+        </member>
+        <member name="M:Google.Apis.Oauth2.v2.Oauth2BaseServiceRequest`1.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new Oauth2BaseServiceRequest instance.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2BaseServiceRequest`1.Alt">
+            <summary>Data format for the response.</summary>
+            [default: json]
+        </member>
+        <member name="T:Google.Apis.Oauth2.v2.Oauth2BaseServiceRequest`1.AltEnum">
+            <summary>Data format for the response.</summary>
+        </member>
+        <member name="F:Google.Apis.Oauth2.v2.Oauth2BaseServiceRequest`1.AltEnum.Json">
+            <summary>Responses with Content-Type of application/json</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2BaseServiceRequest`1.Fields">
+            <summary>Selector specifying which fields to include in a partial response.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2BaseServiceRequest`1.Key">
+            <summary>API key. Your API key identifies your project and provides you with API access, quota, and reports.
+            Required unless you provide an OAuth 2.0 token.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2BaseServiceRequest`1.OauthToken">
+            <summary>OAuth 2.0 token for the current user.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2BaseServiceRequest`1.PrettyPrint">
+            <summary>Returns response with indentations and line breaks.</summary>
+            [default: true]
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2BaseServiceRequest`1.QuotaUser">
+            <summary>Available to use for quota purposes for server-side applications. Can be any arbitrary string
+            assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Oauth2BaseServiceRequest`1.UserIp">
+            <summary>IP address of the site where the request originates. Use this if you want to enforce per-user
+            limits.</summary>
+        </member>
+        <member name="M:Google.Apis.Oauth2.v2.Oauth2BaseServiceRequest`1.InitParameters">
+            <summary>Initializes Oauth2 parameter list.</summary>
+        </member>
+        <member name="T:Google.Apis.Oauth2.v2.UserinfoResource">
+            <summary>The "userinfo" collection of methods.</summary>
+        </member>
+        <member name="F:Google.Apis.Oauth2.v2.UserinfoResource.service">
+            <summary>The service which this resource belongs to.</summary>
+        </member>
+        <member name="M:Google.Apis.Oauth2.v2.UserinfoResource.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.UserinfoResource.V2">
+            <summary>Gets the V2 resource.</summary>
+        </member>
+        <member name="T:Google.Apis.Oauth2.v2.UserinfoResource.V2Resource">
+            <summary>The "v2" collection of methods.</summary>
+        </member>
+        <member name="F:Google.Apis.Oauth2.v2.UserinfoResource.V2Resource.service">
+            <summary>The service which this resource belongs to.</summary>
+        </member>
+        <member name="M:Google.Apis.Oauth2.v2.UserinfoResource.V2Resource.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.UserinfoResource.V2Resource.Me">
+            <summary>Gets the Me resource.</summary>
+        </member>
+        <member name="T:Google.Apis.Oauth2.v2.UserinfoResource.V2Resource.MeResource">
+            <summary>The "me" collection of methods.</summary>
+        </member>
+        <member name="F:Google.Apis.Oauth2.v2.UserinfoResource.V2Resource.MeResource.service">
+            <summary>The service which this resource belongs to.</summary>
+        </member>
+        <member name="M:Google.Apis.Oauth2.v2.UserinfoResource.V2Resource.MeResource.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new resource.</summary>
+        </member>
+        <member name="M:Google.Apis.Oauth2.v2.UserinfoResource.V2Resource.MeResource.GetRequest.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new Get request.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.UserinfoResource.V2Resource.MeResource.GetRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.UserinfoResource.V2Resource.MeResource.GetRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.UserinfoResource.V2Resource.MeResource.GetRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Oauth2.v2.UserinfoResource.V2Resource.MeResource.GetRequest.InitParameters">
+            <summary>Initializes Get parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Oauth2.v2.UserinfoResource.GetRequest.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new Get request.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.UserinfoResource.GetRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.UserinfoResource.GetRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.UserinfoResource.GetRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Oauth2.v2.UserinfoResource.GetRequest.InitParameters">
+            <summary>Initializes Get parameter list.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Jwk.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Tokeninfo.AccessType">
+            <summary>The access type granted with this token. It can be offline or online.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Tokeninfo.Audience">
+            <summary>Who is the intended audience for this token. In general the same as issued_to.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Tokeninfo.Email">
+            <summary>The email address of the user. Present only if the email scope is present in the request.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Tokeninfo.ExpiresIn">
+            <summary>The expiry time of the token, as number of seconds left until expiry.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Tokeninfo.IssuedTo">
+            <summary>To whom was the token issued to. In general the same as audience.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Tokeninfo.Scope">
+            <summary>The space separated list of scopes granted to this token.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Tokeninfo.TokenHandle">
+            <summary>The token handle associated with this token.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Tokeninfo.UserId">
+            <summary>The obfuscated user id.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Tokeninfo.VerifiedEmail">
+            <summary>Boolean flag which is true if the email address is verified. Present only if the email scope is
+            present in the request.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Tokeninfo.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Userinfoplus.Email">
+            <summary>The user's email address.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Userinfoplus.FamilyName">
+            <summary>The user's last name.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Userinfoplus.Gender">
+            <summary>The user's gender.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Userinfoplus.GivenName">
+            <summary>The user's first name.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Userinfoplus.Hd">
+            <summary>The hosted domain e.g. example.com if the user is Google apps user.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Userinfoplus.Id">
+            <summary>The obfuscated ID of the user.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Userinfoplus.Link">
+            <summary>URL of the profile page.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Userinfoplus.Locale">
+            <summary>The user's preferred locale.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Userinfoplus.Name">
+            <summary>The user's full name.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Userinfoplus.Picture">
+            <summary>URL of the user's picture image.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Userinfoplus.VerifiedEmail">
+            <summary>Boolean flag which is true if the email address is verified. Always verified because we only return
+            the user's primary email address.</summary>
+        </member>
+        <member name="P:Google.Apis.Oauth2.v2.Data.Userinfoplus.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+    </members>
+</doc>
