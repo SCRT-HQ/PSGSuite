@@ -20,7 +20,7 @@ $com = "URL"
 Get-ChildItem .\PSGSuite2\Public\TODO -Filter "*$com*" | Move-Item -Destination .\PSGSuite2\Public\WIP
 
 #>
-
+d
 @(
     @{
         ConfigName             = "pnmac"
