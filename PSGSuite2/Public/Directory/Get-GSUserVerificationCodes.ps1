@@ -18,6 +18,13 @@
     Process {
         try {
             foreach ($U in $User) {
+                if ($U -ceq 'me') {
+                    $U = $Script:PSGSuite.AdminEmail
+                }
+                elseif ($U -notlike "*@*.*") {
+                    $U = "$($U)@$($Script:PSGSuite.Domain)"
+                }
+                Write-Verbose "Getting Verification Code list for User '$U'"
                 $request = $service.VerificationCodes.List($U)
                 $request.Execute() | Select-Object -ExpandProperty Items | Select-Object @{N = "User";E = {$U}},*
             }

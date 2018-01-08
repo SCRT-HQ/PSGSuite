@@ -1,6 +1,5 @@
 ﻿function Switch-PSGSuiteConfig {
     [CmdletBinding(DefaultParameterSetName = "ConfigName")]
-    [Alias("Switch-PSGSuiteDomain")]
     Param
     (
         [parameter(Mandatory = $true,Position = 0,ParameterSetName = "ConfigName")]
@@ -16,10 +15,18 @@
         $SetToDefault
     )
     if ($script:PSGSuite.Domain -eq $Domain) {
-        Write-Warning "Current config is already set to domain '$Domain'. If you would like to import a different config for the same domain, please use the -ConfigName parameter instead"
+        Write-Verbose "Current config is already set to domain '$Domain' --- retaining current config. If you would like to import a different config for the same domain, please use the -ConfigName parameter instead"
+        if ($SetToDefault) {
+            Write-Verbose "Setting config name '$($script:PSGSuite.ConfigName)' for domain '$($script:PSGSuite.Domain)' as default"
+            Set-PSGSuiteConfig -ConfigName $($script:PSGSuite.ConfigName) -SetAsDefaultConfig -Verbose:$false
+        }
     }
     elseif ($script:PSGSuite.ConfigName -eq $ConfigName) {
-        Write-Warning "Current config is already set to '$ConfigName' --- no action taken"
+        Write-Verbose "Current config is already set to '$ConfigName' --- retaining current config"
+        if ($SetToDefault) {
+            Write-Verbose "Setting config name '$($script:PSGSuite.ConfigName)' for domain '$($script:PSGSuite.Domain)' as default"
+            Set-PSGSuiteConfig -ConfigName $($script:PSGSuite.ConfigName) -SetAsDefaultConfig -Verbose:$false
+        }
     }
     else {
         function Decrypt {
@@ -50,7 +57,6 @@
                 Select-Object -Property @{l = 'ConfigName';e = {$choice}},
                                         @{l = 'P12KeyPath';e = {Decrypt $_.P12KeyPath}},
                                         @{l = 'ClientSecretsPath';e = {Decrypt $_.ClientSecretsPath}},
-                                        @{l = 'ClientSecrets';e = {Decrypt $_.ClientSecrets}},
                                         @{l = 'AppEmail';e = {Decrypt $_.AppEmail}},
                                         @{l = 'AdminEmail';e = {Decrypt $_.AdminEmail}},
                                         @{l = 'CustomerID';e = {Decrypt $_.CustomerID}},

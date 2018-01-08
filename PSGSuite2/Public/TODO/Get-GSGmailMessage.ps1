@@ -1,5 +1,4 @@
 function Get-GSGmailMessage {
-    [Alias("Get-GmailMessage","Get-GSGmailMessageInfo")]
     [cmdletbinding(DefaultParameterSetName="Format")]
     Param
     (

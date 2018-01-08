@@ -18,10 +18,13 @@
     Process {
         try {
             foreach ($U in $User) {
-                if ($U -notlike "*@*.*") {
+                if ($U -ceq 'me') {
+                    $U = $Script:PSGSuite.AdminEmail
+                }
+                elseif ($U -notlike "*@*.*") {
                     $U = "$($U)@$($Script:PSGSuite.Domain)"
                 }
-                Write-Verbose "Listing tokens for user '$U'"
+                Write-Verbose "Getting Token list for User '$U'"
                 $request = $service.Tokens.List($U)
                 $request.Execute() | Select-Object -ExpandProperty Items | Select-Object @{N = "User";E = {$U}},*
             }

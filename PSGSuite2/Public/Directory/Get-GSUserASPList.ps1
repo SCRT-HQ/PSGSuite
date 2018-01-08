@@ -18,9 +18,13 @@
     Process {
         try {
             foreach ($U in $User) {
-                if ($U -notlike "*@*.*") {
+                if ($U -ceq 'me') {
+                    $U = $Script:PSGSuite.AdminEmail
+                }
+                elseif ($U -notlike "*@*.*") {
                     $U = "$($U)@$($Script:PSGSuite.Domain)"
                 }
+                Write-Verbose "Getting ASP list for User '$U'"
                 $request = $service.Asps.List($U)
                 $request.Execute() | Select-Object -ExpandProperty Items | Select-Object @{N = "User";E = {$U}},*
             }

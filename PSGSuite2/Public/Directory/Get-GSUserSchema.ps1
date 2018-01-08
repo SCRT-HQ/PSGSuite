@@ -1,6 +1,5 @@
 function Get-GSUserSchema {
     [cmdletbinding()]
-    [Alias('Get-GSUserSchemaInfo')]
     Param
     (
         [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]

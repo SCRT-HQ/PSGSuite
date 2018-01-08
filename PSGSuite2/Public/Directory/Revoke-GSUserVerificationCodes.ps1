@@ -18,7 +18,10 @@ function Revoke-GSUserVerificationCodes {
     Process {
         try {
             foreach ($U in $User) {
-                if ($U -notlike "*@*.*") {
+                if ($U -ceq 'me') {
+                    $U = $Script:PSGSuite.AdminEmail
+                }
+                elseif ($U -notlike "*@*.*") {
                     $U = "$($U)@$($Script:PSGSuite.Domain)"
                 }
                 Write-Verbose "Invalidating verification codes for user '$U'"

@@ -94,16 +94,16 @@ function Get-GSUserList {
                 }
                 $Filter = $Filter -replace " -eq ","=" -replace " -like ",":" -replace " -match ",":" -replace " -contains ",":" -creplace "'True'","True" -creplace "'False'","False"
                 $request.Query = $Filter.Trim()
-                Write-Verbose "Getting G Suite users matching filter: `"$($Filter.Trim())`""
+                Write-Verbose "Getting Users matching filter: `"$($Filter.Trim())`""
             }
             else {
-                Write-Verbose "Getting all G Suite users"
+                Write-Verbose "Getting all Users"
             }
             $response = @()
             [int]$i = 1
             do {
-                $result = $request.Execute() | Select-Object @{N = "User";E = {$_.PrimaryEmail}},*
-                $response += $result.UsersValue
+                $result = $request.Execute()
+                $response += $result.UsersValue | Select-Object @{N = "User";E = {$_.PrimaryEmail}},*
                 $request.PageToken = $result.NextPageToken
                 [int]$retrieved = ($i + $result.UsersValue.Count) - 1
                 Write-Verbose "Retrieved $retrieved users..."

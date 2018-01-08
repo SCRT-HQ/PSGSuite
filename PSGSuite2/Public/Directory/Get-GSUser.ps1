@@ -64,9 +64,13 @@ function Get-GSUser {
             switch ($PSCmdlet.ParameterSetName) {
                 Get {
                     foreach ($U in $User) {
-                        if ($U -notlike "*@*.*") {
+                        if ($U -ceq 'me') {
+                            $U = $Script:PSGSuite.AdminEmail
+                        }
+                        elseif ($U -notlike "*@*.*") {
                             $U = "$($U)@$($Script:PSGSuite.Domain)"
                         }
+                        Write-Verbose "Getting User '$U'"
                         $request = $service.Users.Get($U)
                         $request.Projection = $Projection
                         $request.ViewType = ($ViewType -replace '_','')
@@ -74,7 +78,7 @@ function Get-GSUser {
                             $request.CustomFieldMask = $CustomFieldMask
                         }
                         if ($Fields) {
-                            $request.Fields = $Fields
+                            $request.Fields = "$($Fields -join ", ")"
                         }
                         $request.Execute() | Select-Object @{N = "User";E = {$_.PrimaryEmail}},*
                     }

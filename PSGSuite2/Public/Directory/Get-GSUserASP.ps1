@@ -24,7 +24,14 @@
     Process {
         try {
             foreach ($U in $User) {
+                if ($U -ceq 'me') {
+                    $U = $Script:PSGSuite.AdminEmail
+                }
+                elseif ($U -notlike "*@*.*") {
+                    $U = "$($U)@$($Script:PSGSuite.Domain)"
+                }
                 if ($PSBoundParameters.Keys -contains 'CodeId') {
+                    Write-Verbose "Getting ASP '$CodeId' for User '$U'"
                     $request = $service.Asps.Get($U,$CodeId)
                     $request.Execute() | Select-Object @{N = "User";E = {$U}},*
                 }

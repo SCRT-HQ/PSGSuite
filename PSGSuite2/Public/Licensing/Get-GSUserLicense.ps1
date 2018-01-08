@@ -1,6 +1,5 @@
 function Get-GSUserLicense {
     [cmdletbinding()]
-    [Alias("Get-GSUserLicenseInfo")]
     Param
     (
         [parameter(Mandatory = $false,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
@@ -43,11 +42,14 @@ function Get-GSUserLicense {
     Process {
         try {
             foreach ($U in $User) {
-                if ($U -notlike "*@*.*") {
+                if ($U -ceq 'me') {
+                    $U = $Script:PSGSuite.AdminEmail
+                }
+                elseif ($U -notlike "*@*.*") {
                     $U = "$($U)@$($Script:PSGSuite.Domain)"
                 }
                 if ($License) {
-                    Write-Verbose "Checking $U for $License license"
+                    Write-Verbose "Getting License SKU '$License' for User '$U'"
                     if ($License -eq "G-Suite-Enterprise") {
                         $License = "1010020020"
                     }
@@ -56,7 +58,7 @@ function Get-GSUserLicense {
                 }
                 else {
                     foreach ($license in (@("G-Suite-Enterprise","Google-Apps-Unlimited","Google-Apps-For-Business","Google-Apps-For-Postini","Google-Apps-Lite","Google-Drive-storage-20GB","Google-Drive-storage-50GB","Google-Drive-storage-200GB","Google-Drive-storage-400GB","Google-Drive-storage-1TB","Google-Drive-storage-2TB","Google-Drive-storage-4TB","Google-Drive-storage-8TB","Google-Drive-storage-16TB","Google-Vault","Google-Vault-Former-Employee") | Sort-Object)) {
-                        Write-Verbose "Checking $U for $License license"
+                        Write-Verbose "Getting License SKU '$License' for User '$U'"
                         if ($License -eq "G-Suite-Enterprise") {
                             $License = "1010020020"
                         }

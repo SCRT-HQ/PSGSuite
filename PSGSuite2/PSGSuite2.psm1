@@ -41,6 +41,23 @@ foreach ($file in @($Public + $Private)) {
 
 Import-GoogleSDK
 
+$aliasHash = @{
+    'Get-GSCalendarResourceList' = 'Get-GSResourceList'
+    'Switch-PSGSuiteDomain'      = 'Switch-PSGSuiteConfig'
+    'Get-GSOrgUnitList'          = 'Get-GSOrganizationalUnitList'
+    'Get-GSUserSchemaInfo'       = 'Get-GSUserSchema'
+    'Get-GSUserLicenseInfo'      = 'Get-GSUserLicense'
+    'Get-GSGmailMessageInfo'     = 'Get-GmailMessage'
+}
+foreach ($key in $aliasHash.Keys) {
+    try {
+        Set-Alias -Name $key -Value $aliasHash[$key] -Force
+    }
+    catch {
+        Write-Error "[ALIAS: $($key)] $($_.Exception.Message.ToString())"
+    }
+}
+
 if (!(Test-Path (Join-Path "~" ".scrthq"))) {
     New-Item -Path (Join-Path "~" ".scrthq") -ItemType Directory -Force | Out-Null
 }
@@ -118,5 +135,5 @@ catch {
     Write-Warning "There was no config returned! Please make sure you are using the correct key or have a configuration already saved."
 }
 finally {
-    Export-ModuleMember -Function ($Public.Basename + $Private.Basename)
+    Export-ModuleMember -Function ($Public.Basename + $Private.Basename) -Alias *
 }

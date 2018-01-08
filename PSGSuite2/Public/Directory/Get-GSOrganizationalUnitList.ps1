@@ -10,10 +10,8 @@ function Get-GSOrganizationalUnitList {
     Get-GSGSOrganizationalUnitList
     #>
     [cmdletbinding()]
-    [Alias('Get-GSOrgUnitList')]
     Param
     (
-      
         [parameter(Mandatory = $false,Position = 0)]
         [Alias('SearchBase','BaseOrgUnitPath')]
         [String]

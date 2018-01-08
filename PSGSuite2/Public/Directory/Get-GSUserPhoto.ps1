@@ -18,10 +18,13 @@ function Get-GSUserPhoto {
     Process {
         try {
             foreach ($U in $User) {
-                if ($U -notlike "*@*.*") {
+                if ($U -ceq 'me') {
+                    $U = $Script:PSGSuite.AdminEmail
+                }
+                elseif ($U -notlike "*@*.*") {
                     $U = "$($U)@$($Script:PSGSuite.Domain)"
                 }
-                Write-Verbose "Getting photo for user '$U'"
+                Write-Verbose "Getting photo for User '$U'"
                 $request = $service.Users.Photos.Get($U)
                 $request.Execute() | Select-Object @{N = "User";E = {$U}},*
             }
