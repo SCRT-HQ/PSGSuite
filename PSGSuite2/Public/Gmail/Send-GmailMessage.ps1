@@ -9,10 +9,10 @@
         [parameter(Mandatory = $true)]
         [string]
         $Subject,
-        [parameter(Mandatory = $true)]
+        [parameter(Mandatory = $false)]
         [string]
         $Body,
-        [parameter(Mandatory = $true)]
+        [parameter(Mandatory = $false)]
         [string[]]
         $To,
         [parameter(Mandatory = $false)]
@@ -30,26 +30,31 @@
         $BodyAsHtml
     )
     Process {
-        if ($From -ceq 'me') {
-            $From = $Script:PSGSuite.AdminEmail
+        $User = $From -replace ".*<","" -replace ">",""
+        if ($User -ceq 'me') {
+            $User = $Script:PSGSuite.AdminEmail
+            $From = $User
         }
-        elseif ($From -notlike "*@*.*") {
-            $From = "$($From)@$($Script:PSGSuite.Domain)"
+        elseif ($User -notlike "*@*.*") {
+            $User = "$($User)@$($Script:PSGSuite.Domain)"
+            $From = $User
         }
         $serviceParams = @{
             Scope       = 'https://mail.google.com'
             ServiceType = 'Google.Apis.Gmail.v1.GmailService'
-            User        = $From
+            User        = $User
         }
         $service = New-GoogleService @serviceParams
         $messageParams = @{
             From                     = $From
             Subject                  = $Subject
-            Body                     = $Body
             ReturnConstructedMessage = $true
         }
         if ($To) {
             $messageParams.Add("To",@($To))
+        }
+        if ($Body) {
+            $messageParams.Add("Body",@($Body))
         }
         if ($CC) {
             $messageParams.Add("CC",@($CC))
@@ -65,12 +70,12 @@
         }
         $raw = New-MimeMessage @messageParams | Convert-Base64 -From NormalString -To WebSafeBase64String
         try {
-            $body = New-Object 'Google.Apis.Gmail.v1.Data.Message' -Property @{
+            $bodySend = New-Object 'Google.Apis.Gmail.v1.Data.Message' -Property @{
                 Raw = $raw
             }
-            $request = $service.Users.Messages.Send($body,"$From")
-            Write-Verbose "Sending Message '$Subject' from user '$From'"
-            $request.Execute() | Select-Object @{N = 'User';E = {$From}},*
+            $request = $service.Users.Messages.Send($bodySend,$User)
+            Write-Verbose "Sending Message '$Subject' from user '$User'"
+            $request.Execute() | Select-Object @{N = 'User';E = {$User}},*
         }
         catch {
             $PSCmdlet.ThrowTerminatingError($_)
