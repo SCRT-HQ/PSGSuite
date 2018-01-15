@@ -54,7 +54,7 @@ In order to use this module, you''ll need to have the following:
 '
 
 # Minimum version of the Windows PowerShell engine required by this module
-PowerShellVersion = '3.0'
+PowerShellVersion = '5.1'
 
 # Compatible PowerShell editions
 CompatiblePSEditions = 'Desktop','Core'
