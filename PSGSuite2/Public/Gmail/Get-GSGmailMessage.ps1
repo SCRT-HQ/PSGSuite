@@ -2,13 +2,13 @@ function Get-GSGmailMessage {
     [cmdletbinding(DefaultParameterSetName = "Format")]
     Param
     (
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [string]
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
-        [Alias('Id')]
+        [Alias('MessageId')]
         [String[]]
-        $MessageID,
+        $Id,
         [parameter(Mandatory = $false,ParameterSetName = "ParseMessage")]
         [switch]
         $ParseMessage,
@@ -41,10 +41,10 @@ function Get-GSGmailMessage {
     }
     Process {
         try {
-            foreach ($id in $MessageID) {
-                $request = $service.Users.Messages.Get($User,$id)
+            foreach ($mId in $Id) {
+                $request = $service.Users.Messages.Get($User,$mId)
                 $request.Format = $Format
-                foreach ($key in $PSBoundParameters.Keys) {
+                foreach ($key in $PSBoundParameters.Keys | Where-Object {$_ -ne "Id"}) {
                     switch ($key) {
                         Default {
                             if ($request.PSObject.Properties.Name -contains $key) {
@@ -53,10 +53,10 @@ function Get-GSGmailMessage {
                         }
                     }
                 }
-                Write-Verbose "Getting Message Id '$id' for user '$User'"
+                Write-Verbose "Getting Message Id '$mId' for user '$User'"
                 $result = $request.Execute() | Select-Object @{N = 'User';E = {$User}},*
                 if ($ParseMessage) {
-                    $parsed = Read-MimeMessage -String $(Convert-Base64 -From WebSafeBase64String -To NormalString -String $result.Raw) | Select-Object @{N = "Id";E = {$result.Id}},@{N = "ThreadId";E = {$result.ThreadId}},@{N = "LabelIds";E = {$result.LabelIds}},@{N = "Snippet";E = {$result.Snippet}},@{N = "HistoryId";E = {$result.HistoryId}},@{N = "InternalDate";E = {$result.InternalDate}},@{N = "InternalDateConverted";E = {Convert-EpochToDate -EpochString $result.internalDate}},@{N = "SizeEstimate";E = {$result.SizeEstimate}},*
+                    $parsed = Read-MimeMessage -String $(Convert-Base64 -From WebSafeBase64String -To NormalString -String $result.Raw) | Select-Object @{N = 'User';E = {$User}},@{N = "Id";E = {$result.Id}},@{N = "ThreadId";E = {$result.ThreadId}},@{N = "LabelIds";E = {$result.LabelIds}},@{N = "Snippet";E = {$result.Snippet}},@{N = "HistoryId";E = {$result.HistoryId}},@{N = "InternalDate";E = {$result.InternalDate}},@{N = "InternalDateConverted";E = {Convert-EpochToDate -EpochString $result.internalDate}},@{N = "SizeEstimate";E = {$result.SizeEstimate}},*
                     if ($SaveAttachmentsTo) {
                         $resPath = Resolve-Path $SaveAttachmentsTo
                         $attachments = $parsed.Attachments

@@ -42,15 +42,17 @@ foreach ($file in @($Public + $Private)) {
 Import-GoogleSDK
 
 $aliasHash = @{
-    'Get-GSCalendarResourceList' = 'Get-GSResourceList'
-    'Switch-PSGSuiteDomain'      = 'Switch-PSGSuiteConfig'
-    'Get-GSOrgUnitList'          = 'Get-GSOrganizationalUnitList'
-    'Get-GSUserSchemaInfo'       = 'Get-GSUserSchema'
-    'Get-GSUserLicenseInfo'      = 'Get-GSUserLicense'
-    'Get-GSGmailMessageInfo'     = 'Get-GmailMessage'
-    'New-GSCalendarResource'     = 'New-GSResource'
-    'Update-GSCalendarResource'  = 'Update-GSResource'
-    'Get-GSShortURLInfo'         = 'Get-GSShortURL'
+    'Get-GSCalendarResourceList'     = 'Get-GSResourceList'
+    'Switch-PSGSuiteDomain'          = 'Switch-PSGSuiteConfig'
+    'Get-GSOrgUnitList'              = 'Get-GSOrganizationalUnitList'
+    'Get-GSUserSchemaInfo'           = 'Get-GSUserSchema'
+    'Get-GSUserLicenseInfo'          = 'Get-GSUserLicense'
+    'Get-GSGmailMessageInfo'         = 'Get-GmailMessage'
+    'New-GSCalendarResource'         = 'New-GSResource'
+    'Update-GSCalendarResource'      = 'Update-GSResource'
+    'Get-GSShortURLInfo'             = 'Get-GSShortURL'
+    'Move-GSGmailMessageToTrash'     = 'Remove-GSGmailMessage'
+    'Remove-GSGmailMessageFromTrash' = 'Restore-GSGmailMessage'
 }
 foreach ($key in $aliasHash.Keys) {
     try {

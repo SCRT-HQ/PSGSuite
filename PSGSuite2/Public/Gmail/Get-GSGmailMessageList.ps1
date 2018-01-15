@@ -2,7 +2,7 @@ function Get-GSGmailMessageList {
     [cmdletbinding()]
     Param
     (
-      [parameter(Mandatory=$false)]
+      [parameter(Mandatory=$false,ValueFromPipelineByPropertyName = $true)]
       [String[]]
       $User = $Script:PSGSuite.AdminEmail,
       [parameter(Mandatory=$false)]

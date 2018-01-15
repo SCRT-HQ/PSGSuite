@@ -56,9 +56,6 @@ In order to use this module, you''ll need to have the following:
 # Minimum version of the Windows PowerShell engine required by this module
 PowerShellVersion = '3.0'
 
-# Compatible PowerShell editions
-CompatiblePSEditions = 'Desktop','Core'
-
 # Name of the Windows PowerShell host required by this module
 # PowerShellHostName = ''
 
