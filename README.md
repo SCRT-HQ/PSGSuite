@@ -41,6 +41,8 @@ The module in **_this_ branch** is named `PSGSuite2`; this is a working module n
 
 ### Other Tasks
 
+- [ ] Update documentation
+- [ ] Build out ChangeLog to document any breaking changes
 - [ ] Update Pester Tests
 - [ ] Add in CI configuration for AppVeyor
     - [ ] Build out Travis CI tests for Linux/macOS?
