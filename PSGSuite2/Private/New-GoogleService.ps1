@@ -15,7 +15,7 @@ function New-GoogleService {
     Process {
         try {
             if ($script:PSGSuite.P12KeyPath) {
-                Write-Verbose "Building ServiceAccountCredential from P12Key"
+                Write-Verbose "Building ServiceAccountCredential from P12Key as user '$User'"
                 $certificate = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new((Resolve-Path $script:PSGSuite.P12KeyPath).Path,"notasecret",[System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
                 $credential = New-Object 'Google.Apis.Auth.OAuth2.ServiceAccountCredential' (New-Object 'Google.Apis.Auth.OAuth2.ServiceAccountCredential+Initializer' $script:PSGSuite.AppEmail -Property @{
                         User   = $User
@@ -24,7 +24,7 @@ function New-GoogleService {
                 ).FromCertificate($certificate)
             }
             elseif ($script:PSGSuite.ClientSecretsPath) {
-                Write-Verbose "Building UserCredentials from ClientSecrets"
+                Write-Verbose "Building UserCredentials from ClientSecrets as user '$User'"
                 $stream = New-Object System.IO.FileStream $script:PSGSuite.ClientSecretsPath,'Open','Read'
                 $credPath = Join-Path (Resolve-Path (Join-Path "~" ".scrthq")) "PSGSuite"
                 $credential = [Google.Apis.Auth.OAuth2.GoogleWebAuthorizationBroker]::AuthorizeAsync(

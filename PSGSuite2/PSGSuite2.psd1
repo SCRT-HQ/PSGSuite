@@ -75,7 +75,7 @@ CompatiblePSEditions = 'Desktop','Core'
 ProcessorArchitecture = 'None'
 
 # Modules that must be imported into the global environment prior to importing this module
-RequiredModules = @('Configuration')
+RequiredModules = @(@{ModuleName="Configuration";RequiredVersion="1.2.0"})
 
 # Assemblies that must be loaded prior to importing this module
 RequiredAssemblies = @()
