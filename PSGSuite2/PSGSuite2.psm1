@@ -48,6 +48,9 @@ $aliasHash = @{
     'Get-GSUserSchemaInfo'       = 'Get-GSUserSchema'
     'Get-GSUserLicenseInfo'      = 'Get-GSUserLicense'
     'Get-GSGmailMessageInfo'     = 'Get-GmailMessage'
+    'New-GSCalendarResource'     = 'New-GSResource'
+    'Update-GSCalendarResource'  = 'Update-GSResource'
+    'Get-GSShortURLInfo'         = 'Get-GSShortURL'
 }
 foreach ($key in $aliasHash.Keys) {
     try {

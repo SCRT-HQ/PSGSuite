@@ -37,7 +37,7 @@ function Get-GSResourceList {
     Process {
         try {
             foreach ($R in $Resource) {
-                $request = $service.Resources.$R.List($(if ($Script:PSGSuite.CustomerID) {$Script:PSGSuite.CustomerID}else {'my_customer'}))
+                $request = $service.Resources.$R.List($(if($Script:PSGSuite.CustomerID) {$Script:PSGSuite.CustomerID}else {'my_customer'}))
                 if ($R -eq 'Calendars') {
                     if ($PageSize) {
                         $request.MaxResults = $PageSize

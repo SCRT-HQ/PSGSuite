@@ -64,6 +64,12 @@ function Update-GSUser {
     }
     Process {
         try {
+            if ($User -ceq 'me') {
+                $User = $Script:PSGSuite.AdminEmail
+            }
+            elseif ($User -notlike "*@*.*") {
+                $User = "$($User)@$($Script:PSGSuite.Domain)"
+            }
             Write-Verbose "Updating user '$User'"
             $userObj = Get-GSUser $User -Verbose:$false
             $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.User'

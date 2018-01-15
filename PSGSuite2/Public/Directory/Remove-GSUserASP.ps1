@@ -23,7 +23,10 @@
     Process {
         try {
             foreach ($U in $User) {
-                if ($U -notlike "*@*.*") {
+                if ($U -ceq 'me') {
+                    $U = $Script:PSGSuite.AdminEmail
+                }
+                elseif ($U -notlike "*@*.*") {
                     $U = "$($U)@$($Script:PSGSuite.Domain)"
                 }
                 if ($PSBoundParameters.Keys -contains 'CodeId') {

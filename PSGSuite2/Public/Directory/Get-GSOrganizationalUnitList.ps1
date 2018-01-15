@@ -31,7 +31,7 @@ function Get-GSOrganizationalUnitList {
     }
     Process {
         try {
-            Write-Verbose "Getting Organizational Units"
+            Write-Verbose "Getting all Organizational Units"
             $request = $service.Orgunits.List($Script:PSGSuite.CustomerId)
             $request.Type = $Type
             if ($OrgUnitPath) {

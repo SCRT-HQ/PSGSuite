@@ -12,7 +12,7 @@
 RootModule = 'PSGSuite2.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.1.0'
+ModuleVersion = '2.0.0'
 
 # ID used to uniquely identify this module
 GUID = 'a3292ed8-2709-4b4b-b13d-85c6b02984f8'
@@ -51,19 +51,13 @@ In order to use this module, you''ll need to have the following:
 	� This is useful if you have a lot of recurring commands that leverage the same admin and scope(s) so you do not overrun the user API call quota, i.e. pulling info for a large set of emails in a user''s inbox.
 � If the access token is not pre-acquired, then the P12KeyPath, AppEmail, AdminEmail, CustomerID, and Domain parameters will default to reading from the PSGSuite config file (these can also be named in each function call, if preferred).
 � If you plan on using this module on multiple computers or between multiple accounts on the same computer, you will need a new PSGoogle config created for each computer / user account pair.
-
-
-
-~~ Credits ~~
-
-� Handling the Service Account OAuth procedure in Powershell:
-	� http://www.thingsthatmademeangry.com/2014/11/google-apps-oauth2-service-account.html
-
-� Initial expoloration into Google Apps management via command line:
-	� https://github.com/jay0lee/GAM (thank you for all of your help along the way Jay & Ross!)'
+'
 
 # Minimum version of the Windows PowerShell engine required by this module
 PowerShellVersion = '3.0'
+
+# Compatible PowerShell editions
+CompatiblePSEditions = 'Desktop','Core'
 
 # Name of the Windows PowerShell host required by this module
 # PowerShellHostName = ''
@@ -125,13 +119,13 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        Tags = 'Google','GSuite','Apps','G','Suite','REST','API','Admin','PSModule','Directory','User','Goo.gl'
+        Tags = 'Google','GSuite','Apps','G','Suite','REST','API','Admin','PSModule','Directory','User','Goo.gl','PSEdition_Core'
 
         # A URL to the license for this module.
         # LicenseUri = ''
 
         # A URL to the main website for this project.
-        ProjectUri = 'https://github.com/nferrell/PSGSuite2'
+        ProjectUri = 'https://github.com/nferrell/PSGSuite'
 
         # A URL to an icon representing this module.
         IconUri = 'http://centerlyne.com/wp-content/uploads/2016/10/Google_-G-_Logo.svg_.png'
@@ -147,7 +141,7 @@ PrivateData = @{
  } # End of PrivateData hashtable
 
 # HelpInfo URI of this module
-HelpInfoURI = 'https://github.com/nferrell/PSGSuite2/wiki'
+HelpInfoURI = 'https://github.com/nferrell/PSGSuite/wiki'
 
 # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
 # DefaultCommandPrefix = ''
