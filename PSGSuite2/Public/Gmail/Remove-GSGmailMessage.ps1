@@ -3,6 +3,7 @@ function Remove-GSGmailMessage {
     Param
     (
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [Alias("PrimaryEmail","UserKey","Mail")]
         [string]
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]

@@ -9,35 +9,35 @@ The module in **_this_ branch** is named `PSGSuite2`; this is a working module n
 
 ### Functions To Convert/Build
 
-| Function                       | Conversion | New      | Complete |
-| :----------------------------: | :--------: | :------: | :------: |
-| Add-GSGmailDelegate            | &#x2714;   |          | &#x274C; |
-| Add-GSGmailFilter              | &#x2714;   |          | &#x274C; |
-| Get-GSGmailDelegates           | &#x2714;   |          | &#x274C; |
-| Get-GSGmailFilterList          | &#x2714;   |          | &#x274C; |
-| Get-GSGmailLabelList           | &#x2714;   |          | &#x274C; |
-| Remove-GSGmailDelegate         | &#x2714;   |          | &#x274C; |
-| Remove-GSGmailFilter           | &#x2714;   |          | &#x274C; |
-| Add-GSDriveFilePermissions     | &#x2714;   |          | &#x274C; |
-| Clear-GSSheet                  | &#x2714;   |          | &#x274C; |
-| Copy-GSDriveFile               | &#x2714;   |          | &#x274C; |
-| Copy-GSSheet                   | &#x2714;   |          | &#x274C; |
-| Get-GSDriveFile                | &#x2714;   |          | &#x274C; |
-| Get-GSDriveFileInfo            | &#x2714;   |          | &#x274C; |
-| Get-GSDriveFileList            | &#x2714;   |          | &#x274C; |
-| Get-GSDriveFilePermissionsList | &#x2714;   |          | &#x274C; |
-| Get-GSSheetInfo                | &#x2714;   |          | &#x274C; |
-| Get-GSTeamDrive                | &#x2714;   |          | &#x274C; |
-| Get-GSTeamDrivesList           | &#x2714;   |          | &#x274C; |
-| Import-GSSheet                 | &#x2714;   |          | &#x274C; |
-| New-GSDriveFile                | &#x2714;   |          | &#x274C; |
-| New-GSSheet                    | &#x2714;   |          | &#x274C; |
-| New-GSTeamDrive                | &#x2714;   |          | &#x274C; |
-| Remove-GSTeamDrive             | &#x2714;   |          | &#x274C; |
-| Update-GSDriveFile             | &#x2714;   |          | &#x274C; |
-| Update-GSSheetValue            | &#x2714;   |          | &#x274C; |
-| Update-GSTeamDrive             | &#x2714;   |          | &#x274C; |
-| Copy-ToGSDrive                 |            | &#x2714; | &#x274C; |
+| Function                       | Conversion | New   | Complete |
+| :----------------------------: | :--------: | :---: | :------: |
+| Add-GSGmailDelegate            | ✔️         |       | ❌       |
+| Add-GSGmailFilter              | ✔️         |       | ✔️       |
+| Get-GSGmailDelegates           | ✔️         |       | ❌       |
+| Get-GSGmailFilterList          | ✔️         |       | ❌       |
+| Get-GSGmailLabelList           | ✔️         |       | ❌       |
+| Remove-GSGmailDelegate         | ✔️         |       | ❌       |
+| Remove-GSGmailFilter           | ✔️         |       | ❌       |
+| Add-GSDriveFilePermissions     | ✔️         |       | ❌       |
+| Clear-GSSheet                  | ✔️         |       | ❌       |
+| Copy-GSDriveFile               | ✔️         |       | ❌       |
+| Copy-GSSheet                   | ✔️         |       | ❌       |
+| Get-GSDriveFile                | ✔️         |       | ❌       |
+| Get-GSDriveFileInfo            | ✔️         |       | ❌       |
+| Get-GSDriveFileList            | ✔️         |       | ❌       |
+| Get-GSDriveFilePermissionsList | ✔️         |       | ❌       |
+| Get-GSSheetInfo                | ✔️         |       | ❌       |
+| Get-GSTeamDrive                | ✔️         |       | ❌       |
+| Get-GSTeamDrivesList           | ✔️         |       | ❌       |
+| Import-GSSheet                 | ✔️         |       | ❌       |
+| New-GSDriveFile                | ✔️         |       | ❌       |
+| New-GSSheet                    | ✔️         |       | ❌       |
+| New-GSTeamDrive                | ✔️         |       | ❌       |
+| Remove-GSTeamDrive             | ✔️         |       | ❌       |
+| Update-GSDriveFile             | ✔️         |       | ❌       |
+| Update-GSSheetValue            | ✔️         |       | ❌       |
+| Update-GSTeamDrive             | ✔️         |       | ❌       |
+| Copy-ToGSDrive                 |            | ✔️    | ❌       |
 
 ### Other Tasks
 

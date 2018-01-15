@@ -3,6 +3,7 @@
     Param
     (
         [parameter(Mandatory = $false)]
+        [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [String]
         $From = $Script:PSGSuite.AdminEmail,
