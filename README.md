@@ -32,9 +32,9 @@ The module in **_this_ branch** is named `PSGSuite2`; this is a working module n
 | Get-GSTeamDrive                | ✔️         |       | ✏️       |
 | Get-GSTeamDrivesList           | ✔️         |       | ✏️       |
 | Import-GSSheet                 | ✔️         |       | ✏️       |
-| New-GSDriveFile                | ✔️         |       | ✏️       |
+| New-GSDriveFile                | ✔️         |       | ✔️       |
 | New-GSSheet                    | ✔️         |       | ✏️       |
-| New-GSTeamDrive                | ✔️         |       | ✏️       |
+| New-GSTeamDrive                | ✔️         |       | ✔️       |
 | Remove-GSTeamDrive             | ✔️         |       | ✏️       |
 | Update-GSDriveFile             | ✔️         |       | ✏️       |
 | Update-GSSheetValue            | ✔️         |       | ✏️       |
