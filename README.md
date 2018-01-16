@@ -14,7 +14,7 @@ The module in **_this_ branch** is named `PSGSuite2`; this is a working module n
 | Add-GSGmailDelegate            | ✔️         |       | ❌       |
 | Add-GSGmailFilter              | ✔️         |       | ✔️       |
 | Get-GSGmailDelegates           | ✔️         |       | ❌       |
-| Get-GSGmailFilterList          | ✔️         |       | ❌       |
+| Get-GSGmailFilterList          | ✔️         |       | ✔️       |
 | Get-GSGmailLabelList           | ✔️         |       | ❌       |
 | Remove-GSGmailDelegate         | ✔️         |       | ❌       |
 | Remove-GSGmailFilter           | ✔️         |       | ❌       |

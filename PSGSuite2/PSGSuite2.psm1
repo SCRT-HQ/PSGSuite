@@ -53,6 +53,7 @@ $aliasHash = @{
     'Get-GSShortURLInfo'             = 'Get-GSShortURL'
     'Move-GSGmailMessageToTrash'     = 'Remove-GSGmailMessage'
     'Remove-GSGmailMessageFromTrash' = 'Restore-GSGmailMessage'
+    'Get-GSGmailFilterList'          = 'Get-GSGmailFilter'
 }
 foreach ($key in $aliasHash.Keys) {
     try {
