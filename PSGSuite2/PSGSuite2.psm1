@@ -56,6 +56,7 @@ $aliasHash = @{
     'Get-GSGmailFilterList'          = 'Get-GSGmailFilter'
     'Get-GSGmailLabelList'           = 'Get-GSGmailLabel'
     'Get-GSDriveFileInfo'            = 'Get-GSDriveFile'
+    'Get-GSTeamDrivesList'           = 'Get-GSTeamDrive'
 }
 foreach ($key in $aliasHash.Keys) {
     try {
