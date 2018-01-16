@@ -9,35 +9,38 @@ The module in **_this_ branch** is named `PSGSuite2`; this is a working module n
 
 ### Functions To Convert/Build
 
+> _Possible breaking changes on Gmail Delegate functions due to Google deprecating the Email Settings API but still not supporting Inbox Delegation in the Gmail API_
+
 | Function                       | Conversion | New   | Complete |
 | :----------------------------: | :--------: | :---: | :------: |
-| Add-GSGmailDelegate            | ✔️         |       | ❌       |
+| Add-GSGmailDelegate*           | ✔️         |       | ❗️        |
 | Add-GSGmailFilter              | ✔️         |       | ✔️       |
-| Get-GSGmailDelegates           | ✔️         |       | ❌       |
+| Get-GSGmailDelegates*          | ✔️         |       | ❗️        |
 | Get-GSGmailFilterList          | ✔️         |       | ✔️       |
-| Get-GSGmailLabelList           | ✔️         |       | ❌       |
-| Remove-GSGmailDelegate         | ✔️         |       | ❌       |
-| Remove-GSGmailFilter           | ✔️         |       | ❌       |
-| Add-GSDriveFilePermissions     | ✔️         |       | ❌       |
-| Clear-GSSheet                  | ✔️         |       | ❌       |
-| Copy-GSDriveFile               | ✔️         |       | ❌       |
-| Copy-GSSheet                   | ✔️         |       | ❌       |
-| Get-GSDriveFile                | ✔️         |       | ❌       |
-| Get-GSDriveFileInfo            | ✔️         |       | ❌       |
-| Get-GSDriveFileList            | ✔️         |       | ❌       |
-| Get-GSDriveFilePermissionsList | ✔️         |       | ❌       |
-| Get-GSSheetInfo                | ✔️         |       | ❌       |
-| Get-GSTeamDrive                | ✔️         |       | ❌       |
-| Get-GSTeamDrivesList           | ✔️         |       | ❌       |
-| Import-GSSheet                 | ✔️         |       | ❌       |
-| New-GSDriveFile                | ✔️         |       | ❌       |
-| New-GSSheet                    | ✔️         |       | ❌       |
-| New-GSTeamDrive                | ✔️         |       | ❌       |
-| Remove-GSTeamDrive             | ✔️         |       | ❌       |
-| Update-GSDriveFile             | ✔️         |       | ❌       |
-| Update-GSSheetValue            | ✔️         |       | ❌       |
-| Update-GSTeamDrive             | ✔️         |       | ❌       |
-| Copy-ToGSDrive                 |            | ✔️    | ❌       |
+| Get-GSGmailLabelList           | ✔️         |       | ✔️       |
+| Remove-GSGmailDelegate*        | ✔️         |       | ❗️        |
+| Remove-GSGmailFilter           | ✔️         |       | ✔️       |
+| Add-GSDriveFilePermissions     | ✔️         |       | 🔳       |
+| Clear-GSSheet                  | ✔️         |       | 🔳       |
+| Copy-GSDriveFile               | ✔️         |       | 🔳       |
+| Copy-GSSheet                   | ✔️         |       | 🔳       |
+| Get-GSDriveFile                | ✔️         |       | 🔳       |
+| Get-GSDriveFileInfo            | ✔️         |       | 🔳       |
+| Get-GSDriveFileList            | ✔️         |       | 🔳       |
+| Get-GSDriveFilePermissionsList | ✔️         |       | 🔳       |
+| Get-GSSheetInfo                | ✔️         |       | 🔳       |
+| Get-GSTeamDrive                | ✔️         |       | 🔳       |
+| Get-GSTeamDrivesList           | ✔️         |       | 🔳       |
+| Import-GSSheet                 | ✔️         |       | 🔳       |
+| New-GSDriveFile                | ✔️         |       | 🔳       |
+| New-GSSheet                    | ✔️         |       | 🔳       |
+| New-GSTeamDrive                | ✔️         |       | 🔳       |
+| Remove-GSTeamDrive             | ✔️         |       | 🔳       |
+| Update-GSDriveFile             | ✔️         |       | 🔳       |
+| Update-GSSheetValue            | ✔️         |       | 🔳       |
+| Update-GSTeamDrive             | ✔️         |       | 🔳       |
+| Copy-ToGSDrive                 |            | ✔️    | 🔳       |
+
 
 ### Other Tasks
 
