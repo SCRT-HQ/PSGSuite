@@ -76,7 +76,8 @@ function Get-GSDriveFileList {
             foreach ($key in $PSBoundParameters.Keys) {
                 switch ($key) {
                     Filter {
-                        $request.Q = $($PSBoundParameters[$key] -join " ")
+                        $FilterFmt = $PSBoundParameters[$key] -replace " -eq ","=" -replace " -like ",":" -replace " -match ",":" -replace " -contains ",":" -creplace "'True'","True" -creplace "'False'","False" -replace " -in "," in " -replace " -le ",'<=' -replace " -ge ",">=" -replace " -gt ",'>' -replace " -lt ",'<' -replace " -ne ","!=" -replace " -and "," and " -replace " -or "," or " -replace " -not "," not "
+                        $request.Q = $($FilterFmt -join " ")
                     }
                     Spaces {
                         $request.$key = $($PSBoundParameters[$key] -join ",")

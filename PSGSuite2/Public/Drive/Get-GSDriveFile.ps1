@@ -4,7 +4,7 @@ function Get-GSDriveFile {
     (
         [parameter(Mandatory = $true,Position = 0)]
         [String[]]
-        $FileID,
+        $FileId,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [Alias('Owner','PrimaryEmail','UserKey','Mail')]
         [string]
@@ -52,7 +52,7 @@ function Get-GSDriveFile {
         $service = New-GoogleService @serviceParams
     }
     Process {
-        foreach ($file in $FileID) {
+        foreach ($file in $FileId) {
             $request = $service.Files.Get($file)
             $request.SupportsTeamDrives = $true
             if ($fs) {

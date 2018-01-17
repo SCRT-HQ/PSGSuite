@@ -11,9 +11,9 @@ function Get-GSTeamDrive {
         [string]
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
-        [ValidateScript( {[int]$_ -le 100})]
-        [Int]
-        $Query,
+        [Alias('Q','Query')]
+        [String]
+        $Filter,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [ValidateScript( {[int]$_ -le 100})]
         [Int]
@@ -46,6 +46,11 @@ function Get-GSTeamDrive {
                 List {
                     $request = $service.Teamdrives.List()
                     $request.PageSize = $PageSize
+                    if ($Filter) {
+                        $FilterFmt = $Filter -replace " -eq ","=" -replace " -like "," contains " -replace " -match "," contains " -replace " -contains "," contains " -creplace "'True'","True" -creplace "'False'","False" -replace " -in "," in " -replace " -le ",'<=' -replace " -ge ",">=" -replace " -gt ",'>' -replace " -lt ",'<' -replace " -ne ","!=" -replace " -and "," and " -replace " -or "," or " -replace " -not "," not "
+                        $request.UseDomainAdminAccess = $true
+                        $request.Q = $($FilterFmt -join " ")
+                    }
                     Write-Verbose "Getting Team Drives for user '$User'"
                     $request.Execute() | Select-Object -ExpandProperty TeamDrives | Select-Object @{N = "User";E = {$User}},*
                 }

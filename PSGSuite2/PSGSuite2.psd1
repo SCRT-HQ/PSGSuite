@@ -54,7 +54,7 @@ In order to use this module, you''ll need to have the following:
 '
 
 # Minimum version of the Windows PowerShell engine required by this module
-PowerShellVersion = '3.0'
+PowerShellVersion = '4.0'
 
 # Name of the Windows PowerShell host required by this module
 # PowerShellHostName = ''
@@ -72,7 +72,7 @@ PowerShellVersion = '3.0'
 ProcessorArchitecture = 'None'
 
 # Modules that must be imported into the global environment prior to importing this module
-RequiredModules = @(@{ModuleName="Configuration";RequiredVersion="1.2.0"})
+RequiredModules = @(@{ModuleName="Configuration";ModuleVersion="1.2.0"})
 
 # Assemblies that must be loaded prior to importing this module
 RequiredAssemblies = @()

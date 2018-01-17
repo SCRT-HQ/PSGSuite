@@ -4,7 +4,7 @@ function Update-GSTeamDrive {
     (
       [parameter(Mandatory=$true,Position=0)]
       [String]
-      $TeamDriveID,
+      $TeamDriveId,
       [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
       [Alias('Owner','PrimaryEmail','UserKey','Mail')]
       [string]
@@ -107,7 +107,7 @@ function Update-GSTeamDrive {
                 }
             }
             $body.Capabilities = $capabilities
-            $request = $service.Teamdrives.Update($body,$TeamDriveID)
+            $request = $service.Teamdrives.Update($body,$TeamDriveId)
             Write-Verbose "Updating Team Drive '$Name' for user '$User'"
             $request.Execute() | Select-Object @{N = "User";E = {$User}},*
         }

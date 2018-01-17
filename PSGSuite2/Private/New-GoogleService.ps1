@@ -16,7 +16,7 @@ function New-GoogleService {
         try {
             if ($script:PSGSuite.P12KeyPath) {
                 Write-Verbose "Building ServiceAccountCredential from P12Key as user '$User'"
-                $certificate = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new((Resolve-Path $script:PSGSuite.P12KeyPath).Path,"notasecret",[System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
+                $certificate = New-Object 'System.Security.Cryptography.X509Certificates.X509Certificate2' -ArgumentList (Resolve-Path $script:PSGSuite.P12KeyPath),"notasecret",([System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
                 $credential = New-Object 'Google.Apis.Auth.OAuth2.ServiceAccountCredential' (New-Object 'Google.Apis.Auth.OAuth2.ServiceAccountCredential+Initializer' $script:PSGSuite.AppEmail -Property @{
                         User   = $User
                         Scopes = [string[]]$Scope

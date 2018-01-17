@@ -12,7 +12,7 @@ function New-GSTeamDrive {
         [parameter(Mandatory = $false)]
         [ValidateNotNullOrEmpty()]
         [String]
-        $RequestID = (New-Guid).ToString('N'),
+        $RequestId = (New-Guid).ToString('N'),
         [parameter(Mandatory = $false)]
         [Switch]
         $CanAddChildren,
@@ -84,9 +84,9 @@ function New-GSTeamDrive {
                 }
             }
             $body.Capabilities = $capabilities
-            $request = $service.Teamdrives.Create($body,$RequestID)
+            $request = $service.Teamdrives.Create($body,$RequestId)
             Write-Verbose "Creating Team Drive '$Name' for user '$User'"
-            $request.Execute() | Select-Object @{N = "User";E = {$User}},@{N = "RequestId";E = {$RequestID}},*
+            $request.Execute() | Select-Object @{N = "User";E = {$User}},@{N = "RequestId";E = {$RequestId}},*
         }
         catch {
             $PSCmdlet.ThrowTerminatingError($_)

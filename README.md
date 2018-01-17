@@ -20,14 +20,14 @@ The module in **_this_ branch** is named `PSGSuite2`; this is a working module n
 | Get-GSGmailLabelList           | ✔️         |       | ✔️       |
 | Remove-GSGmailDelegate*        | ✔️         |       | ❗️        |
 | Remove-GSGmailFilter           | ✔️         |       | ✔️       |
-| Add-GSDriveFilePermissions     | ✔️         |       | ✏️       |
+| Add-GSDriveFilePermissions     | ✔️         |       | ✔️       |
 | Clear-GSSheet                  | ✔️         |       | ✏️       |
 | Copy-GSDriveFile               | ✔️         |       | ✔️       |
 | Copy-GSSheet                   | ✔️         |       | ✏️       |
 | Get-GSDriveFile                | ✔️         |       | ✔️       |
 | Get-GSDriveFileInfo            | ✔️         |       | ✔️       |
 | Get-GSDriveFileList            | ✔️         |       | ✔️       |
-| Get-GSDriveFilePermissionsList | ✔️         |       | ✏️       |
+| Get-GSDriveFilePermissionsList | ✔️         |       | ✔️       |
 | Get-GSSheetInfo                | ✔️         |       | ✏️       |
 | Get-GSTeamDrive                | ✔️         |       | ✔️       |
 | Get-GSTeamDrivesList           | ✔️         |       | ✔️       |
