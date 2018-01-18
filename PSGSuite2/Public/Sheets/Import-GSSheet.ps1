@@ -1,5 +1,5 @@
 function Import-GSSheet {
-    [cmdletbinding()]
+    [cmdletbinding(DefaultParameterSetName = "Import")]
     Param
     (      
         [parameter(Mandatory = $true)]
@@ -17,6 +17,12 @@ function Import-GSSheet {
         [Alias('SpecifyRange')]
         [string]
         $Range,
+        [parameter(Mandatory = $false,ParameterSetName = "Import")]
+        [int]
+        $RowStart = 1,
+        [parameter(Mandatory = $false,ParameterSetName = "Import")]
+        [string[]]
+        $Headers,
         [parameter(Mandatory = $false)]
         [ValidateSet("FORMATTED_STRING","SERIAL_NUMBER")]
         [string]
@@ -29,17 +35,11 @@ function Import-GSSheet {
         [ValidateSet("ROWS","COLUMNS","DIMENSION_UNSPECIFIED")]
         [string]
         $MajorDimension = "ROWS",
-        [parameter(Mandatory = $false)]
-        [int]
-        $RowStart = 1,
-        [parameter(Mandatory = $false)]
-        [string[]]
-        $Headers,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false,ParameterSetName = "Import")]
         [ValidateSet("DataRow","PSObject")]
         [string]
         $As = "PSObject",
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ParameterSetName = "Raw")]
         [switch]
         $Raw
     )
