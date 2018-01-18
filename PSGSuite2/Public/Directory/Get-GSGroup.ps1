@@ -39,7 +39,7 @@
                         Write-Verbose "Getting group '$G'"
                         $request = $service.Groups.Get($G)
                         if ($Fields) {
-                            $request.Fields = $Fields
+                            $request.Fields = "$($Fields -join ",")"
                         }
                         $request.Execute() | Select-Object @{N = "Group";E = {$_.Email}},*
                     }

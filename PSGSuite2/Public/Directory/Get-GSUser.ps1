@@ -78,7 +78,7 @@ function Get-GSUser {
                             $request.CustomFieldMask = $CustomFieldMask
                         }
                         if ($Fields) {
-                            $request.Fields = "$($Fields -join ", ")"
+                            $request.Fields = "$($Fields -join ",")"
                         }
                         $request.Execute() | Select-Object @{N = "User";E = {$_.PrimaryEmail}},*
                     }
