@@ -35,6 +35,10 @@ function Import-GSSheet {
         [parameter(Mandatory = $false)]
         [string[]]
         $Headers,
+        [Parameter(Mandatory = $false)]
+        [ValidateSet("DataRow","PSObject")]
+        [string]
+        $As = "PSObject",
         [parameter(Mandatory = $false)]
         [switch]
         $Raw
@@ -102,8 +106,23 @@ function Import-GSSheet {
                     }
                     $i++
                 }
-                Write-Verbose "Created DataTable object with $($i - 1) Rows"
-                $datatable
+                switch ($As) {
+                    DataRow {
+                        Write-Verbose "Created DataTable with $($i - 1) DataRows"
+                        $datatable
+                    }
+                    PSObject {
+                        Write-Verbose "Created PSObject array with $($i - 1) objects"
+                        foreach ($row in $datatable) {
+                            $obj = [Ordered]@{}
+                            $props = $row.Table.Columns.ColumnName
+                            foreach ($prop in $props) {
+                                $obj[$prop] = $row.$prop
+                            }
+                            [PSCustomObject]$obj
+                        }
+                    }
+                }
             }
             else {
                 $response | Select-Object @{N = 'User';E = {$User}},*
