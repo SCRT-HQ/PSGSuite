@@ -37,7 +37,7 @@ The module in **_this_ branch** is named `PSGSuite2`; this is a working module n
 | New-GSTeamDrive                | ✔️         |       | ✔️       |
 | Remove-GSTeamDrive             | ✔️         |       | ✔️       |
 | Update-GSDriveFile             | ✔️         |       | ✔️       |
-| Update-GSSheetValue            | ✔️         |       | ✏️       |
+| Update-GSSheetValue            | ✔️         |       | ✔️       |
 | Update-GSTeamDrive             | ✔️         |       | ✔️       |
 | Copy-ToGSDrive                 |            | ✔️    | ✏️       |
 

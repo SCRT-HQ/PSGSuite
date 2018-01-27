@@ -10,13 +10,13 @@ function Get-GSSheetInfo {
         [string]
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false)]
+        [String]
+        $SheetName,
+        [parameter(Mandatory = $false)]
         [ValidateNotNullOrEmpty()]
         [Alias('SpecifyRange')]
         [string]
         $Range,
-        [parameter(Mandatory = $false)]
-        [String]
-        $SheetName,
         [parameter(Mandatory = $false)]
         [Switch]
         $IncludeGridData,

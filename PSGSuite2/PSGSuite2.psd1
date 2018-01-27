@@ -8,26 +8,26 @@
 
 @{
 
-# Script module or binary module file associated with this manifest.
-RootModule = 'PSGSuite2.psm1'
+    # Script module or binary module file associated with this manifest.
+    RootModule            = 'PSGSuite2.psm1'
 
-# Version number of this module.
-ModuleVersion = '2.0.0'
+    # Version number of this module.
+    ModuleVersion         = '2.0.0'
 
-# ID used to uniquely identify this module
-GUID = 'a3292ed8-2709-4b4b-b13d-85c6b02984f8'
+    # ID used to uniquely identify this module
+    GUID                  = 'a3292ed8-2709-4b4b-b13d-85c6b02984f8'
 
-# Author of this module
-Author = 'Nate Ferrell'
+    # Author of this module
+    Author                = 'Nate Ferrell'
 
-# Company or vendor of this module
-CompanyName = 'SCRT HQ'
+    # Company or vendor of this module
+    CompanyName           = 'SCRT HQ'
 
-# Copyright statement for this module
-Copyright = '(c) SCRT HQ 2017 . All rights reserved.'
+    # Copyright statement for this module
+    Copyright             = '(c) SCRT HQ 2017 . All rights reserved.'
 
-# Description of the functionality provided by this module
-Description = '~~ Summary ~~
+    # Description of the functionality provided by this module
+    Description           = '~~ Summary ~~
 
 Powershell module wrapping G Suite (Google Apps) API calls in handy functions. Authentication is established using a service account via P12 key to negate the consent popup and allow for greater handsoff automation capabilities.
 
@@ -37,111 +37,111 @@ Powershell module wrapping G Suite (Google Apps) API calls in handy functions. A
 
 In order to use this module, you''ll need to have the following:
 
-� Powershell 3.0 or higher (module makes heavy use of Invoke-RestMethod).
-� API Access Enabled in the Admin Console under Security
-� Service Account key created and downloaded as a P12 key file.
-� API Client access allowed for the Service Account that will be used towards the API scopes that you intend to utilize
-� Domain-Wide Delegation enabled for the service account
+* Powershell 4.0 or higher
+* API Access Enabled in the Admin Console under Security
+* Service Account key created and downloaded as a P12 key file.
+* API Client access allowed for the Service Account that will be used towards the API scopes that you intend to utilize
+* Domain-Wide Delegation enabled for the service account
 
 
 
 ~~ Tips & Tricks ~~
 
-� All functions support pre-acquired Access Tokens (using the AccessToken parameter).
-	� This is useful if you have a lot of recurring commands that leverage the same admin and scope(s) so you do not overrun the user API call quota, i.e. pulling info for a large set of emails in a user''s inbox.
-� If the access token is not pre-acquired, then the P12KeyPath, AppEmail, AdminEmail, CustomerID, and Domain parameters will default to reading from the PSGSuite config file (these can also be named in each function call, if preferred).
-� If you plan on using this module on multiple computers or between multiple accounts on the same computer, you will need a new PSGoogle config created for each computer / user account pair.
+* All functions support pre-acquired Access Tokens (using the AccessToken parameter).
+	* This is useful if you have a lot of recurring commands that leverage the same admin and scope(s) so you do not overrun the user API call quota, i.e. pulling info for a large set of emails in a user''s inbox.
+* If the access token is not pre-acquired, then the P12KeyPath, AppEmail, AdminEmail, CustomerID, and Domain parameters will default to reading from the PSGSuite config file (these can also be named in each function call, if preferred).
+* If you plan on using this module on multiple computers or between multiple accounts on the same computer, you will need a new PSGoogle config created for each computer / user account pair.
 '
 
-# Minimum version of the Windows PowerShell engine required by this module
-PowerShellVersion = '4.0'
+    # Minimum version of the Windows PowerShell engine required by this module
+    PowerShellVersion     = '4.0'
 
-# Name of the Windows PowerShell host required by this module
-# PowerShellHostName = ''
+    # Name of the Windows PowerShell host required by this module
+    # PowerShellHostName = ''
 
-# Minimum version of the Windows PowerShell host required by this module
-# PowerShellHostVersion = ''
+    # Minimum version of the Windows PowerShell host required by this module
+    # PowerShellHostVersion = ''
 
-# Minimum version of Microsoft .NET Framework required by this module
-# DotNetFrameworkVersion = ''
+    # Minimum version of Microsoft .NET Framework required by this module
+    # DotNetFrameworkVersion = ''
 
-# Minimum version of the common language runtime (CLR) required by this module
-# CLRVersion = ''
+    # Minimum version of the common language runtime (CLR) required by this module
+    # CLRVersion = ''
 
-# Processor architecture (None, X86, Amd64) required by this module
-ProcessorArchitecture = 'None'
+    # Processor architecture (None, X86, Amd64) required by this module
+    ProcessorArchitecture = 'None'
 
-# Modules that must be imported into the global environment prior to importing this module
-RequiredModules = @(@{ModuleName="Configuration";ModuleVersion="1.2.0"})
+    # Modules that must be imported into the global environment prior to importing this module
+    RequiredModules       = @(@{ModuleName = "Configuration";ModuleVersion = "1.2.0"})
 
-# Assemblies that must be loaded prior to importing this module
-RequiredAssemblies = @()
+    # Assemblies that must be loaded prior to importing this module
+    RequiredAssemblies    = @()
 
-# Script files (.ps1) that are run in the caller's environment prior to importing this module.
-ScriptsToProcess = @()
+    # Script files (.ps1) that are run in the caller's environment prior to importing this module.
+    ScriptsToProcess      = @()
 
-# Type files (.ps1xml) to be loaded when importing this module
-TypesToProcess = @()
+    # Type files (.ps1xml) to be loaded when importing this module
+    TypesToProcess        = @()
 
-# Format files (.ps1xml) to be loaded when importing this module
-FormatsToProcess = @()
+    # Format files (.ps1xml) to be loaded when importing this module
+    FormatsToProcess      = @()
 
-# Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-# NestedModules = @()
+    # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
+    # NestedModules = @()
 
-# Functions to export from this module
-FunctionsToExport = '*'
+    # Functions to export from this module
+    FunctionsToExport     = '*'
 
-# Cmdlets to export from this module
-CmdletsToExport = @()
+    # Cmdlets to export from this module
+    CmdletsToExport       = @()
 
-# Variables to export from this module
-VariablesToExport = @()
+    # Variables to export from this module
+    VariablesToExport     = @()
 
-# Aliases to export from this module
-AliasesToExport = '*'
+    # Aliases to export from this module
+    AliasesToExport       = '*'
 
-# DSC resources to export from this module
-# DscResourcesToExport = @()
+    # DSC resources to export from this module
+    # DscResourcesToExport = @()
 
-# List of all modules packaged with this module
-# ModuleList = @()
+    # List of all modules packaged with this module
+    # ModuleList = @()
 
-# List of all files packaged with this module
-FileList = @()
+    # List of all files packaged with this module
+    FileList              = @()
 
-# Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
-PrivateData = @{
+    # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
+    PrivateData           = @{
 
-    PSData = @{
+        PSData = @{
 
-        # Tags applied to this module. These help with module discovery in online galleries.
-        Tags = 'Google','GSuite','Apps','G','Suite','REST','API','Admin','PSModule','Directory','User','Goo.gl','PSEdition_Core'
+            # Tags applied to this module. These help with module discovery in online galleries.
+            Tags       = 'Google','GSuite','Apps','G','Suite','REST','API','Admin','PSModule','Directory','User','Goo.gl','PSEdition_Core'
 
-        # A URL to the license for this module.
-        # LicenseUri = ''
+            # A URL to the license for this module.
+            # LicenseUri = ''
 
-        # A URL to the main website for this project.
-        ProjectUri = 'https://github.com/nferrell/PSGSuite'
+            # A URL to the main website for this project.
+            ProjectUri = 'https://github.com/nferrell/PSGSuite'
 
-        # A URL to an icon representing this module.
-        IconUri = 'http://centerlyne.com/wp-content/uploads/2016/10/Google_-G-_Logo.svg_.png'
+            # A URL to an icon representing this module.
+            IconUri    = 'http://centerlyne.com/wp-content/uploads/2016/10/Google_-G-_Logo.svg_.png'
 
-        # ReleaseNotes of this module
-        # ReleaseNotes = ''
+            # ReleaseNotes of this module
+            # ReleaseNotes = ''
 
-        # External dependent modules of this module
-        # ExternalModuleDependencies = ''
+            # External dependent modules of this module
+            # ExternalModuleDependencies = ''
 
-    } # End of PSData hashtable
+        } # End of PSData hashtable
     
- } # End of PrivateData hashtable
+    } # End of PrivateData hashtable
 
-# HelpInfo URI of this module
-HelpInfoURI = 'https://github.com/nferrell/PSGSuite/wiki'
+    # HelpInfo URI of this module
+    HelpInfoURI           = 'https://github.com/nferrell/PSGSuite/wiki'
 
-# Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
-# DefaultCommandPrefix = ''
+    # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
+    # DefaultCommandPrefix = ''
 
 }
 
