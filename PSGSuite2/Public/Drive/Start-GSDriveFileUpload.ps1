@@ -1,11 +1,14 @@
-function Update-GSDriveFile {
+function Start-GSDriveFileUpload {
     [cmdletbinding(DefaultParameterSetName = "Depth")]
     Param
     (
-        [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
-        [Alias('Id')]
-        [String]
-        $FileId,
+        [parameter(Mandatory = $true,Position = 0)]
+        [ValidateScript({Test-Path $_})]
+        [String[]]
+        $Path,
+        [parameter(Mandatory = $false)]
+        [Switch]
+        $UploadAsync,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [Alias('Owner','PrimaryEmail','UserKey','Mail')]
         [string]
@@ -18,10 +21,7 @@ function Update-GSDriveFile {
         $Description,
         [parameter(Mandatory = $false)]
         [String[]]
-        $AddParents,
-        [parameter(Mandatory = $false)]
-        [String[]]
-        $RemoveParents,
+        $Parents,
         [parameter(Mandatory = $false,ParameterSetName = "Depth")]
         [Alias('Depth')]
         [ValidateSet("Minimal","Standard","Full","Access")]
@@ -64,26 +64,45 @@ function Update-GSDriveFile {
     }
     Process {
         try {
-            $body = New-Object 'Google.Apis.Drive.v3.Data.File'
-            if ($Name) {
-                $body.Name = [String]$Name
+            foreach ($file in $Path) {
+                $details = Get-Item $file
+                $contentType = Get-MimeType $details
+                $body = New-Object 'Google.Apis.Drive.v3.Data.File' -Property @{
+                    Name = [String]$details.Name
+                }
+                if ($Parents) {
+                    $body.Parents = [String[]]$Parents
+                }
+                if ($Description) {
+                    $body.Description = $Description
+                }
+                $stream = New-Object 'System.IO.FileStream' $details.FullName,'Open','Read'
+                $request = $service.Files.Create($body,$stream,$contentType)
+                $request.SupportsTeamDrives = $true
+                if ($fs) {
+                    $request.Fields = $($fs -join ",")
+                }
+                if ($UploadAsync) {
+                    Write-Verbose "Uploading file '$($details.FullName)' asynchronously for user '$User'"
+                    $upload = $request.UploadAsync() #| Select-Object @{N = "User";E = {$User}},@{N = "Source";E = {$details.FullName}},*
+                    $task = $upload.ContinueWith([System.Action[System.Threading.Tasks.Task]]{$stream.Close()})
+                    Write-Verbose "Upload started, use 'Get-GSDriveFileUploadStatus to check on completion status'"
+                    if (!$Script:DriveUploadTasks) {
+                        $Script:DriveUploadTasks = [System.Collections.ArrayList]@()
+                    }
+                    $script:DriveUploadTasks += [PSCustomObject]@{
+                        Id = $upload.Id
+                        File = $details.FullName
+                        Upload = $upload
+                        User = $User
+                    }
+                }
+                else {
+                    Write-Verbose "Uploading file '$($details.FullName)' for user '$User'"
+                    $request.Upload() | Select-Object @{N = "User";E = {$User}},@{N = "Source";E = {$details.FullName}},*
+                    $stream.Close()
+                }
             }
-            if ($Description) {
-                $body.Description = $Description
-            }
-            $request = $service.Files.Update($body,$FileId)
-            $request.SupportsTeamDrives = $true
-            if ($fs) {
-                $request.Fields = $($fs -join ",")
-            }
-            if ($AddParents) {
-                $request.AddParents = $($AddParents -join ",")
-            }
-            if ($RemoveParents) {
-                $request.RemoveParents = $($RemoveParents -join ",")
-            }
-            Write-Verbose "Updating file '$FileId' for user '$User'"
-            $request.Execute() | Select-Object @{N = "User";E = {$User}},*
         }
         catch {
             $PSCmdlet.ThrowTerminatingError($_)

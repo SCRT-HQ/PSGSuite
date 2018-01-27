@@ -39,7 +39,8 @@ The module in **_this_ branch** is named `PSGSuite2`; this is a working module n
 | Update-GSDriveFile             | ✔️         |       | ✔️       |
 | Update-GSSheetValue            | ✔️         |       | ✔️       |
 | Update-GSTeamDrive             | ✔️         |       | ✔️       |
-| Copy-ToGSDrive                 |            | ✔️    | ✏️       |
+| Start-GSDriveFileUpload        |            | ✔️    | ✔️       |
+| Get-GSDriveFileUploadStatus    |            | ✔️    | ✔️       |
 
 
 ### Other Tasks
