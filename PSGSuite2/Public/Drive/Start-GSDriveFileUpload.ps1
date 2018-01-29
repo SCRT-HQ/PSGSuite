@@ -1,18 +1,12 @@
 function Start-GSDriveFileUpload {
-    [cmdletbinding(DefaultParameterSetName = "Depth")]
+    [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $true,Position = 0)]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
+        [Alias('FullName')]
         [ValidateScript({Test-Path $_})]
         [String[]]
         $Path,
-        [parameter(Mandatory = $false)]
-        [Switch]
-        $UploadAsync,
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
-        [Alias('Owner','PrimaryEmail','UserKey','Mail')]
-        [string]
-        $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false)]
         [String]
         $Name,
@@ -22,33 +16,15 @@ function Start-GSDriveFileUpload {
         [parameter(Mandatory = $false)]
         [String[]]
         $Parents,
-        [parameter(Mandatory = $false,ParameterSetName = "Depth")]
-        [Alias('Depth')]
-        [ValidateSet("Minimal","Standard","Full","Access")]
-        [String]
-        $Projection = "Full",
-        [parameter(Mandatory = $false,ParameterSetName = "Fields")]
-        [ValidateSet("appProperties","capabilities","contentHints","createdTime","description","explicitlyTrashed","fileExtension","folderColorRgb","fullFileExtension","hasThumbnail","headRevisionId","iconLink","id","imageMediaMetadata","isAppAuthorized","kind","lastModifyingUser","md5Checksum","mimeType","modifiedByMe","modifiedByMeTime","modifiedTime","name","originalFilename","ownedByMe","owners","parents","permissions","properties","quotaBytesUsed","shared","sharedWithMeTime","sharingUser","size","spaces","starred","thumbnailLink","thumbnailVersion","trashed","version","videoMediaMetadata","viewedByMe","viewedByMeTime","viewersCanCopyContent","webContentLink","webViewLink","writersCanShare")]
-        [String[]]
-        $Fields
+        [parameter(Mandatory = $false)]
+        [Switch]
+        $Wait,
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [Alias('Owner','PrimaryEmail','UserKey','Mail')]
+        [string]
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
-        if ($Projection) {
-            $fs = switch ($Projection) {
-                Standard {
-                    @("createdTime","description","fileExtension","id","lastModifyingUser","modifiedTime","name","owners","parents","properties","version","webContentLink","webViewLink")
-                }
-                Access {
-                    @("createdTime","description","fileExtension","id","lastModifyingUser","modifiedTime","name","ownedByMe","owners","parents","permissionIds","permissions","shared","sharedWithMeTime","sharingUser","viewedByMe","viewedByMeTime","viewersCanCopyContent","writersCanShare")
-                }
-                Full {
-                    @("appProperties","capabilities","contentHints","createdTime","description","explicitlyTrashed","fileExtension","folderColorRgb","fullFileExtension","hasAugmentedPermissions","hasThumbnail","headRevisionId","iconLink","id","imageMediaMetadata","isAppAuthorized","kind","lastModifyingUser","md5Checksum","mimeType","modifiedByMe","modifiedByMeTime","modifiedTime","name","originalFilename","ownedByMe","owners","parents","permissionIds","permissions","properties","quotaBytesUsed","shared","sharedWithMeTime","sharingUser","size","spaces","starred","teamDriveId","thumbnailLink","thumbnailVersion","trashed","trashedTime","trashingUser","version","videoMediaMetadata","viewedByMe","viewedByMeTime","viewersCanCopyContent","webContentLink","webViewLink","writersCanShare")
-                }
-            }
-        }
-        elseif ($Fields) {
-            $fs = $Fields
-        }
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -61,6 +37,7 @@ function Start-GSDriveFileUpload {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
+        $taskList = [System.Collections.ArrayList]@()
     }
     Process {
         try {
@@ -79,33 +56,97 @@ function Start-GSDriveFileUpload {
                 $stream = New-Object 'System.IO.FileStream' $details.FullName,'Open','Read'
                 $request = $service.Files.Create($body,$stream,$contentType)
                 $request.SupportsTeamDrives = $true
-                if ($fs) {
-                    $request.Fields = $($fs -join ",")
+                $request.ChunkSize = 512KB
+                $request.GetProgress()
+                $upload = $request.UploadAsync()
+                $task = $upload.ContinueWith([System.Action[System.Threading.Tasks.Task]]{$stream.Dispose()})
+                Write-Verbose "[$($details.Name)] upload started for user '$User'. You can check the status with Get-GSDriveFileUploadStatus -Id $($upload.Id)"
+                if (!$Script:DriveUploadTasks) {
+                    $Script:DriveUploadTasks = [System.Collections.ArrayList]@()
                 }
-                if ($UploadAsync) {
-                    Write-Verbose "Uploading file '$($details.FullName)' asynchronously for user '$User'"
-                    $upload = $request.UploadAsync() #| Select-Object @{N = "User";E = {$User}},@{N = "Source";E = {$details.FullName}},*
-                    $task = $upload.ContinueWith([System.Action[System.Threading.Tasks.Task]]{$stream.Close()})
-                    Write-Verbose "Upload started, use 'Get-GSDriveFileUploadStatus to check on completion status'"
-                    if (!$Script:DriveUploadTasks) {
-                        $Script:DriveUploadTasks = [System.Collections.ArrayList]@()
-                    }
-                    $script:DriveUploadTasks += [PSCustomObject]@{
-                        Id = $upload.Id
-                        File = $details.FullName
-                        Upload = $upload
-                        User = $User
-                    }
+                $script:DriveUploadTasks += [PSCustomObject]@{
+                    Id = $upload.Id
+                    File = $details
+                    Length = $details.Length
+                    SizeInMB = [Math]::Round(($details.Length/1MB),2,[MidPointRounding]::AwayFromZero)
+                    StartTime = $(Get-Date)
+                    User = $User
+                    Upload = $upload
+                    Request = $request
                 }
-                else {
-                    Write-Verbose "Uploading file '$($details.FullName)' for user '$User'"
-                    $request.Upload() | Select-Object @{N = "User";E = {$User}},@{N = "Source";E = {$details.FullName}},*
-                    $stream.Close()
+                $taskList += [PSCustomObject]@{
+                    Id = $upload.Id
+                    File = $details
+                    Length = $details.Length
+                    SizeInMB = [Math]::Round(($details.Length/1MB),2,[MidPointRounding]::AwayFromZero)
+                    StartTime = $(Get-Date)
+                    User = $User
+                    Upload = $upload
+                    Request = $request
                 }
             }
         }
         catch {
             $PSCmdlet.ThrowTerminatingError($_)
+        }
+    }
+    End {
+        if (!$Wait) {
+            $taskList | Select-Object Id,File,SizeInMB,User
+        }
+        else {
+            do {
+                $i = 1
+                $statusList = Get-GSDriveFileUploadStatus -Id $taskList.Id
+                $totalPercent = 0
+                $totalSecondsRemaining = 0
+                $count = 0
+                $statusList | ForEach-Object {
+                    $count++
+                    $totalPercent += $_.PercentComplete
+                    $totalSecondsRemaining += $_.Remaining.TotalSeconds
+                }
+                $totalPercent = $totalPercent / $count
+                $totalSecondsRemaining = $totalSecondsRemaining / $count
+                $parentParams = @{
+                    Activity = "[$([Math]::Round($totalPercent,4))%] Uploading $count files to Google Drive"
+                    SecondsRemaining = $($statusList.Remaining.TotalSeconds | Sort-Object | Select-Object -Last 1)
+                }
+                if (!($statusList | Where-Object {$_.Status -ne "Completed"})) {
+                    $parentParams['Completed'] = $true
+                }
+                else {
+                    $parentParams['PercentComplete'] = [Math]::Round($totalPercent,4)
+                }
+                if ($psEditor -or $IsMacOS -or $IsLinux) {
+                    Write-InlineProgress @parentParams
+                }
+                else {
+                    $parentParams['Id'] = 1
+                    Write-Progress @parentParams
+                }
+                if (!$psEditor -and !$IsMacOS -and !$IsLinux) {
+                    foreach ($status in $statusList) {
+                        $i++
+                        $statusFmt = if ($status.Status -eq "Completed") {
+                            "Completed uploading"
+                        }
+                        else {
+                            $status.Status
+                        }
+                        $progParams = @{
+                            Activity = "[$($status.PercentComplete)%] [ID: $($status.Id)] $($statusFmt) file '$($status.File.FullName)' to Google Drive$(if($Parents){" (Parents: '$($Parents -join "', '")')"})"
+                            SecondsRemaining = $status.Remaining.TotalSeconds
+                            Id = $i
+                            ParentId = 1
+                            PercentComplete = $status.PercentComplete
+                        }
+                        Write-Progress @progParams
+                    }
+                }
+            }
+            until (!($statusList | Where-Object {$_.Status -ne "Completed"}))
+            Write-Verbose "All files have finished uploading!"
         }
     }
 }
