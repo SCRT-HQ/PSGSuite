@@ -24,12 +24,13 @@ function Get-GSDriveFileUploadStatus {
                             Remaining = $remaining
                             StartTime = $task.StartTime
                             Elapsed = $elapsed
-                            File = $task.File
+                            File = $task.File.FullName
                             Length = $task.Length
+                            Parents = $task.Parents
                             BytesSent = $({$task.Request.GetProgress().BytesSent}.InvokeReturnAsIs())
                             FileLocked = $(Test-FileLock -Path $task.File)
                             User = $task.User
-                            Exception = $({$task.Upload.Exception}.InvokeReturnAsIs())
+                            Exception = $({$task.Request.GetProgress().Exception}.InvokeReturnAsIs())
                         }
                     }
                 }
@@ -41,8 +42,9 @@ function Get-GSDriveFileUploadStatus {
                         Remaining = $remaining
                         StartTime = $task.StartTime
                         Elapsed = $elapsed
-                        File = $task.File
+                        File = $task.File.FullName
                         Length = $task.Length
+                        Parents = $task.Parents
                         BytesSent = $({$task.Request.GetProgress().BytesSent}.InvokeReturnAsIs())
                         FileLocked = $(Test-FileLock -Path $task.File)
                         User = $task.User
