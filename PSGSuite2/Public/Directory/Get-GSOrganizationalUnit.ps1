@@ -1,5 +1,29 @@
 function Get-GSOrganizationalUnit {
+    <#
+    .SYNOPSIS
+    Gets Organizational Unit information
+    
+    .DESCRIPTION
+    Gets Organizational Unit information
+    
+    .PARAMETER SearchBase
+    The OrgUnitPath you would like to search for. This can be the single OrgUnit to return or the top level of which to return children of
+    
+    .PARAMETER SearchScope
+    The depth at which to return the list of OrgUnits children
 
+    Available choices are:
+    * "Base": only return the OrgUnit specified in the SearchBase
+    * "Subtree": return the full list of OrgUnits underneath the specified SearchBase
+    * "OneLevel": return the SearchBase and the OrgUnit's directly underneath it
+    * "All": same as Subtree
+    * "Children": same as OneLevel
+    
+    .EXAMPLE
+    Get-GSOrganizationalUnit -SearchBase "/" -SearchScope Base
+
+    Gets the top level Organizational Unit information
+    #>
     [cmdletbinding()]
     Param
     (
