@@ -1,4 +1,4 @@
-function Get-GSResourceList {
+function Get-GSResourceListPrivate {
     [CmdletBinding()]
     Param
     (
