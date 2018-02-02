@@ -18,6 +18,8 @@ function Get-GSOrganizationalUnit {
     * "OneLevel": return the SearchBase and the OrgUnit's directly underneath it
     * "All": same as Subtree
     * "Children": same as OneLevel
+
+    Defaults to 'All'
     
     .EXAMPLE
     Get-GSOrganizationalUnit -SearchBase "/" -SearchScope Base
