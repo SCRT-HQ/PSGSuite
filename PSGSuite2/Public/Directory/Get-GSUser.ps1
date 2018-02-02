@@ -2,8 +2,8 @@ function Get-GSUser {
     [cmdletbinding(DefaultParameterSetName = "Get")]
     Param
     (
-        [parameter(Mandatory = $false,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true,ParameterSetName = "Get")]
-        [Alias("PrimaryEmail","UserKey","Mail")]
+        [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true,ParameterSetName = "Get")]
+        [Alias("PrimaryEmail","UserKey","Mail","Email")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $User = $Script:PSGSuite.AdminEmail,

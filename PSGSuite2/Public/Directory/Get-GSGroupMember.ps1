@@ -19,7 +19,7 @@ function Get-GSGroupMember {
     Page size of the result set
     
     .EXAMPLE
-    Get-GSGroupMember "admins@domain.com" -Roles OWNER,MANAGER
+    Get-GSGroupMember "admins@domain.com" -Roles Owner,Manager
 
     Returns the list of owners and managers of the group "admins@domain.com"
     #>
