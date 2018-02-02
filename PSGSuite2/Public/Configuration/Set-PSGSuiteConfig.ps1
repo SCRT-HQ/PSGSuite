@@ -1,4 +1,63 @@
 function Set-PSGSuiteConfig {
+    <#
+    .SYNOPSIS
+    Creates or updates a config
+    
+    .DESCRIPTION
+    Creates or updates a config
+    
+    .PARAMETER ConfigName
+    The friendly name for the config you are creating or updating
+    
+    .PARAMETER P12KeyPath
+    The path to the P12 Key file downloaded from the Google Developer's Console. If both P12KeyPath and ClientSecretsPath are specified, P12KeyPath takes precedence
+    
+    .PARAMETER ClientSecretsPath
+    The path to the Client Secrets JSON file downloaded from the Google Developer's Console. Using the ClientSecrets JSON will prompt the user to complete OAuth2 authentication in their browser on the first run and store the retrieved Refresh and Access tokens in the user's home directory. If P12KeyPath is also specified, ClientSecretsPath will be ignored.
+    
+    .PARAMETER AppEmail
+    The application email from the Google Developer's Console. This typically looks like the following:
+
+    myProjectName@myProject.iam.gserviceaccount.com
+    
+    .PARAMETER AdminEmail
+    The email of the Google Admin running the functions. This will typically be your email.
+    
+    .PARAMETER CustomerID
+    The Customer ID for your customer. If unknown, you can retrieve it by running Get-GSUser after creating a base config with at least either the P12KeyPath or ClientSecretsPath, the AppEmail and the AdminEmail.
+    
+    .PARAMETER Domain
+    The domain that you primarily manage for this CustomerID
+    
+    .PARAMETER Preference
+    Some functions allow you to specify whether you are running in the context of the customer or a specific domain in the customer's realm. This allows you to set your preference.
+
+    Available options are:
+    * CustomerID
+    * Domain
+    
+    .PARAMETER ServiceAccountClientID
+    The Service Account's Client ID from the Google Developer's Console. This is optional and is only used as a reference for yourself to prevent needing to check the Developer's Console for the ID when verifying API Client Access.
+    
+    .PARAMETER Scope
+    The scope at which you would like to set this config.
+
+    Available options are:
+    * Machine (this would create the config in a location accessible by all users on the machine)
+    * Enterprise (this would create the config in the Roaming AppData folder for the user or it's *nix equivalent)
+    * User (this would create the config in the Local AppData folder for the user or it's *nix equivalent)
+    
+    .PARAMETER SetAsDefaultConfig
+    If passed, sets the ConfigName as the default config to load on module import
+    
+    .PARAMETER NoImport
+    The default behavior when using Set-PSGSuiteConfig is that the new/updated config is imported as active. If -NoImport is passed, this saves the config but retains the previously loaded config as active.
+    
+    .EXAMPLE
+    Set-PSGSuiteConfig -ConfigName "personal" -P12KeyPath C:\Keys\PersonalKey.p12 -AppEmail "myProjectName@myProject.iam.gserviceaccount.com" -AdminEmail "admin@domain.com" -CustomerID "C83030001" -Domain "domain.com" -Preference CustomerID -ServiceAccountClientID 1175798883298324983498 -SetAsDefaultConfig
+
+    This builds a config names "personal" and sets it as the default config
+    #>
     [cmdletbinding()]
     Param
     (

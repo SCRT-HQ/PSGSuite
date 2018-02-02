@@ -1,4 +1,25 @@
 ﻿function Switch-PSGSuiteConfig {
+    <#
+    .SYNOPSIS
+    Switches the active config
+    
+    .DESCRIPTION
+    Switches the active config
+    
+    .PARAMETER ConfigName
+    The friendly name of the config you would like to set as active for the session
+    
+    .PARAMETER Domain
+    The domain name for the config you would like to set as active for the session
+    
+    .PARAMETER SetToDefault
+    If passed, also sets the specified config as the default so it's loaded on the next module import
+    
+    .EXAMPLE
+    Switch-PSGSuiteConfig newCustomer
+
+    Switches the config to the "newCustomer" config
+    #>
     [CmdletBinding(DefaultParameterSetName = "ConfigName")]
     Param
     (

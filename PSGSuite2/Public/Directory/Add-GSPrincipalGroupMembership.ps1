@@ -1,4 +1,27 @@
 function Add-GSPrincipalGroupMembership {
+    <#
+    .SYNOPSIS
+    Adds the target email to a list of groups
+    
+    .DESCRIPTION
+    Adds the target email to a list of groups. Designed for parity with Add-ADPrincipalGroupMembership
+    
+    .PARAMETER Identity
+    The user or group email that you would like to add to the list of groups
+    
+    .PARAMETER MemberOf
+    The list of groups to add the target email to
+    
+    .PARAMETER Role
+    The role that you would like to add the members as
+    
+    Defaults to "MEMBER"
+    
+    .EXAMPLE
+    Add-GSPrincipalGroupMembership "joe@domain.com" -MemberOf "admins@domain.com","users@domain.com"
+
+    Adds the email "joe@domain.com" to the admins@ and users@ groups
+    #>
     [cmdletbinding()]
     Param
     (

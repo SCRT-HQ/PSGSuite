@@ -1,14 +1,4 @@
-function Get-GSGroupList {
-    <#
-.Synopsis
-   Gets the group list for a given account in Google Apps
-.DESCRIPTION
-   Retrieves the full group list for the entire account
-.EXAMPLE
-   Get-GSGroupList -AccessToken $(Get-GSToken @TokenParams) -MaxResults 5 -Where_IsAMember "random-user@domain.com"
-.EXAMPLE
-   Get-GSGroupList -AccessToken $(Get-GSToken @TokenParams)
-#>
+function Get-GSGroupListPrivate {
     [cmdletbinding()]
     Param
     (

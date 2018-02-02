@@ -26,7 +26,7 @@ function Start-GSDriveFileUpload {
         [Int]
         $RetryCount = 10,
         [parameter(Mandatory = $false)]
-        [ValidateRange(1,200)]
+        [ValidateRange(1,1000)]
         [Int]
         $ThrottleLimit = 20,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
@@ -150,62 +150,7 @@ function Start-GSDriveFileUpload {
                     if ($throttleCount -ge $ThrottleLimit) {
                         $totalThrottleCount += $throttleCount
                         if ($Wait) {
-                            do {
-                                $i = 1
-                                $statusList = Get-GSDriveFileUploadStatus -Id $taskList.Id
-                                $totalPercent = 0
-                                $totalSecondsRemaining = 0
-                                $count = 0
-                                $statusList | ForEach-Object {
-                                    $count++
-                                    $totalPercent += $_.PercentComplete
-                                    $totalSecondsRemaining += $_.Remaining.TotalSeconds
-                                }
-                                $totalPercent = $totalPercent / $count
-                                $totalSecondsRemaining = $totalSecondsRemaining / $count
-                                $parentParams = @{
-                                    Activity = "[$([Math]::Round($totalPercent,4))%] Uploading [$totalThrottleCount / $totalFiles] files to Google Drive"
-                                    SecondsRemaining = $($statusList.Remaining.TotalSeconds | Sort-Object | Select-Object -Last 1)
-                                }
-                                if (!($statusList | Where-Object {$_.Status -ne "Completed"})) {
-                                    $parentParams['Completed'] = $true
-                                }
-                                else {
-                                    $parentParams['PercentComplete'] = [Math]::Round($totalPercent,4)
-                                }
-                                if ($psEditor -or $IsMacOS -or $IsLinux) {
-                                    Write-InlineProgress @parentParams
-                                }
-                                else {
-                                    $parentParams['Id'] = 1
-                                    Write-Progress @parentParams
-                                }
-                                if (!$psEditor -and !$IsMacOS -and !$IsLinux -and ($statusList.Count -le 10)) {
-                                    foreach ($status in $statusList) {
-                                        $i++
-                                        $statusFmt = if ($status.Status -eq "Completed") {
-                                            "Completed uploading"
-                                        }
-                                        else {
-                                            $status.Status
-                                        }
-                                        $progParams = @{
-                                            Activity = "[$($status.PercentComplete)%] [ID: $($status.Id)] $($statusFmt) file '$($status.File.FullName)' to Google Drive$(if($Parents){" (Parents: '$($Parents -join "', '")')"})"
-                                            SecondsRemaining = $status.Remaining.TotalSeconds
-                                            Id = $i
-                                            ParentId = 1
-                                        }
-                                        if ($_.Status -eq "Completed") {
-                                            $progParams['Completed'] = $true
-                                        }
-                                        else {
-                                            $progParams['PercentComplete'] = [Math]::Round($status.PercentComplete,4)
-                                        }
-                                        Write-Progress @progParams
-                                    }
-                                }
-                            }
-                            until (!($statusList | Where-Object {$_.Status -notin @("Failed","Completed")}))
+                            Watch-GSDriveUpload -Id $taskList.Id -CountUploaded $totalThrottleCount -TotalUploading $totalFiles
                             $throttleCount = 0
                             $taskList = [System.Collections.ArrayList]@()
                         }
@@ -222,62 +167,7 @@ function Start-GSDriveFileUpload {
             $fullTaskList
         }
         else {
-            do {
-                $i = 1
-                $statusList = Get-GSDriveFileUploadStatus -Id $fullTaskList.Id
-                $totalPercent = 0
-                $totalSecondsRemaining = 0
-                $count = 0
-                $statusList | ForEach-Object {
-                    $count++
-                    $totalPercent += $_.PercentComplete
-                    $totalSecondsRemaining += $_.Remaining.TotalSeconds
-                }
-                $totalPercent = $totalPercent / $count
-                $totalSecondsRemaining = $totalSecondsRemaining / $count
-                $parentParams = @{
-                    Activity = "[$([Math]::Round($totalPercent,4))%] Uploading [$count / $count] files to Google Drive"
-                    SecondsRemaining = $($statusList.Remaining.TotalSeconds | Sort-Object | Select-Object -Last 1)
-                }
-                if (!($statusList | Where-Object {$_.Status -ne "Completed"})) {
-                    $parentParams['Completed'] = $true
-                }
-                else {
-                    $parentParams['PercentComplete'] = [Math]::Round($totalPercent,4)
-                }
-                if ($psEditor -or $IsMacOS -or $IsLinux) {
-                    Write-InlineProgress @parentParams
-                }
-                else {
-                    $parentParams['Id'] = 1
-                    Write-Progress @parentParams
-                }
-                if (!$psEditor -and !$IsMacOS -and !$IsLinux -and ($statusList.Count -le 10)) {
-                    foreach ($status in $statusList) {
-                        $i++
-                        $statusFmt = if ($status.Status -eq "Completed") {
-                            "Completed uploading"
-                        }
-                        else {
-                            $status.Status
-                        }
-                        $progParams = @{
-                            Activity = "[$($status.PercentComplete)%] [ID: $($status.Id)] $($statusFmt) file '$($status.File.FullName)' to Google Drive$(if($Parents){" (Parents: '$($Parents -join "', '")')"})"
-                            SecondsRemaining = $status.Remaining.TotalSeconds
-                            Id = $i
-                            ParentId = 1
-                        }
-                        if ($_.Status -eq "Completed") {
-                            $progParams['Completed'] = $true
-                        }
-                        else {
-                            $progParams['PercentComplete'] = [Math]::Round($status.PercentComplete,4)
-                        }
-                        Write-Progress @progParams
-                    }
-                }
-            }
-            until (!($statusList | Where-Object {$_.Status -notin @("Failed","Completed")}))
+            Watch-GSDriveUpload -Id $fullTaskList.Id -CountUploaded $totalFiles -TotalUploading $totalFiles
             $fullStatusList = Get-GSDriveFileUploadStatus -Id $fullTaskList.Id
             $failedFiles = $fullStatusList | Where-Object {$_.Status -eq "Failed"}
             if (!$failedFiles) {
@@ -343,123 +233,13 @@ function Start-GSDriveFileUpload {
                         if ($throttleCount -ge $ThrottleLimit) {
                             $totalThrottleCount += $throttleCount
                             if ($Wait) {
-                                do {
-                                    $i = 1
-                                    $statusList = Get-GSDriveFileUploadStatus -Id $taskList.Id
-                                    $totalPercent = 0
-                                    $totalSecondsRemaining = 0
-                                    $count = 0
-                                    $statusList | ForEach-Object {
-                                        $count++
-                                        $totalPercent += $_.PercentComplete
-                                        $totalSecondsRemaining += $_.Remaining.TotalSeconds
-                                    }
-                                    $totalPercent = $totalPercent / $count
-                                    $totalSecondsRemaining = $totalSecondsRemaining / $count
-                                    $parentParams = @{
-                                        Activity = "[$([Math]::Round($totalPercent,4))%] Retrying upload of [$totalThrottleCount / $totalFiles] files to Google Drive"
-                                        SecondsRemaining = $($statusList.Remaining.TotalSeconds | Sort-Object | Select-Object -Last 1)
-                                    }
-                                    if (!($statusList | Where-Object {$_.Status -ne "Completed"})) {
-                                        $parentParams['Completed'] = $true
-                                    }
-                                    else {
-                                        $parentParams['PercentComplete'] = [Math]::Round($totalPercent,4)
-                                    }
-                                    if ($psEditor -or $IsMacOS -or $IsLinux) {
-                                        Write-InlineProgress @parentParams
-                                    }
-                                    else {
-                                        $parentParams['Id'] = 1
-                                        Write-Progress @parentParams
-                                    }
-                                    if (!$psEditor -and !$IsMacOS -and !$IsLinux -and ($statusList.Count -le 10)) {
-                                        foreach ($status in $statusList) {
-                                            $i++
-                                            $statusFmt = if ($status.Status -eq "Completed") {
-                                                "Completed uploading"
-                                            }
-                                            else {
-                                                $status.Status
-                                            }
-                                            $progParams = @{
-                                                Activity = "[$($status.PercentComplete)%] [ID: $($status.Id)] $($statusFmt) file '$($status.File.FullName)' to Google Drive$(if($Parents){" (Parents: '$($Parents -join "', '")')"})"
-                                                SecondsRemaining = $status.Remaining.TotalSeconds
-                                                Id = $i
-                                                ParentId = 1
-                                            }
-                                            if ($_.Status -eq "Completed") {
-                                                $progParams['Completed'] = $true
-                                            }
-                                            else {
-                                                $progParams['PercentComplete'] = [Math]::Round($status.PercentComplete,4)
-                                            }
-                                            Write-Progress @progParams
-                                        }
-                                    }
-                                }
-                                until (!($statusList | Where-Object {$_.Status -notin @("Failed","Completed")}))
+                                Watch-GSDriveUpload -Id $taskList.Id -CountUploaded $totalThrottleCount -TotalUploading $totalFiles -Action Retrying
                                 $throttleCount = 0
                                 $taskList = [System.Collections.ArrayList]@()
                             }
                         }
                     }
-                    do {
-                        $i = 1
-                        $statusList = Get-GSDriveFileUploadStatus -Id $fullTaskList.Id
-                        $totalPercent = 0
-                        $totalSecondsRemaining = 0
-                        $count = 0
-                        $statusList | ForEach-Object {
-                            $count++
-                            $totalPercent += $_.PercentComplete
-                            $totalSecondsRemaining += $_.Remaining.TotalSeconds
-                        }
-                        $totalPercent = $totalPercent / $count
-                        $totalSecondsRemaining = $totalSecondsRemaining / $count
-                        $parentParams = @{
-                            Activity = "[$([Math]::Round($totalPercent,4))%] Retrying upload of [$count / $count] files to Google Drive"
-                            SecondsRemaining = $($statusList.Remaining.TotalSeconds | Sort-Object | Select-Object -Last 1)
-                        }
-                        if (!($statusList | Where-Object {$_.Status -ne "Completed"})) {
-                            $parentParams['Completed'] = $true
-                        }
-                        else {
-                            $parentParams['PercentComplete'] = [Math]::Round($totalPercent,4)
-                        }
-                        if ($psEditor -or $IsMacOS -or $IsLinux) {
-                            Write-InlineProgress @parentParams
-                        }
-                        else {
-                            $parentParams['Id'] = 1
-                            Write-Progress @parentParams
-                        }
-                        if (!$psEditor -and !$IsMacOS -and !$IsLinux -and ($statusList.Count -le 10)) {
-                            foreach ($status in $statusList) {
-                                $i++
-                                $statusFmt = if ($status.Status -eq "Completed") {
-                                    "Completed uploading"
-                                }
-                                else {
-                                    $status.Status
-                                }
-                                $progParams = @{
-                                    Activity = "[$($status.PercentComplete)%] [ID: $($status.Id)] $($statusFmt) file '$($status.File.FullName)' to Google Drive$(if($Parents){" (Parents: '$($Parents -join "', '")')"})"
-                                    SecondsRemaining = $status.Remaining.TotalSeconds
-                                    Id = $i
-                                    ParentId = 1
-                                }
-                                if ($_.Status -eq "Completed") {
-                                    $progParams['Completed'] = $true
-                                }
-                                else {
-                                    $progParams['PercentComplete'] = [Math]::Round($status.PercentComplete,4)
-                                }
-                                Write-Progress @progParams
-                            }
-                        }
-                    }
-                    until (!($statusList | Where-Object {$_.Status -notin @("Failed","Completed")}))
+                    Watch-GSDriveUpload -Id $fullTaskList.Id -Action Retrying -CountUploaded $totalFiles -TotalUploading $totalFiles
                     $fullStatusList = Get-GSDriveFileUploadStatus -Id $fullTaskList.Id
                     $failedFiles = $fullStatusList | Where-Object {$_.Status -eq "Failed"}
                 }

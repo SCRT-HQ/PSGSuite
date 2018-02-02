@@ -1,4 +1,60 @@
 function New-GSCalendarEvent {
+    <#
+    .SYNOPSIS
+    Creates a new calendar event
+    
+    .DESCRIPTION
+    Creates a new calendar event
+    
+    .PARAMETER Summary
+    Event summary
+    
+    .PARAMETER Description
+    Event description
+    
+    .PARAMETER User
+    The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config. 
+
+    Defaults to the AdminEmail in the config.
+    
+    .PARAMETER CalendarID
+    The calendar ID of the calendar you would like to list events from.
+
+    Defaults to the user's primary calendar.
+    
+    .PARAMETER Location
+    Event location
+    
+    .PARAMETER EventColor
+    Color of the event as seen in Calendar
+    
+    .PARAMETER LocalStartDateTime
+    Start date and time of the event. Lowest precendence of the three StartDate parameters.
+
+    Defaults to the time the function is ran.
+    
+    .PARAMETER LocalEndDateTime
+    End date and time of the event. Lowest precendence of the three EndDate parameters.
+
+    Defaults to 30 minutes after the time the function is ran.
+    
+    .PARAMETER StartDate
+    String representation of the start date. Middle precendence of the three StartDate parameters.
+    
+    .PARAMETER EndDate
+    String representation of the end date. Middle precendence of the three EndDate parameters.
+    
+    .PARAMETER UTCStartDateTime
+    String representation of the start date in UTC. Highest precendence of the three StartDate parameters.
+    
+    .PARAMETER UTCEndDateTime
+    String representation of the end date in UTC. Highest precendence of the three EndDate parameters.
+    
+    .EXAMPLE
+    New-GSCalendarEvent "Go to the gym" -StartDate (Get-Date "21:00:00") -EndDate (Get-Date "22:00:00")
+
+    Creates an event titled "Go to the gym" for 9-10PM the day the function is ran.
+    #>
     [cmdletbinding()]
     Param
     (

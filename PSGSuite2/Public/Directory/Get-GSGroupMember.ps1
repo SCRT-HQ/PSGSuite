@@ -1,14 +1,28 @@
 function Get-GSGroupMember {
-<#
-.Synopsis
-   Gets the group member list for a given group in Google Apps
-.DESCRIPTION
-   Retrieves the full group list for the entire account
-.EXAMPLE
-   Get-GSGroupMemberList -AccessToken $(Get-GSToken @TokenParams) -GroupEmail "my.group@domain.com" -MaxResults 10
-.EXAMPLE
-   Get-GSGroupMemberList -AccessToken $(Get-GSToken @TokenParams)
-#>
+    <#
+    .SYNOPSIS
+    Gets the group member list of a target group
+    
+    .DESCRIPTION
+    Gets the group member list of a target group. Designed for parity with Get-ADGroupMember
+    
+    .PARAMETER Identity
+    The email or GroupID of the target group
+    
+    .PARAMETER Member
+    If specified, returns only the information for this member of the target group
+    
+    .PARAMETER Roles
+    If specified, returns only the members of the specified role(s)
+    
+    .PARAMETER PageSize
+    Page size of the result set
+    
+    .EXAMPLE
+    Get-GSGroupMember "admins@domain.com" -Roles OWNER,MANAGER
+
+    Returns the list of owners and managers of the group "admins@domain.com"
+    #>
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (
@@ -56,7 +70,7 @@ function Get-GSGroupMember {
                     }
                 }
                 List {
-                    Get-GSGroupMemberList @PSBoundParameters
+                    Get-GSGroupMemberListPrivate @PSBoundParameters
                 }
             }
         }

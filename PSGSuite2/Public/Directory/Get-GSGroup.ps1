@@ -1,4 +1,30 @@
 ﻿function Get-GSGroup {
+    <#
+    .SYNOPSIS
+    Gets the specified group's information. Returns the full group list if -Group is excluded
+    
+    .DESCRIPTION
+    Gets the specified group's information. Returns the full group list if -Group is excluded. Designed for parity with Get-ADGroup (although Google's API is unable to 'Filter' for groups)
+    
+    .PARAMETER Group
+    The list of groups you would like to retrieve info for. If excluded, returns the group list instead
+    
+    .PARAMETER Fields
+    The fields to return in the response
+    
+    .PARAMETER Where_IsAMember
+    Include a user email here to get the list of groups that user is a member of
+    
+    .PARAMETER PageSize
+    Page size of the result set
+
+    Defaults to 200
+    
+    .EXAMPLE
+    Get-GSGroup -Where_IsAMember "joe@domain.com"
+
+    Gets the list of groups that joe@domain.com is a member of
+    #>
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (
@@ -45,7 +71,7 @@
                     }
                 }
                 List {
-                    Get-GSGroupList @PSBoundParameters
+                    Get-GSGroupListPrivate @PSBoundParameters
                 }
             }
         }

@@ -1,4 +1,26 @@
 ﻿function Get-GSDataTransferApplicationList {
+    <#
+    .SYNOPSIS
+    Gets the list of available Data Transfer Applications and their parameters
+    
+    .DESCRIPTION
+    Gets the list of available Data Transfer Applications and their parameters
+    
+    .PARAMETER CustomerID
+    The CustomerID you would like to list Data Transfer Applications for.
+
+    Defaults to the CustomerID in the config
+    
+    .PARAMETER PageSize
+    PageSize of the result set.
+
+    Defaults to 500 (although it's typically a much smaller number for most Customers)
+    
+    .EXAMPLE
+    Get-GSDataTransferApplicationList
+
+    Gets the list of available Data Transfer Applications
+    #>
     [cmdletbinding()]
     Param
     (

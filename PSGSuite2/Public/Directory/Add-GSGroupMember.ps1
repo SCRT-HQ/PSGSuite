@@ -1,4 +1,27 @@
 function Add-GSGroupMember {
+    <#
+    .SYNOPSIS
+    Adds a list of emails to a target group
+    
+    .DESCRIPTION
+    Adds a list of emails to a target group. Designed for parity with Add-ADGroupMember
+    
+    .PARAMETER Identity
+    The email or GroupID of the target group to add members to
+    
+    .PARAMETER Member
+    The list of user and/or group emails that you would like to add to the target group
+    
+    .PARAMETER Role
+    The role that you would like to add the members as
+    
+    Defaults to "MEMBER"
+    
+    .EXAMPLE
+    Add-GSGroupMember "admins@domain.com" -Member "joe-admin@domain.com","sally.admin@domain.com"
+
+    Adds 2 users to the group "admins@domain.com"
+    #>
     [cmdletbinding()]
     Param
     (

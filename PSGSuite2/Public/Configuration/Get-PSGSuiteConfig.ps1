@@ -1,4 +1,30 @@
 function Get-PSGSuiteConfig {
+    <#
+    .SYNOPSIS
+    Loads the specified PSGSuite config
+    
+    .DESCRIPTION
+    Loads the specified PSGSuite config
+    
+    .PARAMETER ConfigName
+    The config name to load
+    
+    .PARAMETER Path
+    The path of the config to load if non-default.
+
+    This can be used to load either a legacy XML config from an older version of PSGSuite or a specific .PSD1 config created with version 2.0.0 or greater
+    
+    .PARAMETER Scope
+    The config scope to load
+    
+    .PARAMETER PassThru
+    If specified, returns the config after loading it
+    
+    .EXAMPLE
+    Get-PSGSuiteConfig personalDomain -PassThru
+
+    This will load the config named "personalDomain" and return it as a PSObject.
+    #>
     [cmdletbinding(DefaultParameterSetName = "ConfigurationModule")]
     Param
     (
