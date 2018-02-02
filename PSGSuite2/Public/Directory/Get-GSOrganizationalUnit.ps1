@@ -27,11 +27,11 @@ function Get-GSOrganizationalUnit {
     [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $false,Position = 0,ParameterSetName = "Get")]
+        [parameter(Mandatory = $false,Position = 0)]
         [Alias('OrgUnitPath','BaseOrgUnitPath')]
         [String]
         $SearchBase,
-        [parameter(Mandatory = $false,ParameterSetName)]
+        [parameter(Mandatory = $false)]
         [Alias('SearchScope','Type')]
         [ValidateSet('Base','Subtree','OneLevel','All','Children')]
         [String]
