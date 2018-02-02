@@ -1,4 +1,4 @@
-﻿function Get-GSMobileDeviceList {
+﻿function Get-GSMobileDevice {
     <#
     .SYNOPSIS
     Gets the list of Mobile Devices registered for the user's account
@@ -45,7 +45,7 @@
     * "DESCENDING": Descending order.
     
     .EXAMPLE
-    Get-GSMobileDeviceList
+    Get-GSMobileDevice
 
     Gets the Mobile Device list for the AdminEmail
     #>

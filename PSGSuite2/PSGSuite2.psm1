@@ -44,7 +44,6 @@ Import-GoogleSDK
 $aliasHash = @{
     'Get-GSCalendarResourceList'     = 'Get-GSResourceList'
     'Switch-PSGSuiteDomain'          = 'Switch-PSGSuiteConfig'
-    'Get-GSOrgUnitList'              = 'Get-GSOrganizationalUnitList'
     'Get-GSUserSchemaInfo'           = 'Get-GSUserSchema'
     'Get-GSUserLicenseInfo'          = 'Get-GSUserLicense'
     'Get-GSGmailMessageInfo'         = 'Get-GmailMessage'
@@ -61,6 +60,11 @@ $aliasHash = @{
     'Get-GSDriveFilePermissionsList' = 'Get-GSDrivePermission'
     'Get-GSGroupList'                = 'Get-GSGroup'
     'Get-GSGroupMemberList'          = 'Get-GSGroupMember'
+    'Get-GSOrgUnitList'              = 'Get-GSOrganizationalUnit'
+    'Get-GSOU'                       = 'Get-GSOrganizationalUnit'
+    'Get-GSOrganizationalUnitList'   = 'Get-GSOrganizationalUnit'
+    'Get-GSOrgUnit'                  = 'Get-GSOrganizationalUnit'
+    'Get-GSMobileDeviceList'         = 'Get-GSMobileDevice'
 }
 foreach ($key in $aliasHash.Keys) {
     try {
