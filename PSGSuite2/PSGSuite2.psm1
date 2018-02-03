@@ -67,6 +67,7 @@ $aliasHash = @{
     'Get-GSMobileDeviceList'            = 'Get-GSMobileDevice'
     'Get-GSDataTransferApplicationList' = 'Get-GSDataTransferApplication'
     'Get-GSResourceList'                = 'Get-GSResource'
+    'Get-GSUserASPList'                 = 'Get-GSUserASP'
 }
 foreach ($key in $aliasHash.Keys) {
     try {

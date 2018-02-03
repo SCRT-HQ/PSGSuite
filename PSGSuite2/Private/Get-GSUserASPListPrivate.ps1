@@ -1,4 +1,4 @@
-﻿function Get-GSUserASPList {
+﻿function Get-GSUserASPListPrivate {
     [cmdletbinding()]
     Param
     (

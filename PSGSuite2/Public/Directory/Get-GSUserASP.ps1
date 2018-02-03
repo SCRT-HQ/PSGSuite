@@ -37,7 +37,7 @@
                 }
                 else {
                     $PSBoundParameters['User'] = $U
-                    Get-GSUserASPList @PSBoundParameters
+                    Get-GSUserASPListPrivate @PSBoundParameters
                 }
             }
         }
