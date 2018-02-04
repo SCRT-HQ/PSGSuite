@@ -1,4 +1,6 @@
 # PSGSuite
+
+[![Join the chat at https://gitter.im/PSGSuite/Lobby](https://badges.gitter.im/PSGSuite/Lobby.svg)](https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Powershell module wrapping G Suite (Google Apps) API calls in handy functions. Authentication is established using a service account via P12 key to negate the consent popup and allow for greater handsoff automation capabilities
 
 Ready to get started? Visit the [Initial Setup page](https://github.com/nferrell/PSGSuite/wiki/Initial-Setup) and follow the directions there.
