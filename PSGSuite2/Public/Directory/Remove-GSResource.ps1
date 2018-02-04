@@ -18,7 +18,7 @@ function Remove-GSResource {
     .EXAMPLE
     Remove-GSResource -ResourceId Train01
 
-    Removes the Resource Calendar 'Train01'
+    Removes the Resource Calendar 'Train01' after confirmation
     #>
     [CmdletBinding(SupportsShouldProcess = $true,ConfirmImpact = "High",DefaultParameterSetName = 'Calendars')]
     Param

@@ -1,4 +1,19 @@
 function Remove-GSUser {
+    <#
+    .SYNOPSIS
+    Removes a user
+    
+    .DESCRIPTION
+    Removes a user
+    
+    .PARAMETER User
+    The primary email or unique Id of the user to Remove-GSUser
+    
+    .EXAMPLE
+    Remove-GSUser joe -Confirm:$false
+
+    Removes the user 'joe@domain.com', skipping confirmation
+    #>
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
     Param
     (

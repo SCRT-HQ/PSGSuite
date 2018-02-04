@@ -1,4 +1,22 @@
 ﻿function Remove-GSUserASP {
+    <#
+    .SYNOPSIS
+    Removes an Application Specific Password for a user
+    
+    .DESCRIPTION
+    Removes an Application Specific Password for a user
+    
+    .PARAMETER User
+    The user to remove ASPs ValueFromPipeline
+    
+    .PARAMETER CodeId
+    The ASP Code Id to remove. If excluded, all ASPs for the user will be removed
+    
+    .EXAMPLE
+    Remove-GSUserASP -User joe
+
+    Removes *ALL* ASPs from joe@domain.com's account after confirmation
+    #>
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
     Param
     (
@@ -40,8 +58,13 @@
                     }
                 }
                 else {
-                    Get-GSUserASP -User $U | ForEach-Object {
-                        Remove-GSUserASP -User $_.User -CodeId $_.CodeId
+                    if ($PSCmdlet.ShouldProcess("Deleting ALL ASPs for user '$U'")) {
+                        Write-Verbose "Deleting ALL ASPs for user '$U'"
+                        Get-GSUserASP -User $U -Verbose:$false | ForEach-Object {
+                            $request = $service.Asps.Delete($U,$_.CodeId)
+                            $request.Execute()
+                            Write-Verbose "ASP CodeId '$($_.CodeId)' has been successfully deleted for user '$U'"
+                        }
                     }
                 }
             }
