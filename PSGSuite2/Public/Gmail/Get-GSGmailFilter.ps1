@@ -1,16 +1,37 @@
 function Get-GSGmailFilter {
+    <#
+    .SYNOPSIS
+    Gets Gmail filter details
+    
+    .DESCRIPTION
+    Long description
+    
+    .PARAMETER FilterId
+    The unique Id of the filter you would like to retrieve information for. If excluded, all filters for the user are returned
+    
+    .PARAMETER User
+    The email of the user you are getting the filter information for
+    
+    .PARAMETER Raw
+    If $true, returns the raw response. If not passed or -Raw:$false, response is formatted as a flat object for readability
+    
+    .EXAMPLE
+    Get-GSGmailFilter -User joe
+
+    Gets the list of filters for Joe
+    #>
     [cmdletbinding()]
     Param
     (
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [Alias("Id")]
+        [string[]]
+        $FilterId,
         [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [string]
         $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
-        [Alias("Id")]
-        [string[]]
-        $FilterId,
         [parameter(Mandatory = $false)]
         [switch]
         $Raw

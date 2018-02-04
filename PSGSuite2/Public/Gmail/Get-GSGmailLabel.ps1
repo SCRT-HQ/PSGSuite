@@ -1,16 +1,36 @@
 function Get-GSGmailLabel {
+    <#
+    .SYNOPSIS
+    Gets Gmail label information for the user
+    
+    .DESCRIPTION
+    Gets Gmail label information for the user
+    
+    .PARAMETER LabelId
+    The unique Id of the label to get information for. If excluded, returns the list of labels for the user
+    
+    .PARAMETER User
+    The user to get label information for
+
+    Defaults to the AdminEmail user
+    
+    .EXAMPLE
+    Get-GSGmailLabel
+
+    Gets the Gmail labels of the AdminEmail user
+    #>
     [cmdletbinding()]
     Param
     (
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [Alias("Id")]
+        [string[]]
+        $LabelId,
         [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [string]
-        $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
-        [Alias("Id")]
-        [string[]]
-        $LabelId
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
         if ($User -ceq 'me') {

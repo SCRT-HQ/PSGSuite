@@ -1,16 +1,36 @@
 function Get-GSGmailForwardingAddress {
+    <#
+    .SYNOPSIS
+    Gets Gmail forwarding address information for the user
+    
+    .DESCRIPTION
+    Gets Gmail forwarding address information for the user
+    
+    .PARAMETER ForwardingAddress
+    The forwarding address you would like to get info for. If excluded, gets the list of forwarding addresses and their info for the user
+    
+    .PARAMETER User
+    The user to get the forwarding addresses for
+
+    Defaults to the AdminEmail user
+    
+    .EXAMPLE
+    Get-GSGmailForwardingAddress
+
+    Gets the list of forwarding addresses for the AdminEmail user
+    #>
     [cmdletbinding()]
     Param
     (
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [Alias("Id")]
+        [string[]]
+        $ForwardingAddress,
         [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [string]
-        $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
-        [Alias("Id")]
-        [string[]]
-        $ForwardingAddress
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
         if ($User -ceq 'me') {

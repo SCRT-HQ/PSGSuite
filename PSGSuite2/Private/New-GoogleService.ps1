@@ -34,6 +34,7 @@ function New-GoogleService {
                     [System.Threading.CancellationToken]::None,
                     [Google.Apis.Util.Store.FileDataStore]::new($credPath,$true)
                 ).Result
+                $stream.Close()
             }
             else {
                 $PSCmdlet.ThrowTerminatingError((ThrowTerm "The current config '$($script:PSGSuite.ConfigName)' does not contain a P12KeyPath or a ClientSecretsPath! PSGSuite is unable to build a credential object for the service without a path to a credential file! Please update the configuration to include a path at least one of the two credential types."))
