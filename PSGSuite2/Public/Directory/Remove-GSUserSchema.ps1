@@ -11,7 +11,7 @@ function Remove-GSUserSchema {
     .EXAMPLE
     Remove-GSUserSchema 2SV
 
-    Removes the custom user schema named '2SV'
+    Removes the custom user schema named '2SV' after confirmation
     #>
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
     Param

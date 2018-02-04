@@ -1,4 +1,19 @@
 function Revoke-GSUserVerificationCodes {
+    <#
+    .SYNOPSIS
+    Revokes/invalidates Verification Codes for the user
+    
+    .DESCRIPTION
+    Revokes/invalidates Verification Codes for the user
+    
+    .PARAMETER User
+    The user to revoke verification codes from
+    
+    .EXAMPLE
+    Revoke-GSUserVerificationCodes -User me -Confirm:$false
+
+    Invalidates the verification codes for the AdminEmail user
+    #>
     [cmdletbinding()]
     Param
     (
@@ -6,7 +21,7 @@ function Revoke-GSUserVerificationCodes {
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [String[]]
-        $User = $Script:PSGSuite.AdminEmail
+        $User
     )
     Begin {
         $serviceParams = @{
