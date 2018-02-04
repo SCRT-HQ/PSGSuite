@@ -1,13 +1,18 @@
 function Remove-GSOrganizationalUnit {
     <#
-    .Synopsis
-       Removes an existing Google Organizational Unit
+    .SYNOPSIS
+    Removes an OrgUnit
+    
     .DESCRIPTION
-       Removes an existing Google Organizational Unit
+    Removes an Organization Unit
+    
+    .PARAMETER OrgUnitPath
+    The path of the OrgUnit you would like to Remove-GSOrganizationalUnit
+    
     .EXAMPLE
-       Remove-GSUser -OrgUnitPath john.smith@domain.com -WhatIf
-    .EXAMPLE
-       Remove-GSUser -User john.smith@domain.com -Confirm:$false
+    Remove-GSOrganizationalUnit -OrgUnitPath "/Testing"
+
+    Removes the OrgUnit "/Testing" on confirmation
     #>
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
     Param

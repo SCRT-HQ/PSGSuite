@@ -1,4 +1,25 @@
 function Remove-GSResource {
+    <#
+    .SYNOPSIS
+    Removes a resource
+    
+    .DESCRIPTION
+    Removes a resource
+    
+    .PARAMETER ResourceId
+    The Resource Id of the Resource *Calendar* you would like to remove
+    
+    .PARAMETER BuildingId
+    The Building Id of the Resource *Building* you would like to remove
+    
+    .PARAMETER FeatureKey
+    The Feature Key of the Resource *Feature* you would like to remove
+    
+    .EXAMPLE
+    Remove-GSResource -ResourceId Train01
+
+    Removes the Resource Calendar 'Train01'
+    #>
     [CmdletBinding(SupportsShouldProcess = $true,ConfirmImpact = "High",DefaultParameterSetName = 'Calendars')]
     Param
     (
