@@ -17,7 +17,7 @@ function Get-GSUserPhoto {
     .PARAMETER OutFileFormat
     The format that you would like to save the photo as.
 
-    Available choices are:
+    Available values are:
     * "PNG": saves the photo in .png format
     * "Base64": saves the photo as a .txt file containing standard (non-WebSafe) Base64 content. 
 

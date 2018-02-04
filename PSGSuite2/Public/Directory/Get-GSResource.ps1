@@ -12,7 +12,7 @@ function Get-GSResource {
     .PARAMETER Resource
     The Resource Type to List
 
-    Available choices are:
+    Available values are:
     * "Calendars": resource calendars (legacy and new - i.e. conference rooms)
     * "Buildings": new Building Resources (i.e. "Building A" or "North Campus")
     * "Features": new Feature Resources (i.e. "Video Conferencing" or "Projector")

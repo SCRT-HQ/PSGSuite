@@ -12,7 +12,7 @@ function Get-GSOrganizationalUnit {
     .PARAMETER SearchScope
     The depth at which to return the list of OrgUnits children
 
-    Available choices are:
+    Available values are:
     * "Base": only return the OrgUnit specified in the SearchBase
     * "Subtree": return the full list of OrgUnits underneath the specified SearchBase
     * "OneLevel": return the SearchBase and the OrgUnit's directly underneath it

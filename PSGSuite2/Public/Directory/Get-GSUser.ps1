@@ -24,7 +24,7 @@ function Get-GSUser {
     .PARAMETER SearchScope
     The depth at which to return the list of Users
 
-    Available choices are:
+    Available values are:
     * "Base": only return the users specified in the SearchBase
     * "Subtree": return the full list of users underneath the specified SearchBase
     * "OneLevel": return the SearchBase and the Users directly underneath it

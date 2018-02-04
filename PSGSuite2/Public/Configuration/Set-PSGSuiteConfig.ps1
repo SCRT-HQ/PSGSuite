@@ -32,7 +32,7 @@ function Set-PSGSuiteConfig {
     .PARAMETER Preference
     Some functions allow you to specify whether you are running in the context of the customer or a specific domain in the customer's realm. This allows you to set your preference.
 
-    Available options are:
+    Available values are:
     * CustomerID
     * Domain
     
@@ -42,7 +42,7 @@ function Set-PSGSuiteConfig {
     .PARAMETER Scope
     The scope at which you would like to set this config.
 
-    Available options are:
+    Available values are:
     * Machine (this would create the config in a location accessible by all users on the machine)
     * Enterprise (this would create the config in the Roaming AppData folder for the user or it's *nix equivalent)
     * User (this would create the config in the Local AppData folder for the user or it's *nix equivalent)
