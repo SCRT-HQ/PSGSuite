@@ -75,7 +75,7 @@ function Get-GSCalendarEventList {
         [Int]
         $MaxAttendees,
         [parameter(Mandatory = $false)]
-        [ValidateScript( {[int]$_ -le 2500})]
+        [ValidateRange(1,2500)]
         [Int]
         $PageSize = 2500,
         [parameter(Mandatory = $false)]

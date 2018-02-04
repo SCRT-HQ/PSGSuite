@@ -14,7 +14,7 @@ function Get-GSResourceListPrivate {
         [String[]]
         $OrderBy,
         [parameter(Mandatory = $false)]
-        [ValidateScript( {[int]$_ -le 500 -and [int]$_ -ge 1})]
+        [ValidateRange(1,500)]
         [Alias("MaxResults")]
         [Int]
         $PageSize = "500"

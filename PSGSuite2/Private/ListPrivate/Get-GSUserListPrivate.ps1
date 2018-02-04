@@ -29,7 +29,7 @@ function Get-GSUserListPrivate {
         [String]
         $ViewType = "Admin_View",
         [parameter(Mandatory = $false)]
-        [ValidateScript( {[int]$_ -le 500 -and [int]$_ -ge 1})]
+        [ValidateRange(1,500)]
         [Alias("MaxResults")]
         [Int]
         $PageSize = "500",

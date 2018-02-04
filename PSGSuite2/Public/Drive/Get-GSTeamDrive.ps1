@@ -39,7 +39,7 @@ function Get-GSTeamDrive {
         [String]
         $Filter,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
-        [ValidateScript( {[int]$_ -le 100})]
+        [ValidateRange(1,100)]
         [Int]
         $PageSize = "100"
     )

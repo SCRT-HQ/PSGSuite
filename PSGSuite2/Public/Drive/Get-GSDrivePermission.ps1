@@ -40,7 +40,7 @@ function Get-GSDrivePermission {
         $PermissionId,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [Alias('MaxResults')]
-        [ValidateScript( {[int]$_ -le 100})]
+        [ValidateRange(1,100)]
         [Int]
         $PageSize = "100"
     )

@@ -66,7 +66,7 @@
         [String]
         $Projection = "FULL",
         [parameter(Mandatory = $false)]
-        [ValidateScript( {[int]$_ -le 1000 -and [int]$_ -ge 1})]
+        [ValidateRange(1,1000)]
         [Int]
         $PageSize = "1000",
         [parameter(Mandatory = $false)]

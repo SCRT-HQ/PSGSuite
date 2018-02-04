@@ -7,7 +7,7 @@ function Get-GSGroupListPrivate {
         [String]
         $Where_IsAMember,
         [parameter(Mandatory = $false)]
-        [ValidateScript( {[int]$_ -le 200 -and [int]$_ -ge 1})]
+        [ValidateRange(1,200)]
         [Alias('MaxResults')]
         [Int]
         $PageSize = "200"

@@ -13,7 +13,7 @@ function Get-GSUserLicenseList {
         $License,
         [parameter(Mandatory = $false)]
         [Alias("MaxResults")]
-        [ValidateScript( {[int]$_ -le 1000})]
+        [ValidateRange(1,1000)]
         [Int]
         $PageSize = "1000"
     )

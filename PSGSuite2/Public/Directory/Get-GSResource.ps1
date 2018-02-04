@@ -51,7 +51,7 @@ function Get-GSResource {
         [String[]]
         $OrderBy,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
-        [ValidateScript( {[int]$_ -le 500 -and [int]$_ -ge 1})]
+        [ValidateRange(1,500)]
         [Alias("MaxResults")]
         [Int]
         $PageSize = "500"

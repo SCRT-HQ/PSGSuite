@@ -40,7 +40,7 @@ function Get-GSGroupMember {
       [String[]]
       $Roles,
       [parameter(Mandatory=$false,ParameterSetName = "List")]
-      [ValidateScript( {[int]$_ -le 200 -and [int]$_ -ge 1})]
+      [ValidateRange(1,200)]
       [Int]
       $PageSize="200"
     )

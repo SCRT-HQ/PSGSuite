@@ -26,7 +26,7 @@
         [String[]]
         $ApplicationId,
         [parameter(Mandatory = $false)]
-        [ValidateScript( {[int]$_ -le 500 -and [int]$_ -ge 1})]
+        [ValidateRange(1,500)]
         [Int]
         $PageSize = 500
     )

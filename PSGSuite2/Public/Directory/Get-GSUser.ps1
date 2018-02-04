@@ -129,7 +129,7 @@ function Get-GSUser {
         [String[]]
         $Fields,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
-        [ValidateScript( {[int]$_ -le 500 -and [int]$_ -ge 1})]
+        [ValidateRange(1,500)]
         [Alias("MaxResults")]
         [Int]
         $PageSize = "500",
@@ -176,7 +176,7 @@ function Get-GSUser {
                     }
                 }
                 List {
-                    Get-GSUserList @PSBoundParameters
+                    Get-GSUserListPrivate @PSBoundParameters
                 }
             }
         }
