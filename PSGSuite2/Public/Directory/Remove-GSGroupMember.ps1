@@ -1,4 +1,22 @@
 function Remove-GSGroupMember {
+    <#
+    .SYNOPSIS
+    Removes members from a group
+    
+    .DESCRIPTION
+    Removes members from a group
+    
+    .PARAMETER Identity
+    The email or unique Id of the group to remove members from
+    
+    .PARAMETER Member
+    The member or array of members to remove from the target group
+    
+    .EXAMPLE
+    Remove-GSGroupMember -Identity admins -Member joe.smith,mark.taylor -Confirm:$false
+
+    Removes members Joe Smith and Mark Taylor from the group admins@domain.com and skips asking for confirmation
+    #>
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
     Param
     (

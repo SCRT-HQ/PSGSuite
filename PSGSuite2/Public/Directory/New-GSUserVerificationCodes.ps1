@@ -1,12 +1,27 @@
 ﻿function New-GSUserVerificationCodes {
+    <#
+    .SYNOPSIS
+    Generates new verification codes for the user
+    
+    .DESCRIPTION
+    Generates new verification codes for the user
+    
+    .PARAMETER User
+    The primary email or UserID of the user who you are trying to get info for. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config
+    
+    .EXAMPLE
+    New-GSUserVerificationCodes -User me
+
+    Generates new verification codes for the AdminEmail user
+    #>
     [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $false,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [String[]]
-        $User = $Script:PSGSuite.AdminEmail
+        $User
     )
     Begin {
         $serviceParams = @{

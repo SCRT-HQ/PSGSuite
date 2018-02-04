@@ -1,4 +1,19 @@
 ﻿function Remove-GSGroup {
+    <#
+    .SYNOPSIS
+    Removes a group
+    
+    .DESCRIPTION
+    Removes a group
+    
+    .PARAMETER Identity
+    The email or unique Id of the group to removed
+    
+    .EXAMPLE
+    Remove-GSGroup 'test_group' -Confirm:$false
+
+    Removes the group 'test_group@domain.com' without asking for confirmation
+    #>
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
     Param
     (
