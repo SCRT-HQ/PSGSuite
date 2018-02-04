@@ -1,4 +1,60 @@
 function Export-GSDriveFile {
+    <#
+    .SYNOPSIS
+    Exports a Drive file as if you chose "Export" from the File menu when viewing the file
+    
+    .DESCRIPTION
+    Exports a Drive file as if you chose "Export" from the File menu when viewing the file
+    
+    .PARAMETER FileID
+    The unique Id of the file to export
+    
+    .PARAMETER User
+    The email or unique Id of the owner of the Drive file
+
+    Defaults to the AdminEmail user
+    
+    .PARAMETER Type
+    The type of local file you would like to export the Drive file as
+
+    Available values are:
+    * "CSV"
+    * "HTML"
+    * "JPEG"
+    * "JSON"
+    * "MSExcel"
+    * "MSPowerPoint"
+    * "MSWordDoc"
+    * "OpenOfficeDoc"
+    * "OpenOfficeSheet"
+    * "PDF"
+    * "PlainText"
+    * "PNG"
+    * "RichText"
+    * "SVG"
+    
+    .PARAMETER OutFilePath
+    The directory path that you would like to Drive file to
+
+    Defaults to the current working directory
+    
+    .PARAMETER Projection
+    The defined subset of fields to be returned
+
+    Available values are:
+    * "Minimal"
+    * "Standard"
+    * "Full"
+    * "Access"
+    
+    .PARAMETER Fields
+    The specific fields to returned
+    
+    .EXAMPLE
+    Export-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -Type CSV
+
+    Exports the Drive file as a CSV to the current working directory
+    #>
     [cmdletbinding(DefaultParameterSetName = "Depth")]
     Param
     (      
@@ -13,9 +69,10 @@ function Export-GSDriveFile {
         [ValidateSet("CSV","HTML","JPEG","JSON","MSExcel","MSPowerPoint","MSWordDoc","OpenOfficeDoc","OpenOfficeSheet","PDF","PlainText","PNG","RichText","SVG")]
         [String]
         $Type,
-        [parameter(Mandatory = $true)]
+        [parameter(Mandatory = $false)]
+        [ValidateScript({(Get-Item $_).PSIsContainer})]
         [String]
-        $OutFilePath,
+        $OutFilePath = (Get-Location).Path,
         [parameter(Mandatory = $false,ParameterSetName = "Depth")]
         [Alias('Depth')]
         [ValidateSet("Minimal","Standard","Full","Access")]

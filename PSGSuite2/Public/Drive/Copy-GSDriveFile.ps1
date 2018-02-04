@@ -1,4 +1,45 @@
 function Copy-GSDriveFile {
+    <#
+    .SYNOPSIS
+    Make a copy of a file in Drive
+    
+    .DESCRIPTION
+    Make a copy of a file in Drive
+    
+    .PARAMETER FileID
+    The unique Id of the file to copy
+    
+    .PARAMETER User
+    The email or unique Id of the owner of the Drive file
+
+    Defaults to the AdminEmail user
+    
+    .PARAMETER Name
+    The name of the new Drive file copy
+    
+    .PARAMETER Description
+    The description of the new Drive file copy
+    
+    .PARAMETER Parents
+    The parent Ids of the new Drive file copy
+    
+    .PARAMETER Projection
+    The defined subset of fields to be returned
+
+    Available values are:
+    * "Minimal"
+    * "Standard"
+    * "Full"
+    * "Access"
+    
+    .PARAMETER Fields
+    The specific fields to returned
+    
+    .EXAMPLE
+    Copy-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -Name "New Daily Checklist"
+
+    Copies the Drive file Id to a new Drive file named 'New Daily Checklist'
+    #>
     [cmdletbinding(DefaultParameterSetName = "Depth")]
     Param
     (
