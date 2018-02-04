@@ -1,4 +1,24 @@
 function Restore-GSGmailMessage {
+    <#
+    .SYNOPSIS
+    Restores a trashed message to the inbox
+    
+    .DESCRIPTION
+    Restores a trashed message to the inbox
+    
+    .PARAMETER User
+    The primary email of the user to restore the message for
+
+    Defaults to the AdminEmail user
+    
+    .PARAMETER Id
+    The Id of the message to restore
+    
+    .EXAMPLE
+    Restore-GSGmailMessage -User joe -Id 161622d7b76b7e1e,1616227c34d435f2
+
+    Restores the 2 message Id's from Joe's TRASH back to their inbox
+    #>
     [cmdletbinding()]
     Param
     (

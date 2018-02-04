@@ -1,4 +1,33 @@
 function Remove-GSGmailMessage {
+    <#
+    .SYNOPSIS
+    Removes a Gmail message from the user
+    
+    .DESCRIPTION
+    Removes a Gmail message from the user
+    
+    .PARAMETER User
+    The primary email of the user to remove the message from
+
+    Defaults to the AdminEmail user
+    
+    .PARAMETER Id
+    The Id of the message to remove
+    
+    .PARAMETER Method
+    The method used to delete the message
+
+    Available values are:
+    * "Trash": moves the message to the TRASH label (Default - preferred method, as this is recoverable)
+    * "Delete": permanently deletes the message (NON-RECOVERABLE!)
+
+    Default value is 'Trash'
+    
+    .EXAMPLE
+    Remove-GSGmailMessage -User joe -Id 161622d7b76b7e1e,1616227c34d435f2
+
+    Moves the 2 message Id's from Joe's inbox into their TRASH after confirmation
+    #>
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
     Param
     (

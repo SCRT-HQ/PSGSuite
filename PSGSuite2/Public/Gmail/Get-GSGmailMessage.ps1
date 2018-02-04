@@ -8,6 +8,8 @@ function Get-GSGmailMessage {
     
     .PARAMETER User
     The primary email of the user who owns the message
+
+    Defaults to the AdminEmail user
     
     .PARAMETER Id
     The Id of the message to retrieve info for

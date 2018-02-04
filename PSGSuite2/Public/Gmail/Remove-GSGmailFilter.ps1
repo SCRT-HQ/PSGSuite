@@ -1,4 +1,27 @@
 ﻿function Remove-GSGmailFilter {
+    <#
+    .SYNOPSIS
+    Removes a Gmail filter
+    
+    .DESCRIPTION
+    Removes a Gmail filter
+    
+    .PARAMETER User
+    The primary email of the user to remove the filter from
+
+    Defaults to the AdminEmail user
+    
+    .PARAMETER FilterId
+    The unique Id of the filter to remove
+    
+    .PARAMETER Raw
+    If $true, returns the raw response. If not passed or -Raw:$false, response is formatted as a flat object for readability
+    
+    .EXAMPLE
+    Remove-GSGmailFilter -FilterId ANe1Bmj5l3089jd3k1eQbY90g9rXswjS03LVOw
+
+    Removes the Filter from the AdminEmail user after confirmation
+    #>
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
     Param
     (
