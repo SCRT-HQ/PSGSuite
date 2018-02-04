@@ -1,4 +1,62 @@
 function New-GSResource {
+    <#
+    .SYNOPSIS
+    Creates a new Calendar Resource
+    
+    .DESCRIPTION
+    Creates a new Calendar Resource. Supports Resource types 'Calendars','Buildings' & 'Features'
+    
+    .PARAMETER Name
+    The name of the new Resource
+    
+    .PARAMETER Id
+    The unique ID for the calendar resource.
+    
+    .PARAMETER BuildingId
+    Unique ID for the building a resource is located in.
+    
+    .PARAMETER Description
+    Description of the resource, visible only to admins.
+    
+    .PARAMETER Capacity
+    Capacity of a resource, number of seats in a room.
+    
+    .PARAMETER FloorName
+    Name of the floor a resource is located on (Calendars Resource type)
+    
+    .PARAMETER FloorNames
+    The names of the floors in the building (Buildings Resource type)
+    
+    .PARAMETER FloorSection
+    Name of the section within a floor a resource is located in.
+    
+    .PARAMETER Category
+    The category of the calendar resource. Either CONFERENCE_ROOM or OTHER. Legacy data is set to CATEGORY_UNKNOWN. 
+
+    Acceptable values are:
+    * "CATEGORY_UNKNOWN"
+    * "CONFERENCE_ROOM"
+    * "OTHER"
+    
+    .PARAMETER ResourceType
+    The type of the calendar resource, intended for non-room resources.
+    
+    .PARAMETER UserVisibleDescription
+    Description of the resource, visible to users and admins.
+    
+    .PARAMETER Resource
+    The resource type you would like to create
+
+    Available values are:
+    * "Calendars": create a Resource Calendar or legacy resource type
+    * "Buildings": create a Resource Building
+    * "Features": create a Resource Feature
+    
+    .EXAMPLE
+    New-GSResource -Name "Training Room" -Id "Train01" -Capacity 75 -Category 'CONFERENCE_ROOM' -ResourceType "Conference Room" -Description "Training room for new hires - has 1 LAN port per station" -UserVisibleDescription "Training room for new hires"
+
+    Creates a new training room Resource Calendar that will be bookable on Google Calendar
+    #>
     [CmdletBinding(DefaultParameterSetName = 'Features')]
     Param
     (
@@ -30,7 +88,7 @@ function New-GSResource {
         [String]
         $FloorSection,
         [parameter(Mandatory = $false,ParameterSetName = 'Calendars')]
-        [ValidateSet('CONFERENCE_ROOM','OTHER')]
+        [ValidateSet('CATEGORY_UNKNOWN','CONFERENCE_ROOM','OTHER')]
         [String]
         $Category,
         [parameter(Mandatory = $false,ParameterSetName = 'Calendars')]

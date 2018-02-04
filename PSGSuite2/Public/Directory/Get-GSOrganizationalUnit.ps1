@@ -34,7 +34,7 @@ function Get-GSOrganizationalUnit {
         [String]
         $SearchBase,
         [parameter(Mandatory = $false)]
-        [Alias('SearchScope','Type')]
+        [Alias('Type')]
         [ValidateSet('Base','Subtree','OneLevel','All','Children')]
         [String]
         $SearchScope = 'All'
@@ -58,14 +58,12 @@ function Get-GSOrganizationalUnit {
                     $request.Execute()
                 }
             }
+            elseif ($SearchBase -eq "/" -and $SearchScope -eq 'Base') {
+                $topId = Get-GSOrganizationalUnitListPrivate -SearchBase "/" -Type Children -Verbose:$false | Where-Object {$_.ParentOrgUnitPath -eq "/"} | Select-Object -ExpandProperty ParentOrgUnitId -Unique
+                Get-GSOrganizationalUnit -OrgUnitPath $topId -SearchScope Base
+            }
             else {
-                if ($SearchBase -eq "/" -and $SearchScope -eq 'Base') {
-                    $topId = Get-GSOrganizationalUnitListPrivate -SearchBase "/" -Type Children -Verbose:$false | Where-Object {$_.ParentOrgUnitPath -eq "/"} | Select-Object -ExpandProperty ParentOrgUnitId -Unique
-                    Get-GSOrganizationalUnit -OrgUnitPath $topId -SearchScope Base
-                }
-                else {
-                    Get-GSOrganizationalUnitListPrivate @PSBoundParameters
-                }
+                Get-GSOrganizationalUnitListPrivate @PSBoundParameters
             }
         }
         catch {

@@ -2,12 +2,12 @@ function Get-GSOrganizationalUnitListPrivate {
     [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $false,Position = 0,ParameterSetName = "Get")]
+        [parameter(Mandatory = $false,Position = 0)]
         [Alias('OrgUnitPath','BaseOrgUnitPath')]
         [String]
         $SearchBase,
-        [parameter(Mandatory = $false,ParameterSetName)]
-        [Alias('SearchScope','Type')]
+        [parameter(Mandatory = $false)]
+        [Alias('Type')]
         [ValidateSet('Subtree','OneLevel','All','Children')]
         [String]
         $SearchScope = 'All'

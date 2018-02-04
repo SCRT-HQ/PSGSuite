@@ -15,7 +15,7 @@ function New-GSUserSchema {
     .EXAMPLE
     New-GSUserSchema -SchemaName "SDK" -Fields (Add-GSUserSchemaField -FieldName "string" -FieldType STRING -ReadAccessType ADMINS_AND_SELF),(Add-GSUserSchemaField -FieldName "date" -FieldType DATE -ReadAccessType ADMINS_AND_SELF)
 
-    # This command will create a schema named "SDK" with two fields, "string" and "date", readable by ADMINS_AND_SELF
+    This command will create a schema named "SDK" with two fields, "string" and "date", readable by ADMINS_AND_SELF
     #>
     [cmdletbinding()]
     Param
