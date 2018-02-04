@@ -75,7 +75,7 @@ function Watch-GSDriveUpload {
                             $status.Status
                         }
                         $progParams = @{
-                            Activity = "[$($status.PercentComplete)%] [ID: $($status.Id)] $($statusFmt) file '$($status.File.FullName)' to Google Drive$(if($status.Parents){" (Parents: '$($status.Parents -join "', '")')"})"
+                            Activity = "[$($status.PercentComplete)%] [ID: $($status.Id)] $($statusFmt) file '$($status.File)' to Google Drive$(if($status.Parents){" (Parents: '$($status.Parents -join "', '")')"})"
                             SecondsRemaining = $status.Remaining.TotalSeconds
                             Id = $i
                             ParentId = 1

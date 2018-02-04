@@ -1,4 +1,4 @@
-function Get-GSUserSchemaList {
+function Get-GSUserSchemaListPrivate {
     [cmdletbinding()]
     Param( )
     Begin {

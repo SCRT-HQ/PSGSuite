@@ -1,14 +1,4 @@
-function Get-GSUserList {
-    <#
-.Synopsis
-   Gets the user list for a given account in Google Apps
-.DESCRIPTION
-   Retrieves the full user list for the entire account. Accepts standard Google queries as a string or array of strings.
-.EXAMPLE
-   Get-GSUserList -MaxResults 300 -Query "orgUnitPath=/Users","email=domain.user2@domain.com"
-.EXAMPLE
-   Get-GSUserList -Verbose
-#>
+function Get-GSUserListPrivate {
     [cmdletbinding()]
     Param
     (
@@ -63,7 +53,7 @@ function Get-GSUserList {
         try {
             $request = $service.Users.List()
             $request.Projection = $Projection
-            if ($Preference) {
+            if ($Script:PSGSuite.Preference) {
                 switch ($Script:PSGSuite.Preference) {
                     Domain {
                         $request.Domain = $Script:PSGSuite.Domain
