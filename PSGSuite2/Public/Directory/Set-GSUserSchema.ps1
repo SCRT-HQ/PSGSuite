@@ -1,4 +1,27 @@
 function Set-GSUserSchema {
+    <#
+    .SYNOPSIS
+    Hard-sets a schema's configuration
+    
+    .DESCRIPTION
+    Hard-sets a schema's configuration
+    
+    .PARAMETER SchemaId
+    The unique Id of the schema to set
+    
+    .PARAMETER SchemaName
+    The new schema name
+    
+    .PARAMETER Fields
+    New schema fields to set
+
+    Expects SchemaFieldSpec objects. You can create these with the helper function Add-GSUserSchemaField, i.e.: Add-GSUserSchemaField -FieldName "date" -FieldType DATE -ReadAccessType ADMINS_AND_SELF
+    
+    .EXAMPLE
+    Set-GSUserSchema -SchemaId "9804800jfl08917304j" -SchemaName "SDK_2" -Fields (Add-GSUserSchemaField -FieldName "string2" -FieldType STRING -ReadAccessType ADMINS_AND_SELF)
+
+    This command will set the schema Id '9804800jfl08917304j' with the name "SDK_2" and one field "string2" readable by ADMINS_AND_SELF
+    #>
     [cmdletbinding()]
     Param
     (

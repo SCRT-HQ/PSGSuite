@@ -1,4 +1,32 @@
 ﻿function Start-GSDataTransfer {
+    <#
+    .SYNOPSIS
+    Starts a Data Transfer from one user to another
+    
+    .DESCRIPTION
+    Starts a Data Transfer from one user to another
+    
+    .PARAMETER OldOwnerUserId
+    The email or unique Id of the owner you are transferring data *FROM*
+    
+    .PARAMETER NewOwnerUserId
+    The email or unique Id of the owner you are transferring data *TO*
+    
+    .PARAMETER ApplicationId
+    The application Id that you would like to transfer data for
+    
+    .PARAMETER PrivacyLevel
+    The privacy level for the data you'd like to transfer
+
+    Available values are:
+    * "SHARED": all shared content owned by the user
+    * "PRIVATE": all private (unshared) content owned by the user
+    
+    .EXAMPLE
+    Start-GSDataTransfer -OldOwnerUserId joe -NewOwnerUserId mark -ApplicationId 55656082996 -PrivacyLevel SHARED,PRIVATE
+
+    Transfers all of Joe's data to Mark
+    #>
     [cmdletbinding()]
     Param
     (

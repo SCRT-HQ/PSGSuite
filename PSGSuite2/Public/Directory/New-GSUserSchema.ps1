@@ -10,6 +10,8 @@ function New-GSUserSchema {
     The name of the schema to create
     
     .PARAMETER Fields
+    New schema fields to set
+    
     Expects SchemaFieldSpec objects. You can create these with the helper function Add-GSUserSchemaField, i.e.: Add-GSUserSchemaField -FieldName "date" -FieldType DATE -ReadAccessType ADMINS_AND_SELF
     
     .EXAMPLE

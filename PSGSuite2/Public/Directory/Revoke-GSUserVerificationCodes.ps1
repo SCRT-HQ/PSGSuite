@@ -12,7 +12,7 @@ function Revoke-GSUserVerificationCodes {
     .EXAMPLE
     Revoke-GSUserVerificationCodes -User me -Confirm:$false
 
-    Invalidates the verification codes for the AdminEmail user
+    Invalidates the verification codes for the AdminEmail user, skipping confirmation
     #>
     [cmdletbinding()]
     Param

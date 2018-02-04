@@ -37,6 +37,8 @@ function New-GSResource {
     * "CATEGORY_UNKNOWN"
     * "CONFERENCE_ROOM"
     * "OTHER"
+
+    Defaults to 'CATEGORY_UNKNOWN' if creating a Calendar Resource
     
     .PARAMETER ResourceType
     The type of the calendar resource, intended for non-room resources.
@@ -117,6 +119,9 @@ function New-GSResource {
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
+        if ($PSBoundParameters -notcontains 'Category' -and $PSCmdlet.ParameterSetName -eq 'Calendars') {
+            $PSBoundParameters['Category'] = 'CATEGORY_UNKNOWN'
+        }
     }
     Process {
         try {

@@ -1,4 +1,72 @@
 function Update-GSResource {
+    <#
+    .SYNOPSIS
+    Updates a Calendar Resource
+    
+    .DESCRIPTION
+    Updates a Calendar Resource
+    
+    .PARAMETER ResourceId
+    The unique Id of the Resource Calendar that you would like to update
+    
+    .PARAMETER BuildingId
+    If updating a Resource Building, the unique Id of the building you would like to update
+
+    If updating a Resource Calendar, the new Building Id for the resource
+    
+    .PARAMETER FeatureKey
+    The unique key of the Feature you would like to update
+    
+    .PARAMETER Name
+    The new name of the resource
+    
+    .PARAMETER Id
+    The unique ID for the calendar resource.
+    
+    .PARAMETER Description
+    Description of the resource, visible only to admins.
+    
+    .PARAMETER Capacity
+    Capacity of a resource, number of seats in a room.
+    
+    .PARAMETER FloorName
+    Name of the floor a resource is located on (Calendars Resource type)
+    
+    .PARAMETER FloorNames
+    The names of the floors in the building (Buildings Resource type)
+    
+    .PARAMETER FloorSection
+    Name of the section within a floor a resource is located in.
+    
+    .PARAMETER Category
+    The new category of the calendar resource. Either CONFERENCE_ROOM or OTHER. Legacy data is set to CATEGORY_UNKNOWN. 
+
+    Acceptable values are:
+    * "CATEGORY_UNKNOWN"
+    * "CONFERENCE_ROOM"
+    * "OTHER"
+
+    Defaults to 'CATEGORY_UNKNOWN' if creating a Calendar Resource
+    
+    .PARAMETER ResourceType
+    The type of the calendar resource, intended for non-room resources.
+    
+    .PARAMETER UserVisibleDescription
+    Description of the resource, visible to users and admins.
+    
+    .PARAMETER Resource
+    The resource type you would like to create
+
+    Available values are:
+    * "Calendars": create a Resource Calendar or legacy resource type
+    * "Buildings": create a Resource Building
+    * "Features": create a Resource Feature
+    
+    .EXAMPLE
+    Update-GSResource -ResourceId Train01 -Id TrainingRoom01
+
+    Updates the resource Id 'Train01' to the new Id 'TrainingRoom01'
+    #>
     [CmdletBinding()]
     Param
     (
@@ -38,7 +106,7 @@ function Update-GSResource {
         [String]
         $FloorSection,
         [parameter(Mandatory = $false,ParameterSetName = 'Calendars')]
-        [ValidateSet('CONFERENCE_ROOM','OTHER')]
+        [ValidateSet('CATEGORY_UNKNOWN','CONFERENCE_ROOM','OTHER')]
         [String]
         $Category,
         [parameter(Mandatory = $false,ParameterSetName = 'Calendars')]
@@ -67,6 +135,9 @@ function Update-GSResource {
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
+        if ($PSBoundParameters -notcontains 'Category' -and $PSCmdlet.ParameterSetName -eq 'Calendars') {
+            $PSBoundParameters['Category'] = 'CATEGORY_UNKNOWN'
+        }
     }
     Process {
         try {

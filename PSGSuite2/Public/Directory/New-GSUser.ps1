@@ -49,7 +49,7 @@ function New-GSUser {
     Indicates if the user's profile is visible in the G Suite global address list when the contact sharing feature is enabled for the domain. For more information about excluding user profiles, see the administration help center: http://support.google.com/a/bin/answer.py?answer=1285988
     
     .PARAMETER IpWhitelisted
-    	If true, the user's IP address is white listed: http://support.google.com/a/bin/answer.py?answer=60752
+    If true, the user's IP address is white listed: http://support.google.com/a/bin/answer.py?answer=60752
     
     .EXAMPLE
     New-GSUser -PrimaryEmail john.smith@domain.com -GivenName John -FamilyName Smith -Password (ConvertTo-SecureString -String 'Password123' -AsPlainText -Force) -ChangePasswordAtNextLogin -OrgUnitPath "/Users/New Hires" -IncludeInGlobalAddressList

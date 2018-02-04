@@ -1,5 +1,73 @@
 function Add-GSDrivePermission {
-    [cmdletbinding()]
+    <#
+    .SYNOPSIS
+    Adds a new permission to a Drive file
+    
+    .DESCRIPTION
+    Adds a new permission to a Drive file
+    
+    .PARAMETER User
+    The owner of the Drive file
+
+    Defaults to the AdminEmail user
+    
+    .PARAMETER FileId
+    The unique Id of the Drive file you would like to add the permission to
+    
+    .PARAMETER Role
+    The role/permission set you would like to give the email $EmailAddress
+
+    Available values are:
+    * "Owner"
+    * "Writer"
+    * "Commenter"
+    * "Reader"
+    * "Organizer"
+    
+    .PARAMETER Type
+    The type of the grantee
+
+    Available values are:
+    * "User": a user email
+    * "Group": a group email
+    * "Domain": the entire domain
+    * "Anyone": public access
+    
+    .PARAMETER EmailAddress
+    The email address of the user or group to which this permission refers
+    
+    .PARAMETER Domain
+    The domain to which this permission refers
+    
+    .PARAMETER ExpirationTime
+    The time at which this permission will expire. 
+    
+    Expiration times have the following restrictions: 
+    * They can only be set on user and group permissions
+    * The time must be in the future
+    * The time cannot be more than a year in the future 
+    
+    .PARAMETER EmailMessage
+    A plain text custom message to include in the notification email
+    
+    .PARAMETER SendNotificationEmail
+    Whether to send a notification email when sharing to users or groups. This defaults to true for users and groups, and is not allowed for other requests. It must not be disabled for ownership transfers
+    
+    .PARAMETER AllowFileDiscovery
+    Whether the permission allows the file to be discovered through search. This is only applicable for permissions of type domain or anyone
+    
+    .PARAMETER TransferOfOwnership
+    Confirms transfer of ownership if the Role is set to 'Owner'. You can also force the same behavior by passing -Confirm:$false instead
+    
+    .PARAMETER UseDomainAdminAccess
+    Whether the request should be treated as if it was issued by a domain administrator; if set to true, then the requester will be granted access if they are an administrator of the domain to which the item belongs
+    
+    .EXAMPLE
+    Add-GSDrivePermission -FileId "1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976" -Role Owner -Type User -EmailAddress joe -SendNotificationEmail -Confirm:$false
+
+    Adds user joe@domain.com as the new owner of the file Id and sets the AdminEmail user as a Writer on the file
+    #>
+    [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High",DefaultParameterSetName = "Email")]
     Param
     (
         [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
@@ -17,9 +85,12 @@ function Add-GSDrivePermission {
         [ValidateSet("User","Group","Domain","Anyone")]
         [String]
         $Type,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ParameterSetName = "Email")]
         [String]
         $EmailAddress,
+        [parameter(Mandatory = $false,ParameterSetName = "Domain")]
+        [String]
+        $Domain,
         [parameter(Mandatory = $false)]
         [DateTime]
         $ExpirationTime,
@@ -57,7 +128,13 @@ function Add-GSDrivePermission {
     Process {
         try {
             if ($Role -eq "Owner" -and !$TransferOfOwnership) {
-                throw "The TransferOfOwnership parameter is required when setting the 'Owner' role."
+                if ($PSCmdlet.ShouldProcess("Confirm transfer of ownership of FileId '$FileID' from user '$User' to user '$EmailAddress'")) {
+                    $PSBoundParameters['TransferOfOwnership'] = $true
+                    $TransferOfOwnership = $true
+                }
+                else {
+                    throw "The TransferOfOwnership parameter is required when setting the 'Owner' role."
+                }
             }
             if (($Type -eq "User" -or $Type -eq "Group") -and !$EmailAddress) {
                 throw "The EmailAddress parameter is required for types 'User' or 'Group'."
@@ -73,6 +150,15 @@ function Add-GSDrivePermission {
             $body = New-Object 'Google.Apis.Drive.v3.Data.Permission'
             foreach ($key in $PSBoundParameters.Keys) {
                 switch ($key) {
+                    EmailAddress {
+                        if ($EmailAddress -ceq 'me') {
+                            $EmailAddress = $Script:PSGSuite.AdminEmail
+                        }
+                        elseif ($EmailAddress -notlike "*@*.*") {
+                            $EmailAddress = "$($EmailAddress)@$($Script:PSGSuite.Domain)"
+                        }
+                        $body.EmailAddress = $EmailAddress
+                    }
                     Role {
                         $body.$key = ($PSBoundParameters[$key]).ToLower()
                     }
