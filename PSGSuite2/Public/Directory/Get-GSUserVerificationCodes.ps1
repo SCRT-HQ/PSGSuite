@@ -1,4 +1,21 @@
 ﻿function Get-GSUserVerificationCodes {
+    <#
+    .SYNOPSIS
+    Gets the 2-Step Verification Codes for the user
+    
+    .DESCRIPTION
+    Gets the 2-Step Verification Codes for the user
+    
+    .PARAMETER User
+    The primary email or UserID of the user who you are trying to get info for. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
+
+    Defaults to the AdminEmail in the config
+    
+    .EXAMPLE
+    Get-GSUserVerificationCodes
+
+    Gets the Verification Codes for AdminEmail user
+    #>
     [cmdletbinding()]
     Param
     (

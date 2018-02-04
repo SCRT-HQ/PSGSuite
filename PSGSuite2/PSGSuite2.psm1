@@ -70,6 +70,7 @@ $aliasHash = @{
     'Get-GSUserASPList'                 = 'Get-GSUserASP'
     'Get-GSUserList'                    = 'Get-GSUser'
     'Get-GSUserSchemaList'              = 'Get-GSUserSchema'
+    'Get-GSUserTokenList'               = 'Get-GSUserToken'
 }
 foreach ($key in $aliasHash.Keys) {
     try {

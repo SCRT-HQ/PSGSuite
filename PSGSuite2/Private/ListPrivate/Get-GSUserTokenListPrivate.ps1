@@ -1,4 +1,4 @@
-﻿function Get-GSUserTokenList {
+﻿function Get-GSUserTokenListPrivate {
     [cmdletbinding()]
     Param
     (
