@@ -1,4 +1,30 @@
 function Get-GSDrivePermission {
+    <#
+    .SYNOPSIS
+    Gets permission information for a Drive file
+    
+    .DESCRIPTION
+    Gets permission information for a Drive file
+    
+    .PARAMETER User
+    The email or unique Id of the user whose Drive file permission you are trying to get
+
+    Defaults to the AdminEmail user
+    
+    .PARAMETER FileId
+    The unique Id of the Drive file
+    
+    .PARAMETER PermissionId
+    The unique Id of the permission you are trying to get. If excluded, the list of permissions for the Drive file will be returned instead
+    
+    .PARAMETER PageSize
+    The page size of the result set
+    
+    .EXAMPLE
+    Get-GSDrivePermission -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976'
+
+    Gets the list of permissions for the file Id
+    #>
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (

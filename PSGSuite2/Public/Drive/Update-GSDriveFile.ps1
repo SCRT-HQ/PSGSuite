@@ -1,4 +1,46 @@
 function Update-GSDriveFile {
+    <#
+    .SYNOPSIS
+    Updates the metadata for a Drive file
+    
+    .DESCRIPTION
+    Updates the metadata for a Drive file
+    
+    .PARAMETER FileId
+    The unique Id of the Drive file to Update
+    
+    .PARAMETER User
+    The email or unique Id of the Drive file owner
+    
+    .PARAMETER Name
+    The new name of the Drive file
+    
+    .PARAMETER Description
+    The new description of the Drive file
+    
+    .PARAMETER AddParents
+    The parent Ids to add
+    
+    .PARAMETER RemoveParents
+    The parent Ids to remove
+    
+    .PARAMETER Projection
+    The defined subset of fields to be returned
+
+    Available values are:
+    * "Minimal"
+    * "Standard"
+    * "Full"
+    * "Access"
+    
+    .PARAMETER Fields
+    The specific fields to returned
+    
+    .EXAMPLE
+    Update-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -Name "To-Do Progress"
+
+    Updates the Drive file with a new name, "To-Do Progress"
+    #>
     [cmdletbinding(DefaultParameterSetName = "Depth")]
     Param
     (

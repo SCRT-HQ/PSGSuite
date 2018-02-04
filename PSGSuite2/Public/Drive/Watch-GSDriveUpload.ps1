@@ -1,4 +1,28 @@
 function Watch-GSDriveUpload {
+    <#
+    .SYNOPSIS
+    Shows progress in the console of current Drive file uploads
+    
+    .DESCRIPTION
+    Shows progress in the console of current Drive file uploads
+    
+    .PARAMETER Id
+    The upload Id(s) that you would like to watch
+    
+    .PARAMETER Action
+    Whether the action is uploading or retrying. This is mainly for use in Start-GSDriveFileUpload and defaults to 'Uploading'
+    
+    .PARAMETER CountUploaded
+    Current file count being uploaded
+    
+    .PARAMETER TotalUploading
+    Total file count being uploaded
+    
+    .EXAMPLE
+    Watch-GSDriveUpload
+
+    Watches the files currently being uploaded from the active session
+    #>
     [CmdletBinding()]
     Param
     (

@@ -1,4 +1,62 @@
 function New-GSDriveFile {
+    <#
+    .SYNOPSIS
+    Creates a blank Drive file
+    
+    .DESCRIPTION
+    Creates a blank Drive file
+    
+    .PARAMETER User
+    The email or unique Id of the user who you are creating the Drive file for
+
+    Defaults to the AdminEmail user
+    
+    .PARAMETER Name
+    The name of the new Drive file
+    
+    .PARAMETER Parents
+    The parent folder Id of the new Drive file
+    
+    .PARAMETER MimeType
+    The Google Mime Type of the new Drive file
+
+    Available values are:
+    * "Audio"
+	* "Docs"
+	* "Drawing"
+	* "DriveFile"
+	* "DriveFolder"
+	* "Form"
+	* "FusionTables"
+	* "Map"
+	* "Photo"
+	* "Slides"
+	* "AppsScript"
+	* "Sites"
+	* "Sheets"
+	* "Unknown"
+	* "Video"
+    
+    .PARAMETER CustomMimeType
+    The custom Mime Type of the new Drive file
+    
+    .PARAMETER Projection
+    The defined subset of fields to be returned
+
+    Available values are:
+    * "Minimal"
+    * "Standard"
+    * "Full"
+    * "Access"
+    
+    .PARAMETER Fields
+    The specific fields to returned
+    
+    .EXAMPLE
+    New-GSDriveFile -Name "Training Docs" -MimeType DriveFolder
+
+    Creates a new folder in Drive named "Training Docs" in the root OrgUnit for the AdminEmail user
+    #>
     [cmdletbinding(DefaultParameterSetName = "BuiltIn")]
     Param
     (
