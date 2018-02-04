@@ -34,7 +34,7 @@ function Export-GSDriveFile {
     * "SVG"
     
     .PARAMETER OutFilePath
-    The directory path that you would like to Drive file to
+    The directory path that you would like to export the Drive file to
 
     Defaults to the current working directory
     
