@@ -2,8 +2,8 @@ Param
 (
     [parameter(Position = 0)]
     [System.Byte[]]
-    $EncryptionKey = $(if (Get-Command Import-Key -ErrorAction SilentlyContinue) {
-        Import-Key
+    $EncryptionKey = $(if (Get-Command Import-SCRTKey -ErrorAction SilentlyContinue) {
+        Import-SCRTKey
     }
     else {
         $null
