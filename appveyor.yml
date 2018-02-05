@@ -26,4 +26,4 @@ build: false
 
 #Kick off the CI/CD pipeline
 test_script:
-  - ps: if ($env:PowershellVersion -gt 5) {pwsh -Command ". .\ci\init.ps1"} else {. .\ci\init.ps1)
+  - ps: if ($env:PowershellVersion -gt 5) {pwsh -Command ". .\ci\init.ps1"} else {. .\ci\init.ps1}
