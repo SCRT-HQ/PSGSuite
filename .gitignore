@@ -1,3 +1,11 @@
+<<<<<<< HEAD
 **TEST**
 *.xml
 *.txt
+=======
+TestPad.ps1
+**-PSGSuite.xml
+**.insyncdl
+.vscode
+API-to-Function-Map.md
+>>>>>>> 6bab2025cd134bea580f4d577c8e5147234a758d

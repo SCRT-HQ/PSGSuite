@@ -1,0 +1,50 @@
+function Get-GSUserSchema {
+    <#
+    .SYNOPSIS
+    Gets custom user schema info
+    
+    .DESCRIPTION
+    Gets custom user schema info
+    
+    .PARAMETER SchemaId
+    The Id or Name of the user schema you would like to return info for. If excluded, gets the full list of user schemas
+    
+    .EXAMPLE
+    Get-GSUserSchema
+
+    Gets the list of custom user schemas
+    #>
+    [cmdletbinding()]
+    Param
+    (
+        [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
+        [Alias('Schema')]
+        [String[]]
+        $SchemaId
+    )
+    Begin {
+        if ($PSBoundParameters.Keys -contains 'SchemaId') {
+            $serviceParams = @{
+                Scope       = 'https://www.googleapis.com/auth/admin.directory.userschema'
+                ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
+            }
+            $service = New-GoogleService @serviceParams
+        }
+    }
+    Process {
+        try {
+            if ($PSBoundParameters.Keys -contains 'SchemaId') {
+                foreach ($S in $SchemaId) {
+                    $request = $service.Schemas.Get($Script:PSGSuite.CustomerId,$S)
+                    $request.Execute()
+                }
+            }
+            else {
+                Get-GSUserSchemaListPrivate @PSBoundParameters
+            }
+        }
+        catch {
+            $PSCmdlet.ThrowTerminatingError($_)
+        }
+    }
+}

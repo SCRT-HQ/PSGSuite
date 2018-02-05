@@ -1,0 +1,674 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Google.Apis.Prediction.v1_6</name>
+    </assembly>
+    <members>
+        <member name="T:Google.Apis.Prediction.v1_6.PredictionService">
+            <summary>The Prediction Service.</summary>
+        </member>
+        <member name="F:Google.Apis.Prediction.v1_6.PredictionService.Version">
+            <summary>The API version.</summary>
+        </member>
+        <member name="F:Google.Apis.Prediction.v1_6.PredictionService.DiscoveryVersionUsed">
+            <summary>The discovery version used to generate this service.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.PredictionService.#ctor">
+            <summary>Constructs a new service.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.PredictionService.#ctor(Google.Apis.Services.BaseClientService.Initializer)">
+            <summary>Constructs a new service.</summary>
+            <param name="initializer">The service initializer.</param>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.PredictionService.Features">
+            <summary>Gets the service supported features.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.PredictionService.Name">
+            <summary>Gets the service name.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.PredictionService.BaseUri">
+            <summary>Gets the service base URI.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.PredictionService.BasePath">
+            <summary>Gets the service base path.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.PredictionService.BatchUri">
+            <summary>Gets the batch base URI; <c>null</c> if unspecified.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.PredictionService.BatchPath">
+            <summary>Gets the batch base path; <c>null</c> if unspecified.</summary>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.PredictionService.Scope">
+            <summary>Available OAuth 2.0 scopes for use with the Prediction API.</summary>
+        </member>
+        <member name="F:Google.Apis.Prediction.v1_6.PredictionService.Scope.CloudPlatform">
+            <summary>View and manage your data across Google Cloud Platform services</summary>
+        </member>
+        <member name="F:Google.Apis.Prediction.v1_6.PredictionService.Scope.DevstorageFullControl">
+            <summary>Manage your data and permissions in Google Cloud Storage</summary>
+        </member>
+        <member name="F:Google.Apis.Prediction.v1_6.PredictionService.Scope.DevstorageReadOnly">
+            <summary>View your data in Google Cloud Storage</summary>
+        </member>
+        <member name="F:Google.Apis.Prediction.v1_6.PredictionService.Scope.DevstorageReadWrite">
+            <summary>Manage your data in Google Cloud Storage</summary>
+        </member>
+        <member name="F:Google.Apis.Prediction.v1_6.PredictionService.Scope.Prediction">
+            <summary>Manage your data in the Google Prediction API</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.PredictionService.Hostedmodels">
+            <summary>Gets the Hostedmodels resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.PredictionService.Trainedmodels">
+            <summary>Gets the Trainedmodels resource.</summary>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.PredictionBaseServiceRequest`1">
+            <summary>A base abstract class for Prediction requests.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.PredictionBaseServiceRequest`1.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new PredictionBaseServiceRequest instance.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.PredictionBaseServiceRequest`1.Alt">
+            <summary>Data format for the response.</summary>
+            [default: json]
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.PredictionBaseServiceRequest`1.AltEnum">
+            <summary>Data format for the response.</summary>
+        </member>
+        <member name="F:Google.Apis.Prediction.v1_6.PredictionBaseServiceRequest`1.AltEnum.Json">
+            <summary>Responses with Content-Type of application/json</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.PredictionBaseServiceRequest`1.Fields">
+            <summary>Selector specifying which fields to include in a partial response.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.PredictionBaseServiceRequest`1.Key">
+            <summary>API key. Your API key identifies your project and provides you with API access, quota, and reports.
+            Required unless you provide an OAuth 2.0 token.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.PredictionBaseServiceRequest`1.OauthToken">
+            <summary>OAuth 2.0 token for the current user.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.PredictionBaseServiceRequest`1.PrettyPrint">
+            <summary>Returns response with indentations and line breaks.</summary>
+            [default: true]
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.PredictionBaseServiceRequest`1.QuotaUser">
+            <summary>Available to use for quota purposes for server-side applications. Can be any arbitrary string
+            assigned to a user, but should not exceed 40 characters. Overrides userIp if both are provided.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.PredictionBaseServiceRequest`1.UserIp">
+            <summary>IP address of the site where the request originates. Use this if you want to enforce per-user
+            limits.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.PredictionBaseServiceRequest`1.InitParameters">
+            <summary>Initializes Prediction parameter list.</summary>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.HostedmodelsResource">
+            <summary>The "hostedmodels" collection of methods.</summary>
+        </member>
+        <member name="F:Google.Apis.Prediction.v1_6.HostedmodelsResource.service">
+            <summary>The service which this resource belongs to.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.HostedmodelsResource.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new resource.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.HostedmodelsResource.Predict(Google.Apis.Prediction.v1_6.Data.Input,System.String,System.String)">
+            <summary>Submit input and request an output against a hosted model.</summary>
+            <param name="body">The body of the request.</param>
+            <param name="project">The project associated with the model.</param>
+            <param name="hostedModelName">The name
+            of a hosted model.</param>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.HostedmodelsResource.PredictRequest">
+            <summary>Submit input and request an output against a hosted model.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.HostedmodelsResource.PredictRequest.#ctor(Google.Apis.Services.IClientService,Google.Apis.Prediction.v1_6.Data.Input,System.String,System.String)">
+            <summary>Constructs a new Predict request.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.HostedmodelsResource.PredictRequest.Project">
+            <summary>The project associated with the model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.HostedmodelsResource.PredictRequest.HostedModelName">
+            <summary>The name of a hosted model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.HostedmodelsResource.PredictRequest.Body">
+            <summary>Gets or sets the body of this request.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.HostedmodelsResource.PredictRequest.GetBody">
+            <summary>Returns the body of the request.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.HostedmodelsResource.PredictRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.HostedmodelsResource.PredictRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.HostedmodelsResource.PredictRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.HostedmodelsResource.PredictRequest.InitParameters">
+            <summary>Initializes Predict parameter list.</summary>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.TrainedmodelsResource">
+            <summary>The "trainedmodels" collection of methods.</summary>
+        </member>
+        <member name="F:Google.Apis.Prediction.v1_6.TrainedmodelsResource.service">
+            <summary>The service which this resource belongs to.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.#ctor(Google.Apis.Services.IClientService)">
+            <summary>Constructs a new resource.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.Analyze(System.String,System.String)">
+            <summary>Get analysis of the model and the data the model was trained on.</summary>
+            <param name="project">The project associated with the model.</param>
+            <param name="id">The unique name for
+            the predictive model.</param>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.TrainedmodelsResource.AnalyzeRequest">
+            <summary>Get analysis of the model and the data the model was trained on.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.AnalyzeRequest.#ctor(Google.Apis.Services.IClientService,System.String,System.String)">
+            <summary>Constructs a new Analyze request.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.AnalyzeRequest.Project">
+            <summary>The project associated with the model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.AnalyzeRequest.Id">
+            <summary>The unique name for the predictive model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.AnalyzeRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.AnalyzeRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.AnalyzeRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.AnalyzeRequest.InitParameters">
+            <summary>Initializes Analyze parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.Delete(System.String,System.String)">
+            <summary>Delete a trained model.</summary>
+            <param name="project">The project associated with the model.</param>
+            <param name="id">The unique name for
+            the predictive model.</param>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.TrainedmodelsResource.DeleteRequest">
+            <summary>Delete a trained model.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.DeleteRequest.#ctor(Google.Apis.Services.IClientService,System.String,System.String)">
+            <summary>Constructs a new Delete request.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.DeleteRequest.Project">
+            <summary>The project associated with the model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.DeleteRequest.Id">
+            <summary>The unique name for the predictive model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.DeleteRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.DeleteRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.DeleteRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.DeleteRequest.InitParameters">
+            <summary>Initializes Delete parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.Get(System.String,System.String)">
+            <summary>Check training status of your model.</summary>
+            <param name="project">The project associated with the model.</param>
+            <param name="id">The unique name for
+            the predictive model.</param>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.TrainedmodelsResource.GetRequest">
+            <summary>Check training status of your model.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.GetRequest.#ctor(Google.Apis.Services.IClientService,System.String,System.String)">
+            <summary>Constructs a new Get request.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.GetRequest.Project">
+            <summary>The project associated with the model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.GetRequest.Id">
+            <summary>The unique name for the predictive model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.GetRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.GetRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.GetRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.GetRequest.InitParameters">
+            <summary>Initializes Get parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.Insert(Google.Apis.Prediction.v1_6.Data.Insert,System.String)">
+            <summary>Train a Prediction API model.</summary>
+            <param name="body">The body of the request.</param>
+            <param name="project">The project associated with the model.</param>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.TrainedmodelsResource.InsertRequest">
+            <summary>Train a Prediction API model.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.InsertRequest.#ctor(Google.Apis.Services.IClientService,Google.Apis.Prediction.v1_6.Data.Insert,System.String)">
+            <summary>Constructs a new Insert request.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.InsertRequest.Project">
+            <summary>The project associated with the model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.InsertRequest.Body">
+            <summary>Gets or sets the body of this request.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.InsertRequest.GetBody">
+            <summary>Returns the body of the request.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.InsertRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.InsertRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.InsertRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.InsertRequest.InitParameters">
+            <summary>Initializes Insert parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.List(System.String)">
+            <summary>List available models.</summary>
+            <param name="project">The project associated with the model.</param>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.TrainedmodelsResource.ListRequest">
+            <summary>List available models.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.ListRequest.#ctor(Google.Apis.Services.IClientService,System.String)">
+            <summary>Constructs a new List request.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.ListRequest.Project">
+            <summary>The project associated with the model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.ListRequest.MaxResults">
+            <summary>Maximum number of results to return.</summary>
+            [minimum: 0]
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.ListRequest.PageToken">
+            <summary>Pagination token.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.ListRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.ListRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.ListRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.ListRequest.InitParameters">
+            <summary>Initializes List parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.Predict(Google.Apis.Prediction.v1_6.Data.Input,System.String,System.String)">
+            <summary>Submit model id and request a prediction.</summary>
+            <param name="body">The body of the request.</param>
+            <param name="project">The project associated with the model.</param>
+            <param name="id">The unique name for
+            the predictive model.</param>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.TrainedmodelsResource.PredictRequest">
+            <summary>Submit model id and request a prediction.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.PredictRequest.#ctor(Google.Apis.Services.IClientService,Google.Apis.Prediction.v1_6.Data.Input,System.String,System.String)">
+            <summary>Constructs a new Predict request.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.PredictRequest.Project">
+            <summary>The project associated with the model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.PredictRequest.Id">
+            <summary>The unique name for the predictive model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.PredictRequest.Body">
+            <summary>Gets or sets the body of this request.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.PredictRequest.GetBody">
+            <summary>Returns the body of the request.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.PredictRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.PredictRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.PredictRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.PredictRequest.InitParameters">
+            <summary>Initializes Predict parameter list.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.Update(Google.Apis.Prediction.v1_6.Data.Update,System.String,System.String)">
+            <summary>Add new data to a trained model.</summary>
+            <param name="body">The body of the request.</param>
+            <param name="project">The project associated with the model.</param>
+            <param name="id">The unique name for
+            the predictive model.</param>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.TrainedmodelsResource.UpdateRequest">
+            <summary>Add new data to a trained model.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.UpdateRequest.#ctor(Google.Apis.Services.IClientService,Google.Apis.Prediction.v1_6.Data.Update,System.String,System.String)">
+            <summary>Constructs a new Update request.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.UpdateRequest.Project">
+            <summary>The project associated with the model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.UpdateRequest.Id">
+            <summary>The unique name for the predictive model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.UpdateRequest.Body">
+            <summary>Gets or sets the body of this request.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.UpdateRequest.GetBody">
+            <summary>Returns the body of the request.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.UpdateRequest.MethodName">
+            <summary>Gets the method name.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.UpdateRequest.HttpMethod">
+            <summary>Gets the HTTP method.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.TrainedmodelsResource.UpdateRequest.RestPath">
+            <summary>Gets the REST path.</summary>
+        </member>
+        <member name="M:Google.Apis.Prediction.v1_6.TrainedmodelsResource.UpdateRequest.InitParameters">
+            <summary>Initializes Update parameter list.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescription">
+            <summary>Description of the data the model was trained on.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.Errors">
+            <summary>List of errors with the data.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.Id">
+            <summary>The unique name for the predictive model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.Kind">
+            <summary>What kind of resource this is.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.ModelDescription">
+            <summary>Description of the model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.SelfLink">
+            <summary>A URL to re-request this resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData">
+            <summary>Description of the data the model was trained on.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.Features">
+            <summary>Description of the input features in the data set.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.OutputFeature">
+            <summary>Description of the output value or label.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.FeaturesData.Categorical">
+            <summary>Description of the categorical values of this feature.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.FeaturesData.Index">
+            <summary>The feature index.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.FeaturesData.Numeric">
+            <summary>Description of the numeric values of this feature.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.FeaturesData.Text">
+            <summary>Description of multiple-word text values of this feature.</summary>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.FeaturesData.CategoricalData">
+            <summary>Description of the categorical values of this feature.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.FeaturesData.CategoricalData.Count">
+            <summary>Number of categorical values for this feature in the data.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.FeaturesData.CategoricalData.Values">
+            <summary>List of all the categories for this feature in the data set.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.FeaturesData.CategoricalData.ValuesData.Count">
+            <summary>Number of times this feature had this value.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.FeaturesData.CategoricalData.ValuesData.Value">
+            <summary>The category name.</summary>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.FeaturesData.NumericData">
+            <summary>Description of the numeric values of this feature.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.FeaturesData.NumericData.Count">
+            <summary>Number of numeric values for this feature in the data set.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.FeaturesData.NumericData.Mean">
+            <summary>Mean of the numeric values of this feature in the data set.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.FeaturesData.NumericData.Variance">
+            <summary>Variance of the numeric values of this feature in the data set.</summary>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.FeaturesData.TextData">
+            <summary>Description of multiple-word text values of this feature.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.FeaturesData.TextData.Count">
+            <summary>Number of multiple-word text values for this feature.</summary>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.OutputFeatureData">
+            <summary>Description of the output value or label.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.OutputFeatureData.Numeric">
+            <summary>Description of the output values in the data set.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.OutputFeatureData.Text">
+            <summary>Description of the output labels in the data set.</summary>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.OutputFeatureData.NumericData">
+            <summary>Description of the output values in the data set.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.OutputFeatureData.NumericData.Count">
+            <summary>Number of numeric output values in the data set.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.OutputFeatureData.NumericData.Mean">
+            <summary>Mean of the output values in the data set.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.OutputFeatureData.NumericData.Variance">
+            <summary>Variance of the output values in the data set.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.OutputFeatureData.TextData.Count">
+            <summary>Number of times the output label occurred in the data set.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.DataDescriptionData.OutputFeatureData.TextData.Value">
+            <summary>The output label.</summary>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.Data.Analyze.ModelDescriptionData">
+            <summary>Description of the model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.ModelDescriptionData.ConfusionMatrix">
+            <summary>An output confusion matrix. This shows an estimate for how this model will do in predictions.
+            This is first indexed by the true class label. For each true class label, this provides a pair
+            {predicted_label, count}, where count is the estimated number of times the model will predict the
+            predicted label given the true label. Will not output if more then 100 classes (Categorical models
+            only).</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.ModelDescriptionData.ConfusionMatrixRowTotals">
+            <summary>A list of the confusion matrix row totals.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Analyze.ModelDescriptionData.Modelinfo">
+            <summary>Basic information about the model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Input.InputValue">
+            <summary>Input to the model for a prediction.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Input.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.Data.Input.InputData">
+            <summary>Input to the model for a prediction.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Input.InputData.CsvInstance">
+            <summary>A list of input features, these can be strings or doubles.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert.Id">
+            <summary>The unique name for the predictive model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert.ModelType">
+            <summary>Type of predictive model (classification or regression).</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert.SourceModel">
+            <summary>The Id of the model to be copied over.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert.StorageDataLocation">
+            <summary>Google storage location of the training data file.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert.StoragePMMLLocation">
+            <summary>Google storage location of the preprocessing pmml file.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert.StoragePMMLModelLocation">
+            <summary>Google storage location of the pmml model file.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert.TrainingInstances">
+            <summary>Instances to train model on.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert.Utility">
+            <summary>A class weighting function, which allows the importance weights for class labels to be specified
+            (Categorical models only).</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert.TrainingInstancesData.CsvInstance">
+            <summary>The input features for this instance.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert.TrainingInstancesData.Output">
+            <summary>The generic output value - could be regression or class label.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.CreatedRaw">
+            <summary>Insert time of the model (as a RFC 3339 timestamp).</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.Created">
+            <summary><seealso cref="T:System.DateTime"/> representation of <see cref="P:Google.Apis.Prediction.v1_6.Data.Insert2.CreatedRaw"/>.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.Id">
+            <summary>The unique name for the predictive model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.Kind">
+            <summary>What kind of resource this is.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.ModelInfo">
+            <summary>Model metadata.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.ModelType">
+            <summary>Type of predictive model (CLASSIFICATION or REGRESSION).</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.SelfLink">
+            <summary>A URL to re-request this resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.StorageDataLocation">
+            <summary>Google storage location of the training data file.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.StoragePMMLLocation">
+            <summary>Google storage location of the preprocessing pmml file.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.StoragePMMLModelLocation">
+            <summary>Google storage location of the pmml model file.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.TrainingCompleteRaw">
+            <summary>Training completion time (as a RFC 3339 timestamp).</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.TrainingComplete">
+            <summary><seealso cref="T:System.DateTime"/> representation of <see cref="P:Google.Apis.Prediction.v1_6.Data.Insert2.TrainingCompleteRaw"/>.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.TrainingStatus">
+            <summary>The current status of the training job. This can be one of following: RUNNING; DONE; ERROR; ERROR:
+            TRAINING JOB NOT FOUND</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="T:Google.Apis.Prediction.v1_6.Data.Insert2.ModelInfoData">
+            <summary>Model metadata.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.ModelInfoData.ClassWeightedAccuracy">
+            <summary>Estimated accuracy of model taking utility weights into account (Categorical models
+            only).</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.ModelInfoData.ClassificationAccuracy">
+            <summary>A number between 0.0 and 1.0, where 1.0 is 100% accurate. This is an estimate, based on the
+            amount and quality of the training data, of the estimated prediction accuracy. You can use this is a
+            guide to decide whether the results are accurate enough for your needs. This estimate will be more
+            reliable if your real input data is similar to your training data (Categorical models only).</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.ModelInfoData.MeanSquaredError">
+            <summary>An estimated mean squared error. The can be used to measure the quality of the predicted model
+            (Regression models only).</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.ModelInfoData.ModelType">
+            <summary>Type of predictive model (CLASSIFICATION or REGRESSION).</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.ModelInfoData.NumberInstances">
+            <summary>Number of valid data instances used in the trained model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Insert2.ModelInfoData.NumberLabels">
+            <summary>Number of class labels in the trained model (Categorical models only).</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.List.Items">
+            <summary>List of models.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.List.Kind">
+            <summary>What kind of resource this is.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.List.NextPageToken">
+            <summary>Pagination token to fetch the next page, if one exists.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.List.SelfLink">
+            <summary>A URL to re-request this resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.List.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Output.Id">
+            <summary>The unique name for the predictive model.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Output.Kind">
+            <summary>What kind of resource this is.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Output.OutputLabel">
+            <summary>The most likely class label (Categorical models only).</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Output.OutputMulti">
+            <summary>A list of class labels with their estimated probabilities (Categorical models only).</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Output.OutputValue">
+            <summary>The estimated regression value (Regression models only).</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Output.SelfLink">
+            <summary>A URL to re-request this resource.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Output.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Output.OutputMultiData.Label">
+            <summary>The class label.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Output.OutputMultiData.Score">
+            <summary>The probability of the class label.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Update.CsvInstance">
+            <summary>The input features for this instance.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Update.Output">
+            <summary>The generic output value - could be regression or class label.</summary>
+        </member>
+        <member name="P:Google.Apis.Prediction.v1_6.Data.Update.ETag">
+            <summary>The ETag of the item.</summary>
+        </member>
+    </members>
+</doc>
