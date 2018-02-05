@@ -79,14 +79,12 @@ function Update-GSResource {
         [String]
         $BuildingId,
         [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true,ParameterSetName = 'Features')]
-        [Alias('Name')]
         [String]
         $FeatureKey,
         [parameter(Mandatory = $false,Position = 0)]
         [String]
         $Name,
         [parameter(Mandatory = $false,ParameterSetName = 'Calendars')]
-        [Alias('ResourceId')]
         [String]
         $Id,
         [parameter(Mandatory = $false,ParameterSetName = 'Calendars')]
