@@ -3,25 +3,18 @@
 # set the clone folder for the project
 clone_folder: C:\projects\PSGSuite
 
+image: Visual Studio 2017
+
 #Publish to PowerShell Gallery with this key
 environment:
   NuGetApiKey:
     secure: Ocp1ATd6eZ0eY9+LfZ9Stp9/J1B5eFdBPMdaTRWVa4xh6/NV45ZBYtU5+eemrTWt
-  matrix:
-    - fast_finish: true
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      PowershellVersion: "6"
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
-      PowershellVersion: "5"
 
-
-# Allow WMF5 (i.e. PowerShellGallery functionality)
-os: WMF 5
 
 # Skip on updates to the readme.
 # We can force this by adding [skip ci] or [ci skip] anywhere in commit message 
 skip_commits:
-  message: /updated readme.*|update readme.*s/
+  message: /updated readme.*|update readme.*s|\[skip ci\]|\[ci skip\]/
 
 only_commits:
   message: /!deploy|!build|!ci|\[ci\]/
@@ -30,5 +23,5 @@ build: false
 
 #Kick off the CI/CD pipeline
 test_script:
-  - ps: if ($env:PowershellVersion -le 5) {. .\ci\init.ps1}
-  - pwsh: if ($env:PowershellVersion -ge 6) {. .\ci\init.ps1}
+  - pwsh: . .\ci\init.ps1
+  - ps: . .\ci\init.ps1
