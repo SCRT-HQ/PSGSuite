@@ -20,7 +20,7 @@
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Gitter -->
   <a href="https://scrthq-slack-invite.herokuapp.com/">
-    <img src="https://img.shields.io/badge/chat-on%20slack-orange.svg?style=flat"
+    <img src="https://img.shields.io/badge/chat-on%20slack-orange.svg?style=flat&logo=slack"
       alt="Slack - Chat" title="Slack - Chat" />
   </a>
 </div>
