@@ -12,6 +12,7 @@ environment:
       - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
         PowershellVersion: "6.0.0"
       - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+        PowershellVersion: "5.1.0"
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 os: WMF 5
