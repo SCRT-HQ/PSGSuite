@@ -63,7 +63,7 @@ function Add-GSUserAddress {
     
     New-GSUser -PrimaryEmail john.smith@domain.com -GivenName John -FamilyName Smith -Password (ConvertTo-SecureString -String 'Password123' -AsPlainText -Force) -ChangePasswordAtNextLogin -OrgUnitPath "/Users/New Hires" -IncludeInGlobalAddressList -Addresses $address -Phones $phone -ExternalIds $extId
 
-    Creates a user named John Smith and adds their work address to the user object
+    Creates a user named John Smith and adds their work address, work phone and login_id to the user object
     #>
     [CmdletBinding(DefaultParameterSetName = "InputObject")]
     Param

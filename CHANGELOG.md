@@ -1,6 +1,18 @@
-# PSGSuite-2.0.0
+# Changelog 
 
-## 2.0.0 - Changes
+<!-- TOC -->
+
+- [Changelog](#changelog)
+    - [2.0.0](#200)
+        - [New Functionality](#new-functionality)
+        - [Breaking Changes in 2.0.0](#breaking-changes-in-200)
+            - [Gmail Delegation Management Removed](#gmail-delegation-management-removed)
+            - [Functions Removed](#functions-removed)
+            - [Functions Aliased](#functions-aliased)
+
+<!-- /TOC -->
+
+## 2.0.0
 
 ### New Functionality
 

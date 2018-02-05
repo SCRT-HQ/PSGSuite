@@ -61,7 +61,7 @@
                 $String
             }
         }
-        $fullConf = Import-SpecificConfiguration -CompanyName 'SCRT HQ' -Name 'PSGSuite2' -Scope $Script:ConfigScope -Verbose:$false
+        $fullConf = Import-SpecificConfiguration -CompanyName 'SCRT HQ' -Name 'PSGSuite' -Scope $Script:ConfigScope -Verbose:$false
         $defaultConfigName = $fullConf['DefaultConfig']
         $choice = switch ($PSCmdlet.ParameterSetName) {
             Domain {

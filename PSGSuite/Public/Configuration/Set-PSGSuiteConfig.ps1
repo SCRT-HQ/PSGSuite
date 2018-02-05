@@ -126,7 +126,7 @@ function Set-PSGSuiteConfig {
         if ($PSBoundParameters.Keys -contains "Verbose") {
             $params["Verbose"] = $PSBoundParameters["Verbose"]
         }
-        $configHash = Import-SpecificConfiguration -CompanyName 'SCRT HQ' -Name 'PSGSuite2' @params
+        $configHash = Import-SpecificConfiguration -CompanyName 'SCRT HQ' -Name 'PSGSuite' @params
         if (!$ConfigName) {
             $ConfigName = if ($configHash["DefaultConfig"]){
                 $configHash["DefaultConfig"]
@@ -146,10 +146,10 @@ function Set-PSGSuiteConfig {
         foreach ($key in ($PSBoundParameters.Keys | Where-Object {$configParams -contains $_})) {
             $configHash["$ConfigName"][$key] = (Encrypt $PSBoundParameters[$key])
         }
-        $configHash["$ConfigName"]['ConfigPath'] = (Join-Path $(Get-Module PSGSuite2 | Get-StoragePath -Scope $Script:ConfigScope) "Configuration.psd1")
+        $configHash["$ConfigName"]['ConfigPath'] = (Join-Path $(Get-Module PSGSuite | Get-StoragePath -Scope $Script:ConfigScope) "Configuration.psd1")
     }
     Process {
-        $configHash | Export-Configuration -CompanyName 'SCRT HQ' -Name 'PSGSuite2' -Scope $script:ConfigScope
+        $configHash | Export-Configuration -CompanyName 'SCRT HQ' -Name 'PSGSuite' -Scope $script:ConfigScope
     }
     End {
         if (!$NoImport) {

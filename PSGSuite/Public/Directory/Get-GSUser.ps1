@@ -143,7 +143,7 @@ function Get-GSUser {
         $SortOrder
     )
     Begin {
-        if ($PSCmdlet.ParameterSetName -eq 'Get') {
+        if ($PSCmdlet.ParameterSetName -eq 'Get' -and $MyInvocation.InvocationName -ne 'Get-GSUserList') {
             $serviceParams = @{
                 Scope       = 'https://www.googleapis.com/auth/admin.directory.user.readonly'
                 ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
@@ -155,24 +155,29 @@ function Get-GSUser {
         try {
             switch ($PSCmdlet.ParameterSetName) {
                 Get {
-                    foreach ($U in $User) {
-                        if ($U -ceq 'me') {
-                            $U = $Script:PSGSuite.AdminEmail
+                    if ($MyInvocation.InvocationName -ne 'Get-GSUserList') {
+                        foreach ($U in $User) {
+                            if ($U -ceq 'me') {
+                                $U = $Script:PSGSuite.AdminEmail
+                            }
+                            elseif ($U -notlike "*@*.*") {
+                                $U = "$($U)@$($Script:PSGSuite.Domain)"
+                            }
+                            Write-Verbose "Getting User '$U'"
+                            $request = $service.Users.Get($U)
+                            $request.Projection = $Projection
+                            $request.ViewType = ($ViewType -replace '_','')
+                            if ($CustomFieldMask) {
+                                $request.CustomFieldMask = $CustomFieldMask
+                            }
+                            if ($Fields) {
+                                $request.Fields = "$($Fields -join ",")"
+                            }
+                            $request.Execute() | Select-Object @{N = "User";E = {$_.PrimaryEmail}},*
                         }
-                        elseif ($U -notlike "*@*.*") {
-                            $U = "$($U)@$($Script:PSGSuite.Domain)"
-                        }
-                        Write-Verbose "Getting User '$U'"
-                        $request = $service.Users.Get($U)
-                        $request.Projection = $Projection
-                        $request.ViewType = ($ViewType -replace '_','')
-                        if ($CustomFieldMask) {
-                            $request.CustomFieldMask = $CustomFieldMask
-                        }
-                        if ($Fields) {
-                            $request.Fields = "$($Fields -join ",")"
-                        }
-                        $request.Execute() | Select-Object @{N = "User";E = {$_.PrimaryEmail}},*
+                    }
+                    else {
+                        Get-GSUserListPrivate @PSBoundParameters
                     }
                 }
                 List {

@@ -57,7 +57,7 @@ function Get-PSGSuiteConfig {
     $script:ConfigScope = $Scope
     switch ($PSCmdlet.ParameterSetName) {
         ConfigurationModule {
-            $fullConf = Import-SpecificConfiguration -CompanyName 'SCRT HQ' -Name 'PSGSuite2' -Scope $Script:ConfigScope
+            $fullConf = Import-SpecificConfiguration -CompanyName 'SCRT HQ' -Name 'PSGSuite' -Scope $Script:ConfigScope
             if (!$ConfigName) {
                 $choice = $fullConf["DefaultConfig"]
                 Write-Verbose "Importing default config: $choice"

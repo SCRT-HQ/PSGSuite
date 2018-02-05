@@ -1,20 +1,20 @@
 Param
 (
     [parameter(Position = 0)]
-    [string]
-    $ConfigName = $null,
-    [parameter(Position = 1)]
     [System.Byte[]]
     $EncryptionKey = $(if (Get-Command Import-Key -ErrorAction SilentlyContinue) {
-            Import-Key
-        }
-        else {
-            $null
-        })
+        Import-Key
+    }
+    else {
+        $null
+    }),
+    [parameter(Position = 1)]
+    [string]
+    $ConfigName = $null
 )
 #Get public and private function definition files.
-$Public = @( Get-ChildItem -Recurse -Path $PSScriptRoot\Public\*.ps1 -ErrorAction SilentlyContinue | Where-Object {$_.FullName -cnotlike "*TODO*"} )
-$Private = @( Get-ChildItem -Recurse -Path $PSScriptRoot\Private\*.ps1 -ErrorAction SilentlyContinue | Where-Object {$_.FullName -cnotlike "*TODO*"} )
+$Public = @(Get-ChildItem -Recurse -Path $PSScriptRoot\Public\*.ps1 -ErrorAction SilentlyContinue)
+$Private = @(Get-ChildItem -Recurse -Path $PSScriptRoot\Private\*.ps1 -ErrorAction SilentlyContinue)
 $ModuleRoot = $PSScriptRoot
 
 #Execute a scriptblock to load each function instead of dot sourcing
@@ -73,6 +73,9 @@ $aliasHash = @{
     'Get-GSUserTokenList'               = 'Get-GSUserToken'
     'Get-GSUserLicenseList'             = 'Get-GSUserLicense'
     'Update-GSSheetValue'               = 'Export-GSSheet'
+    'Export-PSGSuiteConfiguration'      = 'Set-PSGSuiteConfig'
+    'Import-PSGSuiteConfiguration'      = 'Get-PSGSuiteConfig'
+    'Set-PSGSuiteDefaultDomain'         = 'Switch-PSGSuiteConfig'
 }
 foreach ($key in $aliasHash.Keys) {
     try {
@@ -160,5 +163,5 @@ catch {
     Write-Warning "There was no config returned! Please make sure you are using the correct key or have a configuration already saved."
 }
 finally {
-    Export-ModuleMember -Function ($Public.Basename + $Private.Basename) -Alias *
+    Export-ModuleMember -Function $Public.Basename -Alias *
 }
