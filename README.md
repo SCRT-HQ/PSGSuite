@@ -32,7 +32,7 @@
 <br />
 
 ***
-[![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/ACMESharp.svg?style=plastic)](https://www.powershellgallery.com/packages/Vaporshell/2.1.2)
+
 ## Documentation
 
 Check out the [GitHub wiki for PSGSuite](https://github.com/scrthq/PSGSuite/wiki) for help with setting up as well as full function help!
