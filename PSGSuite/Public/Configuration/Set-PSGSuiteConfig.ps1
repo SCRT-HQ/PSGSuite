@@ -121,6 +121,8 @@ function Set-PSGSuiteConfig {
                 ConvertTo-SecureString -String $string -AsPlainText -Force
             }
         }
+    }
+    Process {
         $script:ConfigScope = $Scope
         $params = @{}
         if ($PSBoundParameters.Keys -contains "Verbose") {
@@ -147,8 +149,6 @@ function Set-PSGSuiteConfig {
             $configHash["$ConfigName"][$key] = (Encrypt $PSBoundParameters[$key])
         }
         $configHash["$ConfigName"]['ConfigPath'] = (Join-Path $(Get-Module PSGSuite | Get-StoragePath -Scope $Script:ConfigScope) "Configuration.psd1")
-    }
-    Process {
         $configHash | Export-Configuration -CompanyName 'SCRT HQ' -Name 'PSGSuite' -Scope $script:ConfigScope
     }
     End {

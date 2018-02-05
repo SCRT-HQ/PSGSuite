@@ -1,22 +1,37 @@
-# PSGSuite-2.0.0
-
-<div align="left">
+# PSGSuite
+<div align="center">
+<img src="bin/img/psgsuite2.0.0.png" alt="PSGSuite 2.0.0 released!" />
+</br>
+</br>
   <!-- AppVeyor -->
   <a href="https://ci.appveyor.com/project/scrthq/psgsuite/branch/master">
     <img src="https://ci.appveyor.com/api/projects/status/u6pgrn4cs8iagcee?svg=true"
       alt="AppVeyor" title="AppVeyor" />
-  </a>
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- PS Gallery -->
   <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
     <img src="https://img.shields.io/badge/psgallery-install-blue.svg"
       alt="PowerShell Gallery - Install PSGSuite" title="PowerShell Gallery - Install PSGSuite" />
-  </a>
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Gitter -->
   <a href="https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
     <img src="https://badges.gitter.im/PSGSuite/Lobby.svg"
       alt="Gitter - Chat" title="Gitter - Chat" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- Gitter -->
+  <a href="https://scrthq-slack-invite.herokuapp.com/">
+    <img src="https://img.shields.io/badge/chat-on%20slack-orange.svg?style=flat&logo=slack"
+      alt="Slack - Chat" title="Slack - Chat" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- Gitter -->
+  <a href="https://scrthq-slack-invite.herokuapp.com/">
+    <img src="https://scrthq-slack-invite.herokuapp.com/badge.svg"
+      alt="Slack - Status" title="Slack - Status" />
   </a>
 </div>
+<br />
+
+***
 
 ## Documentation
 
@@ -26,10 +41,11 @@ Check out the [GitHub wiki for PSGSuite](https://github.com/scrthq/PSGSuite/wiki
 
 ### New Functionality
 
+* PowerShell Core support for cross-platform functionality
+* P12 Keys (service accounts) _and_ client_secrets.json (OAuth) are both now supported
 * All Drive functions now support Team Drives
 * Get-GSGmailMessage can now save message attachments to a local path
 * File uploads to Drive are now supported (including recursive folder uploads!)
-* P12 Keys (service accounts) _and_ client_secrets.json (OAuth) are both now supported
 
 ### Breaking Changes in 2.0.0
 
