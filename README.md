@@ -18,6 +18,10 @@
   </a>
 </div>
 
+## Documentation
+
+Check out the [GitHub wiki for PSGSuite](https://github.com/scrthq/PSGSuite/wiki) for help with setting up as well as full function help!
+
 ## 2.0.0 - Changes
 
 ### New Functionality
