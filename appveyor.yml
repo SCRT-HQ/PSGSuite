@@ -10,9 +10,9 @@ environment:
   fast_finish: true
   matrix:
       - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-        PowershellVersion: "6.0.0"
+        PowershellVersion: "6"
       - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
-        PowershellVersion: "5.1.0"
+        PowershellVersion: "5"
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 os: WMF 5
@@ -26,4 +26,4 @@ build: false
 
 #Kick off the CI/CD pipeline
 test_script:
-  - cmd: if %PowershellVersion:~0,1% gtr 5 (pwsh -Command ". .\ci\init.ps1") else (powershell -Command ". .\ci\init.ps1")
+  - ps: if ($env:PowershellVersion -gt 5) {pwsh -Command ". .\ci\init.ps1"} else {. .\ci\init.ps1)
