@@ -22,6 +22,11 @@
   <a href="https://scrthq-slack-invite.herokuapp.com/">
     <img src="https://img.shields.io/badge/chat-on%20slack-orange.svg?style=flat&logo=slack"
       alt="Slack - Chat" title="Slack - Chat" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- Gitter -->
+  <a href="https://scrthq-slack-invite.herokuapp.com/">
+    <img src="https://scrthq-slack-invite.herokuapp.com/badge.svg"
+      alt="Slack - Status" title="Slack - Status" />
   </a>
 </div>
 <br />
