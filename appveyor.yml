@@ -24,4 +24,4 @@ build: false
 #Kick off the CI/CD pipeline
 test_script:
   - pwsh: . .\ci\init.ps1
-  - ps: . .\ci\init.ps1
+  - ps: . .\ci\init.ps1 
