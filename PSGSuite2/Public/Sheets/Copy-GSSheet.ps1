@@ -1,4 +1,34 @@
 function Copy-GSSheet {
+    <#
+    .SYNOPSIS
+    Copies a Sheet from one SpreadSheet to another
+    
+    .DESCRIPTION
+    Copies a Sheet from one SpreadSheet to another
+    
+    .PARAMETER SourceSpreadsheetId
+    The unique Id of the SpreadSheet to copy the Sheet from
+    
+    .PARAMETER SourceSheetId
+    The Id of the Sheet to copy
+    
+    .PARAMETER DestinationSpreadsheetId
+    The target SpreadSheet to copy the Sheet to
+    
+    .PARAMETER NewSheetTitle
+    The new title for the new SpreadhSheet to create if not copying to a Destination Sheet
+    
+    .PARAMETER User
+    The primary email of the user who has at least Edit rights to both the Source SpreadSheet and Destination SpreadSheet
+    
+    .PARAMETER Raw
+    If $true, return the raw response, otherwise, return a flattened response for readability
+    
+    .EXAMPLE
+    Copy-GSSheet -SourceSpreadsheetId '1ZVdewVhy-VtVLyGLhClkj8234ljk_fJA6ggn7obGh2U' -SourceSheetId 2017 -NewSheetTitle '2017 Archive'
+
+    Copies the Sheet '2017' from the SourceSpreadsheet provided onto a new SpreadSheet named '2017 Archive'
+    #>
     [cmdletbinding(DefaultParameterSetName = "CreateNewSheet")]
     Param
     (      

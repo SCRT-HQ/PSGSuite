@@ -1,4 +1,25 @@
 function New-GSSheet {
+    <#
+    .SYNOPSIS
+    Creates a new SpreadSheet
+    
+    .DESCRIPTION
+    Creates a new SpreadSheet
+    
+    .PARAMETER Title
+    The name of the new SpreadSheet
+    
+    .PARAMETER User
+    The user to create the Sheet for
+    
+    .PARAMETER Launch
+    If $true, opens the new SpreadSheet Url in your default browser
+    
+    .EXAMPLE
+    New-GSSheet -Title "Finance Workbook" -Launch
+
+    Creates a new SpreadSheet titled "Finance Workbook" and opens it in the browser on creation
+    #>
     [cmdletbinding()]
     Param
     (      
@@ -11,7 +32,7 @@ function New-GSSheet {
         [string]
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false)]
-        [Alias('Launch','Open')]
+        [Alias('Open')]
         [Switch]
         $Launch
     )
@@ -42,6 +63,7 @@ function New-GSSheet {
             $request = $service.Spreadsheets.Create($body)
             $response = $request.Execute() | Select-Object @{N = 'User';E = {$User}},*
             if ($Launch) {
+                Write-Verbose "Launching new spreadsheet at $($response.SpreadsheetUrl)"
                 Start-Process $response.SpreadsheetUrl
             }
             $response

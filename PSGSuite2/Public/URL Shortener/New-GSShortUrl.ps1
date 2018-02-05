@@ -1,4 +1,24 @@
 function New-GSShortUrl {
+    <#
+    .SYNOPSIS
+    Creates a new Short Url
+    
+    .DESCRIPTION
+    Creates a new Short Url
+    
+    .PARAMETER LongUrl
+    The full Url to shorten
+    
+    .PARAMETER User
+    The user to create the Short Url for
+
+    Defaults to the AdminEmail user
+    
+    .EXAMPLE
+    New-GSShortUrl "http://ferrell.io"
+
+    Creates a new Short Url pointing at http://ferrell.io/
+    #>
     [cmdletbinding()]
     Param
     (

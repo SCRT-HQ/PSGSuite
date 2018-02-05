@@ -1,4 +1,4 @@
-function Get-GSUserLicenseList {
+function Get-GSUserLicenseListPrivate {
     [cmdletbinding()]
     Param
     (

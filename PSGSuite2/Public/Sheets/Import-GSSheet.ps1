@@ -1,4 +1,69 @@
 function Import-GSSheet {
+    <#
+    .SYNOPSIS
+    Imports data from a Sheet as if it was a CSV
+    
+    .DESCRIPTION
+    Imports data from a Sheet as if it was a CSV
+    
+    .PARAMETER SpreadsheetId
+    The unique Id of the SpreadSheet to import data from
+    
+    .PARAMETER SheetName
+    The name of the Sheet to import data from
+    
+    .PARAMETER User
+    The owner of the SpreadSheet
+    
+    .PARAMETER Range
+    The specific range to import data from
+    
+    .PARAMETER RowStart
+    The starting row of data. Useful if the headers for your table are not in Row 1 of the Sheet
+    
+    .PARAMETER Headers
+    Allows you to define the headers for the rows on the sheet, in case there is no header row
+    
+    .PARAMETER DateTimeRenderOption
+    How to render the DateTime cells
+
+    Available values are:
+    * "FORMATTED_STRING" (Default)
+    * "SERIAL_NUMBER"
+    
+    .PARAMETER ValueRenderOption
+    How to render the value cells and formula cells
+
+    Available values are:
+    * "FORMATTED_VALUE" (Default)
+    * "UNFORMATTED_VALUE"
+    * "FORMULA"
+    
+    .PARAMETER MajorDimension
+    The major dimension that results should use.
+
+    For example, if the spreadsheet data is: A1=1,B1=2,A2=3,B2=4, then requesting range=A1:B2,majorDimension=ROWS will return [[1,2],[3,4]], whereas requesting range=A1:B2,majorDimension=COLUMNS will return [[1,3],[2,4]].
+
+    Available values are:
+    * "ROWS" (Default)
+    * "COLUMNS"
+    * "DIMENSION_UNSPECIFIED"
+    
+    .PARAMETER As
+    Whether to return the result set as an array of PSObjects or an array of DataRows
+
+    Available values are:
+    * "PSObject" (Default)
+    * "DataRow"
+    
+    .PARAMETER Raw
+    If $true, return the raw response, otherwise, return a flattened response for readability
+    
+    .EXAMPLE
+    Import-GSSheet -SpreadsheetId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -SheetName Sheet1 -RowStart 2 -Range 'B:C'
+
+    Imports columns B-C as an Array of PSObjects, skipping the first row and treating Row 2 as the header row. Objects in the array will be what's contained in range 'B3:C' after that
+    #>
     [cmdletbinding(DefaultParameterSetName = "Import")]
     Param
     (      

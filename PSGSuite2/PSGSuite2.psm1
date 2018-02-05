@@ -71,6 +71,8 @@ $aliasHash = @{
     'Get-GSUserList'                    = 'Get-GSUser'
     'Get-GSUserSchemaList'              = 'Get-GSUserSchema'
     'Get-GSUserTokenList'               = 'Get-GSUserToken'
+    'Get-GSUserLicenseList'             = 'Get-GSUserLicense'
+    'Update-GSSheetValue'               = 'Export-GSSheet'
 }
 foreach ($key in $aliasHash.Keys) {
     try {

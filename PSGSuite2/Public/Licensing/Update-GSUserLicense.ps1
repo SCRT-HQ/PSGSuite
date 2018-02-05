@@ -1,4 +1,22 @@
 function Update-GSUserLicense {
+    <#
+    .SYNOPSIS
+    Reassign a user's product SKU with a different SKU in the same product
+    
+    .DESCRIPTION
+    Reassign a user's product SKU with a different SKU in the same product
+    
+    .PARAMETER User
+    The user's current primary email address
+    
+    .PARAMETER License
+    The license SKU that you would like to reassign the user to
+    
+    .EXAMPLE
+    Update-GSUserLicense -User joe -License G-Suite-Enterprise
+
+    Updates Joe to a G-Suite-Enterprise license
+    #>
     [cmdletbinding()]
     Param
     (

@@ -1,13 +1,31 @@
 function Set-GSUserLicense {
+    <#
+    .SYNOPSIS
+    Sets the license for a user
+    
+    .DESCRIPTION
+    Sets the license for a user
+    
+    .PARAMETER User
+    The user's current primary email address
+    
+    .PARAMETER License
+    The license SKU to set for the user
+    
+    .EXAMPLE
+    Set-GSUserLicense -User joe -License Google-Apps-For-Business
+
+    Sets Joe to a Google-Apps-For-Business license
+    #>
     [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $false,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $User,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $true,Position = 1)]
         [Alias("SkuId")]
         [ValidateSet("G-Suite-Enterprise","Google-Apps-Unlimited","Google-Apps-For-Business","Google-Apps-For-Postini","Google-Apps-Lite","Google-Drive-storage-20GB","Google-Drive-storage-50GB","Google-Drive-storage-200GB","Google-Drive-storage-400GB","Google-Drive-storage-1TB","Google-Drive-storage-2TB","Google-Drive-storage-4TB","Google-Drive-storage-8TB","Google-Drive-storage-16TB","Google-Vault","Google-Vault-Former-Employee","1010020020")]
         [string]

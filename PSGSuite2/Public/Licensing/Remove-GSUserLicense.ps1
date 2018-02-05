@@ -1,4 +1,22 @@
 function Remove-GSUserLicense {
+    <#
+    .SYNOPSIS
+    Removes a license assignment from a user
+    
+    .DESCRIPTION
+    Removes a license assignment from a user. Useful for restoring a user from a Vault-Former-Employee to an auto-assigned G Suite Business license by removing the Vault-Former-Employee license, for example.
+    
+    .PARAMETER User
+    The user's current primary email address
+    
+    .PARAMETER License
+    The license SKU to remove from the user
+    
+    .EXAMPLE
+    Remove-GSUserLicense -User joe -License Google-Vault-Former-Employee
+
+    Removes the Vault-Former-Employee license from Joe
+    #>
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
     Param
     (

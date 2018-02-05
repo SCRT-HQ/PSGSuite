@@ -1,4 +1,4 @@
-function Get-GSShortUrlList {
+function Get-GSShortUrlListPrivate {
     [cmdletbinding()]
     Param
     (

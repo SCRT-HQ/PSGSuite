@@ -1,4 +1,43 @@
 function Get-GSSheetInfo {
+    <#
+    .SYNOPSIS
+    Gets metadata about a SpreadSheet
+    
+    .DESCRIPTION
+    Gets metadata about a SpreadSheet
+    
+    .PARAMETER SpreadsheetId
+    The unique Id of the SpreadSheet to retrieve info for
+    
+    .PARAMETER User
+    The owner of the SpreadSheet
+    
+    .PARAMETER SheetName
+    The name of the Sheet to retrieve info for
+    
+    .PARAMETER Range
+    The specific range of the Sheet to retrieve info for
+    
+    .PARAMETER IncludeGridData
+    Whether or not to include Grid Data in the response
+    
+    .PARAMETER Fields
+    The fields to return in the response
+
+    Available values are:
+    * "NamedRanges"
+    * "Properties"
+    * "Sheets"
+    * "SpreadsheetId"
+    
+    .PARAMETER Raw
+    If $true, return the raw response, otherwise, return a flattened response for readability
+    
+    .EXAMPLE
+    Get-GSSheetInfo -SpreadsheetId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976'
+
+    Gets the info for the SpreadSheet provided
+    #>
     [cmdletbinding()]
     Param
     (      
