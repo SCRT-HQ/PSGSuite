@@ -17,12 +17,17 @@
   <a href="https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
     <img src="https://badges.gitter.im/PSGSuite/Lobby.svg"
       alt="Gitter - Chat" title="Gitter - Chat" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- Gitter -->
+  <a href="https://scrthq-slack-invite.herokuapp.com/">
+    <img src="https://img.shields.io/badge/chat-on%20slack-orange.svg?style=flat"
+      alt="Slack - Chat" title="Slack - Chat" />
   </a>
 </div>
 <br />
 
 ***
-
+[![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/ACMESharp.svg?style=plastic)](https://www.powershellgallery.com/packages/Vaporshell/2.1.2)
 ## Documentation
 
 Check out the [GitHub wiki for PSGSuite](https://github.com/scrthq/PSGSuite/wiki) for help with setting up as well as full function help!
