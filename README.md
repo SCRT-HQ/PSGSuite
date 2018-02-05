@@ -7,12 +7,12 @@
   <a href="https://ci.appveyor.com/project/scrthq/psgsuite/branch/master">
     <img src="https://ci.appveyor.com/api/projects/status/u6pgrn4cs8iagcee?svg=true"
       alt="AppVeyor" title="AppVeyor" />
-  </a>&lt;==&gt;
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- PS Gallery -->
   <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
     <img src="https://img.shields.io/badge/psgallery-install-blue.svg"
       alt="PowerShell Gallery - Install PSGSuite" title="PowerShell Gallery - Install PSGSuite" />
-  </a>&lt;==&gt;
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Gitter -->
   <a href="https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
     <img src="https://badges.gitter.im/PSGSuite/Lobby.svg"
