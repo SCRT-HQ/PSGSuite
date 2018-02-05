@@ -8,11 +8,12 @@ environment:
   NuGetApiKey:
     secure: Ocp1ATd6eZ0eY9+LfZ9Stp9/J1B5eFdBPMdaTRWVa4xh6/NV45ZBYtU5+eemrTWt
   matrix:
-    fast_finish: true
+    - fast_finish: true
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       PowershellVersion: "6"
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
       PowershellVersion: "5"
+
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 os: WMF 5
