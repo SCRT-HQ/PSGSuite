@@ -41,10 +41,11 @@ Check out the [GitHub wiki for PSGSuite](https://github.com/scrthq/PSGSuite/wiki
 
 ### New Functionality
 
+* P12 Keys (service accounts) _and_ client_secrets.json (OAuth) are both now supported
+* PowerShell Core is now supported and the module is usable cross-platform!
 * All Drive functions now support Team Drives
 * Get-GSGmailMessage can now save message attachments to a local path
 * File uploads to Drive are now supported (including recursive folder uploads!)
-* P12 Keys (service accounts) _and_ client_secrets.json (OAuth) are both now supported
 
 ### Breaking Changes in 2.0.0
 

@@ -7,12 +7,13 @@ clone_folder: C:\projects\PSGSuite
 environment:
   NuGetApiKey:
     secure: Ocp1ATd6eZ0eY9+LfZ9Stp9/J1B5eFdBPMdaTRWVa4xh6/NV45ZBYtU5+eemrTWt
+
+matrix:
   fast_finish: true
-  matrix:
-      - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-        PowershellVersion: "6"
-      - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
-        PowershellVersion: "5"
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    PowershellVersion: "6"
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+    PowershellVersion: "5"
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 os: WMF 5
@@ -22,8 +23,12 @@ os: WMF 5
 skip_commits:
   message: /updated readme.*|update readme.*s/
 
+only_commits:
+  message: /!deploy|!build|!ci|\[ci\]/
+
 build: false
 
 #Kick off the CI/CD pipeline
 test_script:
-  - ps: if ($env:PowershellVersion -gt 5) {pwsh -Command ". .\ci\init.ps1"} else {. .\ci\init.ps1}
+  - ps: if ($env:PowershellVersion -le 5) {. .\ci\init.ps1}
+  - pwsh: if ($env:PowershellVersion -ge 6) {. .\ci\init.ps1}
