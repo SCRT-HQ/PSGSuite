@@ -1,22 +1,27 @@
 # PSGSuite-2.0.0
-
-<div align="left">
+<div align="center">
+<img src="bin/img/psgsuite2.0.0.png" alt="PSGSuite 2.0.0 released!" />
+</br>
+</br>
   <!-- AppVeyor -->
   <a href="https://ci.appveyor.com/project/scrthq/psgsuite/branch/master">
     <img src="https://ci.appveyor.com/api/projects/status/u6pgrn4cs8iagcee?svg=true"
       alt="AppVeyor" title="AppVeyor" />
-  </a>
+  </a>&lt;==&gt;
   <!-- PS Gallery -->
   <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
     <img src="https://img.shields.io/badge/psgallery-install-blue.svg"
       alt="PowerShell Gallery - Install PSGSuite" title="PowerShell Gallery - Install PSGSuite" />
-  </a>
+  </a>&lt;==&gt;
   <!-- Gitter -->
   <a href="https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
     <img src="https://badges.gitter.im/PSGSuite/Lobby.svg"
       alt="Gitter - Chat" title="Gitter - Chat" />
   </a>
 </div>
+<br />
+
+***
 
 ## Documentation
 
