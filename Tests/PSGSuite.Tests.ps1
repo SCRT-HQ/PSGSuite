@@ -12,7 +12,7 @@ if ($ENV:BHBranchName -eq "dev" -or $env:BHCommitMessage -match "!verbose" -or $
 }
 
 $moduleRoot = Split-Path (Resolve-Path "$projectRoot\*\*.psd1")
-
+Import-Module 'Configuration' -RequiredVersion 1.2.0
 Import-Module $ModulePath -Force
 
 Describe "Module tests: $ModuleName" {

@@ -21,7 +21,8 @@ PowerShell version: $($PSVersionTable.PSVersion.ToString())
 
 if ($env:TRAVIS) {
     # Install InvokeBuild
-    Install-Module InvokeBuild, Pester -Scope CurrentUser -Force -AllowClobber -SkipPublisherCheck
+    Install-Module InvokeBuild,Pester -Scope CurrentUser -Force -AllowClobber -SkipPublisherCheck
+    Install-Module 'Configuration' -Scope CurrentUser -RequiredVersion 1.2.0 -Force -AllowClobber -SkipPublisherCheck
 
     # Build the code and perform tests
     Import-module InvokeBuild
@@ -40,6 +41,7 @@ if ($env:TRAVIS) {
 elseif ($PSVersionTable.PSVersion.Major -ge 6) {
     # Install InvokeBuild
     Install-Module InvokeBuild, Pester -Scope CurrentUser -Force -AllowClobber -SkipPublisherCheck
+    Install-Module 'Configuration' -Scope CurrentUser -RequiredVersion 1.2.0 -Force -AllowClobber -SkipPublisherCheck
 
     # Build the code and perform tests
     Import-module InvokeBuild
@@ -60,6 +62,7 @@ else {
     Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
 
     Install-Module Psake, PSDeploy, Pester, BuildHelpers, Coveralls -Force -Scope CurrentUser -AllowClobber
+    Install-Module 'Configuration' -Scope CurrentUser -RequiredVersion 1.2.0 -Force -AllowClobber -SkipPublisherCheck
     Import-Module Psake, BuildHelpers, Coveralls
 
     Set-BuildEnvironment
