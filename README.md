@@ -1,5 +1,7 @@
 # PSGSuite-2.0.0
 
+[![Join the chat at https://gitter.im/PSGSuite/Lobby](https://badges.gitter.im/PSGSuite/Lobby.svg)](https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## 2.0.0 - Changes
 
 ### New Functionality
