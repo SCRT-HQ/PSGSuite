@@ -1,6 +1,26 @@
 # PSGSuite-2.0.0
 
-[![Join the chat at https://gitter.im/PSGSuite/Lobby](https://badges.gitter.im/PSGSuite/Lobby.svg)](https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+<div align="left">
+  <!-- AppVeyor -->
+  <a href="https://ci.appveyor.com/project/scrthq/psgsuite/branch/master">
+    <img src="https://ci.appveyor.com/api/projects/status/u6pgrn4cs8iagcee?svg=true"
+      alt="AppVeyor" title="AppVeyor" />
+  </a>
+  <!-- PS Gallery -->
+  <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
+    <img src="https://img.shields.io/badge/psgallery-install-blue.svg"
+      alt="PowerShell Gallery - Install PSGSuite" title="PowerShell Gallery - Install PSGSuite" />
+  </a>
+  <!-- Gitter -->
+  <a href="https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
+    <img src="https://badges.gitter.im/PSGSuite/Lobby.svg"
+      alt="Gitter - Chat" title="Gitter - Chat" />
+  </a>
+</div>
+
+## Documentation
+
+Check out the [GitHub wiki for PSGSuite](https://github.com/scrthq/PSGSuite/wiki) for help with setting up as well as full function help!
 
 ## 2.0.0 - Changes
 
