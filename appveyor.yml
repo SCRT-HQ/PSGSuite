@@ -7,6 +7,11 @@ clone_folder: C:\projects\PSGSuite
 environment:
   NuGetApiKey:
     secure: Ocp1ATd6eZ0eY9+LfZ9Stp9/J1B5eFdBPMdaTRWVa4xh6/NV45ZBYtU5+eemrTWt
+  fast_finish: true
+  matrix:
+      - image: Visual Studio 2013
+      - image: Visual Studio 2017
+        PowershellVersion: "6.0.0"
 
 # Allow WMF5 (i.e. PowerShellGallery functionality)
 os: WMF 5

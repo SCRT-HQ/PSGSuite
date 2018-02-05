@@ -75,3 +75,7 @@ Switch-PSGSuiteDomain             Switch-PSGSuiteConfig
 Update-GSCalendarResource         Update-GSResource
 Update-GSSheetValue               Export-GSSheet
 ```
+
+## License
+
+[Apache 2.0](https://tldrlegal.com/license/apache-license-2.0-(apache-2.0))

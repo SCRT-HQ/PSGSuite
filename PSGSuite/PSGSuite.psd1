@@ -169,7 +169,7 @@ Update-GSSheetValue               Export-GSSheet
             # LicenseUri = ''
 
             # A URL to the main website for this project.
-            ProjectUri = 'https://github.com/nferrell/PSGSuite'
+            ProjectUri = 'https://github.com/scrthq/PSGSuite'
 
             # A URL to an icon representing this module.
             IconUri    = 'http://centerlyne.com/wp-content/uploads/2016/10/Google_-G-_Logo.svg_.png'
@@ -185,7 +185,7 @@ Update-GSSheetValue               Export-GSSheet
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    HelpInfoURI           = 'https://github.com/nferrell/PSGSuite/wiki'
+    HelpInfoURI           = 'https://github.com/scrthq/PSGSuite/wiki'
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''
