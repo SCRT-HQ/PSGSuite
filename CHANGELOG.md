@@ -16,7 +16,7 @@
 
 ## 2.0.2
 
-* Fixed: Issue with Add-GSUserExternalId [#14](https://github.com/scrthq/PSGSuite/issues/14)
+* Fixed: Issue with Add-GSUserExternalId [#14](https://github.com/scrthq/PSGSuite/issues/14) 
 
 ## 2.0.1
 
