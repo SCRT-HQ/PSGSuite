@@ -3,6 +3,8 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+    - [2.0.2](#202)
+    - [2.0.1](#201)
     - [2.0.0](#200)
         - [New Functionality](#new-functionality)
         - [Breaking Changes in 2.0.0](#breaking-changes-in-200)
@@ -12,10 +14,19 @@
 
 <!-- /TOC -->
 
+## 2.0.2
+
+* Fixed: Issue with Add-GSUserExternalId [#14](https://github.com/scrthq/PSGSuite/issues/14)
+
+## 2.0.1
+
+* Fixed: Set-PSGSuiteConfig not accepting pipeline input [#13](https://github.com/scrthq/PSGSuite/issues/13)
+
 ## 2.0.0
 
 ### New Functionality
 
+* PowerShell Core/cross-platform support added
 * All Drive functions now support Team Drives
 * Get-GSGmailMessage can now save message attachments to a local path
 * File uploads to Drive are now supported (including recursive folder uploads!)
