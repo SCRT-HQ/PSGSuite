@@ -112,6 +112,14 @@ Update-GSCalendarResource         Update-GSResource
 Update-GSSheetValue               Export-GSSheet
 ```
 
+## Changelog
+
+[Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
+
+### Most recent change [v2.0.2]
+
+* Fixed: Issue with Add-GSUserExternalId #14
+
 ## License
 
 [Apache 2.0](https://tldrlegal.com/license/apache-license-2.0-(apache-2.0))
