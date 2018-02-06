@@ -44,10 +44,10 @@ function Add-GSUserExternalId {
         [String]
         $CustomType,
         [Parameter(Mandatory = $false,ParameterSetName = "Fields")]
+        [ValidateSet('account','custom','customer','login_id','network','organization')]
         [String]
         $Type,
         [Parameter(Mandatory = $false,ParameterSetName = "Fields")]
-        [ValidateSet('account','custom','customer','login_id','network','organization')]
         [Alias('ExternalId')]
         [String]
         $Value,
