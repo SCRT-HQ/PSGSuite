@@ -1,18 +1,11 @@
-# See http://www.appveyor.com/docs/appveyor-yml for many more options
-
-# set the clone folder for the project
 clone_folder: C:\projects\PSGSuite
 
 image: Visual Studio 2017
 
-#Publish to PowerShell Gallery with this key
 environment:
   NuGetApiKey:
     secure: Ocp1ATd6eZ0eY9+LfZ9Stp9/J1B5eFdBPMdaTRWVa4xh6/NV45ZBYtU5+eemrTWt
 
-
-# Skip on updates to the readme.
-# We can force this by adding [skip ci] or [ci skip] anywhere in commit message 
 skip_commits:
   message: /updated readme.*|update readme.*s|\[skip ci\]|\[ci skip\]/
 
@@ -21,7 +14,6 @@ only_commits:
 
 build: false
 
-#Kick off the CI/CD pipeline
 test_script:
   - pwsh: . .\ci\init.ps1
   - ps: . .\ci\init.ps1
