@@ -139,7 +139,7 @@ $header = @{
 $body = @{}
 if ($Name){$body.Add("name",$Name)}
 if ($Description){$body.Add("description",$Description)}
-if ($WhoCanJoin){$body.Add("WhoCanJoin",$WhoCanJoin)}
+if ($WhoCanJoin){$body.Add("whoCanJoin",$WhoCanJoin)}
 if ($WhoCanViewMembership){$body.Add("whoCanViewMembership",$WhoCanViewMembership)}
 if ($WhoCanViewGroup){$body.Add("whoCanViewGroup",$WhoCanViewGroup)}
 if ($WhoCanInvite){$body.Add("whoCanInvite",$WhoCanInvite)}
