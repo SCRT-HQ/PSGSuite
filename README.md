@@ -10,7 +10,7 @@
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- PS Gallery -->
   <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
-    <img src="https://img.shields.io/badge/psgallery-install-blue.svg"
+    <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat"
       alt="PowerShell Gallery - Install PSGSuite" title="PowerShell Gallery - Install PSGSuite" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Gitter -->
