@@ -9,12 +9,12 @@ function Get-GSCalendarEventList {
     .PARAMETER User
     The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
 
-    Defaults to the AdminEmail in the config.
+    Defaults to the AdminEmail in the config
     
-    .PARAMETER CalendarID
+    .PARAMETER CalendarId
     The calendar ID of the calendar you would like to list events from.
 
-    Defaults to the user's primary calendar.
+    Defaults to the user's primary calendar
     
     .PARAMETER Filter
     Free text search terms to find events that match these terms in any field, except for extended properties. 
@@ -62,7 +62,7 @@ function Get-GSCalendarEventList {
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false)]
         [String]
-        $CalendarID = "primary",
+        $CalendarId = "primary",
         [parameter(Mandatory = $false)]
         [Alias('Q','Query')]
         [String]
@@ -109,9 +109,9 @@ function Get-GSCalendarEventList {
                     User        = $U
                 }
                 $service = New-GoogleService @serviceParams
-                foreach ($calId in $CalendarID) {
+                foreach ($calId in $CalendarId) {
                     $request = $service.Events.List($calId)
-                    foreach ($key in $PSBoundParameters.Keys) {
+                    foreach ($key in $PSBoundParameters.Keys | Where-Object {$_ -ne 'CalendarId'}) {
                         switch ($key) {
                             Filter {
                                 $request.Q = $Filter

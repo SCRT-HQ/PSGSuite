@@ -126,7 +126,7 @@ function Update-GSUser {
             $userObj = Get-GSUser $User -Verbose:$false
             $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.User'
             $name = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserName'
-            $body.Name = $name
+            $nameUpdated = $false
             foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_ -or $name.PSObject.Properties.Name -contains $_}) {
                 switch ($prop) {
                     PrimaryEmail {
@@ -136,13 +136,16 @@ function Update-GSUser {
                         $body.$prop = $PSBoundParameters[$prop]
                     }
                     GivenName {
-                        $body.Name.$prop = $PSBoundParameters[$prop]
+                        $name.$prop = $PSBoundParameters[$prop]
+                        $nameUpdated = $true
                     }
                     FamilyName {
-                        $body.Name.$prop = $PSBoundParameters[$prop]
+                        $name.$prop = $PSBoundParameters[$prop]
+                        $nameUpdated = $true
                     }
                     FullName {
-                        $body.Name.$prop = $PSBoundParameters[$prop]
+                        $name.$prop = $PSBoundParameters[$prop]
+                        $nameUpdated = $true
                     }
                     Password {
                         $body.Password = (New-Object PSCredential "user",$Password).GetNetworkCredential().Password
@@ -151,6 +154,9 @@ function Update-GSUser {
                         $body.$prop = $PSBoundParameters[$prop]
                     }
                 }
+            }
+            if ($nameUpdated) {
+                $body.Name = $name
             }
             $request = $service.Users.Update($body,$userObj.Id)
             $request.Execute() | Select-Object @{N = "User";E = {$_.PrimaryEmail}},*

@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+    - [2.0.3](#203)
     - [2.0.2](#202)
     - [2.0.1](#201)
     - [2.0.0](#200)
@@ -13,6 +14,13 @@
             - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.0.3
+
+* Fixed: Error when using -CalendarID with Get-GSCalendarEventList [#17](https://github.com/scrthq/PSGSuite/issues/17)
+* Fixed: Update-GSUser failing to update OrgUnitPath [#18](https://github.com/scrthq/PSGSuite/issues/18)
+* Added: -Attendees parameter to New-GSCalendarEvent
+* Added: Add-GSEventAttendee helper function
 
 ## 2.0.2
 

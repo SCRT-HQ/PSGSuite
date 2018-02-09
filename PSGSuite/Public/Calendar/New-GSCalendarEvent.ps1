@@ -73,6 +73,9 @@ function New-GSCalendarEvent {
         [String]
         $CalendarID = "primary",
         [parameter(Mandatory = $false)]
+        [Google.Apis.Calendar.v3.Data.EventAttendee[]]
+        $Attendees,
+        [parameter(Mandatory = $false)]
         [String]
         $Location,
         [parameter(Mandatory = $false)]
@@ -132,6 +135,9 @@ function New-GSCalendarEvent {
                     $body = New-Object 'Google.Apis.Calendar.v3.Data.Event'
                     foreach ($key in $PSBoundParameters.Keys) {
                         switch ($key) {
+                            Attendees {
+                                $body.$key = [Google.Apis.Calendar.v3.Data.EventAttendee[]]$Attendees
+                            }
                             EventColor {
                                 $body.ColorId = $colorHash[$EventColor]
                             }
