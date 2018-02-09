@@ -20,7 +20,7 @@
 * Fixed: Error when using -CalendarID with Get-GSCalendarEventList [#17](https://github.com/scrthq/PSGSuite/issues/17)
 * Fixed: Update-GSUser failing to update OrgUnitPath [#18](https://github.com/scrthq/PSGSuite/issues/18)
 * Added: -Attendees parameter to New-GSCalendarEvent
-* Added: Add-GSEventAttendee helper function
+* Added: Add-GSEventAttendee helper function 
 
 ## 2.0.2
 
