@@ -20,7 +20,7 @@
 
 ## 2.1.2
 
-* Fixed: Module to load only public functions
+* Fixed: Module to load only public functions 
 
 ## 2.1.1
 
