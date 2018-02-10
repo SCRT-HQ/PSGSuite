@@ -116,7 +116,13 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-### Most recent change [2.1.0]
+### Most recent change 
+
+[2.1.1]
+
+* Fixed: Documentation/comment based help for Get-GSUsageReport
+
+[2.1.0]
 
 * Added: Get-GSActivityReport
 * Added: Get-GSUsageReport
