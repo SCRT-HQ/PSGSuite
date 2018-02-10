@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+    - [2.1.1](#211)
     - [2.1.0](#210)
     - [2.0.3](#203)
     - [2.0.2](#202)
@@ -15,6 +16,10 @@
             - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.1.1
+
+* Fixed: Documentation/comment based help for Get-GSUsageReport
 
 ## 2.1.0
 
