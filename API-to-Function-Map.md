@@ -1,5 +1,26 @@
 # Google API To PSGSuite Function Map
 
+<!-- TOC -->
+
+- [Google API To PSGSuite Function Map](#google-api-to-psgsuite-function-map)
+    - [Admin Reports API](#admin-reports-api)
+    - [Gmail API](#gmail-api)
+
+<!-- /TOC -->
+## Admin Reports API
+
+- [ ] ActivitiesResource: The "activities" collection of methods.
+    - [x] ListRequest: Retrieves a list of activities for a specific customer and application. *Get-GSActivityReport*
+    - [ ] WatchRequest: Push changes to activities
+- [ ] ChannelsResource: The "channels" collection of methods.
+    - [ ] StopRequest: Stop watching resources through this channel
+- [x] CustomerUsageReportsResource: The "customerUsageReports" collection of methods.
+    - [x] GetRequest: Retrieves a report which is a collection of properties / statistics for a specific customer. *Get-GSUsageReport*
+- [x] EntityUsageReportsResource: The "entityUsageReports" collection of methods.
+    - [x] GetRequest: Retrieves a report which is a collection of properties / statistics for a set of objects. *Get-GSUsageReport*
+- [x] UserUsageReportResource: The "userUsageReport" collection of methods.
+    - [x] GetRequest: Retrieves a report which is a collection of properties / statistics for a set of users. *Get-GSUsageReport*
+
 ## Gmail API
 
 - [ ] DraftsResource:	The "drafts" collection of methods.
@@ -18,8 +39,8 @@
 - [ ] LabelsResource:	The "labels" collection of methods.
     - [ ] CreateRequest:	Creates a new label.
     - [ ] DeleteRequest:	Immediately and permanently deletes the specified label and removes it from any messages and threads that it is applied to.
-    - [ ] GetRequest:	Gets the specified label.
-    - [ ] ListRequest:	Lists all labels in the user's mailbox.
+    - [x] GetRequest:	Gets the specified label. *Get-GSGmailLabel*
+    - [x] ListRequest:	Lists all labels in the user's mailbox. *Get-GSGmailLabel*
     - [ ] PatchRequest:	Updates the specified label. This method supports patch semantics.
     - [ ] UpdateRequest:	Updates the specified label.
 - [ ] MessagesResource:	The "messages" collection of methods.
@@ -27,29 +48,29 @@
         - [ ] GetRequest:	Gets the specified message attachment.
     - [ ] BatchDeleteRequest:	Deletes many messages by message ID. Provides no guarantees that messages were not already deleted or even existed at all.
     - [ ] BatchModifyRequest:	Modifies the labels on the specified messages.
-    - [ ] DeleteRequest:	Immediately and permanently deletes the specified message. This operation cannot be undone. Prefer messages.trash instead.
-    - [ ] GetRequest:	Gets the specified message.
+    - [x] DeleteRequest:	Immediately and permanently deletes the specified message. This operation cannot be undone. Prefer messages.trash instead. *Remove-GSGmailMessage*
+    - [x] GetRequest:	Gets the specified message. *Get-GSGmailMessage*
     - [ ] ImportMediaUpload:	Import media upload which supports resumable upload.
     - [ ] ImportRequest:	Imports a message into only this user's mailbox, with standard email delivery scanning and classification similar to receiving via SMTP. Does not send a message.
     - [ ] InsertMediaUpload:	Insert media upload which supports resumable upload.
     - [ ] InsertRequest:	Directly inserts a message into only this user's mailbox similar to IMAP APPEND, bypassing most scanning and classification. Does not send a message.
-    - [ ] ListRequest:	Lists the messages in the user's mailbox.
+    - [x] ListRequest:	Lists the messages in the user's mailbox. *Get-GSGmailMessageList*
     - [ ] ModifyRequest:	Modifies the labels on the specified message.
     - [ ] SendMediaUpload:	Send media upload which supports resumable upload.
-    - [ ] SendRequest:	Sends the specified message to the recipients in the To, Cc, and Bcc headers.
-    - [ ] TrashRequest:	Moves the specified message to the trash.
-    - [ ] UntrashRequest:	Removes the specified message from the trash.
+    - [x] SendRequest:	Sends the specified message to the recipients in the To, Cc, and Bcc headers. *Send-GmailMessage*
+    - [x] TrashRequest:	Moves the specified message to the trash. *Remove-GSGmailMessage*
+    - [x] UntrashRequest:	Removes the specified message from the trash. *Restore-GSGmailMessage*
 - [ ] SettingsResource:	The "settings" collection of methods.
-    - [ ] FiltersResource:	The "filters" collection of methods.
-        - [ ] CreateRequest:	Creates a filter.
-        - [ ] DeleteRequest:	Deletes a filter.
-        - [ ] GetRequest:	Gets a filter.
-        - [ ] ListRequest:	Lists the message filters of a Gmail user.
+    - [x] FiltersResource:	The "filters" collection of methods.
+        - [x] CreateRequest:	Creates a filter. *Add-GSGmailFilter*
+        - [x] DeleteRequest:	Deletes a filter. *Remove-GSGmailFilter*
+        - [x] GetRequest:	Gets a filter. *Get-GSGmailFilter*
+        - [x] ListRequest:	Lists the message filters of a Gmail user. *Get-GSGmailFilter*
     - [ ] ForwardingAddressesResource:	The "forwardingAddresses" collection of methods.
         - [ ] CreateRequest:	Creates a forwarding address. If ownership verification is required, a message will be sent to the recipient and the resource's verification status will be set to pending; otherwise, the resource will be created with verification status set to accepted
         - [ ] DeleteRequest:	Deletes the specified forwarding address and revokes any verification that may have been required
-        - [ ] GetRequest:	Gets the specified forwarding address.
-        - [ ] ListRequest:	Lists the forwarding addresses for the specified account.
+        - [x] GetRequest:	Gets the specified forwarding address. *Get-GSGmailForwardingAddress*
+        - [x] ListRequest:	Lists the forwarding addresses for the specified account. *Get-GSGmailForwardingAddress*
     - [ ] GetAutoForwardingRequest:	Gets the auto-forwarding setting for the specified account.
     - [ ] GetImapRequest:	Gets IMAP settings.
     - [ ] GetPopRequest:	Gets POP settings.

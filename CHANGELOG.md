@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+    - [2.1.0](#210)
     - [2.0.3](#203)
     - [2.0.2](#202)
     - [2.0.1](#201)
@@ -14,6 +15,12 @@
             - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.1.0
+
+* Added: Get-GSActivityReport
+* Added: Get-GSUsageReport
+* Updated: Initial setup page to include Reports scopes
 
 ## 2.0.3
 

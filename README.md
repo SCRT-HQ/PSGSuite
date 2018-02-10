@@ -116,9 +116,11 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-### Most recent change [v2.0.2]
+### Most recent change [2.1.0]
 
-* Fixed: Issue with Add-GSUserExternalId [#14](https://github.com/scrthq/PSGSuite/issues/14) 
+* Added: Get-GSActivityReport
+* Added: Get-GSUsageReport
+* Updated: Initial setup page to include Reports scopes
 
 ## License
 
