@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+    - [2.1.2](#212)
     - [2.1.1](#211)
     - [2.1.0](#210)
     - [2.0.3](#203)
@@ -16,6 +17,10 @@
             - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.1.2
+
+* Fixed: Module to load only public functions
 
 ## 2.1.1
 

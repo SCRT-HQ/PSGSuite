@@ -116,7 +116,11 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-### Most recent change 
+### Most recent changes
+
+[2.1.2]
+
+* Fixed: Module to load only public functions
 
 [2.1.1]
 
