@@ -12,6 +12,25 @@ function Get-GSUsageReport {
     .PARAMETER UserKey
     Represents the profile id or the user email for which the data should be filtered
     
+    .PARAMETER EntityType
+    Type of object. Should be one of - gplus_communities
+    
+    .PARAMETER EntityKey
+    Represents the key of object for which the data should be filtered
+    
+    .PARAMETER Filters
+    Represents the set of filters including parameter operator value
+    
+    .PARAMETER Parameters
+    Represents the application name, parameter name pairs to fetch in csv as app_name1:param_name1
+    
+    .PARAMETER PageSize
+    Maximum number of results to return. Maximum allowed is 1000
+    
+    .EXAMPLE
+    Get-GSUsageReport -Date (Get-Date).AddDays(-30)
+
+    Gets the Customer Usage report from 30 days prior
     #>
     [cmdletbinding(DefaultParameterSetName = "Customer")]
     Param
