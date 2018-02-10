@@ -9,7 +9,7 @@
 <!-- /TOC -->
 ## Admin Reports API
 
-- [ ] ActivitiesResource: The "activities" collection of methods.
+- [ ] ActivitiesResource: The "activities" collection of methods. 
     - [x] ListRequest: Retrieves a list of activities for a specific customer and application. *Get-GSActivityReport*
     - [ ] WatchRequest: Push changes to activities
 - [ ] ChannelsResource: The "channels" collection of methods.
