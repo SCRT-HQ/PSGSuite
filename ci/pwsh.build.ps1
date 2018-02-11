@@ -41,7 +41,7 @@ task Init {
     "`n"
     $lines
     "PSVersionTable"
-    $PSVersionTable | Format-List
+    $PSVersionTable
 }
 
 task Build {

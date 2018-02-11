@@ -22,6 +22,12 @@ function New-GSCalendarEvent {
 
     Defaults to the user's primary calendar.
     
+    .PARAMETER AttendeeEmails
+    The
+    
+    .PARAMETER Attendees
+    The
+    
     .PARAMETER Location
     Event location
     
@@ -55,7 +61,7 @@ function New-GSCalendarEvent {
 
     Creates an event titled "Go to the gym" for 9-10PM the day the function is ran.
     #>
-    [cmdletbinding()]
+    [cmdletbinding(DefaultParameterSetName = "AttendeeEmails")]
     Param
     (
         [parameter(Mandatory = $true,Position = 0)]
@@ -72,7 +78,10 @@ function New-GSCalendarEvent {
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String]
         $CalendarID = "primary",
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ParameterSetName = "AttendeeEmails")]
+        [String[]]
+        $AttendeeEmails,
+        [parameter(Mandatory = $false,ParameterSetName = "AttendeeObjects")]
         [Google.Apis.Calendar.v3.Data.EventAttendee[]]
         $Attendees,
         [parameter(Mandatory = $false)]
@@ -131,13 +140,18 @@ function New-GSCalendarEvent {
                     User        = $U
                 }
                 $service = New-GoogleService @serviceParams
+                if ($PSCmdlet.ParameterSetName -eq 'AttendeeEmails' -and $PSBoundParameters.Keys -contains 'AttendeeEmails') {
+                    [Google.Apis.Calendar.v3.Data.EventAttendee[]]$Attendees = $AttendeeEmails | ForEach-Object {
+                        Add-GSEventAttendee -Email $_
+                    }
+                }
                 foreach ($calId in $CalendarID) {
                     $body = New-Object 'Google.Apis.Calendar.v3.Data.Event'
+                    if ($Attendees) {
+                        $body.Attendees = [Google.Apis.Calendar.v3.Data.EventAttendee[]]$Attendees
+                    }
                     foreach ($key in $PSBoundParameters.Keys) {
                         switch ($key) {
-                            Attendees {
-                                $body.$key = [Google.Apis.Calendar.v3.Data.EventAttendee[]]$Attendees
-                            }
                             EventColor {
                                 $body.ColorId = $colorHash[$EventColor]
                             }

@@ -86,6 +86,7 @@ function Add-GSEventAttendee {
     Process {
         switch ($PSCmdlet.ParameterSetName) {
             Fields {
+                Write-Verbose "Adding event attendee '$Email'"
                 $obj = New-Object 'Google.Apis.Calendar.v3.Data.EventAttendee'
                 foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
                     $obj.$prop = $PSBoundParameters[$prop]

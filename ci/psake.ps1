@@ -67,6 +67,9 @@ Task Build -Depends Test {
         # Load the module, read the exported functions, update the psd1 FunctionsToExport
         Set-ModuleFunctions @Verbose
 
+        $curVer = (Get-Module $env:BHProjectName).Version
+        $nextGalVer = Get-NextPSGalleryVersion -Name $env:BHProjectName
+
         # Bump the module version
         <#
         $Version = Get-NextPSGalleryVersion -Name $env:BHProjectName
