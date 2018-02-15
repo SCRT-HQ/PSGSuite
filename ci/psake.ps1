@@ -63,27 +63,39 @@ Task Test -Depends Init  {
 Task Build -Depends Test {
     $lines
     
-    if ($ENV:BHBuildSystem -eq 'AppVeyor') {
+    if ($ENV:BHBuildSystem -eq 'AppVeyor' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") {
         # Load the module, read the exported functions, update the psd1 FunctionsToExport
         Set-ModuleFunctions @Verbose
 
         $curVer = (Get-Module $env:BHProjectName).Version
         $nextGalVer = Get-NextPSGalleryVersion -Name $env:BHProjectName
 
+        $versionToDeploy = if ($curVer -ge $nextGalVer) {
+            Write-Host -ForegroundColor Green "Module version has been bumped to $curVer, using version from manifest"
+            $curVer
+        }
+        elseif ($env:BHCommitMessage -match '!hotfix') {
+            $nextGalVer
+        }
+        elseif ($env:BHCommitMessage -match '!minor') {
+            [System.Version]("{0}.{1}.{2}" -f $nextGalVer.Major,([int]$nextGalVer.Minor + 1),0)
+        }
+        elseif ($env:BHCommitMessage -match '!minor') {
+            [System.Version]("{0}.{1}.{2}" -f ([int]$nextGalVer.Major + 1),0,0)
+        }
+        else {
+            $null
+        }
         # Bump the module version
-        <#
-        $Version = Get-NextPSGalleryVersion -Name $env:BHProjectName
-        Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value $Version
-        #>
-        
-        #Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value "2.1.1"
-
-        #Update-Metadata -Path $env:BHPSModuleManifest -Increment Minor
+        if ($versionToDeploy) {        
+            Write-Host -ForegroundColor Green "Module version to deploy: $versionToDeploy"
+            Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value $versionToDeploy
+        }
+        $lines
     }
     else {
-        Write-Host -ForegroundColor Magenta "Build system is not AppVeyor -- skipping module update!"
+        Write-Host -ForegroundColor Magenta "Build system is not AppVeyor, commit message does not contain '!deploy' and/or branch is not 'master' -- skipping module update!"
     }
-
 }
 
 Task Deploy -Depends Build {

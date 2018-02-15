@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+    - [2.1.3](#213)
     - [2.1.2](#212)
     - [2.1.1](#211)
     - [2.1.0](#210)
@@ -17,6 +18,15 @@
             - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.1.3
+
+* Fixed: Export-GSSheet -Value results in error [#19](https://github.com/scrthq/PSGSuite/issues/19)
+* Updated: Added `-Attendees` and `-AttendeeEmails` parameters to New-GSCalendarEvent
+* Added: Add-GSEventAttendee
+* Added: Get-GSActivityReport
+* Added: Get-GSUsageReport
+* Added: Add-GSGmailForwardingAddress
 
 ## 2.1.2
 
