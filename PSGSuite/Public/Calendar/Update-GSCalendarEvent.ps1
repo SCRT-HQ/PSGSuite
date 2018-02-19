@@ -1,26 +1,29 @@
-function New-GSCalendarEvent {
+function Update-GSCalendarEvent {
     <#
     .SYNOPSIS
-    Creates a new calendar event
+    Updates an event
     
     .DESCRIPTION
-    Creates a new calendar event
+    Updates an event
+    
+    .PARAMETER EventID
+    The unique Id of the event to update
+    
+    .PARAMETER CalendarID
+    The Id of the calendar
+
+    Defaults to the user's primary calendar.
+
+    .PARAMETER User
+    The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config. 
+
+    Defaults to the AdminEmail in the config.
     
     .PARAMETER Summary
     Event summary
     
     .PARAMETER Description
     Event description
-    
-    .PARAMETER User
-    The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config. 
-
-    Defaults to the AdminEmail in the config.
-    
-    .PARAMETER CalendarID
-    The calendar ID of the calendar you would like to list events from.
-
-    Defaults to the user's primary calendar.
     
     .PARAMETER AttendeeEmails
     The email addresses of the attendees to add. 
@@ -66,20 +69,23 @@ function New-GSCalendarEvent {
     [cmdletbinding(DefaultParameterSetName = "AttendeeEmails")]
     Param
     (
-        [parameter(Mandatory = $true,Position = 0)]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
         [String]
-        $Summary,
-        [parameter(Mandatory = $false)]
+        $EventId,
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String]
-        $Description,
+        $CalendarId = "primary",
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $false)]
         [String]
-        $CalendarID = "primary",
+        $Summary,
+        [parameter(Mandatory = $false)]
+        [String]
+        $Description,
         [parameter(Mandatory = $false,ParameterSetName = "AttendeeEmails")]
         [String[]]
         $AttendeeEmails,

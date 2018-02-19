@@ -118,7 +118,9 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
-#### 2.1.3
+#### 2.1.5
+
+#### 2.1.3 / 2.1.4
 
 * Fixed: Export-GSSheet -Value results in error [#19](https://github.com/scrthq/PSGSuite/issues/19)
 * Updated: Added `-Attendees` and `-AttendeeEmails` parameters to New-GSCalendarEvent
