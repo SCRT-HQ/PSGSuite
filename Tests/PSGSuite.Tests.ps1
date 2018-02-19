@@ -16,6 +16,16 @@ Import-Module 'Configuration' -RequiredVersion 1.2.0
 Import-Module $ModulePath -Force
 
 Describe "Module tests: $ModuleName" {
+    if ($PSVersion -ge 6) {
+        It "Should throw and fail the entire build if PSVersion -ge 6" {
+            {throw "PSVersion: $PSVersion"} | Should -Not -Throw
+        }
+    }
+    if ($ENV:BHBranchName -eq 'master') {
+        Context "Confirm private functions are not imported on master branch" {
+            {Get-Command -Name New-GoogleService -Module PSGSuite -ErrorAction Stop} | Should -Throw "The term 'New-GoogleService' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+        }
+    }
     Context "Confirm files are valid Powershell syntax" {
         $scripts = Get-ChildItem $projectRoot -Include *.ps1,*.psm1,*.psd1 -Recurse
 
