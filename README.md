@@ -120,6 +120,8 @@ Update-GSSheetValue               Export-GSSheet
 
 #### 2.1.5
 
+* Added: Update-GSCalendarEvent
+
 #### 2.1.3 / 2.1.4
 
 * Fixed: Export-GSSheet -Value results in error [#19](https://github.com/scrthq/PSGSuite/issues/19)

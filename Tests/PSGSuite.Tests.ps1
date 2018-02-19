@@ -23,7 +23,7 @@ Describe "Previous build validation" {
     }
 }
 
-Describe "Failure test for PS Core" {
+<# Describe "Failure test for PS Core" {
     Context "Test full build failure in PS Core" {
         if ($PSVersion -ge 6) {
             It "Should throw and fail the entire build if PSVersion -ge 6" {
@@ -31,7 +31,7 @@ Describe "Failure test for PS Core" {
             }
         }
     }
-}
+} #>
 
 Describe "Module tests: $ModuleName" {
     if ($ENV:BHBranchName -eq 'master') {
