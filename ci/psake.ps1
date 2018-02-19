@@ -66,11 +66,19 @@ Task Build -Depends Test {
     if ($ENV:BHBuildSystem -eq 'AppVeyor' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") {
         # Load the module, read the exported functions, update the psd1 FunctionsToExport
         Set-ModuleFunctions @Verbose
-
+        $commitVer = ($env:BHCommitMessage | Select-String -Pattern '\sv\d\.\d\.\d\s').Matches.Value.Trim().Replace('v','')
         $curVer = (Get-Module $env:BHProjectName).Version
-        $nextGalVer = Get-NextPSGalleryVersion -Name $env:BHProjectName
+        $nextGalVer = Get-NextNugetPackageVersion -Name $env:BHProjectName -PackageSourceUrl 'https://www.powershellgallery.com/api/v2/'
 
-        $versionToDeploy = if ($curVer -ge $nextGalVer) {
+        $versionToDeploy = if ($commitVer -and ([System.Version]$commitVer -le $nextGalVer)) {
+            Write-Host -ForegroundColor Yellow "Version in commit message is $commitVer, which is less than or equal to the next Gallery version and would result in an error. Possible duplicate deployment build, skipping module bump and negating deployment"
+            $env:BHCommitMessage = $env:BHCommitMessage.Replace('!deploy','')
+            $null
+        }
+        elseif ($commitVer -and ([System.Version]$commitVer -gt $nextGalVer)) {
+            [System.Version]$commitVer
+        }
+        elseif ($curVer -ge $nextGalVer) {
             Write-Host -ForegroundColor Green "Module version has been bumped to $curVer, using version from manifest"
             $curVer
         }

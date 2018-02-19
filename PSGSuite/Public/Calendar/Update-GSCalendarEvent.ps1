@@ -70,10 +70,10 @@ function Update-GSCalendarEvent {
     Param
     (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
-        [String]
+        [String[]]
         $EventId,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
-        [String]
+        [String[]]
         $CalendarId = "primary",
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail")]
@@ -200,9 +200,11 @@ function Update-GSCalendarEvent {
                             DateTime = $LocalEndDateTime
                         }
                     }
-                    Write-Verbose "Creating Calendar Event '$($Summary)' on calendar '$calId' for user '$U'"
-                    $request = $service.Events.Insert($body,$calId)
-                    $request.Execute() | Select-Object @{N = 'User';E = {$U}},@{N = 'CalendarId';E = {$calId}},*
+                    foreach ($evId in $EventId) {
+                        Write-Verbose "Updating Calendar Event '$($evId)' on calendar '$calId' for user '$U'"
+                        $request = $service.Events.Patch($body,$calId,$evId)
+                        $request.Execute() | Select-Object @{N = 'User';E = {$U}},@{N = 'CalendarId';E = {$calId}},@{N = 'EventId';E = {$evId}},*
+                    }
                 }
             }
         }

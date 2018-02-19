@@ -78,7 +78,7 @@ function New-GSCalendarEvent {
         [String[]]
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
-        [String]
+        [String[]]
         $CalendarID = "primary",
         [parameter(Mandatory = $false,ParameterSetName = "AttendeeEmails")]
         [String[]]
