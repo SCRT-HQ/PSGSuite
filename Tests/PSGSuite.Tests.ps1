@@ -15,12 +15,25 @@ $moduleRoot = Split-Path (Resolve-Path "$projectRoot\*\*.psd1")
 Import-Module 'Configuration' -RequiredVersion 1.2.0
 Import-Module $ModulePath -Force
 
-Describe "Module tests: $ModuleName" {
-    if ($PSVersion -ge 6) {
-        It "Should throw and fail the entire build if PSVersion -ge 6" {
-            {throw "PSVersion: $PSVersion"} | Should -Not -Throw
+Describe "Previous build validation" {
+    Context "Failure breadcrumb from previous build" {
+        It "Should not exist" {
+            "$projectRoot\BuildFailed.txt" | Should -Not -Exist
         }
     }
+}
+
+Describe "Failure test for PS Core" {
+    Context "Test full build failure in PS Core" {
+        if ($PSVersion -ge 6) {
+            It "Should throw and fail the entire build if PSVersion -ge 6" {
+                {throw "PSVersion: $PSVersion"} | Should -Not -Throw
+            }
+        }
+    }
+}
+
+Describe "Module tests: $ModuleName" {
     if ($ENV:BHBranchName -eq 'master') {
         Context "Confirm private functions are not imported on master branch" {
             {Get-Command -Name New-GoogleService -Module PSGSuite -ErrorAction Stop} | Should -Throw "The term 'New-GoogleService' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
