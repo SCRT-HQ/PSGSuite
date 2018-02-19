@@ -60,8 +60,8 @@ task Build {
     # Need to tell psake or it will proceed to the deployment. Danger!
     if($TestResults.FailedCount -gt 0)
     {
+        New-Item -Path "$projectRoot\BuildFailed.txt" -Name "BuildFailed.txt" -ItemType File -Force
         Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
-        New-Item -Path "$projectRoot\BuildFailed.txt"
     }
     "`n"
 }
