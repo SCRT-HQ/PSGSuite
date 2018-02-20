@@ -195,7 +195,12 @@ function Import-GSSheet {
 
         }
         catch {
-            $PSCmdlet.ThrowTerminatingError($_)
+            if ($ErrorActionPreference -eq 'Stop') {
+                $PSCmdlet.ThrowTerminatingError($_)
+            }
+            else {
+                Write-Error $_
+            }
         }
     }
 }

@@ -130,17 +130,27 @@ function Export-GSDriveFile {
         $service = New-GoogleService @serviceParams
     }
     Process {
-        $request = $service.Files.Export($FileID,($mimeHash[$Type]))
-        if ($fs) {
-            $request.Fields = $($fs -join ",")
+        try {
+            $request = $service.Files.Export($FileID,($mimeHash[$Type]))
+            if ($fs) {
+                $request.Fields = $($fs -join ",")
+            }
+            $res = $request.Execute() | Select-Object @{N = "User";E = {$User}},*
+            if ($OutFilePath) {
+                Write-Verbose "Saving file to path '$OutFilePath'"
+                $stream = [System.IO.File]::Create($OutFilePath)
+                $request.Download($stream)
+                $stream.Close()
+            }
+            $res
         }
-        $res = $request.Execute() | Select-Object @{N = "User";E = {$User}},*
-        if ($OutFilePath) {
-            Write-Verbose "Saving file to path '$OutFilePath'"
-            $stream = [System.IO.File]::Create($OutFilePath)
-            $request.Download($stream)
-            $stream.Close()
+        catch {
+            if ($ErrorActionPreference -eq 'Stop') {
+                $PSCmdlet.ThrowTerminatingError($_)
+            }
+            else {
+                Write-Error $_
+            }
         }
-        $res
     }
 }

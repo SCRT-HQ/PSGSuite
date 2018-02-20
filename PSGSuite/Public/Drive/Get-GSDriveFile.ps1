@@ -95,22 +95,32 @@ function Get-GSDriveFile {
         $service = New-GoogleService @serviceParams
     }
     Process {
-        foreach ($file in $FileId) {
-            $request = $service.Files.Get($file)
-            $request.SupportsTeamDrives = $true
-            if ($fs) {
-                $request.Fields = $($fs -join ",")
+        try {
+            foreach ($file in $FileId) {
+                $request = $service.Files.Get($file)
+                $request.SupportsTeamDrives = $true
+                if ($fs) {
+                    $request.Fields = $($fs -join ",")
+                }
+                $res = $request.Execute() | Select-Object @{N = "User";E = {$User}},*
+                if ($OutFilePath -and $res.FileExtension) {
+                    $resPath = Resolve-Path $OutFilePath
+                    $filePath = Join-Path $resPath "$($res.Name).$($res.FileExtension)"
+                    Write-Verbose "Saving file to path '$filePath'"
+                    $stream = [System.IO.File]::Create($filePath)
+                    $request.Download($stream)
+                    $stream.Close()
+                }
+                $res
             }
-            $res = $request.Execute() | Select-Object @{N = "User";E = {$User}},*
-            if ($OutFilePath -and $res.FileExtension) {
-                $resPath = Resolve-Path $OutFilePath
-                $filePath = Join-Path $resPath "$($res.Name).$($res.FileExtension)"
-                Write-Verbose "Saving file to path '$filePath'"
-                $stream = [System.IO.File]::Create($filePath)
-                $request.Download($stream)
-                $stream.Close()
+        }
+        catch {
+            if ($ErrorActionPreference -eq 'Stop') {
+                $PSCmdlet.ThrowTerminatingError($_)
             }
-            $res
+            else {
+                Write-Error $_
+            }
         }
     }
 }

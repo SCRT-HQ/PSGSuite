@@ -33,7 +33,12 @@ function Get-GSShortUrlListPrivate {
             $request.Execute() | Select-Object -ExpandProperty Items | Select-Object @{N = "User";E = {$User}},*
         }
         catch {
-            $PSCmdlet.ThrowTerminatingError($_)
+            if ($ErrorActionPreference -eq 'Stop') {
+                $PSCmdlet.ThrowTerminatingError($_)
+            }
+            else {
+                Write-Error $_
+            }
         }
     }
 }

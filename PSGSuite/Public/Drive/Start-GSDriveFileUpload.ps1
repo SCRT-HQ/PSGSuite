@@ -49,7 +49,7 @@ function Start-GSDriveFileUpload {
     (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
         [Alias('FullName')]
-        [ValidateScript({Test-Path $_})]
+        [ValidateScript( {Test-Path $_})]
         [String[]]
         $Path,
         [parameter(Mandatory = $false)]
@@ -105,8 +105,8 @@ function Start-GSDriveFileUpload {
                 $details = Get-Item $file
                 if ($details.PSIsContainer) {
                     $newFolPerms = @{
-                        Name = $details.Name
-                        Type = 'DriveFolder'
+                        Name    = $details.Name
+                        Type    = 'DriveFolder'
                         Verbose = $false
                     }
                     if ($PSBoundParameters.Keys -contains 'Parents') {
@@ -123,8 +123,8 @@ function Start-GSDriveFileUpload {
                             $recDirs | ForEach-Object {
                                 $parPath = "$(Split-Path $_.FullName -Parent)"
                                 $newFolPerms = @{
-                                    Name = $_.Name
-                                    Type = 'DriveFolder'
+                                    Name    = $_.Name
+                                    Type    = 'DriveFolder'
                                     Parents = [String[]]$folIdHash[$parPath]
                                     Verbose = $false
                                 }
@@ -164,33 +164,33 @@ function Start-GSDriveFileUpload {
                     $request.SupportsTeamDrives = $true
                     $request.ChunkSize = 512KB
                     $upload = $request.UploadAsync()
-                    $task = $upload.ContinueWith([System.Action[System.Threading.Tasks.Task]]{$stream.Dispose()})
+                    $task = $upload.ContinueWith([System.Action[System.Threading.Tasks.Task]] {$stream.Dispose()})
                     Write-Verbose "[$($detPart.Name)] Upload Id $($upload.Id) has started"
                     if (!$Script:DriveUploadTasks) {
                         $Script:DriveUploadTasks = [System.Collections.ArrayList]@()
                     }
                     $script:DriveUploadTasks += [PSCustomObject]@{
-                        Id = $upload.Id
-                        File = $detPart
-                        Length = $detPart.Length
-                        SizeInMB = [Math]::Round(($detPart.Length/1MB),2,[MidPointRounding]::AwayFromZero)
+                        Id        = $upload.Id
+                        File      = $detPart
+                        Length    = $detPart.Length
+                        SizeInMB  = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
                         StartTime = $(Get-Date)
-                        Parents = $body.Parents
-                        User = $User
-                        Upload = $upload
-                        Request = $request
+                        Parents   = $body.Parents
+                        User      = $User
+                        Upload    = $upload
+                        Request   = $request
                     }
                     $taskList += [PSCustomObject]@{
-                        Id = $upload.Id
-                        File = $detPart
-                        SizeInMB = [Math]::Round(($detPart.Length/1MB),2,[MidPointRounding]::AwayFromZero)
-                        User = $User
+                        Id       = $upload.Id
+                        File     = $detPart
+                        SizeInMB = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
+                        User     = $User
                     }
                     $fullTaskList += [PSCustomObject]@{
-                        Id = $upload.Id
-                        File = $detPart
-                        SizeInMB = [Math]::Round(($detPart.Length/1MB),2,[MidPointRounding]::AwayFromZero)
-                        User = $User
+                        Id       = $upload.Id
+                        File     = $detPart
+                        SizeInMB = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
+                        User     = $User
                     }
                     if ($throttleCount -ge $ThrottleLimit) {
                         $totalThrottleCount += $throttleCount
@@ -204,7 +204,12 @@ function Start-GSDriveFileUpload {
             }
         }
         catch {
-            $PSCmdlet.ThrowTerminatingError($_)
+            if ($ErrorActionPreference -eq 'Stop') {
+                $PSCmdlet.ThrowTerminatingError($_)
+            }
+            else {
+                Write-Error $_
+            }
         }
     }
     End {
@@ -247,33 +252,33 @@ function Start-GSDriveFileUpload {
                         $request.SupportsTeamDrives = $true
                         $request.ChunkSize = 512KB
                         $upload = $request.UploadAsync()
-                        $task = $upload.ContinueWith([System.Action[System.Threading.Tasks.Task]]{$stream.Dispose()})
+                        $task = $upload.ContinueWith([System.Action[System.Threading.Tasks.Task]] {$stream.Dispose()})
                         Write-Verbose "[$($detPart.Name)] Upload Id $($upload.Id) has started"
                         if (!$Script:DriveUploadTasks) {
                             $Script:DriveUploadTasks = [System.Collections.ArrayList]@()
                         }
                         $script:DriveUploadTasks += [PSCustomObject]@{
-                            Id = $upload.Id
-                            File = $detPart
-                            Length = $detPart.Length
-                            SizeInMB = [Math]::Round(($detPart.Length/1MB),2,[MidPointRounding]::AwayFromZero)
+                            Id        = $upload.Id
+                            File      = $detPart
+                            Length    = $detPart.Length
+                            SizeInMB  = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
                             StartTime = $(Get-Date)
-                            Parents = $body.Parents
-                            User = $User
-                            Upload = $upload
-                            Request = $request
+                            Parents   = $body.Parents
+                            User      = $User
+                            Upload    = $upload
+                            Request   = $request
                         }
                         $taskList += [PSCustomObject]@{
-                            Id = $upload.Id
-                            File = $detPart
-                            SizeInMB = [Math]::Round(($detPart.Length/1MB),2,[MidPointRounding]::AwayFromZero)
-                            User = $User
+                            Id       = $upload.Id
+                            File     = $detPart
+                            SizeInMB = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
+                            User     = $User
                         }
                         $fullTaskList += [PSCustomObject]@{
-                            Id = $upload.Id
-                            File = $detPart
-                            SizeInMB = [Math]::Round(($detPart.Length/1MB),2,[MidPointRounding]::AwayFromZero)
-                            User = $User
+                            Id       = $upload.Id
+                            File     = $detPart
+                            SizeInMB = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
+                            User     = $User
                         }
                         if ($throttleCount -ge $ThrottleLimit) {
                             $totalThrottleCount += $throttleCount

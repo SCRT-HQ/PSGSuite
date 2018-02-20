@@ -154,7 +154,12 @@ function Update-GSTeamDrive {
             $request.Execute() | Select-Object @{N = "User";E = {$User}},*
         }
         catch {
-            $PSCmdlet.ThrowTerminatingError($_)
+            if ($ErrorActionPreference -eq 'Stop') {
+                $PSCmdlet.ThrowTerminatingError($_)
+            }
+            else {
+                Write-Error $_
+            }
         }
     }
 }

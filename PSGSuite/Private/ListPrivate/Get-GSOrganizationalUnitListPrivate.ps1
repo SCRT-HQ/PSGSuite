@@ -40,7 +40,12 @@ function Get-GSOrganizationalUnitListPrivate {
             $request.Execute() | Select-Object -ExpandProperty OrganizationUnits
         }
         catch {
-            $PSCmdlet.ThrowTerminatingError($_)
+            if ($ErrorActionPreference -eq 'Stop') {
+                $PSCmdlet.ThrowTerminatingError($_)
+            }
+            else {
+                Write-Error $_
+            }
         }
     }
 }
