@@ -92,7 +92,7 @@ Task Build -Depends Test {
             [System.Version]("{0}.{1}.{2}" -f ([int]$nextGalVer.Major + 1),0,0)
         }
         else {
-            $null
+            $nextGalVer
         }
         # Bump the module version
         if ($versionToDeploy) {        
