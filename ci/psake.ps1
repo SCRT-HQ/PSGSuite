@@ -65,7 +65,7 @@ Task Build -Depends Test {
         Set-ModuleFunctions @Verbose
         $commParsed = $env:BHCommitMessage | Select-String -Pattern '\sv\d\.\d\.\d\s'
         if ($commParsed) {
-            $commitVer = ($env:BHCommitMessage | Select-String -Pattern '\sv\d\.\d\.\d\s').Matches.Value.Trim().Replace('v','')
+            $commitVer = $commParsed.Matches.Value.Trim().Replace('v','')
         }
         $curVer = (Get-Module $env:BHProjectName).Version
         $nextGalVer = Get-NextNugetPackageVersion -Name $env:BHProjectName -PackageSourceUrl 'https://www.powershellgallery.com/api/v2/'
@@ -76,28 +76,29 @@ Task Build -Depends Test {
             $null
         }
         elseif ($commitVer -and ([System.Version]$commitVer -gt $nextGalVer)) {
-            Write-Host -ForegroundColor Green "Module version to deploy: $commitVer"
-            $commitVer
+            Write-Host -ForegroundColor Green "Module version to deploy: $commitVer [from commit message]"
+            [System.Version]$commitVer
         }
         elseif ($curVer -ge $nextGalVer) {
-            Write-Host -ForegroundColor Green "Module version to deploy: $curVer [manifest version]"
+            Write-Host -ForegroundColor Green "Module version to deploy: $curVer [from manifest]"
             $curVer
         }
         elseif ($env:BHCommitMessage -match '!hotfix') {
-            Write-Host -ForegroundColor Green "Module version to deploy: $nextGalVer"
+            Write-Host -ForegroundColor Green "Module version to deploy: $nextGalVer [commit message match '!hotfix']"
             $nextGalVer
         }
         elseif ($env:BHCommitMessage -match '!minor') {
             $minorVers = [System.Version]("{0}.{1}.{2}" -f $nextGalVer.Major,([int]$nextGalVer.Minor + 1),0)
-            Write-Host -ForegroundColor Green "Module version to deploy: $minorVers"
+            Write-Host -ForegroundColor Green "Module version to deploy: $minorVers [commit message match '!minor']"
             $minorVers
         }
         elseif ($env:BHCommitMessage -match '!major') {
             $majorVers = [System.Version]("{0}.{1}.{2}" -f ([int]$nextGalVer.Major + 1),0,0)
-            Write-Host -ForegroundColor Green "Module version to deploy: $majorVers"
+            Write-Host -ForegroundColor Green "Module version to deploy: $majorVers [commit message match '!major']"
             $majorVers
         }
         else {
+            Write-Host -ForegroundColor Green "Module version to deploy: $nextGalVer [PSGallery next version]"
             $nextGalVer
         }
         # Bump the module version
