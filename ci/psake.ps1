@@ -63,7 +63,10 @@ Task Build -Depends Test {
     if ($ENV:BHBuildSystem -eq 'AppVeyor' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") {
         # Load the module, read the exported functions, update the psd1 FunctionsToExport
         Set-ModuleFunctions @Verbose
-        $commitVer = ($env:BHCommitMessage | Select-String -Pattern '\sv\d\.\d\.\d\s').Matches.Value.Trim().Replace('v','')
+        $commParsed = $env:BHCommitMessage | Select-String -Pattern '\sv\d\.\d\.\d\s'
+        if ($commParsed) {
+            $commitVer = ($env:BHCommitMessage | Select-String -Pattern '\sv\d\.\d\.\d\s').Matches.Value.Trim().Replace('v','')
+        }
         $curVer = (Get-Module $env:BHProjectName).Version
         $nextGalVer = Get-NextNugetPackageVersion -Name $env:BHProjectName -PackageSourceUrl 'https://www.powershellgallery.com/api/v2/'
 
