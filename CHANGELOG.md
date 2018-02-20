@@ -3,7 +3,8 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
-    - [2.1.3](#213)
+    - [2.1.5](#215)
+    - [2.1.3 / 2.1.4](#213-214)
     - [2.1.2](#212)
     - [2.1.1](#211)
     - [2.1.0](#210)
@@ -19,7 +20,12 @@
 
 <!-- /TOC -->
 
-## 2.1.3
+## 2.1.5
+
+* Added: Update-GSCalendarEvent
+* Fixed: Error handling to only throw terminating errors when ErrorActionPreference is `Stop`****
+
+## 2.1.3 / 2.1.4
 
 * Fixed: Export-GSSheet -Value results in error [#19](https://github.com/scrthq/PSGSuite/issues/19)
 * Updated: Added `-Attendees` and `-AttendeeEmails` parameters to New-GSCalendarEvent

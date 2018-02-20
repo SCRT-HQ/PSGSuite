@@ -121,6 +121,7 @@ Update-GSSheetValue               Export-GSSheet
 #### 2.1.5
 
 * Added: Update-GSCalendarEvent
+* Fixed: Error handling to only throw terminating errors when ErrorActionPreference is `Stop`
 
 #### 2.1.3 / 2.1.4
 
