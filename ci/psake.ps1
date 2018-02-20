@@ -67,6 +67,7 @@ Task Build -Depends Test {
         # Load the module, read the exported functions, update the psd1 FunctionsToExport
         Set-ModuleFunctions @Verbose
         $commitVer = ($env:BHCommitMessage | Select-String -Pattern '\sv\d\.\d\.\d\s').Matches.Value.Trim().Replace('v','')
+        if ()
         $curVer = (Get-Module $env:BHProjectName).Version
         $nextGalVer = Get-NextNugetPackageVersion -Name $env:BHProjectName -PackageSourceUrl 'https://www.powershellgallery.com/api/v2/'
 
@@ -76,28 +77,38 @@ Task Build -Depends Test {
             $null
         }
         elseif ($commitVer -and ([System.Version]$commitVer -gt $nextGalVer)) {
-            [System.Version]$commitVer
+            Write-Host -ForegroundColor Green "Module version to deploy: $commitVer"
+            $commitVer
         }
         elseif ($curVer -ge $nextGalVer) {
-            Write-Host -ForegroundColor Green "Module version has been bumped to $curVer, using version from manifest"
+            Write-Host -ForegroundColor Green "Module version to deploy: $curVer [manifest version]"
             $curVer
         }
         elseif ($env:BHCommitMessage -match '!hotfix') {
+            Write-Host -ForegroundColor Green "Module version to deploy: $nextGalVer"
             $nextGalVer
         }
         elseif ($env:BHCommitMessage -match '!minor') {
-            [System.Version]("{0}.{1}.{2}" -f $nextGalVer.Major,([int]$nextGalVer.Minor + 1),0)
+            $minorVers = [System.Version]("{0}.{1}.{2}" -f $nextGalVer.Major,([int]$nextGalVer.Minor + 1),0)
+            Write-Host -ForegroundColor Green "Module version to deploy: $minorVers"
+            $minorVers
         }
-        elseif ($env:BHCommitMessage -match '!minor') {
-            [System.Version]("{0}.{1}.{2}" -f ([int]$nextGalVer.Major + 1),0,0)
+        elseif ($env:BHCommitMessage -match '!major') {
+            $majorVers = [System.Version]("{0}.{1}.{2}" -f ([int]$nextGalVer.Major + 1),0,0)
+            Write-Host -ForegroundColor Green "Module version to deploy: $majorVers"
+            $majorVers
         }
         else {
             $nextGalVer
         }
         # Bump the module version
-        if ($versionToDeploy) {        
+        if ($versionToDeploy) {
             Write-Host -ForegroundColor Green "Module version to deploy: $versionToDeploy"
             Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value $versionToDeploy
+        }
+        else {
+            Write-Host -ForegroundColor Yellow "No module version matched! Negating deployment to prevent errors"
+            $env:BHCommitMessage = $env:BHCommitMessage.Replace('!deploy','')
         }
         $lines
     }
