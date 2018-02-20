@@ -102,7 +102,6 @@ Task Build -Depends Test {
         }
         # Bump the module version
         if ($versionToDeploy) {
-            Write-Host -ForegroundColor Green "Module version to deploy: $versionToDeploy"
             Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value $versionToDeploy
         }
         else {
