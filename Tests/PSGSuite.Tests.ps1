@@ -26,7 +26,7 @@ Describe "Previous build validation" {
 Describe "Module tests: $ModuleName" {
     Context "Confirm private functions are not exported on module import" {
         It "Should throw when checking for New-GoogleService in the exported commands" {
-            {Get-Command -Name New-GoogleService -Module PSGSuite -ErrorAction Stop} | Should -Throw "The term 'New-GoogleService' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+            {Get-Command -Name New-GoogleService -Module PSGSuite -ErrorAction Stop} | Should -Throw "The term 'New-GoogleService' is not recognized as the name of a cmdlet, function, script file, or operable program."
         }
     }
     Context "Confirm files are valid Powershell syntax" {
