@@ -139,6 +139,7 @@ function Set-PSGSuiteConfig {
                 $configHash["DefaultConfig"] = "default"
             }
         }
+        Write-Verbose "Setting config name '$ConfigName'"
         $configParams = @('P12KeyPath','ClientSecretsPath','AppEmail','AdminEmail','CustomerID','Domain','Preference','ServiceAccountClientID')
         if ($SetAsDefaultConfig -or !$configHash["DefaultConfig"]) {
             $configHash["DefaultConfig"] = $ConfigName

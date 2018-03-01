@@ -9,5 +9,8 @@ function Show-PSGSuiteConfig {
     .EXAMPLE
     Show-PSGSuiteConfig
     #>
+    [CmdletBinding()]
+    Param()
+    Write-Verbose "Showing current PSGSuite config"
     $script:PSGSuite
 }

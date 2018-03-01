@@ -116,6 +116,7 @@ function Copy-GSDriveFile {
             if ($fs) {
                 $request.Fields = "$($fs -join ",")"
             }
+            Write-Verbose "Copying drive file id '$FileID'"
             $request.Execute() | Select-Object @{N = "User";E = {$User}},*
         }
         catch {

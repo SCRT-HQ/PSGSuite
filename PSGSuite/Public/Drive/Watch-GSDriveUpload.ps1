@@ -40,6 +40,9 @@ function Watch-GSDriveUpload {
         [Int]
         $TotalUploading
     )
+    Begin {
+        Write-Verbose "Watching Drive File Upload"
+    }
     Process {
         do {
             $i = 1

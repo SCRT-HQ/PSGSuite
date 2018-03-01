@@ -27,6 +27,9 @@ function Get-GSDriveFileUploadStatus {
         [Switch]
         $InProgress
     )
+    Begin {
+        Write-Verbose "Getting Drive File Upload status"
+    }
     Process {
         if ($script:DriveUploadTasks) {
             foreach ($task in $script:DriveUploadTasks) {

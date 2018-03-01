@@ -29,9 +29,8 @@ Describe "Module tests: $ModuleName" {
         }
     }
     Context "Confirm files are valid Powershell syntax" {
-        $scripts = Get-ChildItem $projectRoot -Include *.ps1,*.psm1,*.psd1 -Recurse
+        $scripts = Get-ChildItem $ModulePath -Include *.ps1,*.psm1,*.psd1 -Recurse
 
-        # TestCases are splatted to the script so we need hashtables
         $testCase = $scripts | Foreach-Object {@{file = $_}}         
         It "Script <file> should be valid Powershell" -TestCases $testCase {
             param($file)
@@ -54,6 +53,19 @@ Describe "Module tests: $ModuleName" {
 
             {Get-Alias $Name -ErrorAction Stop} | Should -Not -Throw
             (Get-Alias $Name).ReferencedCommand.Name | Should -Be $Value
+        }
+    }
+}
+
+Describe "Function contents" {
+    Context "All non-helper public functions should use Write-Verbose" {
+        $scripts = Get-ChildItem "$ModulePath\Public" -Include *.ps1 -Recurse | Where-Object {$_.FullName -notlike "*Helpers*"}
+
+        $testCase = $scripts | Foreach-Object {@{file = $_;Name = $_.BaseName}}         
+        It "Function <Name> should contain verbose output" -TestCases $testCase {
+            param($file,$Name)
+
+            $file.fullname | Should -FileContentMatch 'Write-Verbose'
         }
     }
 }

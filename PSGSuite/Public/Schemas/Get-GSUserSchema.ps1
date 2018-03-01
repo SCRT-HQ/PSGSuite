@@ -35,6 +35,7 @@ function Get-GSUserSchema {
         try {
             if ($PSBoundParameters.Keys -contains 'SchemaId') {
                 foreach ($S in $SchemaId) {
+                    Write-Verbose "Getting schema Id '$S'"
                     $request = $service.Schemas.Get($Script:PSGSuite.CustomerId,$S)
                     $request.Execute()
                 }
