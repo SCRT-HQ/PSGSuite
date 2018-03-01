@@ -93,7 +93,7 @@
             $messageParams.Add("To",@($To))
         }
         if ($Body) {
-            $messageParams.Add("Body",@($Body))
+            $messageParams.Add("Body",$Body)
         }
         if ($CC) {
             $messageParams.Add("CC",@($CC))
