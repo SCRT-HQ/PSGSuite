@@ -7,11 +7,10 @@ $ModulePath = Resolve-Path "$projectRoot\$ModuleName"
 # Handy for troubleshooting.
 # Splat @Verbose against commands as needed (here or in pester tests)
 $Verbose = @{}
-if ($ENV:BHBranchName -eq "dev" -or $env:BHCommitMessage -match "!verbose" -or $ENV:TRAVIS_COMMIT_MESSAGE -match "!verbose" -or $ENV:TRAVIS_BRANCH -eq "dev" ) {
+if ($ENV:BHBranchName -eq "development" -or $env:BHCommitMessage -match "!verbose") {
     $Verbose.add("Verbose",$True)
 }
 
-$moduleRoot = Split-Path (Resolve-Path "$projectRoot\*\*.psd1")
 Import-Module 'Configuration' -RequiredVersion 1.2.0
 Import-Module $ModulePath -Force
 
@@ -44,5 +43,10 @@ Describe "Module tests: $ModuleName" {
             $null = [System.Management.Automation.PSParser]::Tokenize($contents, [ref]$errors)
             $errors.Count | Should Be 0
         }
+    }
+    Context "Confirm all aliases are created" {
+        $aliasHash = . "$ModulePath\Aliases\PSGSuite.Aliases.ps1"
+
+
     }
 }
