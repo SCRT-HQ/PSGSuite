@@ -47,6 +47,13 @@ Describe "Module tests: $ModuleName" {
     Context "Confirm all aliases are created" {
         $aliasHash = . "$ModulePath\Aliases\PSGSuite.Aliases.ps1"
 
+        $testCase = $aliasHash.Keys | ForEach-Object {@{Name = $_;Value = $aliasHash[$_]}}
 
+        It "Alias <Name> should exist for command <Value>" -TestCases $testCase {
+            param($Name,$Value)
+
+            {Get-Alias $Name -ErrorAction Stop} | Should -Not -Throw
+            (Get-Alias $Name).ReferencedCommand.Name | Should -Be $Value
+        }
     }
 }
