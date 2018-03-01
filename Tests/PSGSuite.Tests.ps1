@@ -23,20 +23,12 @@ Describe "Previous build validation" {
     }
 }
 
-<# Describe "Failure test for PS Core" {
-    Context "Test full build failure in PS Core" {
-        if ($PSVersion -ge 6) {
-            It "Should throw and fail the entire build if PSVersion -ge 6" {
-                {throw "PSVersion: $PSVersion"} | Should -Not -Throw
-            }
-        }
-    }
-} #>
-
 Describe "Module tests: $ModuleName" {
     if ($ENV:BHBranchName -eq 'master') {
         Context "Confirm private functions are not imported on master branch" {
-            {Get-Command -Name New-GoogleService -Module PSGSuite -ErrorAction Stop} | Should -Throw "The term 'New-GoogleService' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+            It "Should throw when checking for New-GoogleService in the exported commands" {
+                {Get-Command -Name New-GoogleService -Module PSGSuite -ErrorAction Stop} | Should -Throw "The term 'New-GoogleService' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+            }
         }
     }
     Context "Confirm files are valid Powershell syntax" {
