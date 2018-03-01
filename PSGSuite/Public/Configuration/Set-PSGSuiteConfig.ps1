@@ -58,6 +58,7 @@ function Set-PSGSuiteConfig {
 
     This builds a config names "personal" and sets it as the default config
     #>
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingConvertToSecureStringWithPlainText", "")]
     [cmdletbinding()]
     Param
     (
