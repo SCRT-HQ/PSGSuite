@@ -60,7 +60,7 @@ function New-GSOrganizationalUnit {
     Process {
         try {
             Write-Verbose "Creating OrgUnit '$Name'"
-            $body = [Google.Apis.Admin.Directory.directory_v1.Data.OrgUnit]::new()
+            $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.OrgUnit'
             foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {
                 switch ($prop) {
                     Default {

@@ -39,7 +39,7 @@ function New-GSUserSchema {
     Process {
         try {
             Write-Verbose "Creating schema '$SchemaName'"
-            $body = [Google.Apis.Admin.Directory.directory_v1.Data.Schema]::new()
+            $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.Schema'
             foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {
                 switch ($prop) {
                     Default {
