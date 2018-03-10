@@ -70,8 +70,8 @@ Task Build -Depends Test {
         $curVer = (Get-Module $env:BHProjectName).Version
         $nextGalVer = Get-NextNugetPackageVersion -Name $env:BHProjectName -PackageSourceUrl 'https://www.powershellgallery.com/api/v2/'
 
-        $versionToDeploy = if ($commitVer -and ([System.Version]$commitVer -le $nextGalVer)) {
-            Write-Host -ForegroundColor Yellow "Version in commit message is $commitVer, which is less than or equal to the next Gallery version and would result in an error. Possible duplicate deployment build, skipping module bump and negating deployment"
+        $versionToDeploy = if ($commitVer -and ([System.Version]$commitVer -lt $nextGalVer)) {
+            Write-Host -ForegroundColor Yellow "Version in commit message is $commitVer, which is less than the next Gallery version and would result in an error. Possible duplicate deployment build, skipping module bump and negating deployment"
             $env:BHCommitMessage = $env:BHCommitMessage.Replace('!deploy','')
             $null
         }
