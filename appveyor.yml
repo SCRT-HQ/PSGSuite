@@ -8,6 +8,9 @@ environment:
   NuGetApiKey:
     secure: Ocp1ATd6eZ0eY9+LfZ9Stp9/J1B5eFdBPMdaTRWVa4xh6/NV45ZBYtU5+eemrTWt
 
+matrix:
+  fast_finish: true
+
 skip_commits:
   message: /updated readme.*|update readme.*s|\[skip ci\]|\[ci skip\]/
 
