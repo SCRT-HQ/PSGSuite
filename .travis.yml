@@ -18,7 +18,7 @@ notifications:
     on_start: always
   webhooks:
     urls:
-    - https://webhooks.gitter.im/e/ae6f3aa6248f45c9cbff
+      secure: loefE31kEeRlWkpGFfK+YpSAN4pRKaEq+n4u6xKNRKMCUED8oKaMA65SjARLPj4DHwpSIM0l5+8+z3V4c22cE7QhjDYXEhb1BHJiCc8T0ysWOZYOHe95ncWUKkn0QQOddKc5ayAt3qy5+rm/DFGXDi9hbSyCip9HYAn4gepH8b4hnBWpDoEpaTPNnn+6nUt9TTGC4iMn2S+NZ/p6t4mm1ZtIjq1v3yzRDMY6oq1/eJUzJ1078XFWAL5tUkRetrT5szHvpK84YPMo9h2hFw6N1yPvw/ZQOXwPmtHhhaZA7h0yY/XY9CvUjQFB125BK4gjpIsqklR6kFm+8iy/XB53tH5Gcy0e4fIuYa102JZXAZ5sqsLsewELH26sXR1vY1TGALkWHyvypSbeZtUzn8XtVuzyK2+P0b8tAKC4hHlJZg13DgQME+kzR1fw8KXOiCdv9tPKesr3DGb5YitZ5ESm/jHWxWO1ciqsKUUWLPR/J+iknTeZDxfJy+jELmo7msgedq1OTuLr8GACksKyoJAGNWSJQeLFFOJs2yMcwcJ8m12RowqoR/dJcPWWKqEVLEKUvNDecLMV2KObp/nASX++sSItz3eBnlJJCIUH3vC16Zwu7Y++7NoN64JfT7p/Ddk5kkJZYDnKAyK90wYqONoa/2lOPSjNj/JBw8/iulQn6yI=
     on_success: always
     on_failure: always
     on_start: always
