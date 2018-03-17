@@ -5,7 +5,7 @@
 </br>
   <!-- AppVeyor -->
   <a href="https://ci.appveyor.com/project/scrthq/psgsuite/branch/master">
-    <img src="https://ci.appveyor.com/api/projects/status/u6pgrn4cs8iagcee?svg=true"
+    <img src="https://ci.appveyor.com/api/projects/status/u6pgrn4cs8iagcee/branch/master?svg=true"
       alt="AppVeyor" title="AppVeyor" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Travis CI -->
