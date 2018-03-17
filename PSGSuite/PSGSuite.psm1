@@ -129,5 +129,5 @@ catch {
     Write-Warning "There was no config returned! Please make sure you are using the correct key or have a configuration already saved."
 }
 finally {
-    Export-ModuleMember -Function $Public.Basename -Alias *
+    Export-ModuleMember -Function ($Public.Basename + $Private.Basename) -Alias *
 }
