@@ -1,52 +1,41 @@
 language: cpp
 python:
-  - "3.4"
-
+- '3.4'
 git:
   depth: 1000
-
 os:
-  - linux
-  - osx
+- linux
+- osx
 sudo: required
 dist: trusty
 osx_image: xcode8.3
-
 notifications:
   slack:
-    secure: JQZ3Jnam8qQoKFGeiqBZ9vtYeEZyt81WM5LXHtVaiDTDldc9K7KQR3j0j9ubAS01TM4go6PYJ8yW3AoxTlUISejJgJQJahgrLhfwqNv77TpvCuJH9iuwarS8b3KCo72owxyw+rLWz4UX0x+e+RVuuDRA2HhvOGxOP56FcW/Ix75ZGOVCWRTbgkagKLfbOwUuuWFH6MNfqdD4lVtQ97nxzypNUJ+iakKQmpxFKo01d79azTpfmvcr+uttkIZawu0vXdiZp8UUXqiMNGPg7yykMUm9bF1EkJ1b5/RAbsl8nvhWHrsFUv659CWsxp9LlGdJ9iXueV7SCdHsd6ZzDTwVXpJo/YTtVMjyhZKuUBKk/v/kPNUbelTIr5KlnqTF/Tb2dS38ADGDHS52ZDwBtCkPTrkZmgnckxF5g6uv8v15GWbatnntLIdyGoNQgAqPDYatuK/Jf13LmqOZg3kh6W8/L86+WEqHFuybpk7i27NW8YKYgzjDMa6Hyo5BLZK/33UCImf8qfEtp2K13a7WLeUsCmIuThIwhY8MtBIT3c24WdDnFXdHveDzFvKaPTjsMdyNUnpfGXmyMDnWDsKMjuR2FHjZeMcTAPFuDa4d2Peq7Yn4vqplaagyA59h+EeK1D4bHT+JuuJ+FwhEPUooU+vllP+/Z99O2wALXfD2m3fTuhE=
-    on_success: always  # options: [always|never|change] default: always
-    on_failure: always  # options: [always|never|change] default: always
-    on_start: always     # options: [always|never|change] default: always
+    rooms:
+      secure: Jyb9q/1r2fxGSTeIeF0eSG2o2EEzq78qVTChizSsVhVyedZ8UFcMsHtGKgUsLEitMWTXjP9M3WI9LRL6nRfteOqBeeJg9elA9z2gkpPDkswrNLktgYFO1U1lk6J/BNr0KI79M5MqIzo8NV7YpXU1yidwE4SaBVfbS3TuJXhvGW9CM2BPmvGKHRJBJIDox6tpqjKt4HeFm94XIQfLQUkvUDFsxzdbq92wEuFWYKFfvTU2qR+fr8kOitR0kVKHG9BtveB3DxovQEBv9RsB+HC+/ausVbwIiiYTitGlibG8ErJS5URe+NWBeZJbwT8Vff7CNwuvy3Q6Zw7GLEbUWoiwE1FziyFJrnQfqLR1tTlMuF9SrJAOxIl0F78dtoNA3pFOgY4AnrpsEkhCTiaHeXCOkpCKpLJPBX5glVDPLL7m6BzcA1dL7tUD6BRu8h8O0wtF78nSjM4C2AMbBynhFQ0NXlKLhnSYvHJ/M+CYCtbXs1+qYvqgs/aLTA6CDWN0Xand1NmvVa4noqWeNUDNo7TH6OYPJrP1Dabe/HI/oAa2eliOACSLp9De4uH+yUxvjXrF94qc1ppTdaIYMi/1GDZpvMu9bjLJgUgw9ryELcfIqN7F/1PxxAllmyFO+ce2MDXNWvk6fTTfvxZJWvK916NroQlOhAp8+x8F3uf5JLg1ht0=
+    on_success: always
+    on_failure: always
+    on_start: always
   webhooks:
     urls:
-      - https://webhooks.gitter.im/e/ae6f3aa6248f45c9cbff
-    on_success: always  # options: [always|never|change] default: always
-    on_failure: always  # options: [always|never|change] default: always
-    on_start: always     # options: [always|never|change] default: always
-
+    - https://webhooks.gitter.im/e/ae6f3aa6248f45c9cbff
+    on_success: always
+    on_failure: always
+    on_start: always
 before_install:
-  - chmod +x ci/download.sh
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      brew update;
-      brew install openssl;
-      brew install python3;
-      mkdir -p /usr/local/lib;
-      ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/;
-      ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/;
-    fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      sudo apt-get -y install python3;
-      nvm install v6.0.0;
-    fi
+- chmod +x ci/download.sh
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; brew install openssl; brew
+  install python3; mkdir -p /usr/local/lib; ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib
+  /usr/local/lib/; ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/;
+  fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -y install python3; nvm
+  install v6.0.0; fi
 install:
-  - pushd ci
-  - ./download.sh
-  - popd
-
+- pushd ci
+- "./download.sh"
+- popd
 before_script:
-  - export PATH=~/.local/bin:$PATH
-
+- export PATH=~/.local/bin:$PATH
 script:
-  - ulimit -n 4096
-  - pwsh -File ci/init.ps1 
+- ulimit -n 4096
+- pwsh -File ci/init.ps1
