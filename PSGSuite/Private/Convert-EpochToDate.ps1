@@ -5,8 +5,10 @@
         [string]
         $EpochString
     )
-    Process {
+    Begin {
         $UnixEpoch = [timezone]::CurrentTimeZone.ToLocalTime([datetime]'1/1/1970')
+    }
+    Process {
         try {
             $result = $UnixEpoch.AddSeconds($EpochString)
         }
@@ -18,6 +20,8 @@
                 $result = $UnixEpoch.AddTicks($EpochString)
             }
         }
+    }
+    End {
         return $result
     }
 }
