@@ -11,6 +11,8 @@ if ($ENV:BHBranchName -eq "development" -or $env:BHCommitMessage -match "!verbos
     $Verbose.add("Verbose",$True)
 }
 
+$moduleRoot = Split-Path (Resolve-Path "$projectRoot\*\*.psd1")
+
 Import-Module 'Configuration' -RequiredVersion 1.2.0
 Import-Module $ModulePath -Force
 
