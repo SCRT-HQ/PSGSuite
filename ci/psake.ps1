@@ -25,8 +25,6 @@ Task Default -Depends Init,Test,Build,Deploy
 
 Task Init {
     $lines
-    Install-Module Coveralls -Force
-    Import-Module Coveralls -Force
     Set-Location $ProjectRoot
     "Build System Details:"
     Get-Item ENV:BH*
@@ -41,7 +39,7 @@ Task Test -Depends Init {
     $TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile"
 
     # In Appveyor?  Upload our tests! #Abstract this into a function?
-    If ($ENV:BHBuildSystem -eq 'AppVeyor') {
+    If ($ENV:APPVEYOR) {
         (New-Object 'System.Net.WebClient').UploadFile(
             "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)",
             "$ProjectRoot\$TestFile" )

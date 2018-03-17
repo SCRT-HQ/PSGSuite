@@ -11,6 +11,8 @@ if ($ENV:BHBranchName -eq "development" -or $env:BHCommitMessage -match "!verbos
     $Verbose.add("Verbose",$True)
 }
 
+$moduleRoot = Split-Path (Resolve-Path "$projectRoot\*\*.psd1")
+
 Import-Module 'Configuration' -RequiredVersion 1.2.0
 Import-Module $ModulePath -Force
 
@@ -53,6 +55,13 @@ Describe "Module tests: $ModuleName" {
 
             {Get-Alias $Name -ErrorAction Stop} | Should -Not -Throw
             (Get-Alias $Name).ReferencedCommand.Name | Should -Be $Value
+        }
+    }
+    Context "Confirm there are no duplicate function names in private and public folders" {
+        It 'Should have no duplicate functions' {
+            $functions = Get-ChildItem "$moduleRoot\Public" -Recurse -Include *.ps1 | Select-Object -ExpandProperty BaseName
+            $functions += Get-ChildItem "$moduleRoot\Private" -Recurse -Include *.ps1 | Select-Object -ExpandProperty BaseName
+            ($functions | Group-Object | Where-Object {$_.Count -gt 1}).Count | Should -BeLessThan 1
         }
     }
 }

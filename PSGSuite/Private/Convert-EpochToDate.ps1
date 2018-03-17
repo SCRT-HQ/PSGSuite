@@ -1,25 +1,27 @@
 ﻿function Convert-EpochToDate {
     Param
     (
-      [parameter(Mandatory=$true,Position=0,ValueFromPipeline=$true)]
-      [string]
-      $EpochString
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true)]
+        [string]
+        $EpochString
     )
-$UnixEpoch = [timezone]::CurrentTimeZone.ToLocalTime([datetime]'1/1/1970')
-try
-    {
-    $result = $UnixEpoch.AddSeconds($EpochString)
+    Begin {
+        $UnixEpoch = [timezone]::CurrentTimeZone.ToLocalTime([datetime]'1/1/1970')
     }
-catch
-    {
-    try
-        {
-        $result = $UnixEpoch.AddMilliseconds($EpochString)
+    Process {
+        try {
+            $result = $UnixEpoch.AddSeconds($EpochString)
         }
-    catch
-        {
-        $result = $UnixEpoch.AddTicks($EpochString)
+        catch {
+            try {
+                $result = $UnixEpoch.AddMilliseconds($EpochString)
+            }
+            catch {
+                $result = $UnixEpoch.AddTicks($EpochString)
+            }
         }
     }
-return $result
+    End {
+        return $result
+    }
 }

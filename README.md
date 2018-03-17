@@ -8,6 +8,11 @@
     <img src="https://ci.appveyor.com/api/projects/status/u6pgrn4cs8iagcee?svg=true"
       alt="AppVeyor" title="AppVeyor" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- Travis CI -->
+  <a href="https://travis-ci.org/scrthq/PSGSuite">
+    <img src="https://travis-ci.org/scrthq/PSGSuite.svg?branch=master"
+      alt="Travis CI" title="Travis CI" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- PS Gallery -->
   <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
     <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat"
@@ -18,15 +23,10 @@
     <img src="https://badges.gitter.im/PSGSuite/Lobby.svg"
       alt="Gitter - Chat" title="Gitter - Chat" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <!-- Gitter -->
+  <!-- Slack -->
   <a href="https://scrthq-slack-invite.herokuapp.com/">
     <img src="https://img.shields.io/badge/chat-on%20slack-orange.svg?style=flat&logo=slack"
       alt="Slack - Chat" title="Slack - Chat" />
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <!-- Gitter -->
-  <a href="https://scrthq-slack-invite.herokuapp.com/">
-    <img src="https://scrthq-slack-invite.herokuapp.com/badge.svg"
-      alt="Slack - Status" title="Slack - Status" />
   </a>
 </div>
 <br />
@@ -117,6 +117,22 @@ Update-GSSheetValue               Export-GSSheet
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
 ### Most recent changes
+
+#### 2.2.0
+
+Added the following:
+
+* Functions
+  * Get-GSGmailAutoForwardingSettings
+  * Get-GSGmailImapSettings
+  * Get-GSGmailPopSettings
+  * Get-GSGmailVacationSettings
+  * Update-GSGmailAutoForwardingSettings
+  * Update-GSGmailImapSettings
+  * Update-GSGmailPopSettings
+  * Update-GSGmailVacationSettings
+* CI Testing
+  * Added Travis CI testing for both Linux and macOS tests along with the existing AppVeyor CI testing on Ubuntu (PowerShell Core) Windows (PowerShell Core and Windows PowerShell)
 
 #### 2.1.5
 
