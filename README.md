@@ -118,6 +118,22 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.2.0
+
+Added the following:
+
+* Functions
+  * Get-GSGmailAutoForwardingSettings
+  * Get-GSGmailImapSettings
+  * Get-GSGmailPopSettings
+  * Get-GSGmailVacationSettings
+  * Update-GSGmailAutoForwardingSettings
+  * Update-GSGmailImapSettings
+  * Update-GSGmailPopSettings
+  * Update-GSGmailVacationSettings
+* CI Testing
+  * Added Travis CI testing for both Linux and macOS tests along with the existing AppVeyor CI testing on Ubuntu (PowerShell Core) Windows (PowerShell Core and Windows PowerShell)
+
 #### 2.1.5
 
 * Added: Update-GSCalendarEvent
