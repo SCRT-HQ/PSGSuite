@@ -55,6 +55,13 @@ Describe "Module tests: $ModuleName" {
             (Get-Alias $Name).ReferencedCommand.Name | Should -Be $Value
         }
     }
+    Context "Confirm there are no duplicate function names in private and public folders" {
+        It 'Should have no duplicate functions' {
+            $functions = Get-ChildItem "$moduleRoot\Public" -Recurse -Include *.ps1 | Select-Object -ExpandProperty BaseName
+            $functions += Get-ChildItem "$moduleRoot\Private" -Recurse -Include *.ps1 | Select-Object -ExpandProperty BaseName
+            ($functions | Group-Object | Where-Object {$_.Count -gt 1}).Count | Should -BeLessThan 1
+        }
+    }
 }
 
 Describe "Function contents" {
