@@ -25,8 +25,6 @@ Task Default -Depends Init,Test,Build,Deploy
 
 Task Init {
     $lines
-    Install-Module Coveralls -Force
-    Import-Module Coveralls -Force
     Set-Location $ProjectRoot
     "Build System Details:"
     Get-Item ENV:BH*

@@ -1,8 +1,10 @@
-clone_folder: C:\projects\PSGSuite
-
-image: Visual Studio 2017
+image: 
+  - Ubuntu
+  - Visual Studio 2015
+  - Visual Studio 2017
 
 environment:
+  APPVEYOR_YML_DISABLE_PS_LINUX: true
   NuGetApiKey:
     secure: Ocp1ATd6eZ0eY9+LfZ9Stp9/J1B5eFdBPMdaTRWVa4xh6/NV45ZBYtU5+eemrTWt
 
@@ -15,5 +17,16 @@ only_commits:
 build: false
 
 test_script:
-  - pwsh: . .\ci\init.ps1
-  - ps: . .\ci\init.ps1
+  - pwsh: >-
+      if ($env:APPVEYOR_BUILD_WORKER_IMAGE -notlike '*2015*') {
+        $string = "Running PowerShell $($PSVersionTable.PSVersion.ToString()) tests on image '$env:APPVEYOR_BUILD_WORKER_IMAGE'";
+        Write-Host -ForegroundColor Magenta $string;
+        . .\ci\init.ps1;
+      } else {
+        $string = "Skipping PowerShell $($PSVersionTable.PSVersion.ToString()) tests on image '$env:APPVEYOR_BUILD_WORKER_IMAGE'";
+        Write-Warning $string;
+      }
+  - ps: >-
+      $string = "Running PowerShell $($PSVersionTable.PSVersion.ToString()) tests on image '$env:APPVEYOR_BUILD_WORKER_IMAGE'";
+      Write-Host -ForegroundColor Magenta $string;
+      . .\ci\init.ps1;
