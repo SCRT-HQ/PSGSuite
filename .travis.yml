@@ -15,6 +15,9 @@ osx_image: xcode8.3
 notifications:
   slack:
     secure: JQZ3Jnam8qQoKFGeiqBZ9vtYeEZyt81WM5LXHtVaiDTDldc9K7KQR3j0j9ubAS01TM4go6PYJ8yW3AoxTlUISejJgJQJahgrLhfwqNv77TpvCuJH9iuwarS8b3KCo72owxyw+rLWz4UX0x+e+RVuuDRA2HhvOGxOP56FcW/Ix75ZGOVCWRTbgkagKLfbOwUuuWFH6MNfqdD4lVtQ97nxzypNUJ+iakKQmpxFKo01d79azTpfmvcr+uttkIZawu0vXdiZp8UUXqiMNGPg7yykMUm9bF1EkJ1b5/RAbsl8nvhWHrsFUv659CWsxp9LlGdJ9iXueV7SCdHsd6ZzDTwVXpJo/YTtVMjyhZKuUBKk/v/kPNUbelTIr5KlnqTF/Tb2dS38ADGDHS52ZDwBtCkPTrkZmgnckxF5g6uv8v15GWbatnntLIdyGoNQgAqPDYatuK/Jf13LmqOZg3kh6W8/L86+WEqHFuybpk7i27NW8YKYgzjDMa6Hyo5BLZK/33UCImf8qfEtp2K13a7WLeUsCmIuThIwhY8MtBIT3c24WdDnFXdHveDzFvKaPTjsMdyNUnpfGXmyMDnWDsKMjuR2FHjZeMcTAPFuDa4d2Peq7Yn4vqplaagyA59h+EeK1D4bHT+JuuJ+FwhEPUooU+vllP+/Z99O2wALXfD2m3fTuhE=
+    on_success: always  # options: [always|never|change] default: always
+    on_failure: always  # options: [always|never|change] default: always
+    on_start: always     # options: [always|never|change] default: always
   webhooks:
     urls:
       - https://webhooks.gitter.im/e/ae6f3aa6248f45c9cbff

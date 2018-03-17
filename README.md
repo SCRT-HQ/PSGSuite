@@ -8,6 +8,11 @@
     <img src="https://ci.appveyor.com/api/projects/status/u6pgrn4cs8iagcee?svg=true"
       alt="AppVeyor" title="AppVeyor" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- Travis CI -->
+  <a href="https://travis-ci.org/scrthq/PSGSuite">
+    <img src="https://travis-ci.org/scrthq/PSGSuite.svg?branch=master"
+      alt="Travis CI" title="Travis CI" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- PS Gallery -->
   <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
     <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat"
