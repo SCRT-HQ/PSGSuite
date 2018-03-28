@@ -57,7 +57,7 @@ function Update-GSGmailAutoForwardingSettings {
             $User = "$($User)@$($Script:PSGSuite.Domain)"
         }
         $serviceParams = @{
-            Scope       = 'https://www.googleapis.com/auth/gmail.settings.basic'
+            Scope       = 'https://www.googleapis.com/auth/gmail.settings.sharing'
             ServiceType = 'Google.Apis.Gmail.v1.GmailService'
             User        = $User
         }
