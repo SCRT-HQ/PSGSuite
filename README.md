@@ -118,6 +118,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.2.1
+
+* Fixed: `Update-GSGmailAutoForwardingSettings` returns a 403 due to incorrect scope [#25](https://github.com/scrthq/PSGSuite/issues/25)
+
 #### 2.2.0
 
 Added the following:
