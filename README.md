@@ -118,6 +118,13 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.3.0
+
+* Added: `Get-GSUserAlias`,`New-GSUserAlias`,`Remove-GSUserAlias` for user alias management
+* Added: `Get-GSGroupAlias`,`New-GSGroupAlias`,`Remove-GSGroupAlias` for group alias management
+* Updated: `Start-GSDriveFileUpload` to fix recursive issues with trailing directory separators
+* Updated: `Watch-GSDriveFileUpload` to show progress of total file upload vs batch upload
+
 #### 2.2.1
 
 * Fixed: `Update-GSGmailAutoForwardingSettings` returns a 403 due to incorrect scope [#25](https://github.com/scrthq/PSGSuite/issues/25)
