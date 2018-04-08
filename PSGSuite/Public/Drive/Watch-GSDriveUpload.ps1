@@ -47,10 +47,10 @@ function Watch-GSDriveUpload {
         do {
             $i = 1
             if ($PSBoundParameters.Keys -contains 'Id') {
-                $statusList = Get-GSDriveFileUploadStatus
+                $statusList = Get-GSDriveFileUploadStatus -Verbose:$false
             }
             else {
-                $statusList = Get-GSDriveFileUploadStatus -Id @($Id)
+                $statusList = Get-GSDriveFileUploadStatus -Id @($Id) -Verbose:$false
             }
             if ($statusList) {
                 $totalPercent = 0
@@ -73,8 +73,8 @@ function Watch-GSDriveUpload {
                 else {
                     $count
                 }
-                $totalPercent = $totalPercent / $count
-                $totalSecondsRemaining = $totalSecondsRemaining / $count
+                $totalPercent = $totalPercent / $totalCount
+                $totalSecondsRemaining = $totalSecondsRemaining / $totalCount
                 $parentParams = @{
                     Activity = "[$([Math]::Round($totalPercent,4))%] $Action [$curCount / $totalCount] files to Google Drive"
                     SecondsRemaining = $($statusList.Remaining.TotalSeconds | Sort-Object | Select-Object -Last 1)

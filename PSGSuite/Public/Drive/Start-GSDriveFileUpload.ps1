@@ -98,6 +98,7 @@ function Start-GSDriveFileUpload {
         $folIdHash = @{}
         $throttleCount = 0
         $totalThrottleCount = 0
+        $totalFiles = 0
     }
     Process {
         try {
@@ -114,7 +115,7 @@ function Start-GSDriveFileUpload {
                     }
                     Write-Verbose "Creating new Drive folder '$($details.Name)'"
                     $id = New-GSDriveFile @newFolPerms | Select-Object -ExpandProperty Id
-                    $folIdHash[$details.FullName] = $id
+                    $folIdHash[$details.FullName.TrimEnd('\').TrimEnd('/')] = $id
                     if ($Recurse) {
                         $recurseList = Get-ChildItem $details.FullName -Recurse
                         $recDirs = $recurseList | Where-Object {$_.PSIsContainer} | Sort-Object FullName
@@ -134,10 +135,11 @@ function Start-GSDriveFileUpload {
                         }
                         $details = $recurseList | Where-Object {!$_.PSIsContainer} | Sort-Object FullName
                         $checkFolIdHash = $true
-                        $totalFiles = $details.Count
+                        $totalFiles = [int]$totalFiles + $details.Count
                     }
                 }
                 else {
+                    $totalFiles++
                     $checkFolIdHash = $false
                 }
                 foreach ($detPart in $details) {
@@ -231,7 +233,7 @@ function Start-GSDriveFileUpload {
                     $taskList = [System.Collections.ArrayList]@()
                     $fullTaskList = [System.Collections.ArrayList]@()
                     $details = Get-Item $failedFiles.File
-                    $totalFiles = $details.Count
+                    $totalFiles = [int]$totalFiles + $details.Count
                     $totalRetries++
                     Write-Verbose "~ ~ ~ RETRYING [$totalFiles] FAILED FILES [Retry # $totalRetries / $RetryCount] ~ ~ ~"
                     $details = Get-Item $failedFiles.File
