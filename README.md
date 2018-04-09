@@ -118,6 +118,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.4.0
+
+* Added: Refactored Get-GSToken to work on all versions of PowerShell and confirmed Gmail Delegation commands working in PowerShell Core (Resolve [Issue #8](https://github.com/scrthq/PSGSuite/issues/8))
+
 #### 2.3.0
 
 * Added: `Get-GSUserAlias`,`New-GSUserAlias`,`Remove-GSUserAlias` for user alias management

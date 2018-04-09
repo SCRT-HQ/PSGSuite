@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+    - [2.4.0](#240)
     - [2.3.0](#230)
     - [2.2.1](#221)
     - [2.2.0](#220)
@@ -22,6 +23,10 @@
             - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.4.0
+
+* Added: Refactored Get-GSToken to work on all versions of PowerShell and confirmed Gmail Delegation commands working in PowerShell Core (Resolve [Issue #8](https://github.com/scrthq/PSGSuite/issues/8))
 
 ## 2.3.0
 

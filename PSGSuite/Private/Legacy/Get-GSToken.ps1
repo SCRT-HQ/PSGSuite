@@ -55,7 +55,10 @@ function Get-GSToken {
     $toSign = [System.Text.Encoding]::UTF8.GetBytes($header + "." + $claims)
     $sig = Invoke-URLEncode ($rsa.SignData($toSign,"SHA256"))
     $jwt = $header + "." + $claims + "." + $sig
-    $fields = [Ordered]@{grant_type = 'urn:ietf:params:oauth:grant-type:jwt-bearer';assertion = $jwt}
+    $fields = [Ordered]@{
+        grant_type = 'urn:ietf:params:oauth:grant-type:jwt-bearer'
+        assertion  = $jwt
+    }
     try {
         Write-Verbose "Acquiring access token..."
         $response = Invoke-RestMethod -Uri "https://www.googleapis.com/oauth2/v4/token" -Method Post -Body $fields -ContentType "application/x-www-form-urlencoded" -ErrorAction Stop -Verbose:$false | Select-Object -ExpandProperty access_token
