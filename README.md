@@ -51,14 +51,9 @@ Check out the [GitHub wiki for PSGSuite](https://github.com/scrthq/PSGSuite/wiki
 
 #### Gmail Delegation Management Removed
 
-The Gmail API does not yet support handling inbox delegation. The functionality addition has been pushed back again until Q3 of 2018. Once the Gmail API supports inbox delegation, those functions will be added.
+~~The Gmail API does not yet support handling inbox delegation. The functionality addition has been pushed back again until Q3 of 2018. Once the Gmail API supports inbox delegation, those functions will be added.~~
 
-* Please subscribe to [Issue #8](https://github.com/scrthq/PSGSuite/issues/8) for updates on this topic
-* If you have scripts running that use the delegation functions, please have those scripts explicitly import the legacy version or avoid updating to 2.0.0 altogether until 2.1.0 is released with the delegation functions working.
-* Delegation functions for reference:
-    * Add-GSGmailDelegate
-    * Get-GSGmailDelegates
-    * Remove-GSGmailDelegate
+**Delegation functions have been re-added to PSGSuite as of v2.4.0! Update now to get all the goodness of v2 + delegation commands!**
 
 #### Functions Removed
 
