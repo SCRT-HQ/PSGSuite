@@ -23,8 +23,9 @@
         Authorization = "Bearer $(Get-GSToken -P12KeyPath $Script:PSGSuite.P12KeyPath -Scopes "https://apps-apis.google.com/a/feeds/emailsettings/2.0/" -AppEmail $Script:PSGSuite.AppEmail -AdminEmail $Script:PSGSuite.AdminEmail)"
     }
     $URI = [URI]"https://apps-apis.google.com/a/feeds/emailsettings/2.0/$($Script:PSGSuite.Domain)/$($User -replace "@$($Script:PSGSuite.Domain)",'')/delegation/$Delegate"
-    if ($PSCmdlet.ShouldProcess($Delegate)) {
+    if ($PSCmdlet.ShouldProcess("Removing delegate access for '$Delegate' from user '$User's inbox")) {
         try {
+            Write-Verbose "Removing delegate access for '$Delegate' from user '$User's inbox"
             $response = Invoke-RestMethod -Method Delete -Uri $URI -Headers $header -ContentType "application/atom+xml"
             if (!$response) {
                 Write-Verbose "Delegate access for $User's inbox removed for $Delegate"

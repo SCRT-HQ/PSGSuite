@@ -20,6 +20,7 @@
     $header = @{
         Authorization = "Bearer $(Get-GSToken -P12KeyPath $Script:PSGSuite.P12KeyPath -Scopes "https://apps-apis.google.com/a/feeds/emailsettings/2.0/" -AppEmail $Script:PSGSuite.AppEmail -AdminEmail $Script:PSGSuite.AdminEmail)"
     }
+    Write-Verbose "Getting Gmail Delegates for user '$User'"
     $URI = "https://apps-apis.google.com/a/feeds/emailsettings/2.0/$($Script:PSGSuite.Domain)/$($User -replace "@$($Script:PSGSuite.Domain)",'')/delegation"
     try {
         $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/atom+xml"
