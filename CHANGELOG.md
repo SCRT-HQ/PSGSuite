@@ -3,6 +3,8 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+    - [2.3.0](#230)
+    - [2.2.1](#221)
     - [2.2.0](#220)
     - [2.1.5](#215)
     - [2.1.3 / 2.1.4](#213-214)
@@ -20,6 +22,14 @@
             - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.3.0
+
+* Added: `Get-GSUserAlias`,`New-GSUserAlias`,`Remove-GSUserAlias` for user alias management
+* Added: `Get-GSGroupAlias`,`New-GSGroupAlias`,`Remove-GSGroupAlias` for group alias management
+* Added: `Get-GSCalendarSubscription`, `Add-GSCalendarSubscription` and `Remove-GSCalendarSubscription` for managing calendar list entries
+* Updated: `Start-GSDriveFileUpload` to fix recursive issues with trailing directory separators
+* Updated: `Watch-GSDriveFileUpload` to show progress of total file upload vs batch upload
 
 ## 2.2.1
 

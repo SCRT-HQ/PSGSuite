@@ -13,20 +13,20 @@ function Update-GSGmailPopSettings {
     The range of messages which are accessible via POP. 
 
     Acceptable values are:
-    "accessWindowUnspecified": Unspecified range.
-    "allMail": Indicates that all unfetched messages are accessible via POP.
-    "disabled": Indicates that no messages are accessible via POP.
-    "fromNowOn": Indicates that unfetched messages received after some past point in time are accessible via POP.
+    * "accessWindowUnspecified": Unspecified range.
+    * "allMail": Indicates that all unfetched messages are accessible via POP.
+    * "disabled": Indicates that no messages are accessible via POP.
+    * "fromNowOn": Indicates that unfetched messages received after some past point in time are accessible via POP.
     
     .PARAMETER Disposition
     The action that will be executed on a message after it has been fetched via POP. 
 
     Acceptable values are:
-    "archive": Archive the message.
-    "dispositionUnspecified": Unspecified disposition.
-    "leaveInInbox": Leave the message in the INBOX.
-    "markRead": Leave the message in the INBOX and mark it as read.
-    "trash": Move the message to the TRASH.
+    * "archive": Archive the message.
+    * "dispositionUnspecified": Unspecified disposition.
+    * "leaveInInbox": Leave the message in the INBOX.
+    * "markRead": Leave the message in the INBOX and mark it as read.
+    * "trash": Move the message to the TRASH.
     
     .EXAMPLE
     Update-GSGmailPopSettings -User me -AccessWindow allMail

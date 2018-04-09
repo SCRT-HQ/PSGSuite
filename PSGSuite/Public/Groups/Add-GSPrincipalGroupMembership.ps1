@@ -51,17 +51,27 @@ function Add-GSPrincipalGroupMembership {
             if ($Identity -notlike "*@*.*") {
                 $Identity = "$($Identity)@$($Script:PSGSuite.Domain)"
             }
-            foreach ($U in $MemberOf) {
-                $groupObj = Get-GSGroup -Group $U -Verbose:$false
-                if ($U -notlike "*@*.*") {
-                    $U = "$($U)@$($Script:PSGSuite.Domain)"
+            try {
+                foreach ($U in $MemberOf) {
+                    $groupObj = Get-GSGroup -Group $U -Verbose:$false
+                    if ($U -notlike "*@*.*") {
+                        $U = "$($U)@$($Script:PSGSuite.Domain)"
+                    }
+                    Write-Verbose "Adding '$Identity' as a $Role of group '$U'"
+                    $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.Member'
+                    $body.Email = $Identity
+                    $body.Role = $Role
+                    $request = $service.Members.Insert($body,$groupObj.Id)
+                    $request.Execute() | Select-Object @{N = "Group";E = {$U}},*
                 }
-                Write-Verbose "Adding '$Identity' as a $Role of group '$U'"
-                $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.Member'
-                $body.Email = $Identity
-                $body.Role = $Role
-                $request = $service.Members.Insert($body,$groupObj.Id)
-                $request.Execute() | Select-Object @{N = "Group";E = {$U}},*
+            }
+            catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                else {
+                    Write-Error $_
+                }
             }
         }
         catch {

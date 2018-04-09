@@ -37,11 +37,11 @@ function Remove-GSPrincipalGroupMembership {
         $service = New-GoogleService @serviceParams
     }
     Process {
-        try {
-            if ($Identity -notlike "*@*.*") {
-                $Identity = "$($Identity)@$($Script:PSGSuite.Domain)"
-            }
-            foreach ($G in $MemberOf) {
+        if ($Identity -notlike "*@*.*") {
+            $Identity = "$($Identity)@$($Script:PSGSuite.Domain)"
+        }
+        foreach ($G in $MemberOf) {
+            try {
                 if ($G -notlike "*@*.*") {
                     $G = "$($G)@$($Script:PSGSuite.Domain)"
                 }
@@ -52,13 +52,13 @@ function Remove-GSPrincipalGroupMembership {
                     Write-Verbose "Member '$G' has been successfully removed"
                 }
             }
-        }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
-            }
-            else {
-                Write-Error $_
+            catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                else {
+                    Write-Error $_
+                }
             }
         }
     }

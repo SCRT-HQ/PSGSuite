@@ -13,11 +13,11 @@ function Update-GSGmailAutoForwardingSettings {
     The state that a message should be left in after it has been forwarded. 
 
     Acceptable values are:
-    "archive": Archive the message.
-    "dispositionUnspecified": Unspecified disposition.
-    "leaveInInbox": Leave the message in the INBOX.
-    "markRead": Leave the message in the INBOX and mark it as read.
-    "trash": Move the message to the TRASH.
+    * "archive": Archive the message.
+    * "dispositionUnspecified": Unspecified disposition.
+    * "leaveInInbox": Leave the message in the INBOX.
+    * "markRead": Leave the message in the INBOX and mark it as read.
+    * "trash": Move the message to the TRASH.
     
     .PARAMETER EmailAddress
     Email address to which all incoming messages are forwarded. This email address must be a verified member of the forwarding addresses.

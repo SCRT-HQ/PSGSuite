@@ -52,16 +52,26 @@ function Add-GSGroupMember {
                 $Identity = "$($Identity)@$($Script:PSGSuite.Domain)"
             }
             $groupObj = Get-GSGroup -Group $Identity -Verbose:$false
-            foreach ($U in $Member) {
-                if ($U -notlike "*@*.*") {
-                    $U = "$($U)@$($Script:PSGSuite.Domain)"
+            try {
+                foreach ($U in $Member) {
+                    if ($U -notlike "*@*.*") {
+                        $U = "$($U)@$($Script:PSGSuite.Domain)"
+                    }
+                    Write-Verbose "Adding '$U' as a $Role of group '$Identity'"
+                    $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.Member'
+                    $body.Email = $U
+                    $body.Role = $Role
+                    $request = $service.Members.Insert($body,$groupObj.Id)
+                    $request.Execute() | Select-Object @{N = "Group";E = {$Identity}},*
                 }
-                Write-Verbose "Adding '$U' as a $Role of group '$Identity'"
-                $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.Member'
-                $body.Email = $U
-                $body.Role = $Role
-                $request = $service.Members.Insert($body,$groupObj.Id)
-                $request.Execute() | Select-Object @{N = "Group";E = {$Identity}},*
+            }
+            catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                else {
+                    Write-Error $_
+                }
             }
         }
         catch {
