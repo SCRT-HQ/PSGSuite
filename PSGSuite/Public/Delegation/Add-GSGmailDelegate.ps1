@@ -30,13 +30,8 @@
 </atom:entry>
 "@
     try {
-        $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/atom+xml"
-        if ($response) {
-            Write-Verbose "Delegate access for $User's inbox added for $Delegate"
-        }
-        else {
-            return $response
-        }
+        Write-Verbose "Adding delegate access for '$Delegate' to user '$User's inbox"
+        Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/atom+xml"
     }
     catch {
         Write-Error $_.Exception.Message
