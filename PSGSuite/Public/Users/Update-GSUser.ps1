@@ -54,6 +54,11 @@ function Update-GSUser {
     .PARAMETER IpWhitelisted
     If true, the user's IP address is white listed: http://support.google.com/a/bin/answer.py?answer=60752
     
+    .PARAMETER CustomSchemas
+    Custom user attribute values to add to the user's account. This parameter only accepts a hashtable where the keys are Schema Names and the value for each key is another hashtable, i.e. @{schemaName = @{fieldName = $fieldValue}}
+
+    The Custom Schema and it's fields **MUST** exist prior to updating these values for a user otherwise it will return an error.
+    
     .EXAMPLE
     Update-GSUser -User john.smith@domain.com -PrimaryEmail johnathan.smith@domain.com -GivenName Johnathan -Suspended:$false
     
@@ -105,7 +110,23 @@ function Update-GSUser {
         $IncludeInGlobalAddressList,
         [parameter(Mandatory = $false)]
         [Switch]
-        $IpWhitelisted
+        $IpWhitelisted,
+        [parameter(Mandatory = $false)]
+        [ValidateScript({
+            $hash = $_
+            foreach ($schemaName in $hash.Keys) {
+                if ($hash[$schemaName].GetType().Name -ne 'Hashtable') {
+                    throw "The CustomSchemas parameter only accepts a hashtable where the value of the top-level keys must also be a hashtable. The key '$schemaName' has a value of type '$($hash[$schemaName].GetType().Name)'"
+                    $valid = $false
+                }
+                else {
+                    $valid = $true
+                }
+            }
+            $valid
+        })]
+        [Hashtable]
+        $CustomSchemas
     )
     Begin {
         $serviceParams = @{
@@ -149,6 +170,18 @@ function Update-GSUser {
                     }
                     Password {
                         $body.Password = (New-Object PSCredential "user",$Password).GetNetworkCredential().Password
+                    }
+                    CustomSchemas {
+                        $schemaDict = New-Object 'System.Collections.Generic.Dictionary`2[[System.String],[System.Collections.Generic.IDictionary`2[[System.String],[System.Object]]]]'
+                        foreach ($schemaName in $CustomSchemas.Keys) {
+                            $fieldDict = New-Object 'System.Collections.Generic.Dictionary`2[[System.String],[System.Object]]'
+                            $schemaFields = $CustomSchema[$schemaName]
+                            $schemaFields.Keys | ForEach-Object {
+                                $fieldDict.Add($_,$schemaFields[$_])
+                            }
+                            $schemaDict.Add($schemaName,$fieldDict)
+                        }
+                        $body.CustomSchemas = $schemaDict
                     }
                     Default {
                         $body.$prop = $PSBoundParameters[$prop]

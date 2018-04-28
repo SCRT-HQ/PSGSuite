@@ -19,7 +19,8 @@ if(
     $env:BHBuildSystem -ne 'Unknown' -and
     $env:BHBranchName -eq "master" -and
     $env:BHCommitMessage -match '!deploy' -and
-    $env:APPVEYOR_BUILD_WORKER_IMAGE -like '*2017*'
+    $env:APPVEYOR_BUILD_WORKER_IMAGE -like '*2017*' -and
+    $env:APPVEYOR_PULL_REQUEST_NUMBER -eq $null
 )
 {
     Deploy Module {
@@ -37,6 +38,7 @@ else
     "Skipping deployment: To deploy, ensure that...`n" +
     "`t* You are in a known build system (Current: $ENV:BHBuildSystem)`n" +
     "`t* You are committing to the master branch (Current: $ENV:BHBranchName) `n" +
+    "`t* You are not building a Pull Request (Current: $ENV:APPVEYOR_PULL_REQUEST_NUMBER) `n" +
     "`t* Your commit message includes !deploy (Current: $ENV:BHCommitMessage) `n" +
     "`t* Your build image is Visual Studio 2017 (Current: $ENV:APPVEYOR_BUILD_WORKER_IMAGE)" |
         Write-Host
