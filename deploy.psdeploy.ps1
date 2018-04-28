@@ -20,7 +20,7 @@ if(
     $env:BHBranchName -eq "master" -and
     $env:BHCommitMessage -match '!deploy' -and
     $env:APPVEYOR_BUILD_WORKER_IMAGE -like '*2017*' -and
-    $env:APPVEYOR_PULL_REQUEST_NUMBER -eq $null
+    $env:APPVEYOR_PULL_REQUEST_NUMBER -eq $null 
 )
 {
     Deploy Module {
