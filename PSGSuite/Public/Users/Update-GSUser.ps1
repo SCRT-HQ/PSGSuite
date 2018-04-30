@@ -55,7 +55,27 @@ function Update-GSUser {
     If true, the user's IP address is white listed: http://support.google.com/a/bin/answer.py?answer=60752
     
     .PARAMETER CustomSchemas
-    Custom user attribute values to add to the user's account. This parameter only accepts a hashtable where the keys are Schema Names and the value for each key is another hashtable, i.e. @{schemaName = @{fieldName = $fieldValue}}
+    Custom user attribute values to add to the user's account. This parameter only accepts a hashtable where the keys are Schema Names and the value for each key is another hashtable, i.e.: 
+        @{
+            schemaName1 = @{
+                fieldName1 = $fieldValue1
+                fieldName2 = $fieldValue2
+            }
+            schemaName2 = @{
+                fieldName3 = $fieldValue3
+            }
+        }
+
+    If you need to CLEAR a custom schema value, simply pass $null as the value(s) for the fieldName in the hashtable, i.e.:
+        @{
+            schemaName1 = @{
+                fieldName1 = $null
+                fieldName2 = $null
+            }
+            schemaName2 = @{
+                fieldName3 = $null
+            }
+        }
 
     The Custom Schema and it's fields **MUST** exist prior to updating these values for a user otherwise it will return an error.
     
