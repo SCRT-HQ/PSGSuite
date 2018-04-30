@@ -9,7 +9,7 @@ function Get-GSUserListPrivate {
         [parameter(Mandatory = $false)]
         [Alias("OrgUnitPath")]
         [String]
-        $SearchBase = "/",
+        $SearchBase,
         [parameter(Mandatory = $false)]
         [ValidateSet("Base","OneLevel","Subtree")]
         [String]

@@ -3,26 +3,32 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
-    - [2.4.0](#240)
-    - [2.3.0](#230)
-    - [2.2.1](#221)
-    - [2.2.0](#220)
-    - [2.1.5](#215)
-    - [2.1.3 / 2.1.4](#213-214)
-    - [2.1.2](#212)
-    - [2.1.1](#211)
-    - [2.1.0](#210)
-    - [2.0.3](#203)
-    - [2.0.2](#202)
-    - [2.0.1](#201)
-    - [2.0.0](#200)
-        - [New Functionality](#new-functionality)
-        - [Breaking Changes in 2.0.0](#breaking-changes-in-200)
-            - [Gmail Delegation Management Removed](#gmail-delegation-management-removed)
-            - [Functions Removed](#functions-removed)
-            - [Functions Aliased](#functions-aliased)
+  - [2.5.0](#250)
+  - [2.4.0](#240)
+  - [2.3.0](#230)
+  - [2.2.1](#221)
+  - [2.2.0](#220)
+  - [2.1.5](#215)
+  - [2.1.3 / 2.1.4](#213---214)
+  - [2.1.2](#212)
+  - [2.1.1](#211)
+  - [2.1.0](#210)
+  - [2.0.3](#203)
+  - [2.0.2](#202)
+  - [2.0.1](#201)
+  - [2.0.0](#200)
+    - [New Functionality](#new-functionality)
+    - [Breaking Changes in 2.0.0](#breaking-changes-in-200)
+      - [Gmail Delegation Management Removed](#gmail-delegation-management-removed)
+      - [Functions Removed](#functions-removed)
+      - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.5.0
+
+* Added: Custom Schema value setting for `Update-GSUser`
+* Fixed: `Get-GSUser -Filter *` not returning the full user list with large organizations (Resolve [Issue #32](https://github.com/scrthq/PSGSuite/issues/32))
 
 ## 2.4.0
 
