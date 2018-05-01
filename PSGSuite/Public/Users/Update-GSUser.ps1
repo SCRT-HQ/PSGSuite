@@ -56,7 +56,8 @@ function Update-GSUser {
     
     .PARAMETER CustomSchemas
     Custom user attribute values to add to the user's account. This parameter only accepts a hashtable where the keys are Schema Names and the value for each key is another hashtable, i.e.: 
-        @{
+
+        Update-GSUser -User john.smith@domain.com -CustomSchemas @{
             schemaName1 = @{
                 fieldName1 = $fieldValue1
                 fieldName2 = $fieldValue2
@@ -67,7 +68,8 @@ function Update-GSUser {
         }
 
     If you need to CLEAR a custom schema value, simply pass $null as the value(s) for the fieldName in the hashtable, i.e.:
-        @{
+
+        Update-GSUser -User john.smith@domain.com -CustomSchemas @{
             schemaName1 = @{
                 fieldName1 = $null
                 fieldName2 = $null
