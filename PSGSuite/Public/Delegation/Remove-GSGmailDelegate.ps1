@@ -39,7 +39,7 @@
         }
         catch {
             $origError = $_.Exception.Message
-            if ($group = Get-GSGroup -Group $User -Verbose:$false) {
+            if ($group = Get-GSGroup -Group $User -Verbose:$false -ErrorAction SilentlyContinue) {
                 Write-Warning "$User is a group email, not a user account. You can only manage delegate access to a user's inbox. Please remove $Delegate from the group $User instead."
             }
             elseif ((Get-GSGmailDelegates -User $User -NoGroupCheck -ErrorAction SilentlyContinue -Verbose:$false).delegationId -notcontains $Delegate) {
