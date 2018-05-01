@@ -33,8 +33,9 @@
 </atom:entry>
 "@
     try {
+        Write-Verbose "Adding delegate access to user '$User's inbox for delegate '$Delegate'"
         $response = Invoke-RestMethod -Method Post -Uri $URI -Headers $header -Body $body -ContentType "application/atom+xml" -Verbose:$false
-        Write-Host "Successfully ADDED delegate access for user '$User's inbox for delegate '$Delegate'"
+        Write-Host "Successfully ADDED delegate access to user '$User's inbox for delegate '$Delegate'"
     }
     catch {
         $origError = $_.Exception.Message
