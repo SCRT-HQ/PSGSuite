@@ -9,7 +9,10 @@
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false)]
         [switch]
-        $Raw
+        $Raw,
+        [parameter(Mandatory = $false)]
+        [switch]
+        $NoGroupCheck
     )
     if ($User -ceq 'me') {
         $User = $Script:PSGSuite.AdminEmail
@@ -18,12 +21,12 @@
         $User = "$($User)@$($Script:PSGSuite.Domain)"
     }
     $header = @{
-        Authorization = "Bearer $(Get-GSToken -P12KeyPath $Script:PSGSuite.P12KeyPath -Scopes "https://apps-apis.google.com/a/feeds/emailsettings/2.0/" -AppEmail $Script:PSGSuite.AppEmail -AdminEmail $Script:PSGSuite.AdminEmail)"
+        Authorization = "Bearer $(Get-GSToken -P12KeyPath $Script:PSGSuite.P12KeyPath -Scopes "https://apps-apis.google.com/a/feeds/emailsettings/2.0/" -AppEmail $Script:PSGSuite.AppEmail -AdminEmail $Script:PSGSuite.AdminEmail -Verbose:$false)"
     }
     Write-Verbose "Getting Gmail Delegates for user '$User'"
-    $URI = "https://apps-apis.google.com/a/feeds/emailsettings/2.0/$($Script:PSGSuite.Domain)/$($User -replace "@$($Script:PSGSuite.Domain)",'')/delegation"
+    $URI = [Uri]"https://apps-apis.google.com/a/feeds/emailsettings/2.0/$($Script:PSGSuite.Domain)/$($User -replace "@.*",'')/delegation"
     try {
-        $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/atom+xml"
+        $response = Invoke-RestMethod -Method Get -Uri $URI -Headers $header -ContentType "application/atom+xml" -Verbose:$false
         if (!$response) {
             Write-Warning "No delegates found for user '$User'"
         }
@@ -45,6 +48,12 @@
         }
     }
     catch {
-        Write-Error $_.Exception.Message
+        $origError = $_.Exception.Message
+        if (!$NoGroupCheck -and ($group = Get-GSGroup -Group $User -Verbose:$false -ErrorAction SilentlyContinue)) {
+            Write-Warning "$User is a group, not a user. You can only manage delegates for a user."
+        }
+        else {
+            Write-Error $origError
+        }
     }
 }

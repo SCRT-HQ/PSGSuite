@@ -113,6 +113,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.5.1
+
+* Fixed: `Add-GSGmailDelegate` and `Remove-GSGmailDelegate` returning 400 Bad Request responses (Resolve [Issue #35](https://github.com/scrthq/PSGSuite/issues/35))
+
 #### 2.5.0
 
 * Added: Custom Schema value setting for `Update-GSUser`
