@@ -113,6 +113,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.5.2
+
+* Fixed: `Update-GSUser -CustomSchemas @{schema = @{field = "value"}}` resulting in null array (Resolve [Issue #39](https://github.com/scrthq/PSGSuite/issues/39))
+
 #### 2.5.1
 
 * Fixed: `Add-GSGmailDelegate` and `Remove-GSGmailDelegate` returning 400 Bad Request responses (Resolve [Issue #35](https://github.com/scrthq/PSGSuite/issues/35))

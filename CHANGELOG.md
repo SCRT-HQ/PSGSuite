@@ -3,6 +3,8 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+  - [2.5.2](#252)
+  - [2.5.1](#251)
   - [2.5.0](#250)
   - [2.4.0](#240)
   - [2.3.0](#230)
@@ -24,6 +26,10 @@
       - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.5.2
+
+* Fixed: `Update-GSUser -CustomSchemas @{schema = @{field = "value"}}` resulting in null array (Resolve [Issue #39](https://github.com/scrthq/PSGSuite/issues/39))
 
 ## 2.5.1
 
