@@ -197,7 +197,7 @@ function Update-GSUser {
                         $schemaDict = New-Object 'System.Collections.Generic.Dictionary`2[[System.String],[System.Collections.Generic.IDictionary`2[[System.String],[System.Object]]]]'
                         foreach ($schemaName in $CustomSchemas.Keys) {
                             $fieldDict = New-Object 'System.Collections.Generic.Dictionary`2[[System.String],[System.Object]]'
-                            $schemaFields = $CustomSchema[$schemaName]
+                            $schemaFields = $CustomSchemas[$schemaName]
                             $schemaFields.Keys | ForEach-Object {
                                 $fieldDict.Add($_,$schemaFields[$_])
                             }
