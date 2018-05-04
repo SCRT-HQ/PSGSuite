@@ -7,6 +7,9 @@ function Get-GSUserListPrivate {
         [String[]]
         $Filter = "*",
         [parameter(Mandatory = $false)]
+        [String]
+        $Domain,
+        [parameter(Mandatory = $false)]
         [Alias("OrgUnitPath")]
         [String]
         $SearchBase,
@@ -53,17 +56,24 @@ function Get-GSUserListPrivate {
         try {
             $request = $service.Users.List()
             $request.Projection = $Projection
-            if ($Script:PSGSuite.Preference) {
+            if ($PSBoundParameters.Keys -contains 'Domain') {
+                $verbScope = "domain '$($PSBoundParameters['Domain'])'"
+                $request.Domain = $PSBoundParameters['Domain']
+            }
+            elseif ($Script:PSGSuite.Preference) {
                 switch ($Script:PSGSuite.Preference) {
                     Domain {
+                        $verbScope = "domain '$($Script:PSGSuite.Domain)'"
                         $request.Domain = $Script:PSGSuite.Domain
                     }
                     CustomerID {
-                        $request.Customer = $Script:PSGSuite.CustomerID
+                        $verbScope = "customer '$($Script:PSGSuite.CustomerID)'"
+                        $request.Customer = "$($Script:PSGSuite.CustomerID)"
                     }
                 }
             }
             else {
+                $verbScope = "customer 'my_customer'"
                 $request.Customer = "my_customer"
             }
             if ($PageSize) {
@@ -72,7 +82,7 @@ function Get-GSUserListPrivate {
             foreach ($prop in $PSBoundParameters.Keys | Where-Object {$_ -in @('OrderBy','SortOrder','CustomFieldMask','ShowDeleted','ViewType')}) {
                 $request.$prop = $PSBoundParameters[$prop]
             }
-            if ($Filter -or $SearchBase) {
+            if (![String]::IsNullOrEmpty($Filter) -or $SearchBase) {
                 if ($Filter -eq '*') {
                     $Filter = ""
                 }
@@ -84,10 +94,15 @@ function Get-GSUserListPrivate {
                 }
                 $Filter = $Filter -replace " -eq ","=" -replace " -like ",":" -replace " -match ",":" -replace " -contains ",":" -creplace "'True'","True" -creplace "'False'","False"
                 $request.Query = $Filter.Trim()
-                Write-Verbose "Getting Users matching filter: `"$($Filter.Trim())`""
+                if ([String]::IsNullOrEmpty($Filter.Trim())) {
+                    Write-Verbose "Getting all Users for $verbScope"
+                }
+                else {
+                    Write-Verbose "Getting Users for $verbScope matching filter: `"$($Filter.Trim())`""
+                }
             }
             else {
-                Write-Verbose "Getting all Users"
+                Write-Verbose "Getting all Users for $verbScope"
             }
             $response = @()
             [int]$i = 1
@@ -101,6 +116,9 @@ function Get-GSUserListPrivate {
             }
             until (!$result.NextPageToken)
             if ($SearchScope -ne "Subtree") {
+                if (!$SearchBase) {
+                    $SearchBase = "/"
+                }
                 $response = switch ($SearchScope) {
                     Base {
                         $response | Where-Object {$_.OrgUnitPath -eq $SearchBase}
