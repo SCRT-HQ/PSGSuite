@@ -17,12 +17,15 @@ function Get-GSUser {
     For more information on constructing user queries, see: https://developers.google.com/admin-sdk/directory/v1/guides/search-users
 
     PowerShell filter syntax here is supported as "best effort". Please use Google's filter operators and syntax to ensure best results
+
+    .PARAMETER Domain
+    The specific domain you would like to list users for. Useful for customers with multiple domains.
     
     .PARAMETER SearchBase
     The organizational unit path that you would like to list users from
     
     .PARAMETER SearchScope
-    The depth at which to return the list of Users
+    The depth at which to return the list of users
 
     Available values are:
     * "Base": only return the users specified in the SearchBase
@@ -103,6 +106,9 @@ function Get-GSUser {
         [Alias("Query")]
         [String[]]
         $Filter,
+        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        [String]
+        $Domain,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [Alias("OrgUnitPath")]
         [String]

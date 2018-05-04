@@ -7,6 +7,9 @@ function Get-GSUserListPrivate {
         [String[]]
         $Filter = "*",
         [parameter(Mandatory = $false)]
+        [String]
+        $Domain,
+        [parameter(Mandatory = $false)]
         [Alias("OrgUnitPath")]
         [String]
         $SearchBase,
@@ -53,7 +56,11 @@ function Get-GSUserListPrivate {
         try {
             $request = $service.Users.List()
             $request.Projection = $Projection
-            if ($Script:PSGSuite.Preference) {
+            if ($PSBoundParameters.Keys -contains 'Domain') {
+                $verbScope = "domain '$($PSBoundParameters['Domain'])'"
+                $request.Domain = $PSBoundParameters['Domain']
+            }
+            elseif ($Script:PSGSuite.Preference) {
                 switch ($Script:PSGSuite.Preference) {
                     Domain {
                         $verbScope = "domain '$($Script:PSGSuite.Domain)'"
@@ -109,6 +116,9 @@ function Get-GSUserListPrivate {
             }
             until (!$result.NextPageToken)
             if ($SearchScope -ne "Subtree") {
+                if (!$SearchBase) {
+                    $SearchBase = "/"
+                }
                 $response = switch ($SearchScope) {
                     Base {
                         $response | Where-Object {$_.OrgUnitPath -eq $SearchBase}

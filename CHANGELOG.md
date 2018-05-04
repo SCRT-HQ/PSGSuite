@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+  - [2.5.3](#253)
   - [2.5.2](#252)
   - [2.5.1](#251)
   - [2.5.0](#250)
@@ -26,6 +27,12 @@
       - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.5.3
+
+* Fixed/Added: Specific domain support for listing users with `Get-GSUser -Filter $filter -Domain domain2.com` to allow customers with multiple domains to only list users for a specific domain instead of just the entire customer or domain saved in the config. (Resolve [Issue #32](https://github.com/scrthq/PSGSuite/issues/32))
+* Added: Better verbose output in when listing users
+* Fixed: Performance increase in `Get-GSDriveFileList` but returning DriveFile objects as it iterates through each page instead of storing in an array and returning the array at the end (Resolve [Issue #38](https://github.com/scrthq/PSGSuite/issues/38))
 
 ## 2.5.2
 

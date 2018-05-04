@@ -138,11 +138,10 @@ function Get-GSDriveFileList {
             else {
                 Write-Verbose "Getting all Drive Files for user '$User'"
             }
-            $response = @()
             [int]$i = 1
             do {
                 $result = $request.Execute()
-                $response += $result.Files | Select-Object @{N = 'User';E = {$User}},*
+                $result.Files | Select-Object @{N = 'User';E = {$User}},*
                 if ($result.NextPageToken) {
                     $request.PageToken = $result.NextPageToken
                 }
@@ -151,7 +150,6 @@ function Get-GSDriveFileList {
                 [int]$i = $i + $result.Files.Count
             }
             until (!$result.NextPageToken)
-            $response
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {
