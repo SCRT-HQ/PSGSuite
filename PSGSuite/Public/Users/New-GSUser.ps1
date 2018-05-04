@@ -51,6 +51,35 @@ function New-GSUser {
     .PARAMETER IpWhitelisted
     If true, the user's IP address is white listed: http://support.google.com/a/bin/answer.py?answer=60752
     
+    .PARAMETER CustomSchemas
+    Custom user attribute values to add to the user's account. 
+    
+    The Custom Schema and it's fields **MUST** exist prior to updating these values for a user otherwise it will return an error.
+    
+    This parameter only accepts a hashtable where the keys are Schema Names and the value for each key is another hashtable, i.e.: 
+
+        Update-GSUser -User john.smith@domain.com -CustomSchemas @{
+            schemaName1 = @{
+                fieldName1 = $fieldValue1
+                fieldName2 = $fieldValue2
+            }
+            schemaName2 = @{
+                fieldName3 = $fieldValue3
+            }
+        }
+
+    If you need to CLEAR a custom schema value, simply pass $null as the value(s) for the fieldName in the hashtable, i.e.:
+
+        Update-GSUser -User john.smith@domain.com -CustomSchemas @{
+            schemaName1 = @{
+                fieldName1 = $null
+                fieldName2 = $null
+            }
+            schemaName2 = @{
+                fieldName3 = $null
+            }
+        }
+    
     .EXAMPLE
     $address = Add-GSUserAddress -Country USA -Locality Dallas -PostalCode 75000 Region TX -StreetAddress '123 South St' -Type Work -Primary
 
@@ -103,7 +132,23 @@ function New-GSUser {
         $IncludeInGlobalAddressList,
         [parameter(Mandatory = $false)]
         [Switch]
-        $IpWhitelisted
+        $IpWhitelisted,
+        [parameter(Mandatory = $false)]
+        [ValidateScript({
+            $hash = $_
+            foreach ($schemaName in $hash.Keys) {
+                if ($hash[$schemaName].GetType().Name -ne 'Hashtable') {
+                    throw "The CustomSchemas parameter only accepts a hashtable where the value of the top-level keys must also be a hashtable. The key '$schemaName' has a value of type '$($hash[$schemaName].GetType().Name)'"
+                    $valid = $false
+                }
+                else {
+                    $valid = $true
+                }
+            }
+            $valid
+        })]
+        [Hashtable]
+        $CustomSchemas
     )
     Begin {
         $serviceParams = @{
@@ -137,6 +182,18 @@ function New-GSUser {
                     }
                     Password {
                         $body.Password = (New-Object PSCredential "user",$Password).GetNetworkCredential().Password
+                    }
+                    CustomSchemas {
+                        $schemaDict = New-Object 'System.Collections.Generic.Dictionary`2[[System.String],[System.Collections.Generic.IDictionary`2[[System.String],[System.Object]]]]'
+                        foreach ($schemaName in $CustomSchemas.Keys) {
+                            $fieldDict = New-Object 'System.Collections.Generic.Dictionary`2[[System.String],[System.Object]]'
+                            $schemaFields = $CustomSchemas[$schemaName]
+                            $schemaFields.Keys | ForEach-Object {
+                                $fieldDict.Add($_,$schemaFields[$_])
+                            }
+                            $schemaDict.Add($schemaName,$fieldDict)
+                        }
+                        $body.CustomSchemas = $schemaDict
                     }
                     Default {
                         $body.$prop = $PSBoundParameters[$prop]
