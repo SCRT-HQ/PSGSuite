@@ -92,7 +92,7 @@ function Get-GSGmailMessage {
                     }
                 }
                 Write-Verbose "Getting Message Id '$mId' for user '$User'"
-                $result = $request.Execute() | Select-Object @{N = 'User';E = {$User}},*
+                $result = $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
                 if ($ParseMessage) {
                     $parsed = Read-MimeMessage -String $(Convert-Base64 -From WebSafeBase64String -To NormalString -String $result.Raw) | Select-Object @{N = 'User';E = {$User}},@{N = "Id";E = {$result.Id}},@{N = "ThreadId";E = {$result.ThreadId}},@{N = "LabelIds";E = {$result.LabelIds}},@{N = "Snippet";E = {$result.Snippet}},@{N = "HistoryId";E = {$result.HistoryId}},@{N = "InternalDate";E = {$result.InternalDate}},@{N = "InternalDateConverted";E = {Convert-EpochToDate -EpochString $result.internalDate}},@{N = "SizeEstimate";E = {$result.SizeEstimate}},*
                     if ($SaveAttachmentsTo) {

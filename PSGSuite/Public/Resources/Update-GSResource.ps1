@@ -208,7 +208,7 @@ function Update-GSResource {
                     else {
                         'my_customer'
                     }),$resId)
-            $request.Execute() | Select-Object @{N = 'Resource';E = {$resType}},*
+            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Resource' -Value $resType -PassThru
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

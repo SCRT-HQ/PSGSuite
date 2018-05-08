@@ -97,7 +97,7 @@ function Get-GSUser {
     [cmdletbinding(DefaultParameterSetName = "Get")]
     Param
     (
-        [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true,ParameterSetName = "Get")]
+        [parameter(Mandatory = $false,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true,ParameterSetName = "Get")]
         [Alias("PrimaryEmail","UserKey","Mail","Email")]
         [ValidateNotNullOrEmpty()]
         [String[]]
@@ -179,7 +179,7 @@ function Get-GSUser {
                             if ($Fields) {
                                 $request.Fields = "$($Fields -join ",")"
                             }
-                            $request.Execute() | Select-Object @{N = "User";E = {$_.PrimaryEmail}},*
+                            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru  | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.PrimaryEmail} -PassThru -Force
                         }
                     }
                     else {

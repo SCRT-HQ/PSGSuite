@@ -117,7 +117,7 @@ function Copy-GSDriveFile {
                 $request.Fields = "$($fs -join ",")"
             }
             Write-Verbose "Copying drive file id '$FileID'"
-            $request.Execute() | Select-Object @{N = "User";E = {$User}},*
+            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

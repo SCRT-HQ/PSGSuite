@@ -82,7 +82,7 @@ function Clear-GSSheet {
             if (!$Raw) {
                 $response = $response | Select-Object @{N = "Title";E = {$_.properties.title}},@{N = "MaxRows";E = {[int]($_.sheets.properties.gridProperties.rowCount | Sort-Object | Select-Object -Last 1)}},@{N = "MaxColumns";E = {[int]($_.sheets.properties.gridProperties.columnCount | Sort-Object | Select-Object -Last 1)}},*
             }
-            $response | Select-Object @{N = 'User';E = {$User}},*
+            $response | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

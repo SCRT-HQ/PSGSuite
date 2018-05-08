@@ -4,7 +4,7 @@ function Get-GSGroupMemberListPrivate {
     (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
         [Alias('GroupEmail','Group','Email')]
-        [String]
+        [String[]]
         $Identity,
         [parameter(Mandatory = $false)]
         [ValidateSet("Owner","Manager","Member")]
@@ -24,40 +24,40 @@ function Get-GSGroupMemberListPrivate {
         $service = New-GoogleService @serviceParams
     }
     Process {
-        try {
-            if ($Identity -notlike "*@*.*") {
-                $Identity = "$($Identity)@$($Script:PSGSuite.Domain)"
+        foreach ($Id in $Identity) {
+            try {
+                if ($Id -notlike "*@*.*") {
+                    $Id = "$($Id)@$($Script:PSGSuite.Domain)"
+                }
+                $request = $service.Members.List($Id)
+                if ($PageSize) {
+                    $request.MaxResults = $PageSize
+                }
+                if ($Roles) {
+                    Write-Verbose "Getting all members of group '$Id' in the following role(s): $($Roles -join ',')"
+                    $request.Roles = "$($Roles -join ',')"
+                }
+                else {
+                    Write-Verbose "Getting all members of group '$Id'"
+                }
+                [int]$i = 1
+                do {
+                    $result = $request.Execute()
+                    $result.MembersValue | Add-Member -MemberType NoteProperty -Name 'Group' -Value $Id -PassThru  | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.Email} -PassThru -Force
+                    $request.PageToken = $result.NextPageToken
+                    [int]$retrieved = ($i + $result.MembersValue.Count) - 1
+                    Write-Verbose "Retrieved $retrieved members..."
+                    [int]$i = $i + $result.MembersValue.Count
+                }
+                until (!$result.NextPageToken)
             }
-            $request = $service.Members.List($Identity)
-            if ($PageSize) {
-                $request.MaxResults = $PageSize
-            }
-            if ($Roles) {
-                Write-Verbose "Getting all members of group '$Identity' in the following role(s): $($Roles -join ',')"
-                $request.Roles = "$($Roles -join ',')"
-            }
-            else {
-                Write-Verbose "Getting all members of group '$Identity'"
-            }
-            $response = @()
-            [int]$i = 1
-            do {
-                $result = $request.Execute()
-                $response += $result.MembersValue | Select-Object @{N = "Group";E = {$Identity}},*
-                $request.PageToken = $result.NextPageToken
-                [int]$retrieved = ($i + $result.MembersValue.Count) - 1
-                Write-Verbose "Retrieved $retrieved members..."
-                [int]$i = $i + $result.MembersValue.Count
-            }
-            until (!$result.NextPageToken)
-            return $response
-        }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
-            }
-            else {
-                Write-Error $_
+            catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                else {
+                    Write-Error $_
+                }
             }
         }
     }

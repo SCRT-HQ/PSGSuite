@@ -135,7 +135,7 @@ function Export-GSDriveFile {
             if ($fs) {
                 $request.Fields = $($fs -join ",")
             }
-            $res = $request.Execute() | Select-Object @{N = "User";E = {$User}},*
+            $res = $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
             if ($OutFilePath) {
                 Write-Verbose "Saving file to path '$OutFilePath'"
                 $stream = [System.IO.File]::Create($OutFilePath)

@@ -151,7 +151,7 @@ function Update-GSTeamDrive {
             $body.Capabilities = $capabilities
             $request = $service.Teamdrives.Update($body,$TeamDriveId)
             Write-Verbose "Updating Team Drive '$Name' for user '$User'"
-            $request.Execute() | Select-Object @{N = "User";E = {$User}},*
+            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

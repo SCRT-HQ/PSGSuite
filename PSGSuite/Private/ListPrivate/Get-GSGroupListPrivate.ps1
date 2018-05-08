@@ -51,18 +51,16 @@ function Get-GSGroupListPrivate {
             if ($PageSize) {
                 $request.MaxResults = $PageSize
             }
-            $response = @()
             [int]$i = 1
             do {
                 $result = $request.Execute()
-                $response += $result.GroupsValue | Select-Object @{N = "Group";E = {$_.Email}},*
+                $result.GroupsValue | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.Email} -PassThru -Force
                 $request.PageToken = $result.NextPageToken
                 [int]$retrieved = ($i + $result.GroupsValue.Count) - 1
                 Write-Verbose "Retrieved $retrieved groups..."
                 [int]$i = $i + $result.GroupsValue.Count
             }
             until (!$result.NextPageToken)
-            return $response
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

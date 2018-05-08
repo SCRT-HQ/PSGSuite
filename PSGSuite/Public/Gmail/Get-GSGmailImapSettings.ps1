@@ -43,7 +43,7 @@ function Get-GSGmailImapSettings {
         try {
             $request = $service.Users.Settings.GetImap($User)
             Write-Verbose "Getting IMAP settings for user '$User'"
-            $request.Execute() | Select-Object @{N = 'User';E = {$User}},*
+            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

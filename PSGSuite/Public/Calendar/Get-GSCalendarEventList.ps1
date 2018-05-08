@@ -132,11 +132,10 @@ function Get-GSCalendarEventList {
                     else {
                         Write-Verbose "Getting all Calendar Events on calendar '$calId' for user '$U'"
                     }
-                    $response = @()
                     [int]$i = 1
                     do {
                         $result = $request.Execute()
-                        $response += $result.Items | Select-Object @{N = 'User';E = {$U}},@{N = 'CalendarId';E = {$calId}},*
+                        $result.Items | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $calId -PassThru
                         if ($result.NextPageToken) {
                             $request.PageToken = $result.NextPageToken
                         }
@@ -145,7 +144,6 @@ function Get-GSCalendarEventList {
                         [int]$i = $i + $result.Items.Count
                     }
                     until (!$result.NextPageToken)
-                    $response
                 }
             }
         }

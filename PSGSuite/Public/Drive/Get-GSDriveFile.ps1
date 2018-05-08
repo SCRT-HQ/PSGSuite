@@ -102,7 +102,7 @@ function Get-GSDriveFile {
                 if ($fs) {
                     $request.Fields = $($fs -join ",")
                 }
-                $res = $request.Execute() | Select-Object @{N = "User";E = {$User}},*
+                $res = $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
                 if ($OutFilePath -and $res.FileExtension) {
                     $resPath = Resolve-Path $OutFilePath
                     $filePath = Join-Path $resPath "$($res.Name).$($res.FileExtension)"

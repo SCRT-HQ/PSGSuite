@@ -3,7 +3,7 @@ function Get-GSShortUrlListPrivate {
     Param
     (
       [parameter(Mandatory = $false,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
-      [Alias("PrimaryEmail","UserKey","Mail")]
+      [Alias("PrimaryEmail","UserKey","Mail","Email")]
       [ValidateNotNullOrEmpty()]
       [String[]]
       $User = $Script:PSGSuite.AdminEmail,
@@ -12,32 +12,32 @@ function Get-GSShortUrlListPrivate {
       [string]
       $Projection = "Full"
     )
-    Begin {
-        if ($User -ceq 'me') {
-            $User = $Script:PSGSuite.AdminEmail
-        }
-        elseif ($User -notlike "*@*.*") {
-            $User = "$($User)@$($Script:PSGSuite.Domain)"
-        }
-        $serviceParams = @{
-            Scope       = 'https://www.googleapis.com/auth/urlshortener'
-            ServiceType = 'Google.Apis.Urlshortener.v1.UrlshortenerService'
-            User        = "$User"
-        }
-        $service = New-GoogleService @serviceParams
-    }
     Process {
-        try {
-            Write-Verbose "Getting Short Url list for User '$User'"
-            $request = $service.Url.List()
-            $request.Execute() | Select-Object -ExpandProperty Items | Select-Object @{N = "User";E = {$User}},*
-        }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
+        foreach ($U in $User) {
+            if ($U -ceq 'me') {
+                $U = $Script:PSGSuite.AdminEmail
             }
-            else {
-                Write-Error $_
+            elseif ($U -notlike "*@*.*") {
+                $U = "$($U)@$($Script:PSGSuite.Domain)"
+            }
+            $serviceParams = @{
+                Scope       = 'https://www.googleapis.com/auth/urlshortener'
+                ServiceType = 'Google.Apis.Urlshortener.v1.UrlshortenerService'
+                User        = "$U"
+            }
+            $service = New-GoogleService @serviceParams
+            try {
+                Write-Verbose "Getting Short Url list for User '$U'"
+                $request = $service.Url.List()
+                $request.Execute() | Select-Object -ExpandProperty Items | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
+            }
+            catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                else {
+                    Write-Error $_
+                }
             }
         }
     }

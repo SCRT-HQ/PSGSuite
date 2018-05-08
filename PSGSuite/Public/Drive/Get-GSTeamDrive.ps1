@@ -64,7 +64,7 @@ function Get-GSTeamDrive {
                     foreach ($id in $TeamDriveId) {
                         $request = $service.Teamdrives.Get($id)
                         Write-Verbose "Getting Team Drive '$id' for user '$User'"
-                        $request.Execute() | Select-Object @{N = "User";E = {$User}},*
+                        $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
                     }
                 }
                 List {
@@ -76,7 +76,7 @@ function Get-GSTeamDrive {
                         $request.Q = $($FilterFmt -join " ")
                     }
                     Write-Verbose "Getting Team Drives for user '$User'"
-                    $request.Execute() | Select-Object -ExpandProperty TeamDrives | Select-Object @{N = "User";E = {$User}},*
+                    $request.Execute() | Select-Object -ExpandProperty TeamDrives | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
                 }
             }
         }

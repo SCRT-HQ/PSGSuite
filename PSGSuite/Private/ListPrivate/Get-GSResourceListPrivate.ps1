@@ -63,11 +63,24 @@ function Get-GSResourceListPrivate {
                 else {
                     Write-Verbose "Getting all Resource $R"
                 }
-                $response = @()
                 [int]$i = 1
                 do {
                     $result = $request.Execute()
-                    $response += $result.$($propHash[$R]) | Select-Object @{N = 'Resource';E = {$R}},*
+                    $result.$($propHash[$R]) | ForEach-Object {
+                        $obj = $_
+                        $_Id = switch ($R) {
+                            Calendars {
+                                $obj.ResourceId
+                            }
+                            Buildings {
+                                $obj.BuildingId
+                            }
+                            Features {
+                                $obj.Name
+                            }
+                        }
+                        $_ | Add-Member -MemberType NoteProperty -Name 'Id' -Value $_Id -PassThru | Add-Member -MemberType NoteProperty -Name 'Resource' -Value $R -PassThru | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.Id} -PassThru -Force
+                    }
                     if ($result.NextPageToken) {
                         $request.PageToken = $result.NextPageToken
                     }
@@ -76,7 +89,6 @@ function Get-GSResourceListPrivate {
                     [int]$i = $i + $result.$($propHash[$R]).Count
                 }
                 until (!$result.NextPageToken)
-                $response
             }
         }
         catch {

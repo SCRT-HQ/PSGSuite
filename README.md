@@ -113,6 +113,11 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.6.0
+
+* Added: `Compare-ModuleVersion` function to get latest installed version and compare against the latest version on the PSGallery ([Issue #44](https://github.com/scrthq/PSGSuite/issues/44))
+* 
+
 #### 2.5.4
 
 * Added: `CustomSchemas` parameter to `New-GSUser` (Resolve [Issue #42](https://github.com/scrthq/PSGSuite/issues/42))

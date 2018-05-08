@@ -61,7 +61,7 @@ function New-GSSheet {
             }
             Write-Verbose "Creating Spreadsheet '$Title' for user '$User'"
             $request = $service.Spreadsheets.Create($body)
-            $response = $request.Execute() | Select-Object @{N = 'User';E = {$User}},*
+            $response = $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
             if ($Launch) {
                 Write-Verbose "Launching new spreadsheet at $($response.SpreadsheetUrl)"
                 Start-Process $response.SpreadsheetUrl

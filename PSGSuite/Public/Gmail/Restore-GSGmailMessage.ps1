@@ -50,7 +50,7 @@ function Restore-GSGmailMessage {
             foreach ($mId in $Id) {
                 $request = $service.Users.Messages.Untrash($User,$mId)
                 Write-Verbose "Removing Message Id '$mId' from TRASH for user '$User'"
-                $request.Execute() | Select-Object @{N = 'User';E = {$U}},*
+                $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
             }
         }
         catch {

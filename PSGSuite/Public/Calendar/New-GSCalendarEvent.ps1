@@ -196,7 +196,7 @@ function New-GSCalendarEvent {
                     }
                     Write-Verbose "Creating Calendar Event '$($Summary)' on calendar '$calId' for user '$U'"
                     $request = $service.Events.Insert($body,$calId)
-                    $request.Execute() | Select-Object @{N = 'User';E = {$U}},@{N = 'CalendarId';E = {$calId}},*
+                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $calId -PassThru
                 }
             }
         }

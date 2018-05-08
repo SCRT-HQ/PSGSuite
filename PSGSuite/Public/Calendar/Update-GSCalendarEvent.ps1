@@ -201,9 +201,9 @@ function Update-GSCalendarEvent {
                         }
                     }
                     foreach ($evId in $EventId) {
-                        Write-Verbose "Updating Calendar Event '$($evId)' on calendar '$calId' for user '$U'"
+                        Write-Verbose "Updating Calendar Event '$evId' on calendar '$calId' for user '$U'"
                         $request = $service.Events.Patch($body,$calId,$evId)
-                        $request.Execute() | Select-Object @{N = 'User';E = {$U}},@{N = 'CalendarId';E = {$calId}},@{N = 'EventId';E = {$evId}},*
+                        $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $calId -PassThru | Add-Member -MemberType NoteProperty -Name 'EventId' -Value $evId -PassThru
                     }
                 }
             }

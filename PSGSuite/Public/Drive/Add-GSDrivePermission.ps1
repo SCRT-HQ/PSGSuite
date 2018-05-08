@@ -184,7 +184,7 @@ function Add-GSDrivePermission {
                 }
             }
             Write-Verbose "Adding Drive Permission of '$Role' for user '$User' on Id '$FileID'"
-            $request.Execute() | Select-Object @{N = "User";E = {$User}},*
+            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

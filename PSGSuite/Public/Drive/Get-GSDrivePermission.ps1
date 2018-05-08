@@ -64,18 +64,17 @@ function Get-GSDrivePermission {
                 foreach ($per in $PermissionId) {
                     $request = $service.Permissions.Get($FileId,$per)
                     Write-Verbose "Getting Permission Id '$per' on File '$FileId' for user '$User'"
-                    $request.Execute() | Select-Object @{N = 'User';E = {$User}},@{N = 'FileId';E = {$FileId}},*
+                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru | Add-Member -MemberType NoteProperty -Name 'FileId' -Value $FileId -PassThru
                 }
             }
             else {
                 $request = $service.Permissions.List($FileId)
                 $request.PageSize = $PageSize
                 Write-Verbose "Getting Permission list on File '$FileId' for user '$User'"
-                $response = @()
                 [int]$i = 1
                 do {
                     $result = $request.Execute()
-                    $response += $result.Permissions | Select-Object @{N = 'User';E = {$User}},@{N = 'FileId';E = {$FileId}},*
+                    $result.Permissions | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru | Add-Member -MemberType NoteProperty -Name 'FileId' -Value $FileId -PassThru
                     if ($result.NextPageToken) {
                         $request.PageToken = $result.NextPageToken
                     }
@@ -84,7 +83,6 @@ function Get-GSDrivePermission {
                     [int]$i = $i + $result.Permissions.Count
                 }
                 until (!$result.NextPageToken)
-                $response
             }
         }
         catch {

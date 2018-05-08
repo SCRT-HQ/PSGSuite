@@ -53,7 +53,7 @@
                 if ($PSBoundParameters.Keys -contains 'ClientId') {
                     Write-Verbose "Getting Token '$ClientId' for User '$U'"
                     $request = $service.Tokens.Get($U,$ClientId)
-                    $request.Execute() | Select-Object @{N = "User";E = {$U}},*
+                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
                 }
                 else {
                     $PSBoundParameters['User'] = $U

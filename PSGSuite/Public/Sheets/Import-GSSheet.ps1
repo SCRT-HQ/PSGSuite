@@ -190,7 +190,7 @@ function Import-GSSheet {
                 }
             }
             else {
-                $response | Select-Object @{N = 'User';E = {$User}},*
+                $response | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
             }
 
         }

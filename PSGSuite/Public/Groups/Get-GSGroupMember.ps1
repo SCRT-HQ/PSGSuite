@@ -28,7 +28,7 @@ function Get-GSGroupMember {
     (
       [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
       [Alias('GroupEmail','Group','Email')]
-      [String]
+      [String[]]
       $Identity,
       [parameter(Mandatory = $false,Position = 1,ParameterSetName = "Get")]
       [Alias("PrimaryEmail","UserKey","Mail","User","UserEmail")]
@@ -54,32 +54,34 @@ function Get-GSGroupMember {
         }
     }
     Process {
-        try {
-            if ($Identity -notlike "*@*.*") {
-                $Identity = "$($Identity)@$($Script:PSGSuite.Domain)"
-            }
-            switch ($PSCmdlet.ParameterSetName) {
-                Get {
-                    foreach ($G in $Member) {
-                        if ($G -notlike "*@*.*") {
-                            $G = "$($G)@$($Script:PSGSuite.Domain)"
+        switch ($PSCmdlet.ParameterSetName) {
+            Get {
+                foreach ($I in $Identity) {
+                    try {
+                        if ($I -notlike "*@*.*") {
+                            $I = "$($I)@$($Script:PSGSuite.Domain)"
                         }
-                        Write-Verbose "Getting member '$G' of group '$Identity'"
-                        $request = $service.Members.Get($Identity,$G)
-                        $request.Execute() | Select-Object @{N = "Group";E = {$Identity}},*
+                        foreach ($G in $Member) {
+                            if ($G -notlike "*@*.*") {
+                                $G = "$($G)@$($Script:PSGSuite.Domain)"
+                            }
+                            Write-Verbose "Getting member '$G' of group '$I'"
+                            $request = $service.Members.Get($I,$G)
+                            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Group' -Value $I -PassThru 
+                        }
+                    }
+                    catch {
+                        if ($ErrorActionPreference -eq 'Stop') {
+                            $PSCmdlet.ThrowTerminatingError($_)
+                        }
+                        else {
+                            Write-Error $_
+                        }
                     }
                 }
-                List {
-                    Get-GSGroupMemberListPrivate @PSBoundParameters
-                }
             }
-        }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
-            }
-            else {
-                Write-Error $_
+            List {
+                Get-GSGroupMemberListPrivate @PSBoundParameters
             }
         }
     }

@@ -78,7 +78,7 @@ function Remove-GSGmailMessage {
                     Write-Verbose "Removing Message Id '$mId' for user '$User'"
                     $res = $request.Execute()
                     if ($res) {
-                        $res | Select-Object @{N = 'User';E = {$U}},*
+                        $res | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
                     }
                     Write-Verbose "Message ID '$mId' successfully $message for user '$User'"
                 }

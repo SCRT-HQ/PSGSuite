@@ -40,7 +40,7 @@ function Get-GSGroupSettings {
                 Write-Verbose "Getting settings for group '$G'"
                 $request = $service.Groups.Get($G)
                 $request.Alt = "Json"
-                $request.Execute() | Select-Object @{N = "Group";E = {$G}},*
+                $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Group' -Value $G -PassThru
             }
         }
         catch {

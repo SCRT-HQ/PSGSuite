@@ -72,7 +72,7 @@ function Update-GSGmailPopSettings {
             }
             $request = $service.Users.Settings.UpdatePop($body,$User)
             Write-Verbose "Updating POP settings for user '$User'"
-            $request.Execute() | Select-Object @{N = 'User';E = {$User}},*
+            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

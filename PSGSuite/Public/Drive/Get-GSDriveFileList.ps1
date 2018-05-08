@@ -141,7 +141,7 @@ function Get-GSDriveFileList {
             [int]$i = 1
             do {
                 $result = $request.Execute()
-                $result.Files | Select-Object @{N = 'User';E = {$User}},*
+                $result.Files | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
                 if ($result.NextPageToken) {
                     $request.PageToken = $result.NextPageToken
                 }

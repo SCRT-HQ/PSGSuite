@@ -148,7 +148,7 @@
             $body.Criteria = $criteria
             $request = $service.Users.Settings.Filters.Create($body,$User)
             Write-Verbose "Creating Filter for user '$User'"
-            $response = $request.Execute() | Select-Object @{N = 'User';E = {$User}},*
+            $response = $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
             if (!$Raw) {
                 $response = $response | Select-Object User,Id,@{N = "From";E = {$_.criteria.from}},@{N = "To";E = {$_.criteria.to}},@{N = "Subject";E = {$_.criteria.subject}},@{N = "Query";E = {$_.criteria.query}},@{N = "NegatedQuery";E = {$_.criteria.negatedQuery}},@{N = "HasAttachment";E = {$_.criteria.hasAttachment}},@{N = "ExcludeChats";E = {$_.criteria.excludeChats}},@{N = "Size";E = {$_.criteria.size}},@{N = "SizeComparison";E = {$_.criteria.sizeComparison}},@{N = "AddLabelIds";E = {$_.action.addLabelIds}},@{N = "RemoveLabelIds";E = {$_.action.removeLabelIds}},@{N = "Forward";E = {$_.action.forward}}
             }

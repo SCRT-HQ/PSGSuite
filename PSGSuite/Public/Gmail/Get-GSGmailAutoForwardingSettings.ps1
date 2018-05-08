@@ -43,7 +43,7 @@ function Get-GSGmailAutoForwardingSettings {
         try {
             $request = $service.Users.Settings.GetAutoForwarding($User)
             Write-Verbose "Getting AutoForwarding settings for user '$User'"
-            $request.Execute() | Select-Object @{N = 'User';E = {$User}},*
+            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {
