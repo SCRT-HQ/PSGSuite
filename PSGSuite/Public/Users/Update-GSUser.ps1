@@ -158,70 +158,72 @@ function Update-GSUser {
         $service = New-GoogleService @serviceParams
     }
     Process {
-        try {
-            if ($User -ceq 'me') {
-                $User = $Script:PSGSuite.AdminEmail
-            }
-            elseif ($User -notlike "*@*.*") {
-                $User = "$($User)@$($Script:PSGSuite.Domain)"
-            }
-            Write-Verbose "Updating user '$User'"
-            $userObj = Get-GSUser $User -Verbose:$false
-            $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.User'
-            $name = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserName'
-            $nameUpdated = $false
-            foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_ -or $name.PSObject.Properties.Name -contains $_}) {
-                switch ($prop) {
-                    PrimaryEmail {
-                        if ($PSBoundParameters[$prop] -notlike "*@*.*") {
-                            $PSBoundParameters[$prop] = "$($PSBoundParameters[$prop])@$($Script:PSGSuite.Domain)"
-                        }
-                        $body.$prop = $PSBoundParameters[$prop]
-                    }
-                    GivenName {
-                        $name.$prop = $PSBoundParameters[$prop]
-                        $nameUpdated = $true
-                    }
-                    FamilyName {
-                        $name.$prop = $PSBoundParameters[$prop]
-                        $nameUpdated = $true
-                    }
-                    FullName {
-                        $name.$prop = $PSBoundParameters[$prop]
-                        $nameUpdated = $true
-                    }
-                    Password {
-                        $body.Password = (New-Object PSCredential "user",$Password).GetNetworkCredential().Password
-                    }
-                    CustomSchemas {
-                        $schemaDict = New-Object 'System.Collections.Generic.Dictionary`2[[System.String],[System.Collections.Generic.IDictionary`2[[System.String],[System.Object]]]]'
-                        foreach ($schemaName in $CustomSchemas.Keys) {
-                            $fieldDict = New-Object 'System.Collections.Generic.Dictionary`2[[System.String],[System.Object]]'
-                            $schemaFields = $CustomSchemas[$schemaName]
-                            $schemaFields.Keys | ForEach-Object {
-                                $fieldDict.Add($_,$schemaFields[$_])
+        foreach ($U in $User) {
+            try {
+                if ($U -ceq 'me') {
+                    $U = $Script:PSGSuite.AdminEmail
+                }
+                elseif ($U -notlike "*@*.*") {
+                    $U = "$($U)@$($Script:PSGSuite.Domain)"
+                }
+                Write-Verbose "Updating user '$U'"
+                $userObj = Get-GSUser $U -Verbose:$false
+                $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.User'
+                $name = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserName'
+                $nameUpdated = $false
+                foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_ -or $name.PSObject.Properties.Name -contains $_}) {
+                    switch ($prop) {
+                        PrimaryEmail {
+                            if ($PSBoundParameters[$prop] -notlike "*@*.*") {
+                                $PSBoundParameters[$prop] = "$($PSBoundParameters[$prop])@$($Script:PSGSuite.Domain)"
                             }
-                            $schemaDict.Add($schemaName,$fieldDict)
+                            $body.$prop = $PSBoundParameters[$prop]
                         }
-                        $body.CustomSchemas = $schemaDict
-                    }
-                    Default {
-                        $body.$prop = $PSBoundParameters[$prop]
+                        GivenName {
+                            $name.$prop = $PSBoundParameters[$prop]
+                            $nameUpdated = $true
+                        }
+                        FamilyName {
+                            $name.$prop = $PSBoundParameters[$prop]
+                            $nameUpdated = $true
+                        }
+                        FullName {
+                            $name.$prop = $PSBoundParameters[$prop]
+                            $nameUpdated = $true
+                        }
+                        Password {
+                            $body.Password = (New-Object PSCredential "user",$Password).GetNetworkCredential().Password
+                        }
+                        CustomSchemas {
+                            $schemaDict = New-Object 'System.Collections.Generic.Dictionary`2[[System.String],[System.Collections.Generic.IDictionary`2[[System.String],[System.Object]]]]'
+                            foreach ($schemaName in $CustomSchemas.Keys) {
+                                $fieldDict = New-Object 'System.Collections.Generic.Dictionary`2[[System.String],[System.Object]]'
+                                $schemaFields = $CustomSchemas[$schemaName]
+                                $schemaFields.Keys | ForEach-Object {
+                                    $fieldDict.Add($_,$schemaFields[$_])
+                                }
+                                $schemaDict.Add($schemaName,$fieldDict)
+                            }
+                            $body.CustomSchemas = $schemaDict
+                        }
+                        Default {
+                            $body.$prop = $PSBoundParameters[$prop]
+                        }
                     }
                 }
+                if ($nameUpdated) {
+                    $body.Name = $name
+                }
+                $request = $service.Users.Update($body,$userObj.Id)
+                $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
             }
-            if ($nameUpdated) {
-                $body.Name = $name
-            }
-            $request = $service.Users.Update($body,$userObj.Id)
-            $request.Execute() | Select-Object @{N = "User";E = {$_.PrimaryEmail}},*
-        }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
-            }
-            else {
-                Write-Error $_
+            catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                else {
+                    Write-Error $_
+                }
             }
         }
     }

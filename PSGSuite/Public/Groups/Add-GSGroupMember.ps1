@@ -62,7 +62,7 @@ function Add-GSGroupMember {
                     $body.Email = $U
                     $body.Role = $Role
                     $request = $service.Members.Insert($body,$groupObj.Id)
-                    $request.Execute() | Select-Object @{N = "Group";E = {$Identity}},*
+                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Group' -Value $Identity -PassThru
                 }
             }
             catch {

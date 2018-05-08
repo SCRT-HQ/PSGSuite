@@ -62,7 +62,7 @@ function Add-GSPrincipalGroupMembership {
                     $body.Email = $Identity
                     $body.Role = $Role
                     $request = $service.Members.Insert($body,$groupObj.Id)
-                    $request.Execute() | Select-Object @{N = "Group";E = {$U}},*
+                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Group' -Value $U -PassThru
                 }
             }
             catch {

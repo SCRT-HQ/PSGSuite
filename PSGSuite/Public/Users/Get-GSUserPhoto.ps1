@@ -82,7 +82,7 @@ function Get-GSUserPhoto {
                     }
                 }
                 else {
-                    $res | Select-Object @{N = "User";E = {$U}},*,@{N = "PhotoBytes";E = {$bytes}},@{N = "PhotoBase64";E = {$base64}}
+                    $res | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'PhotoBytes' -Value $bytes -PassThru | Add-Member -MemberType NoteProperty -Name 'PhotoBase64' -Value $base64 -PassThru
                 }
             }
         }

@@ -152,7 +152,7 @@ function New-GSTeamDrive {
             $body.Capabilities = $capabilities
             $request = $service.Teamdrives.Create($body,$RequestId)
             Write-Verbose "Creating Team Drive '$Name' for user '$User'"
-            $request.Execute() | Select-Object @{N = "User";E = {$User}},@{N = "RequestId";E = {$RequestId}},*
+            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru | Add-Member -MemberType NoteProperty -Name 'RequestId' -Value $RequestId -PassThru
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

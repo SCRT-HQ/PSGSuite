@@ -157,7 +157,7 @@ function New-GSDriveFile {
                 $request.Fields = $($fs -join ",")
             }
             Write-Verbose "Creating file '$Name' for user '$User'"
-            $request.Execute() | Select-Object @{N = "User";E = {$User}},*
+            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

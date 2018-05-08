@@ -36,10 +36,10 @@ function Get-GSResource {
     [CmdletBinding(DefaultParameterSetName = "List")]
     Param
     (
-        [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true,ParameterSetName = "Get")]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true,ParameterSetName = "Get")]
         [String[]]
         $Id,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,Position = 1)]
         [ValidateSet('Calendars','Buildings','Features')]
         [String]
         $Resource = 'Calendars',
@@ -66,26 +66,26 @@ function Get-GSResource {
         }
     }
     Process {
-        try {
-            switch ($PSCmdlet.ParameterSetName) {
-                Get {
-                    foreach ($I in $Id) {
+        switch ($PSCmdlet.ParameterSetName) {
+            Get {
+                foreach ($I in $Id) {
+                    try {
                         Write-Verbose "Getting Resource $Resource Id '$I'"
                         $request = $service.Resources.$Resource.Get($(if($Script:PSGSuite.CustomerID){$Script:PSGSuite.CustomerID}else{'my_customer'}),$I)
-                        $request.Execute() | Select-Object @{N = 'Resource';E = {$Resource}},*
+                        $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Id' -Value $I -PassThru | Add-Member -MemberType NoteProperty -Name 'Resource' -Value $Resource -PassThru | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.Id} -PassThru -Force
+                    }
+                    catch {
+                        if ($ErrorActionPreference -eq 'Stop') {
+                            $PSCmdlet.ThrowTerminatingError($_)
+                        }
+                        else {
+                            Write-Error $_
+                        }
                     }
                 }
-                List {
-                    Get-GSResourceListPrivate @PSBoundParameters
-                }
             }
-        }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
-            }
-            else {
-                Write-Error $_
+            List {
+                Get-GSResourceListPrivate @PSBoundParameters
             }
         }
     }

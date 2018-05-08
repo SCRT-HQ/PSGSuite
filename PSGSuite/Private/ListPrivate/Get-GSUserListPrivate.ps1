@@ -104,11 +104,14 @@ function Get-GSUserListPrivate {
             else {
                 Write-Verbose "Getting all Users for $verbScope"
             }
-            $response = @()
+            $response = New-Object System.Collections.ArrayList
             [int]$i = 1
             do {
                 $result = $request.Execute()
-                $response += $result.UsersValue | Select-Object @{N = "User";E = {$_.PrimaryEmail}},*
+                $result.UsersValue | ForEach-Object {
+                    $_ | Add-Member -MemberType NoteProperty -Name 'User' -Value $_.PrimaryEmail -PassThru | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.PrimaryEmail} -Force
+                    [void]$response.Add($_)
+                }
                 $request.PageToken = $result.NextPageToken
                 [int]$retrieved = ($i + $result.UsersValue.Count) - 1
                 Write-Verbose "Retrieved $retrieved users..."

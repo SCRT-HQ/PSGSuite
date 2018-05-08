@@ -67,7 +67,7 @@
                         if ($Fields) {
                             $request.Fields = "$($Fields -join ",")"
                         }
-                        $request.Execute() | Select-Object @{N = "Group";E = {$_.Email}},*
+                        $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Group' -Value $G -PassThru
                     }
                 }
                 List {

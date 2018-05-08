@@ -53,7 +53,7 @@
                 if ($PSBoundParameters.Keys -contains 'CodeId') {
                     Write-Verbose "Getting ASP '$CodeId' for User '$U'"
                     $request = $service.Asps.Get($U,$CodeId)
-                    $request.Execute() | Select-Object @{N = "User";E = {$U}},*
+                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
                 }
                 else {
                     $PSBoundParameters['User'] = $U

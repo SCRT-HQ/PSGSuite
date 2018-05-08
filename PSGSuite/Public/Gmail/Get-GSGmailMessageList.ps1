@@ -107,11 +107,10 @@ function Get-GSGmailMessageList {
                 else {
                     Write-Verbose "Getting all Messages for user '$U'"
                 }
-                $response = @()
                 [int]$i = 1
                 do {
                     $result = $request.Execute()
-                    $response += $result.Messages | Select-Object @{N = 'User';E = {$U}},@{N = 'Filter';E = {$Filter}},*
+                    $result.Messages | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'Filter' -Value $Filter -PassThru
                     if ($result.NextPageToken) {
                         $request.PageToken = $result.NextPageToken
                     }
@@ -120,7 +119,6 @@ function Get-GSGmailMessageList {
                     [int]$i = $i + $result.Messages.Count
                 }
                 until (!$result.NextPageToken)
-                $response
             }
         }
         catch {

@@ -43,7 +43,7 @@ function Get-GSGmailPopSettings {
         try {
             $request = $service.Users.Settings.GetPop($User)
             Write-Verbose "Getting POP settings for user '$User'"
-            $request.Execute() | Select-Object @{N = 'User';E = {$User}},*
+            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

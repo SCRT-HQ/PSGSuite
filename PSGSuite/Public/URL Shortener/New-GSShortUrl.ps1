@@ -53,7 +53,7 @@ function New-GSShortUrl {
                     LongUrl = $L
                 }
                 $request = $service.Url.Insert($body)
-                $request.Execute() | Select-Object @{N = "User";E = {$User}},*
+                $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
             }
         }
         catch {

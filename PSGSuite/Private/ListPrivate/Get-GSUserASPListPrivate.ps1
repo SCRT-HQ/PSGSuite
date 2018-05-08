@@ -16,8 +16,8 @@
         $service = New-GoogleService @serviceParams
     }
     Process {
-        try {
-            foreach ($U in $User) {
+        foreach ($U in $User) {
+            try {
                 if ($U -ceq 'me') {
                     $U = $Script:PSGSuite.AdminEmail
                 }
@@ -26,15 +26,15 @@
                 }
                 Write-Verbose "Getting ASP list for User '$U'"
                 $request = $service.Asps.List($U)
-                $request.Execute() | Select-Object -ExpandProperty Items | Select-Object @{N = "User";E = {$U}},*
+                $request.Execute() | Select-Object -ExpandProperty Items | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
             }
-        }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
-            }
-            else {
-                Write-Error $_
+            catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                else {
+                    Write-Error $_
+                }
             }
         }
     }

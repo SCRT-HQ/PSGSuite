@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+  - [2.6.0](#260)
   - [2.5.4](#254)
   - [2.5.3](#253)
   - [2.5.2](#252)
@@ -13,7 +14,7 @@
   - [2.2.1](#221)
   - [2.2.0](#220)
   - [2.1.5](#215)
-  - [2.1.3 / 2.1.4](#213--214)
+  - [2.1.3 / 2.1.4](#213---214)
   - [2.1.2](#212)
   - [2.1.1](#211)
   - [2.1.0](#210)
@@ -28,6 +29,24 @@
       - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.6.0
+
+* Added: `Compare-ModuleVersion` function to get latest installed version and compare against the latest version on the PSGallery ([Issue #44](https://github.com/scrthq/PSGSuite/issues/44))
+* Fixed: Pipeline support, so you can do things like the following and get group, group member and user details (as an example) easily ([Issue #45](https://github.com/scrthq/PSGSuite/issues/45)):
+```powershell
+#much pipe
+$users = Get-GSGroup $groupEmail -Verbose -OutVariable group | Get-GSGroupMember -Verbose -OutVariable members | Get-GSUser -Verbose
+
+#contains the group's info
+$group
+
+#contains the group members' info
+$members
+
+#contains the group members' full user info
+$users
+```
 
 ## 2.5.4
 

@@ -114,7 +114,7 @@
             }
             $request = $service.Users.Messages.Send($bodySend,$User)
             Write-Verbose "Sending Message '$Subject' from user '$User'"
-            $request.Execute() | Select-Object @{N = 'User';E = {$User}},*
+            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

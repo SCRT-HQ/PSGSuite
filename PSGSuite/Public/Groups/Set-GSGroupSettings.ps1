@@ -311,7 +311,7 @@ function Set-GSGroupSettings {
                 }
                 $request = $service.Groups.Update($body,$G)
                 $request.Alt = "Json"
-                $request.Execute() | Select-Object @{N = "Group";E = {$G}},*
+                $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Group' -Value $G -PassThru
             }
         }
         catch {

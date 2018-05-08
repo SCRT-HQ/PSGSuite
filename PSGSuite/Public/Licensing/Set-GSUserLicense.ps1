@@ -71,7 +71,7 @@ function Set-GSUserLicense {
                     UserId = $U
                 }
                 $request = $service.LicenseAssignments.Insert($body,$productHash[$License],$License)
-                $request.Execute() | Select-Object @{N = "User";E = {$U}},*
+                $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
             }
         }
         catch {

@@ -110,7 +110,7 @@ function Update-GSGmailVacationSettings {
             }
             $request = $service.Users.Settings.UpdateVacation($body,$User)
             Write-Verbose "Updating Vacation settings for user '$User'"
-            $request.Execute() | Select-Object @{N = 'User';E = {$User}},*
+            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

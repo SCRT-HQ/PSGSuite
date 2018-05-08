@@ -65,7 +65,7 @@ function Get-GSShortUrl {
                 foreach ($S in $ShortUrl) {
                     Write-Verbose "Getting short Url '$S'"
                     $request = $service.Url.Get($S)
-                    $request.Execute() | Select-Object @{N = "User";E = {$User}},*
+                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
                 }
             }
             else {

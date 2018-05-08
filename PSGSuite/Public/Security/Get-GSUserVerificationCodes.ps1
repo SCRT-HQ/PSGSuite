@@ -43,7 +43,7 @@
                 }
                 Write-Verbose "Getting Verification Code list for User '$U'"
                 $request = $service.VerificationCodes.List($U)
-                $request.Execute() | Select-Object -ExpandProperty Items | Select-Object @{N = "User";E = {$U}},*
+                $request.Execute() | Select-Object -ExpandProperty Items | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
             }
         }
         catch {

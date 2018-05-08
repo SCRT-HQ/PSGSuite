@@ -208,12 +208,11 @@ function Export-GSSheet {
             $body.Data = [Google.Apis.Sheets.v4.Data.ValueRange[]]$bodyData
             $request = $service.Spreadsheets.Values.BatchUpdate($body,$SpreadsheetId)
             Write-Verbose "Updating Range '$Range' on Spreadsheet '$SpreadsheetId' for user '$User'"
-            $response = $request.Execute() | Select-Object @{N = 'User';E = {$User}},*,@{N = "SpreadsheetUrl";E = {$SpreadsheetUrl}}
+            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru | Add-Member -MemberType NoteProperty -Name 'SpreadsheetUrl' -Value $SpreadsheetUrl -PassThru
             if ($Launch) {
                 Write-Verbose "Launching new spreadsheet at $SpreadsheetUrl"
                 Start-Process $SpreadsheetUrl
             }
-            $response
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

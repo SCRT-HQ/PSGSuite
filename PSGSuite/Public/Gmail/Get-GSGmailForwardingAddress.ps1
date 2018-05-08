@@ -52,13 +52,13 @@ function Get-GSGmailForwardingAddress {
                 foreach ($fwd in $ForwardingAddress) {
                     $request = $service.Users.Settings.ForwardingAddresses.Get($User,$fwd)
                     Write-Verbose "Getting Forwarding Address '$fwd' for user '$User'"
-                    $request.Execute() | Select-Object @{N = 'User';E = {$User}},*
+                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
                 }
             }
             else {
                 $request = $service.Users.Settings.ForwardingAddresses.List($User)
                 Write-Verbose "Getting Forwarding Address List for user '$User'"
-                $request.Execute() | Select-Object -ExpandProperty ForwardingAddresses | Select-Object @{N = 'User';E = {$User}},*
+                $request.Execute() | Select-Object -ExpandProperty ForwardingAddresses | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
             }
         }
         catch {

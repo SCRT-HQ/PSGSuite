@@ -52,13 +52,13 @@ function Get-GSGmailLabel {
                 foreach ($label in $LabelId) {
                     $request = $service.Users.Labels.Get($User,$label)
                     Write-Verbose "Getting Label Id '$label' for user '$User'"
-                    $request.Execute() | Select-Object @{N = 'User';E = {$User}},*
+                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
                 }
             }
             else {
                 $request = $service.Users.Labels.List($User)
                 Write-Verbose "Getting Label List for user '$User'"
-                $request.Execute() | Select-Object -ExpandProperty Labels | Select-Object @{N = 'User';E = {$User}},*
+                $request.Execute() | Select-Object -ExpandProperty Labels | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
             }
         }
         catch {
