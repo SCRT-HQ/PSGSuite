@@ -116,7 +116,20 @@ Update-GSSheetValue               Export-GSSheet
 #### 2.6.0
 
 * Added: `Compare-ModuleVersion` function to get latest installed version and compare against the latest version on the PSGallery ([Issue #44](https://github.com/scrthq/PSGSuite/issues/44))
-* 
+* Fixed: Pipeline support, so you can do things like the following and get group, group member and user details (as an example) easily ([Issue #45](https://github.com/scrthq/PSGSuite/issues/45)):
+```powershell
+#much pipe
+$users = Get-GSGroup $groupEmail -Verbose -OutVariable group | Get-GSGroupMember -Verbose -OutVariable members | Get-GSUser -Verbose
+
+#contains the group's info
+$group
+
+#contains the group members' info
+$members
+
+#contains the group members' full user info
+$users
+```
 
 #### 2.5.4
 
