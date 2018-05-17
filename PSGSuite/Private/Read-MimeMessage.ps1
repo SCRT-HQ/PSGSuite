@@ -14,7 +14,7 @@
     Process {
         switch ($PSCmdlet.ParameterSetName) {
             String {
-            foreach ($str in $String) {
+                foreach ($str in $String) {
                     $stream = [System.IO.MemoryStream]::new([Text.Encoding]::UTF8.GetBytes($str))
                     [MimeKit.MimeMessage]::Load($stream)
                     $stream.Dispose()
