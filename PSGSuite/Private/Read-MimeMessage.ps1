@@ -6,34 +6,25 @@
         [ValidateNotNullOrEmpty()]
         [string[]]
         $String,
-        [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ParameterSetName = "EmlFile")]
+        [parameter(Mandatory = $true,ValueFromPipeline = $true,ParameterSetName = "EmlFile")]
         [ValidateScript( {Test-Path $_})]
         [string[]]
         $EmlFile
     )
-    Begin {
-        $results = @()
-    }
     Process {
-        if ($PSCmdlet.ParameterSetName -eq "String") {
-            $Guid = (New-Guid).Guid
-            $String | Set-Content "$env:TEMP\Mime$Guid.eml" -Force
-            $results += [MimeKit.MimeMessage]::Load("$env:TEMP\Mime$Guid.eml")
-            do {
-                try {
-                    Remove-Item "$env:TEMP\Mime$Guid.eml" -Force
-                }
-                catch {
+        switch ($PSCmdlet.ParameterSetName) {
+            String {
+            foreach ($str in $String) {
+                    $stream = [System.IO.MemoryStream]::new([Text.Encoding]::UTF8.GetBytes($str))
+                    [MimeKit.MimeMessage]::Load($stream)
+                    $stream.Dispose()
                 }
             }
-            until
-            (!(Test-Path "$env:TEMP\Mime$Guid.eml"))
+            EmlFile {
+                foreach ($str in $EmlFile) {
+                    [MimeKit.MimeMessage]::Load($str)
+                }
+            }
         }
-        else {
-            $results += [MimeKit.MimeMessage]::Load($EmlFile)
-        }
-    }
-    End {
-        return $results
     }
 }
