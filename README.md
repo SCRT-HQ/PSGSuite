@@ -113,6 +113,11 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.6.1
+
+* Fixed: `Add-GSDrivePermission` error messages stating FileId is ReadOnly
+* Fixed: `Get-GSGmailMessage -ParseMessage` broken on non-Windows OS's due to using $env:TEMP. Switched to converting the MimeMessage to a stream and parsing it that way for resolution and significant perf gains.
+
 #### 2.6.0
 
 * Added: `Compare-ModuleVersion` function to get latest installed version and compare against the latest version on the PSGallery ([Issue #44](https://github.com/scrthq/PSGSuite/issues/44))

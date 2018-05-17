@@ -175,12 +175,8 @@ function Add-GSDrivePermission {
             $request = $service.Permissions.Create($body,$FileId)
             $request.SupportsTeamDrives = $true
             foreach ($key in $PSBoundParameters.Keys) {
-                switch ($key) {
-                    Default {
-                        if ($request.PSObject.Properties.Name -contains $key) {
-                            $request.$key = $PSBoundParameters[$key]
-                        }
-                    }
+                if ($request.PSObject.Properties.Name -contains $key -and $key -ne 'FileId') {
+                    $request.$key = $PSBoundParameters[$key]
                 }
             }
             Write-Verbose "Adding Drive Permission of '$Role' for user '$User' on Id '$FileID'"
