@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+  - [2.6.2](#262)
   - [2.6.1](#261)
   - [2.6.0](#260)
   - [2.5.4](#254)
@@ -30,6 +31,10 @@
       - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.6.2
+
+* Added: `Get-GSGmailProfile` and `Get-GSDriveProfile` to pull down information for a user's Gmail or Drive account.
 
 ## 2.6.1
 
