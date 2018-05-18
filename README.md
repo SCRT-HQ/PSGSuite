@@ -113,6 +113,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.6.2
+
+* Added: `Get-GSGmailProfile` and `Get-GSDriveProfile` to pull down information for a user's Gmail or Drive account.
+
 #### 2.6.1
 
 * Fixed: `Add-GSDrivePermission` error messages stating FileId is ReadOnly. ([Issue #47](https://github.com/scrthq/PSGSuite/issues/47))
