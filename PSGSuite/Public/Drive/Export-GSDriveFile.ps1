@@ -55,7 +55,7 @@ function Export-GSDriveFile {
 
     Exports the Drive file as a CSV to the current working directory
     #>
-    [cmdletbinding(DefaultParameterSetName = "Depth")]
+    [CmdLetBinding(DefaultParameterSetName = "Depth")]
     Param
     (      
         [parameter(Mandatory = $true,Position = 0)]
@@ -66,13 +66,12 @@ function Export-GSDriveFile {
         [string]
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $true)]
-        [ValidateSet("CSV","HTML","JPEG","JSON","MSExcel","MSPowerPoint","MSWordDoc","OpenOfficeDoc","OpenOfficeSheet","PDF","PlainText","PNG","RichText","SVG")]
+        [ValidateSet("CSV","EPUB","HTML","HTMLZipped","JPEG","JSON","MSExcel","MSPowerPoint","MSWordDoc","OpenOfficeDoc","OpenOfficePresentation","OpenOfficeSheet","PDF","PlainText","PNG","RichText","SVG","TSV")]
         [String]
         $Type,
         [parameter(Mandatory = $false)]
-        [ValidateScript({(Get-Item $_).PSIsContainer})]
         [String]
-        $OutFilePath = (Get-Location).Path,
+        $OutFilePath,
         [parameter(Mandatory = $false,ParameterSetName = "Depth")]
         [Alias('Depth')]
         [ValidateSet("Minimal","Standard","Full","Access")]
@@ -81,7 +80,10 @@ function Export-GSDriveFile {
         [parameter(Mandatory = $false,ParameterSetName = "Fields")]
         [ValidateSet("appProperties","capabilities","contentHints","createdTime","description","explicitlyTrashed","fileExtension","folderColorRgb","fullFileExtension","hasThumbnail","headRevisionId","iconLink","id","imageMediaMetadata","isAppAuthorized","kind","lastModifyingUser","md5Checksum","mimeType","modifiedByMe","modifiedByMeTime","modifiedTime","name","originalFilename","ownedByMe","owners","parents","permissions","properties","quotaBytesUsed","shared","sharedWithMeTime","sharingUser","size","spaces","starred","thumbnailLink","thumbnailVersion","trashed","version","videoMediaMetadata","viewedByMe","viewedByMeTime","viewersCanCopyContent","webContentLink","webViewLink","writersCanShare")]
         [String[]]
-        $Fields
+        $Fields,
+        [parameter(Mandatory = $false)]
+        [Switch]
+        $Force
     )
     Begin {
         if ($Projection) {
@@ -101,20 +103,24 @@ function Export-GSDriveFile {
             $fs = $Fields
         }
         $mimeHash = @{
-            CSV             = "text/csv"
-            HTML            = "text/html"
-            JPEG            = "image/jpeg"
-            JSON            = "application/vnd.google-apps.script+json"
-            MSExcel         = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            MSPowerPoint    = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
-            MSWordDoc       = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-            OpenOfficeDoc   = "application/vnd.oasis.opendocument.text"
-            OpenOfficeSheet = "application/x-vnd.oasis.opendocument.spreadsheet"
-            PDF             = "application/pdf"
-            PlainText       = "text/plain"
-            PNG             = "image/png"
-            RichText        = "application/rtf"
-            SVG             = "image/svg+xml"
+            CSV                    = "text/csv"
+            EPUB                   = "application/epub+zip"
+            HTML                   = "text/html"
+            HTMLZipped             = "application/zip"
+            JPEG                   = "image/jpeg"
+            JSON                   = "application/vnd.google-apps.script+json"
+            MSExcel                = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            MSPowerPoint           = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+            MSWordDoc              = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            OpenOfficeDoc          = "application/vnd.oasis.opendocument.text"
+            OpenOfficePresentation = "application/vnd.oasis.opendocument.presentation"
+            OpenOfficeSheet        = "application/x-vnd.oasis.opendocument.spreadsheet"
+            PDF                    = "application/pdf"
+            PlainText              = "text/plain"
+            PNG                    = "image/png"
+            RichText               = "application/rtf"
+            SVG                    = "image/svg+xml"
+            TSV                    = "text/tab-separated-values"
         }
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
@@ -135,14 +141,20 @@ function Export-GSDriveFile {
             if ($fs) {
                 $request.Fields = $($fs -join ",")
             }
-            $res = $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
             if ($OutFilePath) {
-                Write-Verbose "Saving file to path '$OutFilePath'"
-                $stream = [System.IO.File]::Create($OutFilePath)
-                $request.Download($stream)
-                $stream.Close()
+                if ((Test-Path $OutFilePath) -and !$Force) {
+                    throw "File '$OutFilePath' already exists. If you would like to overwrite it, use the -Force parameter."
+                }
+                else {
+                    Write-Verbose "Saving file to path '$OutFilePath'"
+                    $stream = [System.IO.File]::Create($OutFilePath)
+                    $request.Download($stream)
+                    $stream.Close()
+                }
             }
-            $res
+            else {
+                $request.Execute()
+            }
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {
