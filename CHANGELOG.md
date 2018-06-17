@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+    - [2.7.0](#270)
     - [2.6.3](#263)
     - [2.6.2](#262)
     - [2.6.1](#261)
@@ -32,6 +33,10 @@
             - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.7.0
+
+* Added: `Get-GSCalendarACL` and `New-GSCalendarACL` for pulling/adding calendar ACL's.
 
 ## 2.6.3
 
