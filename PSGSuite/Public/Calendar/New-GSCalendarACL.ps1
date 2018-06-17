@@ -17,29 +17,33 @@ function New-GSCalendarACL {
     Defaults to the user's primary calendar.
 
     .PARAMETER Role
-The role assigned to the scope. Possible values are:
-"none" - Provides no access.
-"freeBusyReader" - Provides read access to free/busy information.
-"reader" - Provides read access to the calendar. Private events will appear to users with reader access, but event details will be hidden.
-"writer" - Provides read and write access to the calendar. Private events will appear to users with writer access, and event details will be visible.
-"owner" - Provides ownership of the calendar. This role has all of the permissions of the writer role with the additional ability to see and manipulate ACLs.
+    The role assigned to the scope. 
+    
+    Available values are:
+    * "none" - Provides no access.
+    * "freeBusyReader" - Provides read access to free/busy information.
+    * "reader" - Provides read access to the calendar. Private events will appear to users with reader access, but event details will be hidden.
+    * "writer" - Provides read and write access to the calendar. Private events will appear to users with writer access, and event details will be visible.
+    * "owner" - Provides ownership of the calendar. This role has all of the permissions of the writer role with the additional ability to see and manipulate ACLs.
     
     .PARAMETER Value
     The email address of a user or group, or the name of a domain, depending on the scope type. Omitted for type "default".
 
     .PARAMETER Type
-The type of the scope. Possible values are:
-"default" - The public scope. This is the default value.
-"user" - Limits the scope to a single user.
-"group" - Limits the scope to a group.
-"domain" - Limits the scope to a domain.
-Note: The permissions granted to the "default", or public, scope apply to any user, authenticated or not.
+    The type of the scope.
 
+    Available values are:
+    * "default" - The public scope. This is the default value.
+    * "user" - Limits the scope to a single user.
+    * "group" - Limits the scope to a group.
+    * "domain" - Limits the scope to a domain.
+
+    Note: The permissions granted to the "default", or public, scope apply to any user, authenticated or not.
 
     .EXAMPLE
-    New-GSCalendarACL  - User me -CalendarID jennyappleseed@gmail.com -Role reader -Value Jonnyappleseed@gmail.com -Type user 
+    New-GSCalendarACL -CalendarID jennyappleseed@domain.com -Role reader -Value Jonnyappleseed@domain.com -Type user 
 
-    Gives Jonnyappleseed@gmail.com reader access to jennyappleseed's calendar. 
+    Gives Jonnyappleseed@domain.com reader access to jennyappleseed's calendar. 
     #>
     [cmdletbinding(DefaultParameterSetName = "AttendeeEmails")]
     Param
@@ -63,41 +67,36 @@ Note: The permissions granted to the "default", or public, scope apply to any us
         [ValidateSet("default", "user", "group", "domain")]
         [String]
         $Type = "user"
-        
-        
     )
     Process {
-        try {
-            foreach ($U in $User) {
-                if ($U -ceq 'me') {
-                    $U = $Script:PSGSuite.AdminEmail
-                }
-                elseif ($U -notlike "*@*.*") {
-                    $U = "$($U)@$($Script:PSGSuite.Domain)"
-                }
-                $serviceParams = @{
-                    Scope       = 'https://www.googleapis.com/auth/calendar'
-                    ServiceType = 'Google.Apis.Calendar.v3.CalendarService'
-                    User        = $U
-                }
-                $service = New-GoogleService @serviceParams
-                foreach ($calId in $CalendarID) {
+        foreach ($U in $User) {
+            if ($U -ceq 'me') {
+                $U = $Script:PSGSuite.AdminEmail
+            }
+            elseif ($U -notlike "*@*.*") {
+                $U = "$($U)@$($Script:PSGSuite.Domain)"
+            }
+            $serviceParams = @{
+                Scope       = 'https://www.googleapis.com/auth/calendar'
+                ServiceType = 'Google.Apis.Calendar.v3.CalendarService'
+                User        = $U
+            }
+            $service = New-GoogleService @serviceParams
+            foreach ($calId in $CalendarID) {
+                try {
                     $body = New-Object 'Google.Apis.Calendar.v3.Data.AclRule'
-                    $scopedata = New-Object "Google.Apis.Calendar.v3.Data.AclRule+ScopeData"
+                    $scopeData = New-Object "Google.Apis.Calendar.v3.Data.AclRule+ScopeData"
                     foreach ($key in $PSBoundParameters.Keys) {
                         switch ($key) {
-                         
                             Role {
                                 $body.Role = $PSBoundParameters[$key]
                             }
-                            
                             Type {
-                                $Scopedata.Type = $PSBoundParameters[$key]
+                                $scopeData.Type = $PSBoundParameters[$key]
                             }   
                             Value {
-                                $scopedata.Value = $PSBoundParameters[$key]
+                                $scopeData.Value = $PSBoundParameters[$key]
                             }
-                        
                             Default {
                                 if ($body.PSObject.Properties.Name -contains $key) {
                                     $body.$key = $PSBoundParameters[$key]
@@ -105,20 +104,19 @@ Note: The permissions granted to the "default", or public, scope apply to any us
                             }
                         }
                     }
-                    Write-Verbose "Updateing Calendar ACL List on calendar '$calId' for user '$Vaule'"
-                    $body.Scope = $scopedata
+                    Write-Verbose "Inserting new ACL for type '$Type' with value '$Value' in role '$Role'  on calendar '$calId' for user '$U'"
+                    $body.Scope = $scopeData
                     $request = $service.Acl.Insert($body, $calId)
                     $request.Execute()
                 }
-                
-            }
-        }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
-            }
-            else {
-                Write-Error $_
+                catch {
+                    if ($ErrorActionPreference -eq 'Stop') {
+                        $PSCmdlet.ThrowTerminatingError($_)
+                    }
+                    else {
+                        Write-Error $_
+                    }
+                }
             }
         }
     }
