@@ -101,10 +101,10 @@ function Update-GSCalendarEvent {
         $EventColor,
         [parameter(Mandatory = $false)]
         [DateTime]
-        $LocalStartDateTime = (Get-Date),
+        $LocalStartDateTime,
         [parameter(Mandatory = $false)]
         [DateTime]
-        $LocalEndDateTime = (Get-Date).AddMinutes(30),
+        $LocalEndDateTime,
         [parameter(Mandatory = $false)]
         [String]
         $StartDate,
