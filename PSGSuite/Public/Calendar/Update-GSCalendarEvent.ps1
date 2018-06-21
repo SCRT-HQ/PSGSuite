@@ -101,10 +101,10 @@ function Update-GSCalendarEvent {
         $EventColor,
         [parameter(Mandatory = $false)]
         [DateTime]
-        $LocalStartDateTime = (Get-Date),
+        $LocalStartDateTime,
         [parameter(Mandatory = $false)]
         [DateTime]
-        $LocalEndDateTime = (Get-Date).AddMinutes(30),
+        $LocalEndDateTime,
         [parameter(Mandatory = $false)]
         [String]
         $StartDate,
@@ -180,7 +180,7 @@ function Update-GSCalendarEvent {
                             Date = (Get-Date $StartDate -Format "yyyy-MM-dd")
                         }
                     }
-                    else {
+                    elseif ($LocalStartDateTime) {
                         New-Object 'Google.Apis.Calendar.v3.Data.EventDateTime' -Property @{
                             DateTime = $LocalStartDateTime
                         }
@@ -195,7 +195,7 @@ function Update-GSCalendarEvent {
                             Date = (Get-Date $EndDate -Format "yyyy-MM-dd")
                         }
                     }
-                    else {
+                    elseif ($LocalEndDateTime) {
                         New-Object 'Google.Apis.Calendar.v3.Data.EventDateTime' -Property @{
                             DateTime = $LocalEndDateTime
                         }
