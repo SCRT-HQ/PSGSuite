@@ -113,6 +113,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.7.2
+
+* Fixed: `Get-GSDrivePermission` fails when attempting to get Team Drive permissions.
+
 #### 2.7.1
 
 * Fixed: `Update-GSCalendarEvent` had default values set for LocalStartDateTime and LocalEndDateTime parameters, causing those to always update the event unexpectedly if a start and/or end datetime was not passed when running the command ([Issue #59](https://github.com/scrthq/PSGSuite/issues/59))

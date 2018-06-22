@@ -69,6 +69,7 @@ function Get-GSDrivePermission {
             }
             else {
                 $request = $service.Permissions.List($FileId)
+                $request.SupportsTeamDrives = $true
                 $request.PageSize = $PageSize
                 Write-Verbose "Getting Permission list on File '$FileId' for user '$User'"
                 [int]$i = 1

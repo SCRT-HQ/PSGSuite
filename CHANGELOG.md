@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+    - [2.7.2](#272)
     - [2.7.1](#271)
     - [2.7.0](#270)
     - [2.6.3](#263)
@@ -34,6 +35,10 @@
             - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.7.2
+
+* Fixed: `Get-GSDrivePermission` fails when attempting to get Team Drive permissions.
 
 ## 2.7.1
 
