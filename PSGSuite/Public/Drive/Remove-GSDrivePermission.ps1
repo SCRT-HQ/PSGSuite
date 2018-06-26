@@ -27,7 +27,7 @@ function Remove-GSDrivePermission {
 
     Gets the permissions assigned to groups and removes them.
     #>
-    [cmdletbinding()]
+    [cmdletbinding(ConfirmImpact = "High")]
     Param
     (
         [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
