@@ -113,6 +113,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.8.0
+
+* Added: `Remove-GSDrivePermission`. Thanks to [Jeremy McGee](https://github.com/jeremymcgee73)!
+
 #### 2.7.2
 
 * Fixed: `Get-GSDrivePermission` fails when attempting to get Team Drive permissions.

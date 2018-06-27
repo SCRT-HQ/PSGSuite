@@ -1,10 +1,10 @@
 function Remove-GSDrivePermission {
     <#
     .SYNOPSIS
-    Removes a new permission to a Drive file
+    Removes a permission from a Drive file
     
     .DESCRIPTION
-    Removes a new permission to a Drive file
+    Removes a permission from a Drive file
     
     .PARAMETER User
     The email or unique Id of the user whose Drive file permission you are trying to get
@@ -60,9 +60,8 @@ function Remove-GSDrivePermission {
         try {
             $request = $service.Permissions.Delete($FileId,$PermissionId)
             $request.SupportsTeamDrives = $true
-
-            Write-Verbose "Removing Drive Permission of PermissionId '$PermissionId' from FileId '$FileID'"
-            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
+            $request.Execute()
+            Write-Verbose "Successfully removed Drive Permission Id '$PermissionId' from FileId '$FileID'"
             
         }
         catch {
