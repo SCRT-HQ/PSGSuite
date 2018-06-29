@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+  - [2.8.1](#281)
   - [2.8.0](#280)
   - [2.7.2](#272)
   - [2.7.1](#271)
@@ -36,6 +37,10 @@
       - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.8.1
+
+* Fixed: `Get-GSGroup` failing when using `List` ParameterSet and the `Fields` Parameter ([Issue #63](https://github.com/scrthq/PSGSuite/issues/63))
 
 ## 2.8.0
 
