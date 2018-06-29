@@ -28,12 +28,12 @@
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (
-        [parameter(Mandatory = $false,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true,ParameterSetName = "Get")]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true,ParameterSetName = "Get")]
         [Alias("Email")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $Group,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ParameterSetName = "Get")]
         [String[]]
         $Fields,
         [parameter(Mandatory=$false,ParameterSetName = "List")]

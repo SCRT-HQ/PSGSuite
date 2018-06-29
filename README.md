@@ -113,6 +113,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.8.1
+
+* Fixed: `Get-GSGroup` failing when using `List` ParameterSet and the `Fields` Parameter ([Issue #63](https://github.com/scrthq/PSGSuite/issues/63))
+
 #### 2.8.0
 
 * Added: `Remove-GSDrivePermission`. Thanks to [Jeremy McGee](https://github.com/jeremymcgee73)!
