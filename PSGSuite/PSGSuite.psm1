@@ -129,5 +129,11 @@ catch {
     Write-Warning "There was no config returned! Please make sure you are using the correct key or have a configuration already saved."
 }
 finally {
-    Export-ModuleMember -Function ($Public.Basename) -Alias *
+    $functionsToExport = if ($env:EnablePSGSuiteDebug) {
+        ($Public.Basename + 'New-GoogleService')
+    }
+    else {
+        $Public.Basename
+    }
+    Export-ModuleMember -Function $functionsToExport -Alias *
 }
