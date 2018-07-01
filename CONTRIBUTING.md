@@ -18,6 +18,8 @@
 
 Thank you for your interest in helping PSGSuite grow! Below you'll find some guidelines around developing additional features and squashing bugs, including some how-to's to get started quick, general style guidelines, etc.
 
+[![Waffle.io - Columns and their card count](https://badge.waffle.io/scrthq/PSGSuite.svg?columns=all)](https://waffle.io/scrthq/PSGSuite)
+
 ## Git and Pull requests
 
 * Contributions are submitted, reviewed, and accepted using Github pull requests. [Read this article](https://help.github.com/articles/using-pull-requests) for some details. We use the _Fork and Pull_ model, as described there. More info can be found here: [Forking Projects](https://guides.github.com/activities/forking/)
