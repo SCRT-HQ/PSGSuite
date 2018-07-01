@@ -6,10 +6,10 @@
     $env:APPVEYOR_BUILD_WORKER_IMAGE -like '*2017*' -and
     $env:APPVEYOR_PULL_REQUEST_NUMBER -eq $null 
 ) { #>
-    git config --global credential.helper store
+    git config --global credential.helper store *>1
     Add-Content "$HOME\.git-credentials" "https://$($env:git_access_token):x-oauth-basic@github.com`n"
-    git config --global user.email "nate@scrthq.com"
-    git config --global user.name "Nate Ferrell"
+    git config --global user.email "nate@scrthq.com" *>1
+    git config --global user.name "Nate Ferrell" *>1
     Write-Host -ForegroundColor Magenta "~ ~ ~ UPDATING WIKI ~ ~ ~"
     $curLoc = (Get-Location).Path
 
@@ -19,7 +19,7 @@
     Import-Module platyPS
 
     Set-Location "C:\projects"
-    git clone https://github.com/scrthq/PSGSuite.wiki.git
+    git clone https://github.com/scrthq/PSGSuite.wiki.git *>1
     Set-Location "C:\projects\PSGSuite.wiki"
     $strings = @('# Getting Started
 * [Home](Home)
@@ -52,9 +52,9 @@
     }
     Set-Content -Path .\_Sidebar.md -Value $strings -Force
 
-    git add .
-    git commit -m "updated docs and sidebar @ $(Get-Date -Format "o")"
-    git push
+    git add . *>1
+    git commit -m "updated docs and sidebar @ $(Get-Date -Format "o")" *>1
+    git push *>1
 
     Set-Location $curLoc
 <# }
