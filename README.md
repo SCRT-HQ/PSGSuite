@@ -41,6 +41,10 @@ Check out the [GitHub wiki for PSGSuite](https://github.com/scrthq/PSGSuite/wiki
 
 Interested in helping out with PSGSuite development? Please check out our [Contribution Guidelines](https://github.com/scrthq/PSGSuite/blob/master/CONTRIBUTING.md)!
 
+## Code of Conduct
+
+Please adhere to our [Code of Conduct](https://github.com/scrthq/PSGSuite/blob/master/CODE_OF_CONDUCT.md) when interacting with this repo.
+
 ## 2.0.0 - Changes
 
 ### New Functionality
