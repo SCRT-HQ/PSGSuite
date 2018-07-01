@@ -56,4 +56,5 @@ if (
             }
         }
     }
+    . "$($PSScriptRoot)\ci\WikiUpdater.ps1"
 }
