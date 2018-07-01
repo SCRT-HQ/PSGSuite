@@ -37,6 +37,10 @@
 
 Check out the [GitHub wiki for PSGSuite](https://github.com/scrthq/PSGSuite/wiki) for help with setting up as well as full function help!
 
+## Contributing
+
+Interested in helping out with PSGSuite development? Please check out our [Contrubition Guidelines](https://github.com/scrthq/PSGSuite/blob/master/CONTRIBUTING.md)!
+
 ## 2.0.0 - Changes
 
 ### New Functionality
