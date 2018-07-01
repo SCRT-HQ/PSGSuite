@@ -19,7 +19,7 @@
     Import-Module platyPS
 
     Set-Location "C:\projects"
-    git clone https://github.com/scrthq/PSGSuite.wiki.git *>1
+    git clone git@github.com:scrthq/PSGSuite.wiki.git *>1
     Set-Location "C:\projects\PSGSuite.wiki"
     $strings = @('# Getting Started
 * [Home](Home)

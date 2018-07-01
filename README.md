@@ -115,7 +115,9 @@ Update-GSSheetValue               Export-GSSheet
 
 #### 2.9.0
 
-* Added: 
+* Updated: Added `IsAdmin` switch parameter to `Update-GSUser`, allowing set or revoke SuperAdmin privileges for a user ([Issue #54](https://github.com/scrthq/PSGSuite/issues/54))
+* Added: `Get-GSAdminRole`, `New-GSAdminRole`, `Remove-GSAdminRole`& `Update-GSAdminRole` to manage Admin Roles in G Suite ([Issue #54](https://github.com/scrthq/PSGSuite/issues/54))
+* Added: `Get-GSAdminRoleAssignment`, `New-GSAdminRoleAssignment` & `Remove-GSAdminRoleAssignment` to manage Admin Role Assignments in G Suite ([Issue #54](https://github.com/scrthq/PSGSuite/issues/54))
 
 #### 2.8.1
 
@@ -167,89 +169,6 @@ $members
 #contains the group members' full user info
 $users
 ```
-
-#### 2.5.4
-
-* Added: `CustomSchemas` parameter to `New-GSUser` (Resolve [Issue #42](https://github.com/scrthq/PSGSuite/issues/42))
-
-#### 2.5.3
-
-* Fixed/Added: Specific domain support for listing users with `Get-GSUser -Filter $filter -Domain domain2.com` to allow customers with multiple domains to only list users for a specific domain instead of just the entire customer or domain saved in the config. (Resolve [Issue #32](https://github.com/scrthq/PSGSuite/issues/32))
-* Added: Better verbose output in when listing users
-* Fixed: Performance increase in `Get-GSDriveFileList` but returning DriveFile objects as it iterates through each page instead of storing in an array and returning the array at the end (Resolve [Issue #38](https://github.com/scrthq/PSGSuite/issues/38))
-
-#### 2.5.2
-
-* Fixed: `Update-GSUser -CustomSchemas @{schema = @{field = "value"}}` resulting in null array (Resolve [Issue #39](https://github.com/scrthq/PSGSuite/issues/39))
-
-#### 2.5.1
-
-* Fixed: `Add-GSGmailDelegate` and `Remove-GSGmailDelegate` returning 400 Bad Request responses (Resolve [Issue #35](https://github.com/scrthq/PSGSuite/issues/35))
-
-#### 2.5.0
-
-* Added: Custom Schema value setting for `Update-GSUser`
-* Fixed: `Get-GSUser -Filter *` not returning the full user list with large organizations (Resolve [Issue #32](https://github.com/scrthq/PSGSuite/issues/32))
-
-#### 2.4.0
-
-* Added: Refactored Get-GSToken to work on all versions of PowerShell and confirmed Gmail Delegation commands working in PowerShell Core (Resolve [Issue #8](https://github.com/scrthq/PSGSuite/issues/8))
-
-#### 2.3.0
-
-* Added: `Get-GSUserAlias`,`New-GSUserAlias`,`Remove-GSUserAlias` for user alias management
-* Added: `Get-GSGroupAlias`,`New-GSGroupAlias`,`Remove-GSGroupAlias` for group alias management
-* Added: `Get-GSCalendarSubscription`, `Add-GSCalendarSubscription` and `Remove-GSCalendarSubscription` for managing calendar list entries
-* Updated: `Start-GSDriveFileUpload` to fix recursive issues with trailing directory separators
-* Updated: `Watch-GSDriveFileUpload` to show progress of total file upload vs batch upload
-
-#### 2.2.1
-
-* Fixed: `Update-GSGmailAutoForwardingSettings` returns a 403 due to incorrect scope [#25](https://github.com/scrthq/PSGSuite/issues/25)
-
-#### 2.2.0
-
-Added the following:
-
-* Functions
-  * Get-GSGmailAutoForwardingSettings
-  * Get-GSGmailImapSettings
-  * Get-GSGmailPopSettings
-  * Get-GSGmailVacationSettings
-  * Update-GSGmailAutoForwardingSettings
-  * Update-GSGmailImapSettings
-  * Update-GSGmailPopSettings
-  * Update-GSGmailVacationSettings
-* CI Testing
-  * Added Travis CI testing for both Linux and macOS tests along with the existing AppVeyor CI testing on Ubuntu (PowerShell Core) Windows (PowerShell Core and Windows PowerShell)
-
-#### 2.1.5
-
-* Added: Update-GSCalendarEvent
-* Fixed: Error handling to only throw terminating errors when ErrorActionPreference is `Stop`
-
-#### 2.1.3 / 2.1.4
-
-* Fixed: Export-GSSheet -Value results in error [#19](https://github.com/scrthq/PSGSuite/issues/19)
-* Updated: Added `-Attendees` and `-AttendeeEmails` parameters to New-GSCalendarEvent
-* Added: Add-GSEventAttendee
-* Added: Get-GSActivityReport
-* Added: Get-GSUsageReport
-* Added: Add-GSGmailForwardingAddress
-
-#### 2.1.2
-
-* Fixed: Module to load only public functions
-
-#### 2.1.1
-
-* Fixed: Documentation/comment based help for Get-GSUsageReport
-
-#### 2.1.0
-
-* Added: Get-GSActivityReport
-* Added: Get-GSUsageReport
-* Updated: Initial setup page to include Reports scopes
 
 ## License
 

@@ -11,6 +11,7 @@
     - [Getting Started](#getting-started)
         - [Enabling Debug Mode](#enabling-debug-mode)
         - [Google .NET SDK Documentation](#google-net-sdk-documentation)
+            - [.NET/API Documentation Links](#netapi-documentation-links)
     - [Keeping in Touch](#keeping-in-touch)
 
 <!-- /TOC -->
@@ -105,6 +106,7 @@ PSGSuite uses Google's .NET SDK's for 99% of its functions. The easiest way to p
     * Usually the first result when searching for specific API's in Google:
         * Search: `google admin directory api`
         * Result: [G Suite Admin SDK Directory API](https://developers.google.com/admin-sdk/directory/)
+    * **See the [Documentation Links](#netapi-documentation-links) section below for some handy links**
 2. Open the **Guides** tab
 3. Click the **.NET** section under the `Quickstarts` header in the side menu
 4. Scroll to the bottom of the page and click the link for the **.NET reference documentation** under the **Further reading** header. For the Admin Directory API, it's: [Directory API .NET reference documentation](https://developers.google.com/resources/api-libraries/documentation/admin/directory_v1/csharp/latest/)
@@ -112,6 +114,25 @@ PSGSuite uses Google's .NET SDK's for 99% of its functions. The easiest way to p
 6. Find the resource class you are looking for. Resource classes all end in `Resource`, i.e. `UsersResource` or `OrgunitResource`.
 7. Find the request method specific to your function. Request methods all end in `Request`, i.e. `ListRequest` or `InsertRequest`.
 
+#### .NET/API Documentation Links
+
+Here are some links to the most commonly used SDK's and API's in PSGSuite:
+
+* **Admin SDK: Directory API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/admin/directory_v1/csharp/latest/index.html)
+    * [API Documentation](https://developers.google.com/admin-sdk/directory/v1/reference/)
+* **Drive SDK**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/drive/v3/csharp/latest/)
+    * [API Documentation](https://developers.google.com/drive/api/v3/reference/)
+* **Sheets API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/sheets/v4/csharp/latest/)
+    * [API Documentation](https://developers.google.com/sheets/api/reference/rest/)
+* **Gmail API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/gmail/v1/csharp/latest/)
+    * [API Documentation](https://developers.google.com/gmail/api/v1/reference/)
+* **Calendar API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/calendar/v3/csharp/latest/)
+    * [API Documentation](https://developers.google.com/calendar/v3/reference/)
 
 ## Keeping in Touch
 
