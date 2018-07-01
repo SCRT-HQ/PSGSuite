@@ -45,6 +45,16 @@ Interested in helping out with PSGSuite development? Please check out our [Contr
 
 Please adhere to our [Code of Conduct](https://github.com/scrthq/PSGSuite/blob/master/CODE_OF_CONDUCT.md) when interacting with this repo.
 
+## License
+
+[Apache 2.0](https://tldrlegal.com/license/apache-license-2.0-(apache-2.0))
+
+## Changelog
+
+[Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
+
+***
+
 ## 2.0.0 - Changes
 
 ### New Functionality
@@ -115,10 +125,6 @@ Update-GSCalendarResource         Update-GSResource
 Update-GSSheetValue               Export-GSSheet
 ```
 
-## Changelog
-
-[Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
-
 ### Most recent changes
 
 #### 2.9.0
@@ -177,7 +183,3 @@ $members
 #contains the group members' full user info
 $users
 ```
-
-## License
-
-[Apache 2.0](https://tldrlegal.com/license/apache-license-2.0-(apache-2.0))
