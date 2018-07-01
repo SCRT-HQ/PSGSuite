@@ -32,7 +32,6 @@ if(
             }
         }
     }
-    . "$($PSScriptRoot)\ci\WikiUpdater.ps1"
 }
 else
 {
@@ -60,4 +59,5 @@ if(
             }
         }
     }
+    . "$($PSScriptRoot)\ci\WikiUpdater.ps1"
 }
