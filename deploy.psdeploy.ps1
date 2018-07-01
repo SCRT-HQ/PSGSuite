@@ -23,6 +23,7 @@ if(
     $env:APPVEYOR_PULL_REQUEST_NUMBER -eq $null 
 )
 {
+    . "$($PSScriptRoot)\ci\WikiUpdater.ps1"
     Deploy Module {
         By PSGalleryModule {
             FromSource $ENV:BHProjectName
