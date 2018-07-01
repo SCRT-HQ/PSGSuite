@@ -4,10 +4,13 @@
 
 - [Contributing to PSGSuite](#contributing-to-psgsuite)
     - [Git and Pull requests](#git-and-pull-requests)
-    - [Getting Started](#getting-started)
+    - [Overview](#overview)
         - [Step by Step](#step-by-step)
-        - [Style Guidelines](#style-guidelines)
+        - [Contributing Guidelines](#contributing-guidelines)
+        - [Updating the Wiki](#updating-the-wiki)
+    - [Getting Started](#getting-started)
         - [Enabling Debug Mode](#enabling-debug-mode)
+        - [Google .NET SDK Documentation](#google-net-sdk-documentation)
     - [Keeping in Touch](#keeping-in-touch)
 
 <!-- /TOC -->
@@ -19,7 +22,7 @@ Thank you for your interest in helping PSGSuite grow! Below you'll find some gui
 * Contributions are submitted, reviewed, and accepted using Github pull requests. [Read this article](https://help.github.com/articles/using-pull-requests) for some details. We use the _Fork and Pull_ model, as described there. More info can be found here: [Forking Projects](https://guides.github.com/activities/forking/)
 * Please make sure to leave the `Allow edits from maintainers` box checked when submitting PR's so that any edits can be made by maintainers of the repo directly to the source branch and into the same PR. More info can be found here: [Allowing changes to a pull request branch created from a fork](https://help.github.com/articles/allowing-changes-to-a-pull-request-branch-created-from-a-fork/#enabling-repository-maintainer-permissions-on-existing-pull-requests)
 
-## Getting Started
+## Overview
 
 ### Step by Step
 
@@ -31,7 +34,7 @@ Here's the overall flow of making contributions:
 5. Pull request is reviewed. Any necessary edits / suggestions will be made
 6. Once changes are approved, the pull request is merged into the origin's master branch and deployed to the PowerShell Gallery once CI tests pass in AppVeyor
 
-### Style Guidelines
+### Contributing Guidelines
 
 Please follow these guidelines for any content being added:
 
@@ -44,6 +47,10 @@ Please follow these guidelines for any content being added:
     * include comment-based help (this is used to drive the Wiki updates on deployment)
     * include Write-Verbose calls to describe what the function is doing (CI tests will fail the build if any don't)
     * be placed in the correct APU/use-case folder in the Public sub-directory of the module path (if it's a new API/use-case, create the new folder as well)
+    * use `SupportsShouldProcess` if...
+        * the function's verb is `Remove` or `Set`. 
+        * it can be included on `Update` functions as well, if felt that the actions executed by the function should be guarded
+        * `Get` functions should **never** need `SupportsShouldProcess`
 * **Every Pull Request must...**
     > These can be added in during the pull request review process, but are nice to have if possible
     * have the module version bumped appropriately in the manifest (Major for any large updates, Minor for any new functionality, Patch for any hotfixes)
@@ -52,6 +59,13 @@ Please follow these guidelines for any content being added:
     * have an entry in the ReadMe's `Most recent changes` section describing what was added, updated and/or fixed with this version number
         * *Please follow the same format already present*
         * *This can be copied over from the Changelog entry*
+
+### Updating the Wiki
+
+* Wiki updates are scripted during deployment builds, so there is no need to manually update the Wiki. 
+* Any new or updated comment-based help content will be transformed to Markdown using `platyPS` and pushed to the Wiki repo when deployment conditions are met.
+
+## Getting Started
 
 ### Enabling Debug Mode
 
@@ -82,6 +96,22 @@ $request = $service.Users.List()
 # Execute the request to return the results
 $request.Execute()
 ```
+
+### Google .NET SDK Documentation
+
+PSGSuite uses Google's .NET SDK's for 99% of its functions. The easiest way to pull up the documentation for the function you are writing is by doing the following (*using the Admin Directory API as an example*):
+
+1. Find Google's API information for the function you're writing
+    * Usually the first result when searching for specific API's in Google:
+        * Search: `google admin directory api`
+        * Result: [G Suite Admin SDK Directory API](https://developers.google.com/admin-sdk/directory/)
+2. Open the **Guides** tab
+3. Click the **.NET** section under the `Quickstarts` header in the side menu
+4. Scroll to the bottom of the page and click the link for the **.NET reference documentation** under the **Further reading** header. For the Admin Directory API, it's: [Directory API .NET reference documentation](https://developers.google.com/resources/api-libraries/documentation/admin/directory_v1/csharp/latest/)
+5. Click the **Classes** dropdown on the top-left of the page, then click **Class List**
+6. Find the resource class you are looking for. Resource classes all end in `Resource`, i.e. `UsersResource` or `OrgunitResource`.
+7. Find the request method specific to your function. Request methods all end in `Request`, i.e. `ListRequest` or `InsertRequest`.
+
 
 ## Keeping in Touch
 

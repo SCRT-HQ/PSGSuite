@@ -1,11 +1,11 @@
-if (
+<# if (
     $env:BHProjectName -and $env:BHProjectName.Count -eq 1 -and
     $env:BHBuildSystem -ne 'Unknown' -and
     $env:BHBranchName -eq "master" -and
     $env:BHCommitMessage -match '!deploy' -and
     $env:APPVEYOR_BUILD_WORKER_IMAGE -like '*2017*' -and
     $env:APPVEYOR_PULL_REQUEST_NUMBER -eq $null 
-) {
+) { #>
     git config --global credential.helper store
     Add-Content "$HOME\.git-credentials" "https://$($env:git_access_token):x-oauth-basic@github.com`n"
     git config --global user.email "nate@scrthq.com"
@@ -57,13 +57,13 @@ if (
     git push
 
     Set-Location $curLoc
-}
+<# }
 else {
-    Write-Host -ForegroundColor Yellow "SKIPPING WIKI UPDATE!: To update the wiki, ensure that...`n" +
+    "SKIPPING WIKI UPDATE!: To update the wiki, ensure that...`n" +
     "`t* You are in a known build system (Current: $ENV:BHBuildSystem)`n" +
     "`t* You are committing to the master branch (Current: $ENV:BHBranchName) `n" +
     "`t* You are not building a Pull Request (Current: $ENV:APPVEYOR_PULL_REQUEST_NUMBER) `n" +
     "`t* Your commit message includes !deploy (Current: $ENV:BHCommitMessage) `n" +
     "`t* Your build image is Visual Studio 2017 (Current: $ENV:APPVEYOR_BUILD_WORKER_IMAGE)" |
         Write-Host
-}
+} #>
