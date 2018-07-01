@@ -31,8 +31,8 @@ function Remove-GSUser {
         $service = New-GoogleService @serviceParams
     }
     Process {
-        try {
-            foreach ($U in $User) {
+        foreach ($U in $User) {
+            try {
                 if ($U -notlike "*@*.*") {
                     $U = "$($U)@$($Script:PSGSuite.Domain)"
                 }
@@ -43,13 +43,13 @@ function Remove-GSUser {
                     Write-Verbose "User '$U' has been successfully deleted"
                 }
             }
-        }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
-            }
-            else {
-                Write-Error $_
+            catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                else {
+                    Write-Error $_
+                }
             }
         }
     }

@@ -53,6 +53,11 @@ function Update-GSUser {
     
     .PARAMETER IpWhitelisted
     If true, the user's IP address is white listed: http://support.google.com/a/bin/answer.py?answer=60752
+
+    .PARAMETER IsAdmin
+    If true, the user will be made a SuperAdmin. If $false, the user will have SuperAdmin privileges revoked.
+
+    Requires confirmation.
     
     .PARAMETER CustomSchemas
     Custom user attribute values to add to the user's account. This parameter only accepts a hashtable where the keys are Schema Names and the value for each key is another hashtable, i.e.: 
@@ -86,7 +91,7 @@ function Update-GSUser {
     
     Updates user john.smith@domain.com with a new primary email of "johnathan.smith@domain.com", sets their Given Name to "Johnathan" and unsuspends them. Their previous primary email "john.smith@domain.com" will become an alias on their account automatically
     #>
-    [cmdletbinding()]
+    [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
     Param
     (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
@@ -133,6 +138,9 @@ function Update-GSUser {
         [parameter(Mandatory = $false)]
         [Switch]
         $IpWhitelisted,
+        [parameter(Mandatory = $false)]
+        [Switch]
+        $IsAdmin,
         [parameter(Mandatory = $false)]
         [ValidateScript({
             $hash = $_
@@ -205,6 +213,22 @@ function Update-GSUser {
                                 $schemaDict.Add($schemaName,$fieldDict)
                             }
                             $body.CustomSchemas = $schemaDict
+                        }
+                        IsAdmin {
+                            if ($userObj.IsAdmin -eq $PSBoundParameters[$prop]) {
+                                Write-Verbose "User '$U' already has IsAdmin set to '$($userObj.IsAdmin)'"
+                            }
+                            else {
+                                if ($PSCmdlet.ShouldProcess("Updating user '$U' to IsAdmin '$($PSBoundParameters[$prop])'")) {
+                                    Write-Verbose "Updating user '$U' to IsAdmin '$($PSBoundParameters[$prop])'"
+                                    $adminBody = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserMakeAdmin' -Property @{
+                                        Status = $PSBoundParameters[$prop]
+                                    }
+                                    $request = $service.Users.MakeAdmin($adminBody,$userObj.Id)
+                                    $request.Execute()
+                                    ###Write-Verbose "User '$U' has been successfully deleted"
+                                }
+                            }
                         }
                         Default {
                             $body.$prop = $PSBoundParameters[$prop]

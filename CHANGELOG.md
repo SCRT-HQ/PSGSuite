@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+  - [2.9.0](#290)
   - [2.8.1](#281)
   - [2.8.0](#280)
   - [2.7.2](#272)
@@ -37,6 +38,12 @@
       - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.9.0
+
+* Updated: Added `IsAdmin` switch parameter to `Update-GSUser`, allowing set or revoke SuperAdmin privileges for a user ([Issue #54](https://github.com/scrthq/PSGSuite/issues/54))
+* Added: `Get-GSAdminRole`, `New-GSAdminRole`, `Remove-GSAdminRole`& `Update-GSAdminRole` to manage Admin Roles in G Suite ([Issue #54](https://github.com/scrthq/PSGSuite/issues/54))
+* Added: `Get-GSAdminRoleAssignment`, `New-GSAdminRoleAssignment` & `Remove-GSAdminRoleAssignment` to manage Admin Role Assignments in G Suite ([Issue #54](https://github.com/scrthq/PSGSuite/issues/54))
 
 ## 2.8.1
 

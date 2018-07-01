@@ -2,6 +2,7 @@ $PSVersion = $PSVersionTable.PSVersion.Major
 $ModuleName = "PSGSuite"
 $projectRoot = Resolve-Path "$PSScriptRoot\.."
 $ModulePath = Resolve-Path "$projectRoot\$ModuleName"
+$env:EnablePSGSuiteDebug = $true
 
 # Verbose output for non-master builds on appveyor
 # Handy for troubleshooting.
@@ -26,8 +27,8 @@ Describe "Previous build validation" {
 
 Describe "Module tests: $ModuleName" {
     Context "Confirm private functions are not exported on module import" {
-        It "Should throw when checking for New-GoogleService in the exported commands" {
-            {Get-Command -Name New-GoogleService -Module PSGSuite -ErrorAction Stop} | Should -Throw "The term 'New-GoogleService' is not recognized as the name of a cmdlet, function, script file, or operable program."
+        It "Should throw when checking for Get-GSUserListPrivate in the exported commands" {
+            {Get-Command -Name Get-GSUserListPrivate -Module PSGSuite -ErrorAction Stop} | Should -Throw "The term 'Get-GSUserListPrivate' is not recognized as the name of a cmdlet, function, script file, or operable program."
         }
     }
     Context "Confirm files are valid Powershell syntax" {
