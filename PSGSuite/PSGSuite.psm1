@@ -130,7 +130,9 @@ catch {
 }
 finally {
     $functionsToExport = if ($env:EnablePSGSuiteDebug) {
-        ($Public.Basename + 'New-GoogleService')
+        $Public.Basename
+        'New-GoogleService'
+        'Get-GSToken'
     }
     else {
         $Public.Basename
