@@ -72,7 +72,7 @@ Please follow these guidelines for any content being added:
 
 ### Enabling Debug Mode
 
-To enable debug mode and export the `New-GoogleService` function with the module, you can run the `Debub Mode.ps1` script in the `tools` folder in the root of the repo or the following lines of code from the root of the repo in PowerShell:
+To enable debug mode and export the `New-GoogleService` function with the module, you can run the `Debub Mode.ps1` script in the root of the repo or the following lines of code from the root of the repo in PowerShell:
 
 ```powershell
 $env:EnablePSGSuiteDebug = $true
