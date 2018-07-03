@@ -12,7 +12,7 @@
     RootModule            = 'PSGSuite.psm1'
 
     # Version number of this module.
-    ModuleVersion         = '2.9.0'
+    ModuleVersion         = '2.10.0'
 
     # ID used to uniquely identify this module
     GUID                  = '9d751152-e83e-40bb-a6db-4c329092aaec'

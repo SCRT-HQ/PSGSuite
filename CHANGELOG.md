@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+  - [2.10.0](#2100)
   - [2.9.0](#290)
   - [2.8.1](#281)
   - [2.8.0](#280)
@@ -38,6 +39,12 @@
       - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.10.0
+
+* Added: `Clear-GSTasklist`, `Get-GSTask`, `Get-GSTasklist`, `Move-GSTask`, `New-GSTask`, `New-GSTasklist`, `Remove-GSTask`, `Remove-GSTasklist`, `Update-GSTask` & `Update-GSTasklist`
+  * These will allow full use of the Tasks API from Google.
+  * **Please see the updated [Initial Setup guide](https://github.com/scrthq/PSGSuite/wiki/Initial-Setup#adding-api-client-access-in-admin-console) to update your API access for the new Scope list and enable the Tasks API in your project in the Developer Console!**
 
 ## 2.9.0
 
