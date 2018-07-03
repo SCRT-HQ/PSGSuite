@@ -32,15 +32,15 @@ function Get-GSTasklist {
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (
-        [parameter(Mandatory = $false,Position = 0)]
+        [parameter(Mandatory = $false,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true,ParameterSetName = "Get")]
+        [Alias('Id')]
+        [String[]]
+        $Tasklist,
+        [parameter(Mandatory = $false,Position = 1)]
         [Alias("PrimaryEmail","UserKey","Mail","Email")]
         [ValidateNotNullOrEmpty()]
         [String]
         $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $false,Position = 1,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true,ParameterSetName = "Get")]
-        [Alias('Id')]
-        [String[]]
-        $Tasklist,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [ValidateRange(1,100)]
         [Alias("MaxResults")]
