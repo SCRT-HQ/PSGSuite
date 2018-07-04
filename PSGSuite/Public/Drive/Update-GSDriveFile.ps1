@@ -133,6 +133,8 @@ function Update-GSDriveFile {
                 }
                 $stream = New-Object 'System.IO.FileStream' $ioFile.FullName,'Open','Read'
                 $request = $service.Files.Update($body,$FileId,$stream,$contentType)
+                $request.QuotaUser = $User
+                $request.ChunkSize = 512KB
             }
             else {
                 $request = $service.Files.Update($body,$FileId)
