@@ -9,8 +9,8 @@ function Update-GSDriveFile {
     .PARAMETER FileId
     The unique Id of the Drive file to Update
     
-    .PARAMETER User
-    The email or unique Id of the Drive file owner
+    .PARAMETER Path
+    The path to the local file whose content you would like to upload to Drive.
     
     .PARAMETER Name
     The new name of the Drive file
@@ -36,10 +36,18 @@ function Update-GSDriveFile {
     .PARAMETER Fields
     The specific fields to returned
     
+    .PARAMETER User
+    The email or unique Id of the Drive file owner
+    
     .EXAMPLE
     Update-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -Name "To-Do Progress"
 
     Updates the Drive file with a new name, "To-Do Progress"
+    
+    .EXAMPLE
+    Update-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -Path "C:\Pics\NewPic.png"
+
+    Updates the Drive file with the content of the file at that path. In this example, the Drive file is a PNG named "Test.png". This will change the content of the file in Drive to match NewPic.png as well as rename it to "NewPic.png"
     #>
     [cmdletbinding(DefaultParameterSetName = "Depth")]
     Param
@@ -48,10 +56,10 @@ function Update-GSDriveFile {
         [Alias('Id')]
         [String]
         $FileId,
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
-        [Alias('Owner','PrimaryEmail','UserKey','Mail')]
-        [string]
-        $User = $Script:PSGSuite.AdminEmail,
+        [parameter(Mandatory = $false,Position = 1)]
+        [ValidateScript({Test-Path $_})]
+        [String]
+        $Path,
         [parameter(Mandatory = $false)]
         [String]
         $Name,
@@ -72,7 +80,11 @@ function Update-GSDriveFile {
         [parameter(Mandatory = $false,ParameterSetName = "Fields")]
         [ValidateSet("appProperties","capabilities","contentHints","createdTime","description","explicitlyTrashed","fileExtension","folderColorRgb","fullFileExtension","hasThumbnail","headRevisionId","iconLink","id","imageMediaMetadata","isAppAuthorized","kind","lastModifyingUser","md5Checksum","mimeType","modifiedByMe","modifiedByMeTime","modifiedTime","name","originalFilename","ownedByMe","owners","parents","permissions","properties","quotaBytesUsed","shared","sharedWithMeTime","sharingUser","size","spaces","starred","thumbnailLink","thumbnailVersion","trashed","version","videoMediaMetadata","viewedByMe","viewedByMeTime","viewersCanCopyContent","webContentLink","webViewLink","writersCanShare")]
         [String[]]
-        $Fields
+        $Fields,
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [Alias('Owner','PrimaryEmail','UserKey','Mail')]
+        [string]
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
         if ($Projection) {
@@ -113,7 +125,20 @@ function Update-GSDriveFile {
             if ($Description) {
                 $body.Description = $Description
             }
-            $request = $service.Files.Update($body,$FileId)
+            if ($PSBoundParameters.Keys -contains 'Path') {
+                $ioFile = Get-Item $Path
+                $contentType = Get-MimeType $ioFile
+                if ($PSBoundParameters.Keys -notcontains 'Name') {
+                    $body.Name = $ioFile.Name
+                }
+                $stream = New-Object 'System.IO.FileStream' $ioFile.FullName,'Open','Read'
+                $request = $service.Files.Update($body,$FileId,$stream,$contentType)
+                $request.QuotaUser = $User
+                $request.ChunkSize = 512KB
+            }
+            else {
+                $request = $service.Files.Update($body,$FileId)
+            }
             $request.SupportsTeamDrives = $true
             if ($fs) {
                 $request.Fields = $($fs -join ",")
@@ -125,7 +150,13 @@ function Update-GSDriveFile {
                 $request.RemoveParents = $($RemoveParents -join ",")
             }
             Write-Verbose "Updating file '$FileId' for user '$User'"
-            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
+            if ($PSBoundParameters.Keys -contains 'Path') {
+                $request.Upload()
+                $stream.Close()
+            }
+            else {
+                $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
+            }
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

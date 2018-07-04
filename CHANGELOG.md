@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+  - [2.10.1](#2101)
   - [2.10.0](#2100)
   - [2.9.0](#290)
   - [2.8.1](#281)
@@ -39,6 +40,10 @@
       - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.10.1
+
+* Updated: Added `Path` parameter to `Update-GSDriveFile` to allow updating a file's contents in Drive using a local file path.
 
 ## 2.10.0
 
