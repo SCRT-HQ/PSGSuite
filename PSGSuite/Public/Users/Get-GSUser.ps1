@@ -155,14 +155,14 @@ function Get-GSUser {
     Begin {
         if ($PSBoundParameters.Keys -contains 'ConfigName') {
             if ($Script:PSGSuite.ConfigName -ne $PSBoundParameters['ConfigName']) {
-                $curConfig = $Script:PSGSuite.ConfigName
+                $activeConfig = $Script:PSGSuite.ConfigName
                 Switch-PSGSuiteConfig -ConfigName $PSBoundParameters['ConfigName']
                 if ($PSBoundParameters.Keys -notcontains 'User' -and $PSCmdlet.ParameterSetName -eq 'Get') {
                     $User = $Script:PSGSuite.AdminEmail
                 }
             }
             else {
-                $curConfig = $null
+                $activeConfig = $null
                 Write-Verbose "Current config is already set to '$($Script:PSGSuite.ConfigName)' --- retaining current config"
             }
         }
@@ -209,9 +209,9 @@ function Get-GSUser {
             }
         }
         catch {
-            if ($PSBoundParameters.Keys -contains 'ConfigName' -and $curConfig) {
-                Switch-PSGSuiteConfig -ConfigName $curConfig
-                $curConfig = $null
+            if ($PSBoundParameters.Keys -contains 'ConfigName' -and $activeConfig) {
+                Switch-PSGSuiteConfig -ConfigName $activeConfig
+                $activeConfig = $null
             }
             if ($ErrorActionPreference -eq 'Stop') {
                 $PSCmdlet.ThrowTerminatingError($_)
@@ -222,8 +222,8 @@ function Get-GSUser {
         }
     }
     End {
-        if ($PSBoundParameters.Keys -contains 'ConfigName' -and $curConfig) {
-            Switch-PSGSuiteConfig -ConfigName $curConfig
+        if ($PSBoundParameters.Keys -contains 'ConfigName' -and $activeConfig) {
+            Switch-PSGSuiteConfig -ConfigName $activeConfig
         }
     }
 }
