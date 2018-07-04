@@ -43,7 +43,11 @@ function Get-GSUserListPrivate {
         [parameter(Mandatory = $false)]
         [ValidateSet("Ascending","Descending")]
         [String]
-        $SortOrder
+        $SortOrder,
+        [parameter(Mandatory = $false)]
+        [Alias('Profile','ProfileName')]
+        [String]
+        $ConfigName
     )
     Begin {
         $serviceParams = @{

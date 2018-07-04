@@ -10,7 +10,11 @@ function Get-GSShortUrlListPrivate {
       [parameter(Mandatory=$false)]
       [ValidateSet("Full","Analytics_Clicks")]
       [string]
-      $Projection = "Full"
+      $Projection = "Full",
+      [parameter(Mandatory = $false)]
+      [Alias('Profile','ProfileName')]
+      [String]
+      $ConfigName
     )
     Process {
         foreach ($U in $User) {

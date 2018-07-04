@@ -146,9 +146,26 @@ function Get-GSUser {
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [ValidateSet("Ascending","Descending")]
         [String]
-        $SortOrder
+        $SortOrder,
+        [parameter(Mandatory = $false)]
+        [Alias('Profile','ProfileName')]
+        [String]
+        $ConfigName
     )
     Begin {
+        if ($PSBoundParameters.Keys -contains 'ConfigName') {
+            if ($Script:PSGSuite.ConfigName -ne $PSBoundParameters['ConfigName']) {
+                $curConfig = $Script:PSGSuite.ConfigName
+                Switch-PSGSuiteConfig -ConfigName $PSBoundParameters['ConfigName']
+                if ($PSBoundParameters.Keys -notcontains 'User' -and $PSCmdlet.ParameterSetName -eq 'Get') {
+                    $User = $Script:PSGSuite.AdminEmail
+                }
+            }
+            else {
+                $curConfig = $null
+                Write-Verbose "Current config is already set to '$($Script:PSGSuite.ConfigName)' --- retaining current config"
+            }
+        }
         if ($PSCmdlet.ParameterSetName -eq 'Get' -and $MyInvocation.InvocationName -ne 'Get-GSUserList') {
             $serviceParams = @{
                 Scope       = 'https://www.googleapis.com/auth/admin.directory.user.readonly'
@@ -192,12 +209,21 @@ function Get-GSUser {
             }
         }
         catch {
+            if ($PSBoundParameters.Keys -contains 'ConfigName' -and $curConfig) {
+                Switch-PSGSuiteConfig -ConfigName $curConfig
+                $curConfig = $null
+            }
             if ($ErrorActionPreference -eq 'Stop') {
                 $PSCmdlet.ThrowTerminatingError($_)
             }
             else {
                 Write-Error $_
             }
+        }
+    }
+    End {
+        if ($PSBoundParameters.Keys -contains 'ConfigName' -and $curConfig) {
+            Switch-PSGSuiteConfig -ConfigName $curConfig
         }
     }
 }

@@ -6,7 +6,11 @@
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [String[]]
-        $User = $Script:PSGSuite.AdminEmail
+        $User = $Script:PSGSuite.AdminEmail,
+        [parameter(Mandatory = $false)]
+        [Alias('Profile','ProfileName')]
+        [String]
+        $ConfigName
     )
     Begin {
         $serviceParams = @{

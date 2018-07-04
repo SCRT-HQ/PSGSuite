@@ -1,6 +1,11 @@
 function Get-GSUserSchemaListPrivate {
     [cmdletbinding()]
-    Param( )
+    Param(
+        [parameter(Mandatory = $false)]
+        [Alias('Profile','ProfileName')]
+        [String]
+        $ConfigName
+    )
     Begin {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.userschema'

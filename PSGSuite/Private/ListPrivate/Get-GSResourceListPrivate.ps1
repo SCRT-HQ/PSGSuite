@@ -17,7 +17,11 @@ function Get-GSResourceListPrivate {
         [ValidateRange(1,500)]
         [Alias("MaxResults")]
         [Int]
-        $PageSize = "500"
+        $PageSize = "500",
+        [parameter(Mandatory = $false)]
+        [Alias('Profile','ProfileName')]
+        [String]
+        $ConfigName
     )
     Begin {
         if ($MyInvocation.InvocationName -eq 'Get-GSCalendarResourceList') {

@@ -10,7 +10,11 @@ function Get-GSOrganizationalUnitListPrivate {
         [Alias('Type')]
         [ValidateSet('Subtree','OneLevel','All','Children')]
         [String]
-        $SearchScope = 'All'
+        $SearchScope = 'All',
+        [parameter(Mandatory = $false)]
+        [Alias('Profile','ProfileName')]
+        [String]
+        $ConfigName
     )
     Begin {
         $serviceParams = @{

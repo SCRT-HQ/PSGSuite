@@ -14,7 +14,11 @@ function Get-GSGroupMemberListPrivate {
         [ValidateRange(1,200)]
         [Alias('MaxResults')]
         [Int]
-        $PageSize = "200"
+        $PageSize = "200",
+        [parameter(Mandatory = $false)]
+        [Alias('Profile','ProfileName')]
+        [String]
+        $ConfigName
     )
     Begin {
         $serviceParams = @{

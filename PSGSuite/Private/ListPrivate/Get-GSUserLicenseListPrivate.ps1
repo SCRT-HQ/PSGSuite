@@ -15,7 +15,11 @@ function Get-GSUserLicenseListPrivate {
         [Alias("MaxResults")]
         [ValidateRange(1,1000)]
         [Int]
-        $PageSize = "1000"
+        $PageSize = "1000",
+        [parameter(Mandatory = $false)]
+        [Alias('Profile','ProfileName')]
+        [String]
+        $ConfigName
     )
     Begin {
         $serviceParams = @{
