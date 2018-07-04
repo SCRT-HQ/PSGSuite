@@ -127,6 +127,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.10.1
+
+* Updated: Added `Path` parameter to `Update-GSDriveFile` to allow updating a file's contents in Drive using a local file path.
+
 #### 2.10.0
 
 * Added: `Clear-GSTasklist`, `Get-GSTask`, `Get-GSTasklist`, `Move-GSTask`, `New-GSTask`, `New-GSTasklist`, `Remove-GSTask`, `Remove-GSTasklist`, `Update-GSTask` & `Update-GSTasklist`
