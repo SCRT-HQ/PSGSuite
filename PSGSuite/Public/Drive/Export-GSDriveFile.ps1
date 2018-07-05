@@ -51,7 +51,7 @@ function Export-GSDriveFile {
     The specific fields to returned
     
     .EXAMPLE
-    Export-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -Type CSV
+    Export-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -Type CSV -OutFilePath .\SheetExport.csv
 
     Exports the Drive file as a CSV to the current working directory
     #>
@@ -153,6 +153,7 @@ function Export-GSDriveFile {
                 }
             }
             else {
+                Write-Verbose "Getting content of File '$FileID' as Type '$Type'"
                 $request.Execute()
             }
         }

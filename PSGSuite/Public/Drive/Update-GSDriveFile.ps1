@@ -151,7 +151,7 @@ function Update-GSDriveFile {
             }
             Write-Verbose "Updating file '$FileId' for user '$User'"
             if ($PSBoundParameters.Keys -contains 'Path') {
-                $request.Upload()
+                $request.Upload() | Out-Null
                 $stream.Close()
             }
             else {
