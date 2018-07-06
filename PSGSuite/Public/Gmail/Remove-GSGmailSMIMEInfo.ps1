@@ -20,7 +20,7 @@ function Remove-GSGmailSMIMEInfo {
     .EXAMPLE
     Remove-GSGmailSMIMEInfo -SendAsEmail 'joe@otherdomain.com' -Id 1008396210820120578939 -User joe@domain.com
 
-    Rmoves the specified S/MIME info for Joe's SendAsEmail 'joe@otherdomain.com'
+    Removes the specified S/MIME info for Joe's SendAsEmail 'joe@otherdomain.com'.
     #>
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
     Param
