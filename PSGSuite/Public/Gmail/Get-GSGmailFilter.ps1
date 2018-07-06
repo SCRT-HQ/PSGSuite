@@ -4,7 +4,7 @@ function Get-GSGmailFilter {
     Gets Gmail filter details
     
     .DESCRIPTION
-    Long description
+    Gets Gmail filter details
     
     .PARAMETER FilterId
     The unique Id of the filter you would like to retrieve information for. If excluded, all filters for the user are returned

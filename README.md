@@ -127,6 +127,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.11.0
+
+* Added: `Get-GSGmailSMIMEInfo`, `Remove-GSGmailSMIMEInfo` & `New-GSGmailSMIMEInfo` to get, delete and insert S/MIME info for a user, respectively ([Issue #57](https://github.com/scrthq/PSGSuite/issues/57))
+
 #### 2.10.2
 
 * Added: `Get-GSDocContent`, `Set-GSDocContent` & `Add-GSDocContent` to establish functional parity with `Get-Content`, `Set-Content` & `Add-Content` in regards to working with Google Docs ([Issue #56](https://github.com/scrthq/PSGSuite/issues/56))
