@@ -70,17 +70,14 @@ Describe "Module tests: $ModuleName" {
 Describe "Function contents" {
     Context "All non-helper public functions should use Write-Verbose" {
         $scripts = Get-ChildItem "$ModulePath\Public" -Include *.ps1 -Recurse | Where-Object {$_.FullName -notlike "*Helpers*"}
-
         $testCase = $scripts | Foreach-Object {@{file = $_;Name = $_.BaseName}}         
         It "Function <Name> should contain verbose output" -TestCases $testCase {
             param($file,$Name)
-
             $file.fullname | Should -FileContentMatch 'Write-Verbose'
         }
     }
     Context "All 'Remove' functions should SupportsShouldProcess" {
         $scripts = Get-ChildItem "$ModulePath\Public" -Include 'Remove-*.ps1' -Recurse | Where-Object {$_.FullName -notlike "*Helpers*"}
-
         $testCase = $scripts | Foreach-Object {@{file = $_;Name = $_.BaseName}}
         It "Function <Name> should contain SupportsShouldProcess" -TestCases $testCase {
             param($file,$Name)
@@ -88,6 +85,8 @@ Describe "Function contents" {
         }
     }
     Context "All 'Remove' functions should contain 'PSCmdlet.ShouldProcess'" {
+        $scripts = Get-ChildItem "$ModulePath\Public" -Include 'Remove-*.ps1' -Recurse | Where-Object {$_.FullName -notlike "*Helpers*"}
+        $testCase = $scripts | Foreach-Object {@{file = $_;Name = $_.BaseName}}    
         It "Function <Name> should contain PSCmdlet.ShouldProcess" -TestCases $testCase {
             param($file,$Name)
             $file.fullname | Should -FileContentMatch 'PSCmdlet.ShouldProcess'
