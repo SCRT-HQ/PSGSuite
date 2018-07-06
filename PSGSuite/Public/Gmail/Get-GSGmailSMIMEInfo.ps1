@@ -30,10 +30,10 @@ function Get-GSGmailSMIMEInfo {
         [parameter(Mandatory = $true)]
         [string]
         $SendAsEmail,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [string[]]
         $Id,
-        [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $false)]
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [string]
@@ -55,19 +55,17 @@ function Get-GSGmailSMIMEInfo {
     }
     Process {
         try {
-            switch ($PSCmdlet.ParameterSetName) {
-                Get {
-                    foreach ($I in $Id) {
-                        $request = $service.Users.Settings.SendAs.SmimeInfo.Get($User,$SendAsEmail,$I)
-                        Write-Verbose "Getting S/MIME Id '$I' of SendAsEmail '$SendAsEmail' for user '$User'"
-                        $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
-                    }
+            if ($PSBoundParameters.Keys -contains 'Id') {
+                foreach ($I in $Id) {
+                    $request = $service.Users.Settings.SendAs.SmimeInfo.Get($User,$SendAsEmail,$I)
+                    Write-Verbose "Getting S/MIME Id '$I' of SendAsEmail '$SendAsEmail' for user '$User'"
+                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
                 }
-                List {
-                    $request = $service.Users.Settings.SendAs.SmimeInfo.List($User,$SendAsEmail)
-                    Write-Verbose "Getting list of S/MIME Id's of SendAsEmail '$SendAsEmail' for user '$User'"
-                    $request.Execute() | Select-Object -ExpandProperty smimeInfo | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
-                }
+            }
+            else {
+                $request = $service.Users.Settings.SendAs.SmimeInfo.List($User,$SendAsEmail)
+                Write-Verbose "Getting list of S/MIME Id's of SendAsEmail '$SendAsEmail' for user '$User'"
+                $request.Execute() | Select-Object -ExpandProperty smimeInfo | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
             }
         }
         catch {
