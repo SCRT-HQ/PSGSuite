@@ -85,7 +85,7 @@ Describe "Function contents" {
         It "Function <Name> should contain SupportsShouldProcess" -TestCases $testCase {
             param($file,$Name)
             $file.fullname | Should -FileContentMatch 'SupportsShouldProcess'
-            $file.fullname | Should -FileContentMatch '$PSCmdlet.ShouldProcess'
+            $file.fullname | Should -FileContentMatch 'PSCmdlet.ShouldProcess'
         }
     }
 }
