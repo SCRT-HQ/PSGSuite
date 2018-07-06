@@ -81,10 +81,13 @@ Describe "Function contents" {
     Context "All 'Remove' functions should SupportsShouldProcess" {
         $scripts = Get-ChildItem "$ModulePath\Public" -Include 'Remove-*.ps1' -Recurse | Where-Object {$_.FullName -notlike "*Helpers*"}
 
-        $testCase = $scripts | Foreach-Object {@{file = $_;Name = $_.BaseName}}         
+        $testCase = $scripts | Foreach-Object {@{file = $_;Name = $_.BaseName}}
         It "Function <Name> should contain SupportsShouldProcess" -TestCases $testCase {
             param($file,$Name)
             $file.fullname | Should -FileContentMatch 'SupportsShouldProcess'
+        }
+        It "Function <Name> should contain PSCmdlet.ShouldProcess" -TestCases $testCase {
+            param($file,$Name)
             $file.fullname | Should -FileContentMatch 'PSCmdlet.ShouldProcess'
         }
     }
