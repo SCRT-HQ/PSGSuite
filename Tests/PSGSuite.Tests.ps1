@@ -87,9 +87,10 @@ Describe "Function contents" {
             $file.fullname | Should -FileContentMatch 'SupportsShouldProcess'
         }
     }
-    Context "All 'Remove' functions should contain 'PSCmdlet.ShouldProcess'"
+    Context "All 'Remove' functions should contain 'PSCmdlet.ShouldProcess'" {
         It "Function <Name> should contain PSCmdlet.ShouldProcess" -TestCases $testCase {
             param($file,$Name)
             $file.fullname | Should -FileContentMatch 'PSCmdlet.ShouldProcess'
         }
+    }
 }
