@@ -27,7 +27,7 @@ function Remove-GSDrivePermission {
 
     Gets the permissions assigned to groups and removes them.
     #>
-    [cmdletbinding(ConfirmImpact = "High")]
+    [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
     Param
     (
         [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
@@ -58,11 +58,12 @@ function Remove-GSDrivePermission {
     }
     Process {
         try {
-            $request = $service.Permissions.Delete($FileId,$PermissionId)
-            $request.SupportsTeamDrives = $true
-            $request.Execute()
-            Write-Verbose "Successfully removed Drive Permission Id '$PermissionId' from FileId '$FileID'"
-            
+            if ($PSCmdlet.ShouldProcess("Removing Drive Permission Id '$PermissionId' from FileId '$FileID'")) {
+                $request = $service.Permissions.Delete($FileId,$PermissionId)
+                $request.SupportsTeamDrives = $true
+                $request.Execute()
+                Write-Verbose "Successfully removed Drive Permission Id '$PermissionId' from FileId '$FileID'"
+            }
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {
