@@ -52,6 +52,7 @@
   * Using the SDK requires additional configuration of the Bot in the Google Developer's console (Documentation soon to come)
 * Added: `Get-GSChatConfig` to retrieve the Chat specific config data
 * Updated: `Set-PSGSuiteConfig` & `Get-PSGSuiteConfig` to manage config dictionaries for Chat Webhook and Space data
+* Updated: All .NET SDK DLL's to version 1.34 to work with the Hangouts Chat API
 
 ## 2.11.0
 
