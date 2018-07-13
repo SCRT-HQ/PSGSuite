@@ -12,12 +12,13 @@ function Import-GoogleSDK {
             Write-Verbose "Importing the SDK's for netstandard1.3"
             "$lib\netstandard1.3"
         }
-        Get-ChildItem $sdkPath -Filter "*.dll" | Where-Object {$_.FullName -notin $refs} | ForEach-Object {
+        Get-ChildItem $sdkPath -Filter "*.dll" | Where-Object {$_.Name -notin $refs} | ForEach-Object {
+            $sdk = $_.Name
             try {
                 Add-Type -Path $_.FullName -ErrorAction Stop
             }
             catch {
-                Write-Error $_
+                Write-Error "$($sdk): $($_.Exception.Message)"
             }
         }
     }

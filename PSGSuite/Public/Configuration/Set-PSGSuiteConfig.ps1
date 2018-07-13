@@ -101,6 +101,9 @@ function Set-PSGSuiteConfig {
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [string]
         $ServiceAccountClientID,
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [Hashtable[]]
+        $Webhook,
         [parameter(Mandatory = $false)]
         [ValidateSet("User", "Machine", "Enterprise", $null)]
         [string]
@@ -140,7 +143,7 @@ function Set-PSGSuiteConfig {
             }
         }
         Write-Verbose "Setting config name '$ConfigName'"
-        $configParams = @('P12KeyPath','ClientSecretsPath','AppEmail','AdminEmail','CustomerID','Domain','Preference','ServiceAccountClientID')
+        $configParams = @('P12KeyPath','ClientSecretsPath','AppEmail','AdminEmail','CustomerID','Domain','Preference','ServiceAccountClientID','Webhook')
         if ($SetAsDefaultConfig -or !$configHash["DefaultConfig"]) {
             $configHash["DefaultConfig"] = $ConfigName
         }
@@ -148,7 +151,21 @@ function Set-PSGSuiteConfig {
             $configHash.Add($ConfigName,(@{}))
         }
         foreach ($key in ($PSBoundParameters.Keys | Where-Object {$configParams -contains $_})) {
-            $configHash["$ConfigName"][$key] = (Encrypt $PSBoundParameters[$key])
+            switch ($key) {
+                Webhook {
+                    if ($configHash["$ConfigName"].Keys -notcontains 'Webhook') {
+                        $configHash["$ConfigName"]['Webhook'] = @{}
+                    }
+                    foreach ($cWebhook in $PSBoundParameters[$key]) {
+                        foreach ($cWebhookKey in $cWebhook.Keys) {
+                            $configHash["$ConfigName"]['Webhook'][$cWebhookKey] = (Encrypt $cWebhook[$cWebhookKey])
+                        }
+                    }
+                }
+                default {
+                    $configHash["$ConfigName"][$key] = (Encrypt $PSBoundParameters[$key])
+                }
+            }
         }
         $configHash["$ConfigName"]['ConfigPath'] = (Join-Path $(Get-Module PSGSuite | Get-StoragePath -Scope $Script:ConfigScope) "Configuration.psd1")
         $configHash | Export-Configuration -CompanyName 'SCRT HQ' -Name 'PSGSuite' -Scope $script:ConfigScope

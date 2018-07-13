@@ -41,7 +41,10 @@ function Get-PSGSuiteConfig {
         $Scope = $Script:ConfigScope,
         [Parameter(Mandatory = $false)]
         [Switch]
-        $PassThru
+        $PassThru,
+        [Parameter(Mandatory = $false)]
+        [Switch]
+        $NoImport
     )
     function Decrypt {
         param($String)
@@ -81,7 +84,7 @@ function Get-PSGSuiteConfig {
             }
         }
     }
-    $script:PSGSuite = $encConf |
+    $decryptedConfig = $encConf |
         Select-Object -Property @{l = 'ConfigName';e = {$choice}},
                                 @{l = 'P12KeyPath';e = {Decrypt $_.P12KeyPath}},
                                 @{l = 'ClientSecretsPath';e = {Decrypt $_.ClientSecretsPath}},
@@ -91,6 +94,13 @@ function Get-PSGSuiteConfig {
                                 @{l = 'Domain';e = {Decrypt $_.Domain}},
                                 @{l = 'Preference';e = {Decrypt $_.Preference}},
                                 @{l = 'ServiceAccountClientID';e = {Decrypt $_.ServiceAccountClientID}},
+                                @{l = 'Webhook';e = {
+                                    $dict = @{}
+                                    foreach ($key in $_.Webhook.Keys) {
+                                        $dict[$key] = (Decrypt $_.Webhook[$key])
+                                    }
+                                    $dict
+                                }},
                                 @{l = 'ConfigPath';e = {if ($_.ConfigPath) {
                                             $_.ConfigPath
                                         }
@@ -102,8 +112,11 @@ function Get-PSGSuiteConfig {
                                         }
                                     }
                                 }
-    Write-Verbose "Imported configuration '$choice'"
+    Write-Verbose "Retrieved configuration '$choice'"
+    if (!$NoImport) {
+        $script:PSGSuite = $decryptedConfig
+    }
     if ($PassThru) {
-        $script:PSGSuite
+        $decryptedConfig
     }
 }

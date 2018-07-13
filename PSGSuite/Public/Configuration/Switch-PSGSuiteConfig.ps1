@@ -84,6 +84,13 @@
                                         @{l = 'Domain';e = {Decrypt $_.Domain}},
                                         @{l = 'Preference';e = {Decrypt $_.Preference}},
                                         @{l = 'ServiceAccountClientID';e = {Decrypt $_.ServiceAccountClientID}},
+                                        @{l = 'Webhook';e = {
+                                            $dict = @{}
+                                            foreach ($key in $_.Webhook.Keys) {
+                                                $dict[$key] = (Decrypt $_.Webhook[$key])
+                                            }
+                                            $dict
+                                        }},
                                         ConfigPath
             if ($SetToDefault) {
                 if ($defaultConfigName -ne $choice) {
