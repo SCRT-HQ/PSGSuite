@@ -62,7 +62,12 @@ function Get-GSChatMember {
                 foreach ($sp in $Space) {
                     try {   
                         if ($sp -notlike "spaces/*") {
-                            $sp = "spaces/$sp"
+                            try {
+                                $sp = Get-GSChatConfig -SpaceName $sp -ErrorAction Stop
+                            }
+                            catch {
+                                $sp = "spaces/$sp"
+                            }
                         }
                         $request = $service.Spaces.Members.List($sp)
                         Write-Verbose "Getting Member List of Chat Space '$sp'"

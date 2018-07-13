@@ -94,10 +94,16 @@ function Get-PSGSuiteConfig {
                                 @{l = 'Domain';e = {Decrypt $_.Domain}},
                                 @{l = 'Preference';e = {Decrypt $_.Preference}},
                                 @{l = 'ServiceAccountClientID';e = {Decrypt $_.ServiceAccountClientID}},
-                                @{l = 'Webhook';e = {
-                                    $dict = @{}
-                                    foreach ($key in $_.Webhook.Keys) {
-                                        $dict[$key] = (Decrypt $_.Webhook[$key])
+                                @{l = 'Chat';e = {
+                                    $dict = @{
+                                        Webhooks = @{}
+                                        Spaces = @{}
+                                    }
+                                    foreach ($key in $_.Chat.Webhooks.Keys) {
+                                        $dict['Webhooks'][$key] = (Decrypt $_.Chat.Webhooks[$key])
+                                    }
+                                    foreach ($key in $_.Chat.Spaces.Keys) {
+                                        $dict['Spaces'][$key] = (Decrypt $_.Chat.Spaces[$key])
                                     }
                                     $dict
                                 }},

@@ -38,7 +38,12 @@ function Get-GSChatSpace {
             foreach ($sp in $Space) {
                 try {
                     if ($sp -notlike "spaces/*") {
-                        $sp = "spaces/$sp"
+                        try {
+                            $sp = Get-GSChatConfig -SpaceName $sp -ErrorAction Stop
+                        }
+                        catch {
+                            $sp = "spaces/$sp"
+                        }
                     }
                     $request = $service.Spaces.Get($sp)
                     Write-Verbose "Getting Chat Space '$sp'"
@@ -56,12 +61,14 @@ function Get-GSChatSpace {
         }
         else {
             try {
+                $spaceArray = @()
                 $request = $service.Spaces.List()
                 Write-Verbose "Getting Chat Space List"
                 [int]$i = 1
                 do {
                     $result = $request.Execute()
                     $result.Spaces
+                    $spaceArray += $result.Spaces
                     if ($result.NextPageToken) {
                         $request.PageToken = $result.NextPageToken
                     }
@@ -80,5 +87,18 @@ function Get-GSChatSpace {
                 }
             }
         }
+    }
+    End {
+        Write-Verbose "Updating PSGSuite Config with Space list"
+        $spaceHash = $spaceArray | ForEach-Object {
+            if ($_.DisplayName) {
+                Set-PSGSuiteConfig -Space @{$_.DisplayName = $_.Name} -Verbose:$false
+                
+            }
+            else {
+                Set-PSGSuiteConfig -Space @{DM = $_.Name} -Verbose:$false
+            }
+        }
+        
     }
 }

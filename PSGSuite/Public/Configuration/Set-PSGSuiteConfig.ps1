@@ -38,6 +38,9 @@ function Set-PSGSuiteConfig {
     
     .PARAMETER ServiceAccountClientID
     The Service Account's Client ID from the Google Developer's Console. This is optional and is only used as a reference for yourself to prevent needing to check the Developer's Console for the ID when verifying API Client Access.
+
+    .PARAMETER Webhook
+    Web
     
     .PARAMETER Scope
     The scope at which you would like to set this config.
@@ -104,6 +107,9 @@ function Set-PSGSuiteConfig {
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [Hashtable[]]
         $Webhook,
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [Hashtable[]]
+        $Space,
         [parameter(Mandatory = $false)]
         [ValidateSet("User", "Machine", "Enterprise", $null)]
         [string]
@@ -143,7 +149,7 @@ function Set-PSGSuiteConfig {
             }
         }
         Write-Verbose "Setting config name '$ConfigName'"
-        $configParams = @('P12KeyPath','ClientSecretsPath','AppEmail','AdminEmail','CustomerID','Domain','Preference','ServiceAccountClientID','Webhook')
+        $configParams = @('P12KeyPath','ClientSecretsPath','AppEmail','AdminEmail','CustomerID','Domain','Preference','ServiceAccountClientID','Webhook','Space')
         if ($SetAsDefaultConfig -or !$configHash["DefaultConfig"]) {
             $configHash["DefaultConfig"] = $ConfigName
         }
@@ -153,12 +159,28 @@ function Set-PSGSuiteConfig {
         foreach ($key in ($PSBoundParameters.Keys | Where-Object {$configParams -contains $_})) {
             switch ($key) {
                 Webhook {
-                    if ($configHash["$ConfigName"].Keys -notcontains 'Webhook') {
-                        $configHash["$ConfigName"]['Webhook'] = @{}
+                    if ($configHash["$ConfigName"].Keys -notcontains 'Chat') {
+                        $configHash["$ConfigName"]['Chat'] = @{
+                            Webhooks = @{}
+                            Spaces = @{}
+                        }
                     }
                     foreach ($cWebhook in $PSBoundParameters[$key]) {
                         foreach ($cWebhookKey in $cWebhook.Keys) {
-                            $configHash["$ConfigName"]['Webhook'][$cWebhookKey] = (Encrypt $cWebhook[$cWebhookKey])
+                            $configHash["$ConfigName"]['Chat']['Webhooks'][$cWebhookKey] = (Encrypt $cWebhook[$cWebhookKey])
+                        }
+                    }
+                }
+                Space {
+                    if ($configHash["$ConfigName"].Keys -notcontains 'Chat') {
+                        $configHash["$ConfigName"]['Chat'] = @{
+                            Webhooks = @{}
+                            Spaces = @{}
+                        }
+                    }
+                    foreach ($cWebhook in $PSBoundParameters[$key]) {
+                        foreach ($cWebhookKey in $cWebhook.Keys) {
+                            $configHash["$ConfigName"]['Chat']['Spaces'][$cWebhookKey] = (Encrypt $cWebhook[$cWebhookKey])
                         }
                     }
                 }

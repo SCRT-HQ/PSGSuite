@@ -294,7 +294,7 @@ function Send-GSChatMessage {
                 foreach ($hook in $Webhook) {
                     try {
                         if ($hook -notlike "https://chat.googleapis.com/v1/spaces/*") {
-                            $hook = Get-GSChatWebhook -Name $hook -ErrorAction Stop
+                            $hook = Get-GSChatConfig -WebhookName $hook -ErrorAction Stop
                         }
                         Write-Verbose "Sending Chat Message via Webhook to '$($hook -replace "\?key\=.*",'')'"
                         Invoke-RestMethod -Method Post -Uri ([Uri]$hook) -Body $body -ContentType 'application/json' -Verbose:$false | Add-Member -MemberType NoteProperty -Name 'Webhook' -Value $hook -PassThru
@@ -347,7 +347,12 @@ function Send-GSChatMessage {
                 foreach ($par in $Parent){
                     try {
                         if ($par -notlike "spaces/*") {
-                            $par = "spaces/$par"
+                            try {
+                                $par = Get-GSChatConfig -SpaceName $par -ErrorAction Stop
+                            }
+                            catch {
+                                $par = "spaces/$par"
+                            }
                         }
                         $request = $service.Spaces.Messages.Create($body,$par)
                         if ($PSBoundParameters.Keys -contains 'ThreadKey') {
