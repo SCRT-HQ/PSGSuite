@@ -127,6 +127,15 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.12.0
+
+* Added: `Get-GSChatMember`, `Get-GSChatMessage`, `Get-GSChatSpace`, `Remove-GSChatMessage`, `Send-GSChatMessage`, `Add-GSChatButton`, `Add-GSChatCard`, `Add-GSChatCardAction`, `Add-GSChatCardSection`, `Add-GSChatImage`, `Add-GSChatKeyValue`, `Add-GSChatOnClick`, `Add-GSChatTextParagraph`
+  * These allow interaction with the Google Chat API via either Webhook or through the SDK
+  * Using the Webhook requires no additional configuration as the Webhook includes the authentication key and token in the URL
+  * Using the SDK requires additional configuration of the Bot in the Google Developer's console (Documentation soon to come)
+* Added: `Get-GSChatConfig` to retrieve the Chat specific config data
+* Updated: `Set-PSGSuiteConfig` & `Get-PSGSuiteConfig` to manage config dictionaries for Chat Webhook and Space data
+
 #### 2.11.0
 
 * Added: `Get-GSGmailSMIMEInfo`, `Remove-GSGmailSMIMEInfo` & `New-GSGmailSMIMEInfo` to get, delete and insert S/MIME info for a user, respectively ([Issue #57](https://github.com/scrthq/PSGSuite/issues/57))
