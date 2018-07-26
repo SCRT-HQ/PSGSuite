@@ -63,6 +63,8 @@ function Get-GSDrivePermission {
             if ($PermissionId) {
                 foreach ($per in $PermissionId) {
                     $request = $service.Permissions.Get($FileId,$per)
+                    $request.SupportsTeamDrives = $true
+                    $request.Fields = "*"
                     Write-Verbose "Getting Permission Id '$per' on File '$FileId' for user '$User'"
                     $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru | Add-Member -MemberType NoteProperty -Name 'FileId' -Value $FileId -PassThru
                 }
@@ -71,6 +73,7 @@ function Get-GSDrivePermission {
                 $request = $service.Permissions.List($FileId)
                 $request.SupportsTeamDrives = $true
                 $request.PageSize = $PageSize
+                $request.Fields = "*"
                 Write-Verbose "Getting Permission list on File '$FileId' for user '$User'"
                 [int]$i = 1
                 do {

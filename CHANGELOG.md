@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+  - [2.12.1](#2121)
   - [2.12.0](#2120)
   - [2.11.0](#2110)
   - [2.10.2](#2102)
@@ -43,6 +44,10 @@
       - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.12.1
+
+* Fixed: `Get-GSDrivePermission` now returns all fields (including EmailAddress)
 
 ## 2.12.0
 

@@ -127,6 +127,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.12.1
+
+* Fixed: `Get-GSDrivePermission` now returns all fields (including EmailAddress)
+
 #### 2.12.0
 
 * Added: `Get-GSChatMember`, `Get-GSChatMessage`, `Get-GSChatSpace`, `Remove-GSChatMessage`, `Send-GSChatMessage`, `Add-GSChatButton`, `Add-GSChatCard`, `Add-GSChatCardAction`, `Add-GSChatCardSection`, `Add-GSChatImage`, `Add-GSChatKeyValue`, `Add-GSChatOnClick`, `Add-GSChatTextParagraph`
