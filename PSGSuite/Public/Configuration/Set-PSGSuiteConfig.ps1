@@ -178,6 +178,7 @@ function Set-PSGSuiteConfig {
                             Spaces = @{}
                         }
                     }
+                    $configHash["$ConfigName"]['Chat']['Spaces'] = @{}
                     foreach ($cWebhook in $PSBoundParameters[$key]) {
                         foreach ($cWebhookKey in $cWebhook.Keys) {
                             $configHash["$ConfigName"]['Chat']['Spaces'][$cWebhookKey] = (Encrypt $cWebhook[$cWebhookKey])

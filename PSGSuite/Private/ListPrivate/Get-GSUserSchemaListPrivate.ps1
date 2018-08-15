@@ -11,7 +11,10 @@ function Get-GSUserSchemaListPrivate {
     Process {
         try {
             $request = $service.Schemas.List($Script:PSGSuite.CustomerId)
-            $request.Execute() | Select-Object -ExpandProperty SchemasValue
+            $result = $request.Execute()
+            if ($null -ne $result.SchemasValue) {
+                $result.SchemasValue
+            }
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

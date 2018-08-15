@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+  - [2.13.0](#2130)
   - [2.12.1](#2121)
   - [2.12.0](#2120)
   - [2.11.0](#2110)
@@ -44,6 +45,18 @@
       - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.13.0
+
+* Fixed: Private list functions to check if a value is actually returned before adding members to the returned objects ([Issue #77](https://github.com/scrthq/PSGSuite/issues/77))
+* Added: `Update-GSChatMessage` to allow updating existing messages in Chat (i.e. on Card Clicked events)
+* Updated: Order of parameters in `Get-GSToken` to place `Scopes` first, as it's the only required parameter
+* Updated: `Get-GSChatSpace` now updates the config with Space names/shortnames for ease of use
+* Updated: `Send-GSChatMessage` to also support calling the REST API as an additional option. This is necessary for PoshBot due to the deserialization of objects passed back to result parser breaking the Google SDK type references
+* Updated: `Get-GSChatConfig` to always fetch the latest config if no ConfigName is passed instead of using `Show-PSGSuiteConfig`
+* Updated: `Set-PSGSuiteConfig` to refresh the Spaces dictionary each time in order to remove stale spaces (i.e. on removal of bot from a Room or DM)
+* Fixed: `Add-GSChatOnClick` now properly builds the hashtable for the Webhook object
+* Updated: `Get-GSUser` to allow passing User ID's instead of emails by checking if value passed is a `decimal` before concatenating the domain name.
 
 ## 2.12.1
 
