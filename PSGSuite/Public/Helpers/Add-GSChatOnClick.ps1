@@ -96,7 +96,10 @@ function Add-GSChatOnClick {
                     $onClickObject['SDK'].Action.Parameters = New-Object 'System.Collections.Generic.List[Google.Apis.HangoutsChat.v1.Data.ActionParameter]'
                     foreach ($dict in $ActionParameters) {
                         if ($dict.Keys.Count -eq 2 -and $dict.Keys -contains 'key' -and $dict.Keys -contains 'value') {
-                            $onClickObject['Webhook']['action']['parameters'] += $dict
+                            $onClickObject['Webhook']['action']['parameters'] += ([PSCustomObject]@{
+                                key = "$($dict['key'])"
+                                value = "$($dict['value'])"
+                            })
                             $onClickObject['SDK'].Action.Parameters.Add((New-Object 'Google.Apis.HangoutsChat.v1.Data.ActionParameter' -Property @{
                                 Key = $dict['key']
                                 Value = $dict['value']
@@ -104,10 +107,10 @@ function Add-GSChatOnClick {
                         }
                         else {
                             foreach ($key in $dict.Keys) {
-                                $onClickObject['Webhook']['action']['parameters'] += @{
-                                    key = $key
-                                    value = $dict[$key]
-                                }
+                                $onClickObject['Webhook']['action']['parameters'] += ([PSCustomObject]@{
+                                    key = "$key"
+                                    value = "$($dict[$key])"
+                                })
                                 $onClickObject['SDK'].Action.Parameters.Add((New-Object 'Google.Apis.HangoutsChat.v1.Data.ActionParameter' -Property @{
                                     Key = $key
                                     Value = $dict[$key]

@@ -123,8 +123,12 @@ function Send-GSChatMessage {
         [string[]]
         $Parent,
         [parameter(Mandatory = $false,ParameterSetName = "SDK")]
+        [parameter(Mandatory = $false,ParameterSetName = "Rest")]
         [string]
         $ThreadKey,
+        [parameter(Mandatory = $true,ParameterSetName = "Rest")]
+        [string[]]
+        $RestParent,
         [parameter(Mandatory = $true,ParameterSetName = "Webhook")]
         [string[]]
         $Webhook,
@@ -142,14 +146,17 @@ function Send-GSChatMessage {
             }
         })]
         [Object[]]
-        $MessageSegment
+        $MessageSegment,
+        [parameter(Mandatory = $true,ParameterSetName = "BodyPassThru")]
+        [switch]
+        $BodyPassThru
     )
     Begin {
         $addlSections = @()
         $addlCardActions = @()
         $addlSectionWidgets = @()
         switch ($PSCmdlet.ParameterSetName) {
-            Webhook {
+            default {
                 $body = @{}
                 foreach ($key in $PSBoundParameters.Keys) {
                     switch ($key) {
@@ -224,10 +231,10 @@ function Send-GSChatMessage {
     }
     Process {
         foreach ($segment in $MessageSegment) {
-            switch ($segment.PSTypeNames[0]) {
-                'PSGSuite.Chat.Message.Card' {
+            switch -RegEx ($segment['SDK'].PSTypeNames[0]) {
+                '(.*?)Google\.Apis\.HangoutsChat\.v1\.Data\.Card' {
                     switch ($PSCmdlet.ParameterSetName) {
-                        Webhook {
+                        default {
                             if (!$body['cards']) {
                                 $body['cards'] = @()
                             }
@@ -241,13 +248,14 @@ function Send-GSChatMessage {
                         }
                     }
                 }
-                'PSGSuite.Chat.Message.Card.Section' {
+                '(.*?)Google\.Apis\.HangoutsChat\.v1\.Data\.Section' {
                     $addlSections += $segment
                 }
-                'PSGSuite.Chat.Message.Card.CardAction' {
+                '(.*?)Google\.Apis\.HangoutsChat\.v1\.Data\.CardAction' {
                     $addlCardActions += $segment
                 }
                 default {
+                    Write-Verbose "Matched a $($segment['SDK'].PSTypeNames[0]) in the MessageSegments!"
                     $addlSectionWidgets += $segment
                 }
             }
@@ -255,7 +263,7 @@ function Send-GSChatMessage {
     }
     End {
         switch ($PSCmdlet.ParameterSetName) {
-            Webhook {
+            default {
                 if ($addlCardActions -or $addlSections -or $addlSectionWidgets) {
                     if (!$body['cards']) {
                         $cardless = $true
@@ -290,22 +298,70 @@ function Send-GSChatMessage {
                         }
                     }
                 }
-                $body = $body | ConvertTo-Json -Depth 15
-                foreach ($hook in $Webhook) {
-                    try {
-                        if ($hook -notlike "https://chat.googleapis.com/v1/spaces/*") {
-                            $hook = Get-GSChatConfig -WebhookName $hook -ErrorAction Stop
+                switch ($PSCmdlet.ParameterSetName) {
+                    Webhook {
+                        $body = $body | ConvertTo-Json -Depth 15
+                        foreach ($hook in $Webhook) {
+                            try {
+                                if ($hook -notlike "https://chat.googleapis.com/v1/spaces/*") {
+                                    $hook = Get-GSChatConfig -WebhookName $hook -ErrorAction Stop
+                                }
+                                Write-Verbose "Sending Chat Message via Webhook to '$($hook -replace "\?key\=.*",'')'"
+                                Invoke-RestMethod -Method Post -Uri ([Uri]$hook) -Body $body -ContentType 'application/json' -Verbose:$false | Add-Member -MemberType NoteProperty -Name 'Webhook' -Value $hook -PassThru
+                            }
+                            catch {
+                                if ($ErrorActionPreference -eq 'Stop') {
+                                    $PSCmdlet.ThrowTerminatingError($_)
+                                }
+                                else {
+                                    Write-Error $_
+                                }
+                            }
                         }
-                        Write-Verbose "Sending Chat Message via Webhook to '$($hook -replace "\?key\=.*",'')'"
-                        Invoke-RestMethod -Method Post -Uri ([Uri]$hook) -Body $body -ContentType 'application/json' -Verbose:$false | Add-Member -MemberType NoteProperty -Name 'Webhook' -Value $hook -PassThru
                     }
-                    catch {
-                        if ($ErrorActionPreference -eq 'Stop') {
-                            $PSCmdlet.ThrowTerminatingError($_)
+                    Rest {
+                        $body = $body | ConvertTo-Json -Depth 15
+                        foreach ($restPar in $RestParent) {
+                            try {
+                                if ($restPar -notlike "spaces/*") {
+                                    try {
+                                        $restPar = Get-GSChatConfig -SpaceName $restPar -ErrorAction Stop
+                                    }
+                                    catch {
+                                        $restPar = "spaces/$restPar"
+                                    }
+                                }
+                                $header = @{
+                                    Authorization = "Bearer $(Get-GSToken -Scopes "https://www.googleapis.com/auth/chat.bot" -Verbose:$false)"
+                                }
+                                $hook = "https://chat.googleapis.com/v1/$($restPar)/messages"
+                                if ($PSBoundParameters.Keys -contains 'ThreadKey') {
+                                    $hook = "$($hook)?threadKey=$ThreadKey"
+                                    $addlText = " in ThreadKey '$ThreadKey'"
+                                }
+                                else {
+                                    $addlText = ""
+                                }
+                                Write-Verbose "Sending Chat Message via REST API to parent '$restPar'$addlText"
+                                Invoke-RestMethod -Method Post -Uri ([Uri]$hook) -Headers $header -Body $body -ContentType 'application/json' -Verbose:$false | Add-Member -MemberType NoteProperty -Name 'RestParent' -Value $restPar -PassThru
+                            }
+                            catch {
+                                if ($ErrorActionPreference -eq 'Stop') {
+                                    $PSCmdlet.ThrowTerminatingError($_)
+                                }
+                                else {
+                                    Write-Error $_
+                                }
+                            }
                         }
-                        else {
-                            Write-Error $_
+                    }
+                    BodyPassThru {
+                        $newBody = @{
+                            token = (Get-GSToken -Scopes "https://www.googleapis.com/auth/chat.bot" -Verbose:$false)
+                            body = $body
                         }
+                        $newBody = $newBody | ConvertTo-Json -Depth 20 -Compress
+                        return $newBody
                     }
                 }
             }

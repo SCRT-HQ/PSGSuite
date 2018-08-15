@@ -37,7 +37,7 @@ function Get-GSChatConfig {
         $currentConfig = Get-PSGSuiteConfig -ConfigName $ConfigName -PassThru -NoImport
     }
     else {
-        $currentConfig = Show-PSGSuiteConfig
+        $currentConfig = Get-PSGSuiteConfig -PassThru
     }
     switch ($PSCmdlet.ParameterSetName) {
         Webhooks {

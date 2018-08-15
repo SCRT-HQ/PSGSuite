@@ -90,15 +90,23 @@ function Get-GSChatSpace {
     }
     End {
         Write-Verbose "Updating PSGSuite Config with Space list"
-        $spaceHash = $spaceArray | ForEach-Object {
+        $spaceHashArray = @()
+        $spaceArray | ForEach-Object {
             if ($_.DisplayName) {
-                Set-PSGSuiteConfig -Space @{$_.DisplayName = $_.Name} -Verbose:$false
+                $spaceHashArray += @{$_.DisplayName = $_.Name}
                 
             }
             else {
-                Set-PSGSuiteConfig -Space @{DM = $_.Name} -Verbose:$false
+                $member = Get-GSChatMember -Space $_.Name -Verbose:$false
+                $id = $member.Member.Name
+                $primaryEmail = (Get-GSUser -User ($id.Replace('users/',''))).PrimaryEmail
+                $spaceHashArray += @{
+                    $id = $_.Name
+                    $member.Member.DisplayName = $_.Name
+                    $primaryEmail = $_.Name
+                }
             }
         }
-        
+        Set-PSGSuiteConfig -Space $spaceHashArray -Verbose:$false
     }
 }

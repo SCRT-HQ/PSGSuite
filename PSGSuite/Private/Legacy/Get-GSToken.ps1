@@ -11,14 +11,14 @@ function Get-GSToken {
     #>
     Param
     (
-        [parameter(Mandatory = $false,HelpMessage = "What is the full path to your Google Service Account's P12 key file?")]
-        [ValidateNotNullOrEmpty()]
-        [String]
-        $P12KeyPath = $Script:PSGSuite.P12KeyPath,
         [parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [string[]]
         $Scopes,
+        [parameter(Mandatory = $false,HelpMessage = "What is the full path to your Google Service Account's P12 key file?")]
+        [ValidateNotNullOrEmpty()]
+        [String]
+        $P12KeyPath = $Script:PSGSuite.P12KeyPath,
         [parameter(Mandatory = $false)]
         [ValidateNotNullOrEmpty()]
         [String]

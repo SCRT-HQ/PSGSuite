@@ -29,7 +29,10 @@ function Get-GSShortUrlListPrivate {
             try {
                 Write-Verbose "Getting Short Url list for User '$U'"
                 $request = $service.Url.List()
-                $request.Execute() | Select-Object -ExpandProperty Items | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
+                $result = $request.Execute()
+                if ($null -ne $result.Items) {
+                    $result.Items | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
+                }
             }
             catch {
                 if ($ErrorActionPreference -eq 'Stop') {

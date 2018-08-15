@@ -54,7 +54,9 @@ function Get-GSGroupListPrivate {
             [int]$i = 1
             do {
                 $result = $request.Execute()
-                $result.GroupsValue | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.Email} -PassThru -Force
+                if ($null -ne $result.GroupsValue) {
+                    $result.GroupsValue | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.Email} -PassThru -Force
+                }
                 $request.PageToken = $result.NextPageToken
                 [int]$retrieved = ($i + $result.GroupsValue.Count) - 1
                 Write-Verbose "Retrieved $retrieved groups..."

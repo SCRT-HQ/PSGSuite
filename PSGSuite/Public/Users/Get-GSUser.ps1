@@ -163,13 +163,19 @@ function Get-GSUser {
                 Get {
                     if ($MyInvocation.InvocationName -ne 'Get-GSUserList') {
                         foreach ($U in $User) {
-                            if ($U -ceq 'me') {
-                                $U = $Script:PSGSuite.AdminEmail
+                            try {
+                                [decimal]$U | Out-Null
+                                Write-Verbose "Getting User ID '$U'"
                             }
-                            elseif ($U -notlike "*@*.*") {
-                                $U = "$($U)@$($Script:PSGSuite.Domain)"
+                            catch {
+                                if ($U -ceq 'me') {
+                                    $U = $Script:PSGSuite.AdminEmail
+                                }
+                                elseif ($U -notlike "*@*.*") {
+                                    $U = "$($U)@$($Script:PSGSuite.Domain)"
+                                }
+                                Write-Verbose "Getting User '$U'"
                             }
-                            Write-Verbose "Getting User '$U'"
                             $request = $service.Users.Get($U)
                             $request.Projection = $Projection
                             $request.ViewType = ($ViewType -replace '_','')
