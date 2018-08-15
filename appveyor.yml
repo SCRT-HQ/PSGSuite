@@ -1,12 +1,14 @@
-image: 
-  - Ubuntu
-  - Visual Studio 2015
-  - Visual Studio 2017
-
 environment:
   APPVEYOR_YML_DISABLE_PS_LINUX: true
   NuGetApiKey:
     secure: Ocp1ATd6eZ0eY9+LfZ9Stp9/J1B5eFdBPMdaTRWVa4xh6/NV45ZBYtU5+eemrTWt
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+      PSVersion: Core
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      PSVersion: Core
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      PSVersion: Windows
 
 matrix:
   fast_finish: true
@@ -21,7 +23,7 @@ build: false
 
 test_script:
   - pwsh: >-
-      if ($env:APPVEYOR_BUILD_WORKER_IMAGE -notlike '*2015*') {
+      if ($env:PSVersion -eq 'Core') {
         $string = "Running PowerShell $($PSVersionTable.PSVersion.ToString()) tests on image '$env:APPVEYOR_BUILD_WORKER_IMAGE'";
         Write-Host -ForegroundColor Magenta $string;
         . .\ci\init.ps1;
@@ -30,6 +32,11 @@ test_script:
         Write-Warning $string;
       }
   - ps: >-
-      $string = "Running PowerShell $($PSVersionTable.PSVersion.ToString()) tests on image '$env:APPVEYOR_BUILD_WORKER_IMAGE'";
-      Write-Host -ForegroundColor Magenta $string;
-      . .\ci\init.ps1;
+      if ($env:PSVersion -eq 'Windows') {
+        $string = "Running PowerShell $($PSVersionTable.PSVersion.ToString()) tests on image '$env:APPVEYOR_BUILD_WORKER_IMAGE'";
+        Write-Host -ForegroundColor Magenta $string;
+        . .\ci\init.ps1;
+      } else {
+        $string = "Skipping PowerShell $($PSVersionTable.PSVersion.ToString()) tests on image '$env:APPVEYOR_BUILD_WORKER_IMAGE'";
+        Write-Warning $string;
+      }
