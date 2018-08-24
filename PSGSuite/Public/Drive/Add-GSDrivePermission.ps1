@@ -56,7 +56,7 @@ function Add-GSDrivePermission {
     .PARAMETER AllowFileDiscovery
     Whether the permission allows the file to be discovered through search. This is only applicable for permissions of type domain or anyone
     
-    .PARAMETER TransferOfOwnership
+    .PARAMETER TransferOwnership
     Confirms transfer of ownership if the Role is set to 'Owner'. You can also force the same behavior by passing -Confirm:$false instead
     
     .PARAMETER UseDomainAdminAccess
@@ -104,9 +104,9 @@ function Add-GSDrivePermission {
         [Switch]
         $AllowFileDiscovery,
         [parameter(Mandatory = $false)]
-        [Alias('ConfirmTransferOfOwnership')]
+        [Alias('ConfirmTransferOfOwnership','TransferOfOwnership')]
         [switch]
-        $TransferOfOwnership,
+        $TransferOwnership,
         [parameter(Mandatory = $false)]
         [switch]
         $UseDomainAdminAccess
@@ -127,13 +127,13 @@ function Add-GSDrivePermission {
     }
     Process {
         try {
-            if ($Role -eq "Owner" -and !$TransferOfOwnership) {
+            if ($Role -eq "Owner" -and !$TransferOwnership) {
                 if ($PSCmdlet.ShouldProcess("Confirm transfer of ownership of FileId '$FileID' from user '$User' to user '$EmailAddress'")) {
-                    $PSBoundParameters['TransferOfOwnership'] = $true
-                    $TransferOfOwnership = $true
+                    $PSBoundParameters['TransferOwnership'] = $true
+                    $TransferOwnership = $true
                 }
                 else {
-                    throw "The TransferOfOwnership parameter is required when setting the 'Owner' role."
+                    throw "The TransferOwnership parameter is required when setting the 'Owner' role."
                 }
             }
             if (($Type -eq "User" -or $Type -eq "Group") -and !$EmailAddress) {
@@ -143,7 +143,7 @@ function Add-GSDrivePermission {
                 Write-Warning "The AllowFileDiscovery parameter is only applicable for types 'Domain' or 'Anyone' This parameter will be excluded from this request."
                 $PSBoundParameters.Remove('AllowFileDiscovery') | Out-Null
             }
-            if ($TransferOfOwnership -and !$SendNotificationEmail) {
+            if ($TransferOwnership -and !$SendNotificationEmail) {
                 $PSBoundParameters['SendNotificationEmail'] = $true
                 Write-Warning "Setting SendNotificationEmail to 'True' to prevent errors (required for Ownership transfers)"
             }
@@ -179,7 +179,7 @@ function Add-GSDrivePermission {
                     $request.$key = $PSBoundParameters[$key]
                 }
             }
-            Write-Verbose "Adding Drive Permission of '$Role' for user '$User' on Id '$FileID'"
+            Write-Verbose "Adding Drive Permission of '$Role' for user '$EmailAddress' on Id '$FileID'"
             $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
         catch {

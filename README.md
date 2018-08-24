@@ -127,6 +127,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.13.1
+
+* Fixed: `Add-GSDrivePermission` fails to transfer ownership of files ([Issue #80](https://github.com/scrthq/PSGSuite/issues/80))
+
 #### 2.13.0
 
 * Fixed: Private list functions to check if a value is actually returned before adding members to the returned objects ([Issue #77](https://github.com/scrthq/PSGSuite/issues/77))
