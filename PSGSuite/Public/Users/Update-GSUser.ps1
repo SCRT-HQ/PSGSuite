@@ -38,15 +38,20 @@ function Update-GSUser {
 
     This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserAddress[]' object type. You can create objects of this type easily by using the function 'Add-GSUserAddress'
     
-    .PARAMETER Phones
-    The phone objects of the user
-
-    This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserPhone[]' object type. You can create objects of this type easily by using the function 'Add-GSUserPhone'
-    
     .PARAMETER ExternalIds
     The externalId objects of the user
 
     This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserExternalId[]' object type. You can create objects of this type easily by using the function 'Add-GSUserExternalId'
+    
+    .PARAMETER Organizations
+    The organization objects of the user
+
+    This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization[]' object type. You can create objects of this type easily by using the function 'Add-GSUserOrganization'
+    
+    .PARAMETER Phones
+    The phone objects of the user
+
+    This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserPhone[]' object type. You can create objects of this type easily by using the function 'Add-GSUserPhone'
     
     .PARAMETER IncludeInGlobalAddressList
     Indicates if the user's profile is visible in the G Suite global address list when the contact sharing feature is enabled for the domain. For more information about excluding user profiles, see the administration help center: http://support.google.com/a/bin/answer.py?answer=1285988
@@ -127,11 +132,14 @@ function Update-GSUser {
         [Google.Apis.Admin.Directory.directory_v1.Data.UserAddress[]]
         $Addresses,
         [parameter(Mandatory = $false)]
-        [Google.Apis.Admin.Directory.directory_v1.Data.UserPhone[]]
-        $Phones,
-        [parameter(Mandatory = $false)]
         [Google.Apis.Admin.Directory.directory_v1.Data.UserExternalId[]]
         $ExternalIds,
+        [parameter(Mandatory = $false)]
+        [Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization[]]
+        $Organizations,
+        [parameter(Mandatory = $false)]
+        [Google.Apis.Admin.Directory.directory_v1.Data.UserPhone[]]
+        $Phones,
         [parameter(Mandatory = $false)]
         [Switch]
         $IncludeInGlobalAddressList,
@@ -214,6 +222,27 @@ function Update-GSUser {
                             }
                             $body.CustomSchemas = $schemaDict
                         }
+                        ExternalIds {
+                            $extIdList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserExternalId]'
+                            foreach ($extId in $ExternalIds) {
+                                $extIdList.Add($extId)
+                            }
+                            $body.ExternalIds = $extIdList
+                        }
+                        Organizations {
+                            $orgList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization]'
+                            foreach ($organization in $Organizations) {
+                                $orgList.Add($organization)
+                            }
+                            $body.Organizations = $orgList
+                        }
+                        Phones {
+                            $phoneList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserPhone]'
+                            foreach ($phone in $Phones) {
+                                $phoneList.Add($phone)
+                            }
+                            $body.Phones = $phoneList
+                        }
                         IsAdmin {
                             if ($userObj.IsAdmin -eq $PSBoundParameters[$prop]) {
                                 Write-Verbose "User '$U' already has IsAdmin set to '$($userObj.IsAdmin)'"
@@ -226,7 +255,6 @@ function Update-GSUser {
                                     }
                                     $request = $service.Users.MakeAdmin($adminBody,$userObj.Id)
                                     $request.Execute()
-                                    ###Write-Verbose "User '$U' has been successfully deleted"
                                 }
                             }
                         }

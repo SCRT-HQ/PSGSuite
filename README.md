@@ -127,6 +127,12 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.13.2
+
+* [Issue #83](https://github.com/scrthq/PSGSuite/issues/83)
+  * Added: `Add-GSUserOrganization` to create UserOrganization objects
+  * Updated: `Update-GSUser` and `New-GSUser` to include Organizations parameter and cleaned up logic for other Generic.List type parameters to ensure functionality
+
 #### 2.13.1
 
 * Fixed: `Add-GSDrivePermission` fails to transfer ownership of files ([Issue #80](https://github.com/scrthq/PSGSuite/issues/80))
