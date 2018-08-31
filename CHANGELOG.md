@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 * [Changelog](#changelog)
+  * [2.13.2](#2132)
   * [2.13.1](#2131)
   * [2.13.0](#2130)
   * [2.12.1](#2121)
@@ -46,6 +47,12 @@
       * [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.13.2
+
+* [Issue #83](https://github.com/scrthq/PSGSuite/issues/83)
+  * Added: `Add-GSUserOrganization` to create UserOrganization objects
+  * Updated: `Update-GSUser` and `New-GSUser` to include Organizations parameter and cleaned up logic for other Generic.List type parameters to ensure functionality
 
 ## 2.13.1
 
