@@ -35,11 +35,6 @@ function New-GSClassroomCourse {
     .PARAMETER Room
     Optional room location. For example, "301". If set, this field must be a valid UTF-8 string and no longer than 650 characters.
 
-    .PARAMETER CourseMaterialSets
-    Sets of materials that appear on the "about" page of this course.
-
-    You can use the Add-GSCourseMaterialSet function to create this with the correct object type.
-
     .PARAMETER CourseState
     State of the course. If unspecified, the default state is PROVISIONED
 
@@ -84,9 +79,6 @@ function New-GSClassroomCourse {
         [String]
         $Room,
         [parameter(Mandatory = $false)]
-        [Google.Apis.Classroom.v1.Data.CourseMaterialSet[]]
-        $CourseMaterialSets,
-        [parameter(Mandatory = $false)]
         [Alias('Status')]
         [ValidateSet('PROVISIONED','ACTIVE','ARCHIVED','DECLINED')]
         [String]
@@ -118,13 +110,6 @@ function New-GSClassroomCourse {
                             }
                         }
                         $body.$prop = $PSBoundParameters[$prop]
-                    }
-                    CourseMaterialSets {
-                        $list = New-Object 'System.Collections.Generic.List[Google.Apis.Classroom.v1.Data.CourseMaterialSet]'
-                        foreach ($item in $CourseMaterialSets) {
-                            $list.Add($item)
-                        }
-                        $body.$prop = $list
                     }
                     Default {
                         $body.$prop = $PSBoundParameters[$prop]

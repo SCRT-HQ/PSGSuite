@@ -11,3 +11,5 @@ $env:EnablePSGSuiteDebug = $true
 
 # Force import the module in the repo path so that updated functions are reloaded
 Import-Module (Join-Path (Join-Path "$PSScriptRoot" "PSGSuite") "PSGSuite.psd1") -Force
+
+Write-Host -ForegroundColor Green "`nPSGSuite v$((Get-Module PSGSuite).Version.ToString()) loaded from path $((Get-Module PSGSuite).ModuleBase)`n"

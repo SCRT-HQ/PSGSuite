@@ -33,11 +33,6 @@ function Update-GSClassroomCourse {
     .PARAMETER Room
     Optional room location. For example, "301". If set, this field must be a valid UTF-8 string and no longer than 650 characters.
 
-    .PARAMETER CourseMaterialSets
-    Sets of materials that appear on the "about" page of this course.
-
-    You can use the Add-GSCourseMaterialSet function to create this with the correct object type.
-
     .PARAMETER CourseState
     State of the course. If unspecified, the default state is PROVISIONED
 
@@ -82,9 +77,6 @@ function Update-GSClassroomCourse {
         [String]
         $Room,
         [parameter(Mandatory = $false)]
-        [Google.Apis.Classroom.v1.Data.CourseMaterialSet[]]
-        $CourseMaterialSets,
-        [parameter(Mandatory = $false)]
         [Alias('Status')]
         [ValidateSet('PROVISIONED','ACTIVE','ARCHIVED','DECLINED')]
         [String]
@@ -96,15 +88,17 @@ function Update-GSClassroomCourse {
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
         }
         $service = New-GoogleService @serviceParams
+        $UpdateMask = @()
     }
     Process {
         try {
-            Write-Verbose "Creating new Course '$Name'"
+            Write-Verbose "Updating Course ID '$Id'"
             $body = New-Object 'Google.Apis.Classroom.v1.Data.Course'
             foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {
                 switch ($prop) {
                     Id {}
                     OwnerId {
+                        $UpdateMask += $($prop.Substring(0,1).ToLower() + $prop.Substring(1))
                         try {
                             [decimal]$PSBoundParameters[$prop] | Out-Null
                         }
@@ -118,19 +112,14 @@ function Update-GSClassroomCourse {
                         }
                         $body.$prop = $PSBoundParameters[$prop]
                     }
-                    CourseMaterialSets {
-                        $list = New-Object 'System.Collections.Generic.List[Google.Apis.Classroom.v1.Data.CourseMaterialSet]'
-                        foreach ($item in $CourseMaterialSets) {
-                            $list.Add($item)
-                        }
-                        $body.$prop = $list
-                    }
                     Default {
+                        $UpdateMask += $($prop.Substring(0,1).ToLower() + $prop.Substring(1))
                         $body.$prop = $PSBoundParameters[$prop]
                     }
                 }
             }
             $request = $service.Courses.Patch($body,$Id)
+            $request.UpdateMask = $($UpdateMask -join ",")
             $request.Execute()
         }
         catch {
