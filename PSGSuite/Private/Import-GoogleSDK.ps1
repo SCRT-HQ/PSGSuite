@@ -17,6 +17,11 @@ function Import-GoogleSDK {
             try {
                 Add-Type -Path $_.FullName -ErrorAction Stop
             }
+            catch [System.Reflection.ReflectionTypeLoadException] {
+                Write-Host "Message: $($_.Exception.Message)"
+                Write-Host "StackTrace: $($_.Exception.StackTrace)"
+                Write-Host "LoaderExceptions: $($_.Exception.LoaderExceptions)"
+            }
             catch {
                 Write-Error "$($sdk): $($_.Exception.Message)"
             }

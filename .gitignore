@@ -5,3 +5,6 @@ TestPad.ps1
 API-to-Function-Map.md
 QueueExample.ps1
 ChatBotLoop.ps1
+DLLUnpack.ps1
+DLLUnpackStg
+DLLUnpackStg/*
