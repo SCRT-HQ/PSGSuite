@@ -130,7 +130,7 @@ function Update-GSClassroomCourse {
                     }
                 }
             }
-            $request = $service.Courses.Update($body,$Id)
+            $request = $service.Courses.Patch($body,$Id)
             $request.Execute()
         }
         catch {
