@@ -125,7 +125,7 @@ All other functions are either intact or have an alias included to support backw
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags       = 'Google','GSuite','Apps','G','Suite','REST','API','Admin','PSModule','Directory','User','Goo.gl','PSEdition_Core'
+            Tags       = 'Google','GSuite','Apps','G','Suite','REST','API','Admin','PSModule','Directory','User','Goo.gl','PSEdition_Core','PSEdition_Desktop'
 
             # A URL to the license for this module.
             # LicenseUri = ''
@@ -147,7 +147,7 @@ All other functions are either intact or have an alias included to support backw
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    HelpInfoURI           = 'https://github.com/scrthq/PSGSuite/wiki'
+    # HelpInfoURI           = 'https://github.com/scrthq/PSGSuite/wiki'
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''
