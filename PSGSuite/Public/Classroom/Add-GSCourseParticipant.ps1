@@ -60,7 +60,7 @@ function Add-GSCourseParticipant {
                 }
                 catch {
                     if ($part -ceq 'me') {
-                        $part = $partcript:PSGSuite.AdminEmail
+                        $part = $Script:PSGSuite.AdminEmail
                     }
                     elseif ($part -notlike "*@*.*") {
                         $part = "$($part)@$($Script:PSGSuite.Domain)"
@@ -88,7 +88,7 @@ function Add-GSCourseParticipant {
                 }
                 catch {
                     if ($part -ceq 'me') {
-                        $part = $partcript:PSGSuite.AdminEmail
+                        $part = $Script:PSGSuite.AdminEmail
                     }
                     elseif ($part -notlike "*@*.*") {
                         $part = "$($part)@$($Script:PSGSuite.Domain)"
