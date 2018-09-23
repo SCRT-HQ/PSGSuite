@@ -1,24 +1,23 @@
-function Remove-GSClassroomCourse {
+function Get-GSCourseAlias {
     <#
     .SYNOPSIS
-    Removes an existing course.
+    Gets the list of aliases for a course.
 
     .DESCRIPTION
-    Removes an existing course.
+    Gets the list of aliases for a course.
 
-    .PARAMETER Id
-    Identifier for this course assigned by Classroom.
+    .PARAMETER CourseId
+    Identifier of the course to alias. This identifier can be either the Classroom-assigned identifier or an alias.
 
     .EXAMPLE
-    Remove-GSClassroomCourse -Id the-republic-s01 -Confirm:$false
+    Get-GSCourseAlias -CourseId 'architecture-101'
     #>
-    [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
+    [cmdletbinding()]
     Param
     (
         [parameter(Mandatory = $true,Position = 0)]
-        [Alias('Alias')]
         [String]
-        $Id
+        $CourseId
     )
     Begin {
         $serviceParams = @{
@@ -29,12 +28,9 @@ function Remove-GSClassroomCourse {
     }
     Process {
         try {
-            if ($PSCmdlet.ShouldProcess("Removing Course '$Id'")) {
-                Write-Verbose "Removing Course '$Id'"
-                $request = $service.Courses.Delete($Id)
-                $request.Execute()
-                Write-Verbose "Course '$Id' has been successfully removed"
-            }
+            Write-Verbose "Getting Alias list for Course '$CourseId'"
+            $request = $service.Courses.Aliases.List($CourseId)
+            $request.Execute()
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

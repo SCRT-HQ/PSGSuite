@@ -1,4 +1,4 @@
-function Get-GSClassroomCourse {
+function Get-GSCourse {
     <#
     .SYNOPSIS
     Gets a classroom course or list of courses
@@ -32,7 +32,7 @@ function Get-GSClassroomCourse {
     Restricts returned courses to those in one of the specified states The default value is ACTIVE, ARCHIVED, PROVISIONED, DECLINED.
 
     .EXAMPLE
-    Get-GSClassroomCourse -TeacherId aristotle@athens.edu
+    Get-GSCourse -TeacherId aristotle@athens.edu
     #>
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param

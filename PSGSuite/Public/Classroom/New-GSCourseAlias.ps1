@@ -1,4 +1,4 @@
-function New-GSClassroomCourseAlias {
+function New-GSCourseAlias {
     <#
     .SYNOPSIS
     Creates a course alias.
@@ -19,10 +19,10 @@ function New-GSClassroomCourseAlias {
     * Project - A project-scoped alias is visible to any request from an application using the Developer Console project ID that created the alias and can be created by any project. A project-scoped alias is often used when an application has alternative identifiers. A random value can also be used to avoid duplicate courses in the event of transmission failures, as retrying a request will return ALREADY_EXISTS if a previous one has succeeded.
 
     .EXAMPLE
-    New-GSClassroomCourseAlias -Alias "abc123" -CourseId 'architecture-101' -Scope Domain
+    New-GSCourseAlias -Alias "abc123" -CourseId 'architecture-101' -Scope Domain
 
     .EXAMPLE
-    New-GSClassroomCourseAlias -Alias "d:abc123" -CourseId 'architecture-101'
+    New-GSCourseAlias -Alias "d:abc123" -CourseId 'architecture-101'
     #>
     [cmdletbinding()]
     Param
@@ -67,7 +67,7 @@ function New-GSClassroomCourseAlias {
     }
     Process {
         try {
-            Write-Verbose "Creating new Course Alias '$Alias' at '$Scope' scope"
+            Write-Verbose "Creating new Alias '$Alias' for Course '$CourseId' at '$Scope' scope"
             $body = New-Object 'Google.Apis.Classroom.v1.Data.CourseAlias' -Property @{
                 Alias = $formatted
             }

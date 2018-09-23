@@ -1,4 +1,4 @@
-function Update-GSClassroomCourse {
+function Update-GSCourse {
     <#
     .SYNOPSIS
     Updates an existing course.
@@ -43,7 +43,7 @@ function Update-GSClassroomCourse {
     * DECLINED - The course has been created, but declined. It is accessible by the course owner and domain administrators, though it will not be displayed in the web UI. You cannot modify the course except to change it to the PROVISIONED state. A course may only be changed to DECLINED if it is in the PROVISIONED state.
 
     .EXAMPLE
-    Update-GSClassroomCourse -Id the-republic-s01 -Name "The Rebublic 101"
+    Update-GSCourse -Id the-republic-s01 -Name "The Rebublic 101"
     #>
     [cmdletbinding()]
     Param

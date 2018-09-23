@@ -1,4 +1,4 @@
-function New-GSClassroomCourse {
+function New-GSCourse {
     <#
     .SYNOPSIS
     Creates a course.
@@ -45,7 +45,7 @@ function New-GSClassroomCourse {
     * DECLINED - The course has been created, but declined. It is accessible by the course owner and domain administrators, though it will not be displayed in the web UI. You cannot modify the course except to change it to the PROVISIONED state. A course may only be changed to DECLINED if it is in the PROVISIONED state.
 
     .EXAMPLE
-    New-GSClassroomCourse -Name "The Rebublic" -OwnerId plato@athens.edu -Id the-republic-s01 -Section s01 -DescriptionHeading "The definition of justice, the order and character of the just city-state and the just man" -Room academy-01
+    New-GSCourse -Name "The Rebublic" -OwnerId plato@athens.edu -Id the-republic-s01 -Section s01 -DescriptionHeading "The definition of justice, the order and character of the just city-state and the just man" -Room academy-01
     #>
     [cmdletbinding()]
     Param
