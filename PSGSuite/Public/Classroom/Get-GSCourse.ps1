@@ -14,14 +14,14 @@ function Get-GSCourse {
     .PARAMETER User
     The user to request course information as
 
-    .PARAMETER TeacherId
+    .PARAMETER Teacher
     Restricts returned courses to those having a teacher with the specified identifier. The identifier can be one of the following:
 
     * the numeric identifier for the user
     * the email address of the user
     * the string literal "me", indicating the requesting user
 
-    .PARAMETER StudentId
+    .PARAMETER Student
     Restricts returned courses to those having a student with the specified identifier. The identifier can be one of the following:
 
     * the numeric identifier for the user
@@ -32,7 +32,7 @@ function Get-GSCourse {
     Restricts returned courses to those in one of the specified states The default value is ACTIVE, ARCHIVED, PROVISIONED, DECLINED.
 
     .EXAMPLE
-    Get-GSCourse -TeacherId aristotle@athens.edu
+    Get-GSCourse -Teacher aristotle@athens.edu
     #>
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
@@ -46,10 +46,10 @@ function Get-GSCourse {
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [String]
-        $TeacherId,
+        $Teacher,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [String]
-        $StudentId,
+        $Student,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [ValidateSet('ACTIVE','ARCHIVED','PROVISIONED','DECLINED','SUSPENDED')]
         [String]
@@ -88,11 +88,11 @@ function Get-GSCourse {
                 if ($PSBoundParameters.Keys -contains 'CourseStates') {
                     $request.CourseStates = [Google.Apis.Classroom.v1.CoursesResource+ListRequest+CourseStatesEnum]::$CourseStates
                 }
-                if ($PSBoundParameters.Keys -contains 'StudentId') {
-                    $request.StudentId = $PSBoundParameters['StudentId']
+                if ($PSBoundParameters.Keys -contains 'Student') {
+                    $request.StudentId = $PSBoundParameters['Student']
                 }
-                if ($PSBoundParameters.Keys -contains 'TeacherId') {
-                    $request.TeacherId = $PSBoundParameters['TeacherId']
+                if ($PSBoundParameters.Keys -contains 'Teacher') {
+                    $request.TeacherId = $PSBoundParameters['Teacher']
                 }
                 [int]$i = 1
                 do {
