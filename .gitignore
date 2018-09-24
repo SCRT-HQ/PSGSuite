@@ -8,3 +8,5 @@ ChatBotLoop.ps1
 DLLUnpack.ps1
 DLLUnpackStg
 DLLUnpackStg/*
+FunctionBackups
+FunctionBackups/*
