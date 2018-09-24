@@ -9,15 +9,15 @@ function Get-GSCourseParticipant {
     .PARAMETER CourseId
     Identifier of the course to get participants of. This identifier can be either the Classroom-assigned identifier or an alias.
 
-    .PARAMETER Scope
-    The Scope at which you would like to list participants for.
+    .PARAMETER Role
+    The Role for which you would like to list participants for.
 
     Available values are:
 
     * Student
     * Teacher
 
-    Default value for this parameter is @('Teacher','Student')
+    The default value for this parameter is @('Teacher','Student')
 
     .PARAMETER Teacher
     Restricts returned courses to those having a teacher with the specified identifier. The identifier can be one of the following:
@@ -46,7 +46,7 @@ function Get-GSCourseParticipant {
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [ValidateSet('Teacher','Student')]
         [String[]]
-        $Scope = @('Teacher','Student'),
+        $Role = @('Teacher','Student'),
         [parameter(Mandatory = $false,ParameterSetName = "Get")]
         [String[]]
         $Teacher,
@@ -79,7 +79,7 @@ function Get-GSCourseParticipant {
                         }
                         Write-Verbose "Getting Student '$part' for Course '$CourseId'"
                         $request = $service.Courses.Students.Get($CourseId,$part)
-                        $request.Execute() | Add-Member -MemberType NoteProperty -Name CourseId -Value $CourseId | Add-Member -MemberType NoteProperty -Name Scope -Value $Sco
+                        $request.Execute() | Add-Member -MemberType NoteProperty -Name CourseId -Value $CourseId | Add-Member -MemberType NoteProperty -Name Role -Value 'Student'
                     }
                     catch {
                         if ($ErrorActionPreference -eq 'Stop') {
@@ -105,7 +105,7 @@ function Get-GSCourseParticipant {
                         }
                         Write-Verbose "Getting Teacher '$part' for Course '$CourseId'"
                         $request = $service.Courses.Teachers.Get($CourseId,$part)
-                        $request.Execute() | Add-Member -MemberType NoteProperty -Name CourseId -Value $CourseId | Add-Member -MemberType NoteProperty -Name Scope -Value $Sco
+                        $request.Execute() | Add-Member -MemberType NoteProperty -Name CourseId -Value $CourseId | Add-Member -MemberType NoteProperty -Name Role -Value 'Teacher'
                     }
                     catch {
                         if ($ErrorActionPreference -eq 'Stop') {
@@ -118,10 +118,10 @@ function Get-GSCourseParticipant {
                 }
             }
             List {
-                foreach ($Sco in $Scope) {
+                foreach ($Ro in $Role) {
                     try {
-                        Write-Verbose "Getting List of $($Sco)s for Course '$CourseId'"
-                        $request = switch ($Sco) {
+                        Write-Verbose "Getting List of $($Ro)s for Course '$CourseId'"
+                        $request = switch ($Ro) {
                             Teacher {
                                 $service.Courses.Teachers.List($CourseId)
                             }
@@ -133,24 +133,24 @@ function Get-GSCourseParticipant {
                         [int]$i = 1
                         do {
                             $result = $request.Execute()
-                            switch ($Sco) {
+                            switch ($Ro) {
                                 Teacher {
                                     if ($null -ne $result.Teachers) {
-                                        $result.Teachers | Add-Member -MemberType NoteProperty -Name CourseId -Value $CourseId | Add-Member -MemberType NoteProperty -Name Scope -Value $Sco
+                                        $result.Teachers | Add-Member -MemberType NoteProperty -Name CourseId -Value $CourseId | Add-Member -MemberType NoteProperty -Name Role -Value $Ro
                                     }
                                     [int]$retrieved = ($i + $result.Teachers.Count) - 1
                                     [int]$i = $i + $result.Teachers.Count
                                 }
                                 Student {
                                     if ($null -ne $result.Students) {
-                                        $result.Students | Add-Member -MemberType NoteProperty -Name CourseId -Value $CourseId | Add-Member -MemberType NoteProperty -Name Scope -Value $Sco
+                                        $result.Students | Add-Member -MemberType NoteProperty -Name CourseId -Value $CourseId | Add-Member -MemberType NoteProperty -Name Role -Value $Ro
                                     }
                                     [int]$retrieved = ($i + $result.Students.Count) - 1
                                     [int]$i = $i + $result.Students.Count
                                 }
                             }
                             $request.PageToken = $result.NextPageToken
-                            Write-Verbose "Retrieved $retrieved $($Sco)s..."
+                            Write-Verbose "Retrieved $retrieved $($Ro)s..."
                         }
                         until (!$result.NextPageToken)
                     }
