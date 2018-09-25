@@ -21,7 +21,7 @@ function Remove-GSCourseInvitation {
     )
     Begin {
         $serviceParams = @{
-            Scope       = 'https://www.googleapis.com/auth/classroom.courses'
+            Scope       = 'https://www.googleapis.com/auth/classroom.rosters'
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
             User        = $User
         }
