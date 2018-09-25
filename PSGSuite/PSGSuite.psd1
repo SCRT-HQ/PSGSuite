@@ -124,6 +124,9 @@ All other functions are either intact or have an alias included to support backw
 
         PSData = @{
 
+            # Denotes this as a prerelease
+            # Prerelease = '-alpha'
+
             # Tags applied to this module. These help with module discovery in online galleries.
             Tags       = 'Google','GSuite','Apps','G','Suite','REST','API','Admin','PSModule','Directory','User','Goo.gl','PSEdition_Core','PSEdition_Desktop'
 
