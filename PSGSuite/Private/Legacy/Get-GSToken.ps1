@@ -41,8 +41,8 @@ function Get-GSToken {
     } | ConvertTo-Json -Compress
     $header = Invoke-URLEncode ([System.Text.Encoding]::UTF8.GetBytes($rawheader))
     [string]$now = Get-Date (Get-Date).ToUniversalTime() -UFormat "%s"
-    $createDate = [int]$now.Split(".").Split(",")[0]
-    $expiryDate = [int]$now.Split(".").Split(",")[0] + 3540
+    $createDate = [int]($now.Split(".").Split(",") | Select-Object -First 1)
+    $expiryDate = [int]$createDate + 3540
     $rawclaims = [Ordered]@{
         iss   = "$AppEmail"
         sub   = "$AdminEmail"
@@ -71,8 +71,8 @@ function Get-GSToken {
         $reader = New-Object System.IO.StreamReader($result)
         $reader.BaseStream.Position = 0
         $reader.DiscardBufferedData()
-        $response = $reader.ReadToEnd() | 
-            ConvertFrom-Json | 
+        $response = $reader.ReadToEnd() |
+            ConvertFrom-Json |
             Select-Object @{N = "WebError";E = {$Error[0]}},@{N = "Code";E = {"401"}},@{N = "Error";E = {$_.error}},@{N = "Description";E = {$_.error_description}}
         Write-Error "$($MyInvocation.MyCommand) : $(Get-HTTPStatus -Code $response.Code): $($response.Error) / $($response.Description)"
         return
