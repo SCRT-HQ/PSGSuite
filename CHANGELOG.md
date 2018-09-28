@@ -70,6 +70,7 @@
     * `Remove-GSCourseAlias`
     * `Remove-GSCourseInvitation`
     * `Remove-GSCourseParticipant`
+    * `Remove-GSStudentGuardian`
     * `Update-GSCourse`
 * Fixed: `Get-GSToken` Create/Expiry time split issue on macOS caused by difference in `-UFormat %s` (macOS doesn't have trailing milliseconds)
 * Fixed: Logic in confirming if UserID is `[decimal]` to prevent unnecessary errors
