@@ -33,14 +33,14 @@ function Add-GSCourseParticipant {
     [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $true,Position = 0)]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
         [String]
         $CourseId,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [Alias('PrimaryEmail','Email','Mail')]
         [String[]]
         $Student,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String[]]
         $Teacher
     )
@@ -52,7 +52,7 @@ function Add-GSCourseParticipant {
         $service = New-GoogleService @serviceParams
     }
     Process {
-        foreach ($part in $Student) {
+        foreach ($part in $Student | Where-Object {-not [String]::IsNullOrEmpty($_)}) {
             try {
                 $body = New-Object 'Google.Apis.Classroom.v1.Data.Student'
                 try {
@@ -80,7 +80,7 @@ function Add-GSCourseParticipant {
                 }
             }
         }
-        foreach ($part in $Teacher) {
+        foreach ($part in $Teacher | Where-Object {-not [String]::IsNullOrEmpty($_)}) {
             try {
                 $body = New-Object 'Google.Apis.Classroom.v1.Data.Teacher'
                 try {

@@ -29,7 +29,7 @@ function New-GSCourseInvitation {
     [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $true)]
+        [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
         [String]
         $CourseId,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]

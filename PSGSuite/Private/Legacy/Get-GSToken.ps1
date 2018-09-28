@@ -41,8 +41,8 @@ function Get-GSToken {
     } | ConvertTo-Json -Compress
     $header = Invoke-URLEncode ([System.Text.Encoding]::UTF8.GetBytes($rawheader))
     [string]$now = Get-Date (Get-Date).ToUniversalTime() -UFormat "%s"
-    $createDate = [int]($now.Split(".").Split(",") | Select-Object -First 1)
-    $expiryDate = [int]$createDate + 3540
+    [int]$createDate = $now -replace "(\..*|\,.*)"
+    [int]$expiryDate = $createDate + 3600
     $rawclaims = [Ordered]@{
         iss   = "$AppEmail"
         sub   = "$AdminEmail"
