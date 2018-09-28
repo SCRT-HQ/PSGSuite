@@ -75,7 +75,7 @@ Please adhere to our [Code of Conduct](https://github.com/scrthq/PSGSuite/blob/m
 
 #### Functions Removed
 
-Please note that not all functions were ported to PSGSuite 2.0.0 due to restrictions within the .NET SDK and deprecated API calls. Here is the list of functions no longer existing in PSGSuite as of 2.0.0:  
+Please note that not all functions were ported to PSGSuite 2.0.0 due to restrictions within the .NET SDK and deprecated API calls. Here is the list of functions no longer existing in PSGSuite as of 2.0.0:
 
 * Get-GSToken: no need for this as the keys are being consumed by Googles Auth SDK directly now, which makes Access/Refresh tokens non-existent for P12 Key service accounts and token management is handled automatically
 * Revoke-GSToken: same here, no longer needed due to auth service changes
@@ -126,6 +126,32 @@ Update-GSSheetValue               Export-GSSheet
 ```
 
 ### Most recent changes
+
+#### 2.14.0
+
+* [Issue #85](https://github.com/scrthq/PSGSuite/issues/85)
+  * Added Google Classroom support with the following functions:
+    * `Add-GSCourseParticipant`
+    * `Confirm-GSCourseInvitation`
+    * `Get-GSClassroomUserProfile`
+    * `Get-GSCourse`
+    * `Get-GSCourseAlias`
+    * `Get-GSCourseInvitation`
+    * `Get-GSCourseParticipant`
+    * `Get-GSStudentGuardian`
+    * `Get-GSStudentGuardianInvitation`
+    * `New-GSCourse`
+    * `New-GSCourseAlias`
+    * `New-GSCourseInvitation`
+    * `New-GSStudentGuardianInvitation`
+    * `Remove-GSCourse`
+    * `Remove-GSCourseAlias`
+    * `Remove-GSCourseInvitation`
+    * `Remove-GSCourseParticipant`
+    * `Remove-GSStudentGuardian`
+    * `Update-GSCourse`
+* Fixed: `Get-GSToken` Create/Expiry time split issue on macOS caused by difference in `-UFormat %s` (macOS doesn't have trailing milliseconds)
+* Fixed: Logic in confirming if UserID is `[decimal]` to prevent unnecessary errors
 
 #### 2.13.2
 
