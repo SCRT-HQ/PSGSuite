@@ -12,7 +12,7 @@
     RootModule            = 'PSGSuite.psm1'
 
     # Version number of this module.
-    ModuleVersion         = '2.13.2'
+    ModuleVersion         = '2.14.0'
 
     # ID used to uniquely identify this module
     GUID                  = '9d751152-e83e-40bb-a6db-4c329092aaec'
@@ -29,7 +29,7 @@
     # Description of the functionality provided by this module
     Description           = '## Summary
 
-Powershell module wrapping Googles .NET SDKs in handy functions. Authentication is supported both with service account P12 keys as well as client_secrets.json to go through OAuth2. 
+Powershell module wrapping Googles .NET SDKs in handy functions. Authentication is supported both with service account P12 keys as well as client_secrets.json to go through OAuth2.
 
 
 ## Prerequisites
@@ -47,7 +47,7 @@ In order to use this module, youll need to have the following:
 
 ### Functions Removed
 
-Please note that not all functions were ported to PSGSuite 2.0.0 due to restrictions within the .NET SDK and deprecated API calls. Here is the list of functions no longer existing in PSGSuite as of 2.0.0:  
+Please note that not all functions were ported to PSGSuite 2.0.0 due to restrictions within the .NET SDK and deprecated API calls. Here is the list of functions no longer existing in PSGSuite as of 2.0.0:
 * Get-GSToken: no need for this as the keys are being consumed by Googles Auth SDK directly now, which makes Access/Refresh tokens non-existent for P12 Key service accounts and token management is handled automatically
 * Revoke-GSToken: same here, no longer needed due to auth service changes
 * Start-PSGSuiteConfigWizard: no longer supported as WPF is not compatible outside of Windows
@@ -124,8 +124,11 @@ All other functions are either intact or have an alias included to support backw
 
         PSData = @{
 
+            # Denotes this as a prerelease
+            # Prerelease = '-alpha'
+
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags       = 'Google','GSuite','Apps','G','Suite','REST','API','Admin','PSModule','Directory','User','Goo.gl','PSEdition_Core'
+            Tags       = 'Google','GSuite','Apps','G','Suite','REST','API','Admin','PSModule','Directory','User','Goo.gl','PSEdition_Core','PSEdition_Desktop'
 
             # A URL to the license for this module.
             # LicenseUri = ''
@@ -143,14 +146,13 @@ All other functions are either intact or have an alias included to support backw
             # ExternalModuleDependencies = ''
 
         } # End of PSData hashtable
-    
+
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    HelpInfoURI           = 'https://github.com/scrthq/PSGSuite/wiki'
+    # HelpInfoURI           = 'https://github.com/scrthq/PSGSuite/wiki'
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''
 
 }
-

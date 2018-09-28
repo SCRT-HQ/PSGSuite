@@ -1,8 +1,9 @@
-# Changelog 
+# Changelog
 
 <!-- TOC -->
 
 * [Changelog](#changelog)
+  * [2.14.0](#2140)
   * [2.13.2](#2132)
   * [2.13.1](#2131)
   * [2.13.0](#2130)
@@ -47,6 +48,32 @@
       * [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+## 2.14.0
+
+* [Issue #85](https://github.com/scrthq/PSGSuite/issues/85)
+  * Added Google Classroom support with the following functions:
+    * `Add-GSCourseParticipant`
+    * `Confirm-GSCourseInvitation`
+    * `Get-GSClassroomUserProfile`
+    * `Get-GSCourse`
+    * `Get-GSCourseAlias`
+    * `Get-GSCourseInvitation`
+    * `Get-GSCourseParticipant`
+    * `Get-GSStudentGuardian`
+    * `Get-GSStudentGuardianInvitation`
+    * `New-GSCourse`
+    * `New-GSCourseAlias`
+    * `New-GSCourseInvitation`
+    * `New-GSStudentGuardianInvitation`
+    * `Remove-GSCourse`
+    * `Remove-GSCourseAlias`
+    * `Remove-GSCourseInvitation`
+    * `Remove-GSCourseParticipant`
+    * `Remove-GSStudentGuardian`
+    * `Update-GSCourse`
+* Fixed: `Get-GSToken` Create/Expiry time split issue on macOS caused by difference in `-UFormat %s` (macOS doesn't have trailing milliseconds)
+* Fixed: Logic in confirming if UserID is `[decimal]` to prevent unnecessary errors
 
 ## 2.13.2
 
@@ -230,7 +257,7 @@ Added the following:
 
 ## 2.1.2
 
-* Fixed: Module to load only public functions 
+* Fixed: Module to load only public functions
 
 ## 2.1.1
 
@@ -247,11 +274,11 @@ Added the following:
 * Fixed: Error when using -CalendarID with Get-GSCalendarEventList [#17](https://github.com/scrthq/PSGSuite/issues/17)
 * Fixed: Update-GSUser failing to update OrgUnitPath [#18](https://github.com/scrthq/PSGSuite/issues/18)
 * Added: -Attendees parameter to New-GSCalendarEvent
-* Added: Add-GSEventAttendee helper function 
+* Added: Add-GSEventAttendee helper function
 
 ## 2.0.2
 
-* Fixed: Issue with Add-GSUserExternalId [#14](https://github.com/scrthq/PSGSuite/issues/14) 
+* Fixed: Issue with Add-GSUserExternalId [#14](https://github.com/scrthq/PSGSuite/issues/14)
 
 ## 2.0.1
 
@@ -277,7 +304,7 @@ Added the following:
 
 #### Functions Removed
 
-Please note that not all functions were ported to PSGSuite 2.0.0 due to restrictions within the .NET SDK and deprecated API calls. Here is the list of functions no longer existing in PSGSuite as of 2.0.0:  
+Please note that not all functions were ported to PSGSuite 2.0.0 due to restrictions within the .NET SDK and deprecated API calls. Here is the list of functions no longer existing in PSGSuite as of 2.0.0:
 
 * Get-GSToken: no need for this as the keys are being consumed by Googles Auth SDK directly now, which makes Access/Refresh tokens non-existent for P12 Key service accounts and token management is handled automatically
 * Revoke-GSToken: same here, no longer needed due to auth service changes

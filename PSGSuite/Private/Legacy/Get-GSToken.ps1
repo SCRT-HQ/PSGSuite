@@ -41,8 +41,8 @@ function Get-GSToken {
     } | ConvertTo-Json -Compress
     $header = Invoke-URLEncode ([System.Text.Encoding]::UTF8.GetBytes($rawheader))
     [string]$now = Get-Date (Get-Date).ToUniversalTime() -UFormat "%s"
-    $createDate = [int]$now.Split(".").Split(",")[0]
-    $expiryDate = [int]$now.Split(".").Split(",")[0] + 3540
+    [int]$createDate = $now -replace "(\..*|\,.*)"
+    [int]$expiryDate = $createDate + 3600
     $rawclaims = [Ordered]@{
         iss   = "$AppEmail"
         sub   = "$AdminEmail"
@@ -67,14 +67,6 @@ function Get-GSToken {
     }
     catch {
         Write-Verbose "Failed to acquire access token!"
-        $result = $_.Exception.Response.GetResponseStream()
-        $reader = New-Object System.IO.StreamReader($result)
-        $reader.BaseStream.Position = 0
-        $reader.DiscardBufferedData()
-        $response = $reader.ReadToEnd() | 
-            ConvertFrom-Json | 
-            Select-Object @{N = "WebError";E = {$Error[0]}},@{N = "Code";E = {"401"}},@{N = "Error";E = {$_.error}},@{N = "Description";E = {$_.error_description}}
-        Write-Error "$($MyInvocation.MyCommand) : $(Get-HTTPStatus -Code $response.Code): $($response.Error) / $($response.Description)"
-        return
+        $PSCmdlet.ThrowTerminatingError($_)
     }
 }
