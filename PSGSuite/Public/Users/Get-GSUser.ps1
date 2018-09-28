@@ -170,8 +170,8 @@ function Get-GSUser {
                                 elseif ($U -notlike "*@*.*") {
                                     $U = "$($U)@$($Script:PSGSuite.Domain)"
                                 }
-                                Write-Verbose "Getting User '$U'"
                             }
+                            Write-Verbose "Getting User '$U'"
                             $request = $service.Users.Get($U)
                             $request.Projection = $Projection
                             $request.ViewType = ($ViewType -replace '_','')
