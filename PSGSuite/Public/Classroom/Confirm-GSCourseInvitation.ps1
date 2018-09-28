@@ -26,6 +26,12 @@ function Confirm-GSCourseInvitation {
         $User
     )
     Begin {
+        if ($User -ceq 'me') {
+            $User = $Script:PSGSuite.AdminEmail
+        }
+        elseif ($User -notlike "*@*.*") {
+            $User = "$($User)@$($Script:PSGSuite.Domain)"
+        }
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/classroom.rosters'
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
@@ -35,12 +41,6 @@ function Confirm-GSCourseInvitation {
     }
     Process {
         try {
-            if ($User -ceq 'me') {
-                $User = $Script:PSGSuite.AdminEmail
-            }
-            elseif ($User -notlike "*@*.*") {
-                $User = "$($User)@$($Script:PSGSuite.Domain)"
-            }
             Write-Verbose "Accepting Invitation '$Id' for user '$User'"
             $request = $service.Invitations.Accept($Id)
             $request.Execute()

@@ -51,10 +51,7 @@ function New-GSCourseInvitation {
     Process {
         foreach ($U in $UserId) {
             try {
-                try {
-                    [decimal]$U | Out-Null
-                }
-                catch {
+                if ( -not ($U -as [decimal])) {
                     if ($U -ceq 'me') {
                         $U = $Script:PSGSuite.AdminEmail
                     }

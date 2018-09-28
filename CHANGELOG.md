@@ -54,16 +54,25 @@
 * [Issue #85](https://github.com/scrthq/PSGSuite/issues/85)
   * Added Google Classroom support with the following functions:
     * `Add-GSCourseParticipant`
+    * `Confirm-GSCourseInvitation`
     * `Get-GSClassroomUserProfile`
     * `Get-GSCourse`
     * `Get-GSCourseAlias`
+    * `Get-GSCourseInvitation`
     * `Get-GSCourseParticipant`
+    * `Get-GSStudentGuardian`
+    * `Get-GSStudentGuardianInvitation`
     * `New-GSCourse`
     * `New-GSCourseAlias`
+    * `New-GSCourseInvitation`
+    * `New-GSStudentGuardianInvitation`
     * `Remove-GSCourse`
     * `Remove-GSCourseAlias`
+    * `Remove-GSCourseInvitation`
     * `Remove-GSCourseParticipant`
     * `Update-GSCourse`
+* Fixed: `Get-GSToken` Create/Expiry time split issue on macOS caused by difference in `-UFormat %s` (macOS doesn't have trailing milliseconds)
+* Fixed: Logic in confirming if UserID is `[decimal]` to prevent unnecessary errors
 
 ## 2.13.2
 

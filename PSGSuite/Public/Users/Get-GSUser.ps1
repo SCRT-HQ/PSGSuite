@@ -2,28 +2,28 @@ function Get-GSUser {
     <#
     .SYNOPSIS
     Gets the specified G SUite User or a list of Users
-    
+
     .DESCRIPTION
     Gets the specified G SUite User. Designed for parity with Get-ADUser as much as possible
-    
+
     .PARAMETER User
     The primary email or UserID of the user who you are trying to get info for. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
 
     Defaults to the AdminEmail in the config
-    
+
     .PARAMETER Filter
     Query string for searching user fields
-    
+
     For more information on constructing user queries, see: https://developers.google.com/admin-sdk/directory/v1/guides/search-users
 
     PowerShell filter syntax here is supported as "best effort". Please use Google's filter operators and syntax to ensure best results
 
     .PARAMETER Domain
     The specific domain you would like to list users for. Useful for customers with multiple domains.
-    
+
     .PARAMETER SearchBase
     The organizational unit path that you would like to list users from
-    
+
     .PARAMETER SearchScope
     The depth at which to return the list of users
 
@@ -31,10 +31,10 @@ function Get-GSUser {
     * "Base": only return the users specified in the SearchBase
     * "Subtree": return the full list of users underneath the specified SearchBase
     * "OneLevel": return the SearchBase and the Users directly underneath it
-    
+
     .PARAMETER ShowDeleted
     Returns deleted users
-    
+
     .PARAMETER Projection
     What subset of fields to fetch for this user
 
@@ -42,53 +42,53 @@ function Get-GSUser {
     * "Basic": Do not include any custom fields for the user
     * "Custom": Include custom fields from schemas requested in customFieldMask
     * "Full": Include all fields associated with this user (default for this module)
-    
+
     .PARAMETER CustomFieldMask
     A comma-separated list of schema names. All fields from these schemas are fetched. This should only be set when using '-Projection Custom'
-    
+
     .PARAMETER ViewType
     Whether to fetch the administrator-only or domain-wide public view of the user. For more information, see Retrieve a user as a non-administrator
 
     Acceptable values are:
     * "Admin_View": Results include both administrator-only and domain-public fields for the user. (default)
     * "Domain_Public": Results only include fields for the user that are publicly visible to other users in the domain.
-    
+
     .PARAMETER Fields
     The specific fields to fetch for this user
-    
+
     .PARAMETER PageSize
     Page size of the result set
-    
+
     .PARAMETER OrderBy
-    Property to use for sorting results. 
+    Property to use for sorting results.
 
     Acceptable values are:
     * "Email": Primary email of the user.
     * "FamilyName": User's family name.
     * "GivenName": User's given name.
-    
+
     .PARAMETER SortOrder
-    Whether to return results in ascending or descending order. 
+    Whether to return results in ascending or descending order.
 
     Acceptable values are:
     * "Ascending": Ascending order.
     * "Descending": Descending order.
-    
+
     .EXAMPLE
     Get-GSUser
 
     Gets the user info for the AdminEmail on the config
-    
+
     .EXAMPLE
     Get-GSUser -Filter *
 
     Gets the list of users
-    
+
     .EXAMPLE
     Get-GSUser -Filter "IsAdmin -eq '$true'"
 
     Gets the list of SuperAdmin users
-    
+
     .EXAMPLE
     Get-GSUser -Filter "IsEnrolledIn2Sv -eq '$false'" -SearchBase /Contractors -SearchScope Subtree
 
@@ -163,11 +163,7 @@ function Get-GSUser {
                 Get {
                     if ($MyInvocation.InvocationName -ne 'Get-GSUserList') {
                         foreach ($U in $User) {
-                            try {
-                                [decimal]$U | Out-Null
-                                Write-Verbose "Getting User ID '$U'"
-                            }
-                            catch {
+                            if ( -not ($U -as [decimal])) {
                                 if ($U -ceq 'me') {
                                     $U = $Script:PSGSuite.AdminEmail
                                 }

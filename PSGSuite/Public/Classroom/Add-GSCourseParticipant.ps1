@@ -55,10 +55,7 @@ function Add-GSCourseParticipant {
         foreach ($part in $Student | Where-Object {-not [String]::IsNullOrEmpty($_)}) {
             try {
                 $body = New-Object 'Google.Apis.Classroom.v1.Data.Student'
-                try {
-                    [decimal]$part | Out-Null
-                }
-                catch {
+                if ( -not ($part -as [decimal])) {
                     if ($part -ceq 'me') {
                         $part = $Script:PSGSuite.AdminEmail
                     }

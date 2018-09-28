@@ -74,10 +74,7 @@ function Get-GSCourseInvitation {
                             $request.CourseId = $CourseId
                         }
                         if ($PSBoundParameters.Keys -contains 'UserId') {
-                            try {
-                                [decimal]$UserId | Out-Null
-                            }
-                            catch {
+                            if ( -not ($UserId -as [decimal])) {
                                 if ($UserId -ceq 'me') {
                                     $UserId = $Script:PSGSuite.AdminEmail
                                 }

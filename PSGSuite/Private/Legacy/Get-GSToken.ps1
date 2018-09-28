@@ -67,14 +67,6 @@ function Get-GSToken {
     }
     catch {
         Write-Verbose "Failed to acquire access token!"
-        $result = $_.Exception.Response.GetResponseStream()
-        $reader = New-Object System.IO.StreamReader($result)
-        $reader.BaseStream.Position = 0
-        $reader.DiscardBufferedData()
-        $response = $reader.ReadToEnd() |
-            ConvertFrom-Json |
-            Select-Object @{N = "WebError";E = {$Error[0]}},@{N = "Code";E = {"401"}},@{N = "Error";E = {$_.error}},@{N = "Description";E = {$_.error_description}}
-        Write-Error "$($MyInvocation.MyCommand) : $(Get-HTTPStatus -Code $response.Code): $($response.Error) / $($response.Description)"
-        return
+        $PSCmdlet.ThrowTerminatingError($_)
     }
 }

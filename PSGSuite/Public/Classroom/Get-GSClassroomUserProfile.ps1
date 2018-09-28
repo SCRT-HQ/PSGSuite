@@ -34,10 +34,7 @@ function Get-GSClassroomUserProfile {
     Process {
         foreach ($part in $UserId) {
             try {
-                try {
-                    [decimal]$part | Out-Null
-                }
-                catch {
+                if ( -not ($part -as [decimal])) {
                     if ($part -ceq 'me') {
                         $part = $Script:PSGSuite.AdminEmail
                     }

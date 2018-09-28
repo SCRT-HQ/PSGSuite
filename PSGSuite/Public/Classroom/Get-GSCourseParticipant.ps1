@@ -66,10 +66,7 @@ function Get-GSCourseParticipant {
             Get {
                 foreach ($part in $Student) {
                     try {
-                        try {
-                            [decimal]$part | Out-Null
-                        }
-                        catch {
+                        if ( -not ($part -as [decimal])) {
                             if ($part -ceq 'me') {
                                 $part = $Script:PSGSuite.AdminEmail
                             }

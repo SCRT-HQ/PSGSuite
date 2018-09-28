@@ -32,7 +32,7 @@ function Get-GSStudentGuardianInvitation {
     .EXAMPLE
     Get-GSStudentGuardianInvitation -StudentId aristotle@athens.edu
 
-    Gets the list of pending guardian invitations for this student.
+    Gets the list of guardian invitations for this student.
     #>
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
@@ -60,16 +60,12 @@ function Get-GSStudentGuardianInvitation {
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
         }
         $service = New-GoogleService @serviceParams
-        $finalStates = $null
     }
     Process {
         foreach ($stuId in $StudentId) {
             try {
                 if ($stuId -ne '-') {
-                    try {
-                        [decimal]$stuId | Out-Null
-                    }
-                    catch {
+                    if ( -not ($stuId -as [decimal])) {
                         if ($stuId -ceq 'me') {
                             $stuId = $Script:PSGSuite.AdminEmail
                         }
@@ -114,7 +110,18 @@ function Get-GSStudentGuardianInvitation {
                             if ($PSBoundParameters.Keys -contains 'GuardianEmail') {
                                 $request.InvitedEmailAddress = $GuardianEmail
                             }
-                            $request.Execute()
+                            [int]$i = 1
+                            do {
+                                $result = $request.Execute()
+                                if ($null -ne $result.GuardianInvitations) {
+                                    $result.GuardianInvitations
+                                }
+                                $request.PageToken = $result.NextPageToken
+                                [int]$retrieved = ($i + $result.GuardianInvitations.Count) - 1
+                                Write-Verbose "Retrieved $retrieved Guardian Invitations..."
+                                [int]$i = $i + $result.GuardianInvitations.Count
+                            }
+                            until (!$result.NextPageToken)
                         }
                         catch {
                             if ($ErrorActionPreference -eq 'Stop') {

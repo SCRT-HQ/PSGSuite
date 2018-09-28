@@ -49,10 +49,7 @@ function New-GSStudentGuardianInvitation {
     }
     Process {
         try {
-            try {
-                [decimal]$StudentId | Out-Null
-            }
-            catch {
+            if ( -not ($StudentId -as [decimal])) {
                 if ($StudentId -ceq 'me') {
                     $StudentId = $Script:PSGSuite.AdminEmail
                 }
