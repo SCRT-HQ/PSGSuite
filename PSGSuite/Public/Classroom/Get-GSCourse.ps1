@@ -29,7 +29,7 @@ function Get-GSCourse {
     * the string literal "me", indicating the requesting user
 
     .PARAMETER CourseStates
-    Restricts returned courses to those in one of the specified states The default value is ACTIVE, ARCHIVED, PROVISIONED, DECLINED, SUSPENDED.
+    Restricts returned courses to those in one of the specified states.
 
     .EXAMPLE
     Get-GSCourse -Teacher aristotle@athens.edu
@@ -51,9 +51,8 @@ function Get-GSCourse {
         [String]
         $Student,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
-        [ValidateSet('ACTIVE','ARCHIVED','PROVISIONED','DECLINED','SUSPENDED')]
-        [String[]]
-        $CourseStates = @('ACTIVE','ARCHIVED','PROVISIONED','DECLINED','SUSPENDED')
+        [Google.Apis.Classroom.v1.CoursesResource+ListRequest+CourseStatesEnum[]]
+        $CourseStates
     )
     Begin {
         $serviceParams = @{
@@ -86,7 +85,7 @@ function Get-GSCourse {
                 Write-Verbose "Getting Course List"
                 $request = $service.Courses.List()
                 foreach ($s in $CourseStates) {
-                    $request.CourseStates += [Google.Apis.Classroom.v1.CoursesResource+ListRequest+CourseStatesEnum]::$s
+                    $request.CourseStates += $s
                 }
                 if ($PSBoundParameters.Keys -contains 'Student') {
                     $request.StudentId = $PSBoundParameters['Student']
