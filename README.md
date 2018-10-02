@@ -127,6 +127,13 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.14.1
+
+* [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
+  * Removed `Add-Member` calls from `Get-GSCourseParticipant` to resolve item 3 on issue
+  * Cleaned up `CourseStates` parameter on `Get-GSCourse` to validate against the Enum directly and removed the default parameter value to resolve item 2 on issue
+  * Cleaned up `State` parameter on `Get-GSStudentGuardianInvitation` to validate against the Enum directly in an effort to prevent the same issue as item 2
+
 #### 2.14.0
 
 * [Issue #85](https://github.com/scrthq/PSGSuite/issues/85)
@@ -152,114 +159,3 @@ Update-GSSheetValue               Export-GSSheet
     * `Update-GSCourse`
 * Fixed: `Get-GSToken` Create/Expiry time split issue on macOS caused by difference in `-UFormat %s` (macOS doesn't have trailing milliseconds)
 * Fixed: Logic in confirming if UserID is `[decimal]` to prevent unnecessary errors
-
-#### 2.13.2
-
-* [Issue #83](https://github.com/scrthq/PSGSuite/issues/83)
-  * Added: `Add-GSUserOrganization` to create UserOrganization objects
-  * Updated: `Update-GSUser` and `New-GSUser` to include Organizations parameter and cleaned up logic for other Generic.List type parameters to ensure functionality
-
-#### 2.13.1
-
-* Fixed: `Add-GSDrivePermission` fails to transfer ownership of files ([Issue #80](https://github.com/scrthq/PSGSuite/issues/80))
-
-#### 2.13.0
-
-* Fixed: Private list functions to check if a value is actually returned before adding members to the returned objects ([Issue #77](https://github.com/scrthq/PSGSuite/issues/77))
-* Added: `Update-GSChatMessage` to allow updating existing messages in Chat (i.e. on Card Clicked events)
-* Updated: Order of parameters in `Get-GSToken` to place `Scopes` first, as it's the only required parameter
-* Updated: `Get-GSChatSpace` now updates the config with Space names/shortnames for ease of use
-* Updated: `Send-GSChatMessage` to also support calling the REST API as an additional option. This is necessary for PoshBot due to the deserialization of objects passed back to result parser breaking the Google SDK type references
-* Updated: `Get-GSChatConfig` to always fetch the latest config if no ConfigName is passed instead of using `Show-PSGSuiteConfig`
-* Updated: `Set-PSGSuiteConfig` to refresh the Spaces dictionary each time in order to remove stale spaces (i.e. on removal of bot from a Room or DM)
-* Fixed: `Add-GSChatOnClick` now properly builds the hashtable for the Webhook object
-* Updated: `Get-GSUser` to allow passing User ID's instead of emails by checking if value passed is a `decimal` before concatenating the domain name.
-
-#### 2.12.1
-
-* Fixed: `Get-GSDrivePermission` now returns all fields (including EmailAddress)
-
-#### 2.12.0
-
-* Added: `Get-GSChatMember`, `Get-GSChatMessage`, `Get-GSChatSpace`, `Remove-GSChatMessage`, `Send-GSChatMessage`, `Add-GSChatButton`, `Add-GSChatCard`, `Add-GSChatCardAction`, `Add-GSChatCardSection`, `Add-GSChatImage`, `Add-GSChatKeyValue`, `Add-GSChatOnClick`, `Add-GSChatTextParagraph`
-  * These allow interaction with the Google Chat API via either Webhook or through the SDK
-  * Using the Webhook requires no additional configuration as the Webhook includes the authentication key and token in the URL
-  * Using the SDK requires additional configuration of the Bot in the Google Developer's console (Documentation soon to come)
-* Added: `Get-GSChatConfig` to retrieve the Chat specific config data
-* Updated: `Set-PSGSuiteConfig` & `Get-PSGSuiteConfig` to manage config dictionaries for Chat Webhook and Space data
-* Updated: All .NET SDK DLL's to version 1.34 to work with the Hangouts Chat API
-
-#### 2.11.0
-
-* Added: `Get-GSGmailSMIMEInfo`, `Remove-GSGmailSMIMEInfo` & `New-GSGmailSMIMEInfo` to get, delete and insert S/MIME info for a user, respectively ([Issue #57](https://github.com/scrthq/PSGSuite/issues/57))
-
-#### 2.10.2
-
-* Added: `Get-GSDocContent`, `Set-GSDocContent` & `Add-GSDocContent` to establish functional parity with `Get-Content`, `Set-Content` & `Add-Content` in regards to working with Google Docs ([Issue #56](https://github.com/scrthq/PSGSuite/issues/56))
-
-#### 2.10.1
-
-* Updated: Added `Path` parameter to `Update-GSDriveFile` to allow updating a file's contents in Drive using a local file path.
-
-#### 2.10.0
-
-* Added: `Clear-GSTasklist`, `Get-GSTask`, `Get-GSTasklist`, `Move-GSTask`, `New-GSTask`, `New-GSTasklist`, `Remove-GSTask`, `Remove-GSTasklist`, `Update-GSTask` & `Update-GSTasklist`
-  * These will allow full use of the Tasks API from Google.
-  * **Please see the updated [Initial Setup guide](https://github.com/scrthq/PSGSuite/wiki/Initial-Setup#adding-api-client-access-in-admin-console) to update your API access for the new Scope list and enable the Tasks API in your project in the Developer Console!**
-
-#### 2.9.0
-
-* Updated: Added `IsAdmin` switch parameter to `Update-GSUser`, allowing set or revoke SuperAdmin privileges for a user ([Issue #54](https://github.com/scrthq/PSGSuite/issues/54))
-* Added: `Get-GSAdminRole`, `New-GSAdminRole`, `Remove-GSAdminRole`& `Update-GSAdminRole` to manage Admin Roles in G Suite ([Issue #54](https://github.com/scrthq/PSGSuite/issues/54))
-* Added: `Get-GSAdminRoleAssignment`, `New-GSAdminRoleAssignment` & `Remove-GSAdminRoleAssignment` to manage Admin Role Assignments in G Suite ([Issue #54](https://github.com/scrthq/PSGSuite/issues/54))
-
-#### 2.8.1
-
-* Fixed: `Get-GSGroup` failing when using `List` ParameterSet and the `Fields` Parameter ([Issue #63](https://github.com/scrthq/PSGSuite/issues/63))
-
-#### 2.8.0
-
-* Added: `Remove-GSDrivePermission`. Thanks to [Jeremy McGee](https://github.com/jeremymcgee73)!
-
-#### 2.7.2
-
-* Fixed: `Get-GSDrivePermission` fails when attempting to get Team Drive permissions.
-
-#### 2.7.1
-
-* Fixed: `Update-GSCalendarEvent` had default values set for LocalStartDateTime and LocalEndDateTime parameters, causing those to always update the event unexpectedly if a start and/or end datetime was not passed when running the command ([Issue #59](https://github.com/scrthq/PSGSuite/issues/59))
-
-#### 2.7.0
-
-* Added: `Get-GSCalendarACL` and `New-GSCalendarACL` for pulling/adding calendar ACL's.
-
-#### 2.6.3
-
-* Fixed: `Export-GSDriveFile -OutFilePath C:\doc.pdf -Type PDF` failing due to incorrect parameter validation.  ([Issue #51](https://github.com/scrthq/PSGSuite/issues/51))
-
-#### 2.6.2
-
-* Added: `Get-GSGmailProfile` and `Get-GSDriveProfile` to pull down information for a user's Gmail or Drive account.
-
-#### 2.6.1
-
-* Fixed: `Add-GSDrivePermission` error messages stating FileId is ReadOnly. ([Issue #47](https://github.com/scrthq/PSGSuite/issues/47))
-* Fixed: `Get-GSGmailMessage -ParseMessage` broken on non-Windows OS's due to using $env:TEMP. Switched to converting the MimeMessage to a stream and parsing it that way for resolution and significant perf gains. ([Issue #48](https://github.com/scrthq/PSGSuite/issues/48))
-
-#### 2.6.0
-
-* Added: `Compare-ModuleVersion` function to get latest installed version and compare against the latest version on the PSGallery ([Issue #44](https://github.com/scrthq/PSGSuite/issues/44))
-* Fixed: Pipeline support, so you can do things like the following and get group, group member and user details (as an example) easily ([Issue #45](https://github.com/scrthq/PSGSuite/issues/45)):
-```powershell
-#much pipe
-$users = Get-GSGroup $groupEmail -Verbose -OutVariable group | Get-GSGroupMember -Verbose -OutVariable members | Get-GSUser -Verbose
-
-#contains the group's info
-$group
-
-#contains the group members' info
-$members
-
-#contains the group members' full user info
-$users
-```

@@ -76,7 +76,7 @@ function Get-GSCourseParticipant {
                         }
                         Write-Verbose "Getting Student '$part' for Course '$CourseId'"
                         $request = $service.Courses.Students.Get($CourseId,$part)
-                        $request.Execute() | Add-Member -MemberType NoteProperty -Name CourseId -Value $CourseId | Add-Member -MemberType NoteProperty -Name Role -Value 'Student'
+                        $request.Execute()
                     }
                     catch {
                         if ($ErrorActionPreference -eq 'Stop') {
@@ -102,7 +102,7 @@ function Get-GSCourseParticipant {
                         }
                         Write-Verbose "Getting Teacher '$part' for Course '$CourseId'"
                         $request = $service.Courses.Teachers.Get($CourseId,$part)
-                        $request.Execute() | Add-Member -MemberType NoteProperty -Name CourseId -Value $CourseId | Add-Member -MemberType NoteProperty -Name Role -Value 'Teacher'
+                        $request.Execute()
                     }
                     catch {
                         if ($ErrorActionPreference -eq 'Stop') {
@@ -133,14 +133,14 @@ function Get-GSCourseParticipant {
                             switch ($Ro) {
                                 Teacher {
                                     if ($null -ne $result.Teachers) {
-                                        $result.Teachers | Add-Member -MemberType NoteProperty -Name CourseId -Value $CourseId | Add-Member -MemberType NoteProperty -Name Role -Value $Ro
+                                        $result.Teachers
                                     }
                                     [int]$retrieved = ($i + $result.Teachers.Count) - 1
                                     [int]$i = $i + $result.Teachers.Count
                                 }
                                 Student {
                                     if ($null -ne $result.Students) {
-                                        $result.Students | Add-Member -MemberType NoteProperty -Name CourseId -Value $CourseId | Add-Member -MemberType NoteProperty -Name Role -Value $Ro
+                                        $result.Students
                                     }
                                     [int]$retrieved = ($i + $result.Students.Count) - 1
                                     [int]$i = $i + $result.Students.Count

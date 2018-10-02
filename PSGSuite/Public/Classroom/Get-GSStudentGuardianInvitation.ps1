@@ -51,8 +51,8 @@ function Get-GSStudentGuardianInvitation {
         $GuardianEmail,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [ValidateSet('PENDING','COMPLETE')]
-        [String[]]
-        $States = @('PENDING','COMPLETE')
+        [Google.Apis.Classroom.v1.UserProfilesResource+GuardianInvitationsResource+ListRequest+States[]]
+        $States
     )
     Begin {
         $serviceParams = @{
@@ -105,7 +105,7 @@ function Get-GSStudentGuardianInvitation {
                             }
                             $request = $service.UserProfiles.GuardianInvitations.List($stuId)
                             foreach ($s in $States) {
-                                $request.States += [Google.Apis.Classroom.v1.UserProfilesResource+GuardianInvitationsResource+ListRequest+StatesEnum]::$s
+                                $request.States += $s
                             }
                             if ($PSBoundParameters.Keys -contains 'GuardianEmail') {
                                 $request.InvitedEmailAddress = $GuardianEmail
