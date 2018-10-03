@@ -21,7 +21,7 @@ $ModuleRoot = $PSScriptRoot
 foreach ($file in @($Public + $Private)) {
     try {
         $ExecutionContext.InvokeCommand.InvokeScript(
-            $false, 
+            $false,
             (
                 [scriptblock]::Create(
                     [io.file]::ReadAllText(
@@ -29,8 +29,8 @@ foreach ($file in @($Public + $Private)) {
                         [Text.Encoding]::UTF8
                     )
                 )
-            ), 
-            $null, 
+            ),
+            $null,
             $null
         )
     }

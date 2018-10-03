@@ -127,6 +127,13 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.15.0
+
+- Updated Gmail Delegation functions to use the .NET SDK after Google announced delegation support for the Gmail API
+- Cleaned up `Get-GSGmailDelegates` by removing the trailing `s` (now `Get-GSGmailDelegate`). Added the original function as an alias to the new function for backwards compatibility with scripts.
+- Removed the `Raw` parameter from `Get-GSGmailDelegate` since it's no longer applicable.
+- Enabled `Get-GSGmailDelegate` to perform both Get and List requests (previously only performed List requests)
+
 #### 2.14.1
 
 * [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
