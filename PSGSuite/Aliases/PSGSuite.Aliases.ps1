@@ -33,4 +33,5 @@
     'Export-PSGSuiteConfiguration'      = 'Set-PSGSuiteConfig'
     'Import-PSGSuiteConfiguration'      = 'Get-PSGSuiteConfig'
     'Set-PSGSuiteDefaultDomain'         = 'Switch-PSGSuiteConfig'
+    'Get-GSGmailDelegates'              = 'Get-GSGmailDelegate'
 }
