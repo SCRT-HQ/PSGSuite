@@ -42,6 +42,9 @@ function Update-GSCourse {
     * PROVISIONED - The course has been created, but not yet activated. It is accessible by the primary teacher and domain administrators, who may modify it or change it to the ACTIVE or DECLINED states. A course may only be changed to PROVISIONED if it is in the DECLINED state.
     * DECLINED - The course has been created, but declined. It is accessible by the course owner and domain administrators, though it will not be displayed in the web UI. You cannot modify the course except to change it to the PROVISIONED state. A course may only be changed to DECLINED if it is in the PROVISIONED state.
 
+    .PARAMETER User
+    The user to authenticate the request as
+
     .EXAMPLE
     Update-GSCourse -Id the-republic-s01 -Name "The Rebublic 101"
     #>
@@ -80,12 +83,22 @@ function Update-GSCourse {
         [Alias('Status')]
         [ValidateSet('PROVISIONED','ACTIVE','ARCHIVED','DECLINED')]
         [String]
-        $CourseState
+        $CourseState,
+        [parameter(Mandatory = $false)]
+        [String]
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
+        if ($User -ceq 'me') {
+            $User = $Script:PSGSuite.AdminEmail
+        }
+        elseif ($User -notlike "*@*.*") {
+            $User = "$($User)@$($Script:PSGSuite.Domain)"
+        }
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/classroom.courses'
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
+            User        = $User
         }
         $service = New-GoogleService @serviceParams
         $UpdateMask = @()

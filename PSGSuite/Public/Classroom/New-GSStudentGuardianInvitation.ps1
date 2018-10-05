@@ -15,6 +15,9 @@ function New-GSStudentGuardianInvitation {
     .PARAMETER GuardianEmail
     The email address of the guardian to invite.
 
+    .PARAMETER User
+    The user to authenticate the request as
+
     .EXAMPLE
     New-GSStudentGuardianInvitation -StudentId aristotle@athens.edu -GuardianEmail zeus@olympus.io
 
@@ -38,12 +41,22 @@ function New-GSStudentGuardianInvitation {
         [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
         [Alias('Guardian')]
         [String]
-        $GuardianEmail
+        $GuardianEmail,
+        [parameter(Mandatory = $false)]
+        [String]
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
+        if ($User -ceq 'me') {
+            $User = $Script:PSGSuite.AdminEmail
+        }
+        elseif ($User -notlike "*@*.*") {
+            $User = "$($User)@$($Script:PSGSuite.Domain)"
+        }
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/classroom.guardianlinks.students'
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
+            User        = $User
         }
         $service = New-GoogleService @serviceParams
     }

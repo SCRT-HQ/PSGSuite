@@ -19,6 +19,9 @@ function Get-GSCourseInvitation {
     * the email address of the user
     * the string literal "me", indicating the requesting user
 
+    .PARAMETER User
+    The user to authenticate the request as
+
     .EXAMPLE
     Get-GSCourseInvitation -CourseId philosophy-101
     #>
@@ -33,12 +36,22 @@ function Get-GSCourseInvitation {
         $CourseId,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [String]
-        $UserId
+        $UserId,
+        [parameter(Mandatory = $false)]
+        [String]
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
+        if ($User -ceq 'me') {
+            $User = $Script:PSGSuite.AdminEmail
+        }
+        elseif ($User -notlike "*@*.*") {
+            $User = "$($User)@$($Script:PSGSuite.Domain)"
+        }
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/classroom.rosters'
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
+            User        = $User
         }
         $service = New-GoogleService @serviceParams
     }

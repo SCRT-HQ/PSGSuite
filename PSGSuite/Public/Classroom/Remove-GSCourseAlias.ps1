@@ -12,6 +12,9 @@ function Remove-GSCourseAlias {
     .PARAMETER CourseId
     Identifier of the course to alias. This identifier can be either the Classroom-assigned identifier or an alias.
 
+    .PARAMETER User
+    The user to authenticate the request as
+
     .EXAMPLE
     Remove-GSCourseAlias -Alias "d:abc123" -CourseId 'architecture-101'
     #>
@@ -23,12 +26,22 @@ function Remove-GSCourseAlias {
         $Alias,
         [parameter(Mandatory = $true,Position = 1)]
         [String]
-        $CourseId
+        $CourseId,
+        [parameter(Mandatory = $false)]
+        [String]
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
+        if ($User -ceq 'me') {
+            $User = $Script:PSGSuite.AdminEmail
+        }
+        elseif ($User -notlike "*@*.*") {
+            $User = "$($User)@$($Script:PSGSuite.Domain)"
+        }
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/classroom.courses'
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
+            User        = $User
         }
         $service = New-GoogleService @serviceParams
     }

@@ -9,6 +9,9 @@ function Remove-GSCourseInvitation {
     .PARAMETER Id
     Identifier of the invitation to delete.
 
+    .PARAMETER User
+    The user to authenticate the request as
+
     .EXAMPLE
     Remove-GSCourseInvitation -Id $inviteId -Confirm:$false
     #>
@@ -17,9 +20,18 @@ function Remove-GSCourseInvitation {
     (
         [parameter(Mandatory = $true,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
         [String[]]
-        $Id
+        $Id,
+        [parameter(Mandatory = $false)]
+        [String]
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
+        if ($User -ceq 'me') {
+            $User = $Script:PSGSuite.AdminEmail
+        }
+        elseif ($User -notlike "*@*.*") {
+            $User = "$($User)@$($Script:PSGSuite.Domain)"
+        }
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/classroom.rosters'
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'

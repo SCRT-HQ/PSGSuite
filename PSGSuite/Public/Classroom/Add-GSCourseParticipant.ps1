@@ -27,6 +27,9 @@ function Add-GSCourseParticipant {
     * the email address of the user
     * the string literal "me", indicating the requesting user
 
+    .PARAMETER User
+    The user to authenticate the request as
+
     .EXAMPLE
     Add-GSCourseParticipant -CourseId 'architecture-101' -Student plato@athens.edu,aristotle@athens.edu -Teacher zeus@athens.edu
     #>
@@ -42,12 +45,22 @@ function Add-GSCourseParticipant {
         $Student,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String[]]
-        $Teacher
+        $Teacher,
+        [parameter(Mandatory = $false)]
+        [String]
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
+        if ($User -ceq 'me') {
+            $User = $Script:PSGSuite.AdminEmail
+        }
+        elseif ($User -notlike "*@*.*") {
+            $User = "$($User)@$($Script:PSGSuite.Domain)"
+        }
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/classroom.rosters'
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
+            User        = $User
         }
         $service = New-GoogleService @serviceParams
     }
