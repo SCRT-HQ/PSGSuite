@@ -29,6 +29,9 @@ function Get-GSStudentGuardianInvitation {
     * PENDING
     * COMPLETE
 
+    .PARAMETER User
+    The user to authenticate the request as
+
     .EXAMPLE
     Get-GSStudentGuardianInvitation -StudentId aristotle@athens.edu
 
@@ -52,12 +55,22 @@ function Get-GSStudentGuardianInvitation {
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [ValidateSet('PENDING','COMPLETE')]
         [Google.Apis.Classroom.v1.UserProfilesResource+GuardianInvitationsResource+ListRequest+States[]]
-        $States
+        $States,
+        [parameter(Mandatory = $false)]
+        [String]
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
+        if ($User -ceq 'me') {
+            $User = $Script:PSGSuite.AdminEmail
+        }
+        elseif ($User -notlike "*@*.*") {
+            $User = "$($User)@$($Script:PSGSuite.Domain)"
+        }
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/classroom.guardianlinks.students'
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
+            User        = $User
         }
         $service = New-GoogleService @serviceParams
     }

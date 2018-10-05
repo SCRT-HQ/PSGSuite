@@ -18,6 +18,9 @@ function New-GSCourseAlias {
     * Domain - A domain-scoped alias is visible to all users within the alias creator's domain and can be created only by a domain admin. A domain-scoped alias is often used when a course has an identifier external to Classroom.
     * Project - A project-scoped alias is visible to any request from an application using the Developer Console project ID that created the alias and can be created by any project. A project-scoped alias is often used when an application has alternative identifiers. A random value can also be used to avoid duplicate courses in the event of transmission failures, as retrying a request will return ALREADY_EXISTS if a previous one has succeeded.
 
+    .PARAMETER User
+    The user to authenticate the request as
+
     .EXAMPLE
     New-GSCourseAlias -Alias "abc123" -CourseId 'architecture-101' -Scope Domain
 
@@ -36,12 +39,22 @@ function New-GSCourseAlias {
         [parameter(Mandatory = $false)]
         [ValidateSet('Domain','Project')]
         [String]
-        $Scope = $(if($Alias -match "^p\:"){'Project'}else{'Domain'})
+        $Scope = $(if($Alias -match "^p\:"){'Project'}else{'Domain'}),
+        [parameter(Mandatory = $false)]
+        [String]
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
+        if ($User -ceq 'me') {
+            $User = $Script:PSGSuite.AdminEmail
+        }
+        elseif ($User -notlike "*@*.*") {
+            $User = "$($User)@$($Script:PSGSuite.Domain)"
+        }
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/classroom.courses'
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
+            User        = $User
         }
         $service = New-GoogleService @serviceParams
         $formatted = if ($Alias -match "^(d\:|p\:)") {

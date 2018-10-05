@@ -11,9 +11,6 @@ function Get-GSCourse {
 
     If excluded, returns the list of courses.
 
-    .PARAMETER User
-    The user to request course information as
-
     .PARAMETER Teacher
     Restricts returned courses to those having a teacher with the specified identifier. The identifier can be one of the following:
 
@@ -31,6 +28,9 @@ function Get-GSCourse {
     .PARAMETER CourseStates
     Restricts returned courses to those in one of the specified states.
 
+    .PARAMETER User
+    The user to authenticate the request as
+
     .EXAMPLE
     Get-GSCourse -Teacher aristotle@athens.edu
     #>
@@ -41,9 +41,6 @@ function Get-GSCourse {
         [ValidateNotNullOrEmpty()]
         [String[]]
         $Id,
-        [parameter(Mandatory = $false)]
-        [String]
-        $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [String]
         $Teacher,
@@ -52,9 +49,18 @@ function Get-GSCourse {
         $Student,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [Google.Apis.Classroom.v1.CoursesResource+ListRequest+CourseStatesEnum[]]
-        $CourseStates
+        $CourseStates,
+        [parameter(Mandatory = $false)]
+        [String]
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
+        if ($User -ceq 'me') {
+            $User = $Script:PSGSuite.AdminEmail
+        }
+        elseif ($User -notlike "*@*.*") {
+            $User = "$($User)@$($Script:PSGSuite.Domain)"
+        }
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/classroom.courses'
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'

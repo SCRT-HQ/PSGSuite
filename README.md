@@ -127,6 +127,14 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.15.1
+
+* [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
+  * Added `User` parameter to all Classroom functions to specify which user to authenticate the request as
+* [Issue #90](https://github.com/scrthq/PSGSuite/issues/90)
+  * Added `Update-GSUserPhoto`
+  * Added `Remove-GSUserPhoto`
+
 #### 2.15.0
 
 - Updated Gmail Delegation functions to use the .NET SDK after Google announced delegation support for the Gmail API

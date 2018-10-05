@@ -2,10 +2,10 @@ function Get-GSUserPhoto {
     <#
     .SYNOPSIS
     Gets the photo data for the specified user
-    
+
     .DESCRIPTION
     Gets the photo data for the specified user
-    
+
     .PARAMETER User
     The primary email or UserID of the user who you are trying to get info for. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
 
@@ -19,10 +19,11 @@ function Get-GSUserPhoto {
 
     Available values are:
     * "PNG": saves the photo in .png format
-    * "Base64": saves the photo as a .txt file containing standard (non-WebSafe) Base64 content. 
+    * "JPG": saves the photo in .jpg format
+    * "Base64": saves the photo as a .txt file containing standard (non-WebSafe) Base64 content.
 
     Defaults to PNG
-    
+
     .EXAMPLE
     Get-GSUserPhoto -OutFilePath .
 
@@ -41,7 +42,7 @@ function Get-GSUserPhoto {
         [String]
         $OutFilePath,
         [parameter(Mandatory = $false)]
-        [ValidateSet('Base64','PNG')]
+        [ValidateSet('Base64','PNG','JPG')]
         [String]
         $OutFileFormat = 'PNG'
     )
@@ -69,6 +70,11 @@ function Get-GSUserPhoto {
                 if ($OutFilePath) {
                     $fileBaseName = "$($U -replace '@.*','')"
                     switch ($OutFileFormat) {
+                        JPG {
+                            $filePath = Join-Path $OutFilePath "$($fileBaseName).jpg"
+                            Write-Verbose "Saving photo at '$filePath'"
+                            [System.IO.File]::WriteAllBytes($filePath, $bytes)
+                        }
                         PNG {
                             $filePath = Join-Path $OutFilePath "$($fileBaseName).png"
                             Write-Verbose "Saving photo at '$filePath'"

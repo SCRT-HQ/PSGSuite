@@ -16,6 +16,9 @@ function Remove-GSStudentGuardian {
     .PARAMETER GuardianId
     The id field from a Guardian.
 
+    .PARAMETER User
+    The user to authenticate the request as
+
     .EXAMPLE
     Remove-GSStudentGuardian -StudentId aristotle@athens.edu -GuardianId $guardianId
 
@@ -31,12 +34,22 @@ function Remove-GSStudentGuardian {
         [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
         [Alias('Guardian')]
         [String]
-        $GuardianId
+        $GuardianId,
+        [parameter(Mandatory = $false)]
+        [String]
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
+        if ($User -ceq 'me') {
+            $User = $Script:PSGSuite.AdminEmail
+        }
+        elseif ($User -notlike "*@*.*") {
+            $User = "$($User)@$($Script:PSGSuite.Domain)"
+        }
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/classroom.guardianlinks.students'
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
+            User        = $User
         }
         $service = New-GoogleService @serviceParams
     }
