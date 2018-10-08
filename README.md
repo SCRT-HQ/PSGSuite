@@ -127,6 +127,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.15.2
+
+* Added `Set-GSGmailLabel` to configure various properties exposed by Users.Labels.Update() API.
+
 #### 2.15.1
 
 * [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)

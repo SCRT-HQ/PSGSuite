@@ -3,6 +3,7 @@
 <!-- TOC -->
 
 - [Changelog](#changelog)
+  - [2.15.2](#2152)
   - [2.15.1](#2151)
   - [2.15.0](#2150)
   - [2.14.1](#2141)
@@ -51,6 +52,10 @@
       - [Functions Aliased](#functions-aliased)
 
 <!-- /TOC -->
+
+#### 2.15.2
+
+* Added `Set-GSGmailLabel` to configure various properties exposed by Users.Labels.Update() API.
 
 ## 2.15.1
 
