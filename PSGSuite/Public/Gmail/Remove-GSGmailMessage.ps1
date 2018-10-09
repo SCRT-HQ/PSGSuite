@@ -66,7 +66,6 @@ function Remove-GSGmailMessage {
             ServiceType = 'Google.Apis.Gmail.v1.GmailService'
             User        = $User
         }
-        $service = New-GoogleService @serviceParams
         $msgId = switch ($PSCmdlet.ParameterSetName) {
             MessageId {
                 $Id
@@ -75,6 +74,7 @@ function Remove-GSGmailMessage {
                 (Get-GSGmailMessageList -Filter $Filter -User $User).Id
             }
         }
+        $service = New-GoogleService @serviceParams
         try {
             foreach ($mId in $msgId) {
                 $request = switch ($Method) {

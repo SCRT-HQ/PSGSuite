@@ -66,7 +66,6 @@ function Update-GSGmailMessageLabel {
             ServiceType = 'Google.Apis.Gmail.v1.GmailService'
             User        = $User
         }
-        $service = New-GoogleService @serviceParams
         $msgId = switch ($PSCmdlet.ParameterSetName) {
             MessageId {
                 $MessageId
@@ -75,6 +74,7 @@ function Update-GSGmailMessageLabel {
                 (Get-GSGmailMessageList -Filter $Filter -User $User).Id
             }
         }
+        $service = New-GoogleService @serviceParams
         $userLabels = @{}
         Get-GSGmailLabel -User $User -Verbose:$false | ForEach-Object {
             $userLabels[$_.Name] = $_.Id
