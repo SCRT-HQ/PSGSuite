@@ -15,9 +15,9 @@ function Update-GSGmailLabel {
     Defaults to the AdminEmail user
 
     .EXAMPLE
-    Set-GSGmailLabel -User user@domain.com -LabelId Label_798170282134616520 -
+    Update-GSGmailLabel -User user@domain.com -LabelId Label_79 -BackgroundColor Black -TextColor Bermuda
 
-    Gets the Gmail labels of the AdminEmail user
+    Updates the specified Gmail label with new background and text colors
     #>
     [cmdletbinding(DefaultParameterSetName = "Fields")]
     Param
@@ -38,11 +38,11 @@ function Update-GSGmailLabel {
         [string]
         $Name,
         [parameter(Mandatory = $false)]
-        [ValidateSet('#000000','#434343','#666666','#999999','#cccccc','#efefef','#f3f3f3','#ffffff','#fb4c2f','#ffad47','#fad165','#16a766','#43d692','#4a86e8','#a479e2','#f691b3','#f6c5be','#ffe6c7','#fef1d1','#b9e4d0','#c6f3de','#c9daf8','#e4d7f5','#fcdee8','#efa093','#ffd6a2','#fce8b3','#89d3b2','#a0eac9','#a4c2f4','#d0bcf1','#fbc8d9','#e66550','#ffbc6b','#fcda83','#44b984','#68dfa9','#6d9eeb','#b694e8','#f7a7c0','#cc3a21','#eaa041','#f2c960','#149e60','#3dc789','#3c78d8','#8e63ce','#e07798','#ac2b16','#cf8933','#d5ae49','#0b804b','#2a9c68','#285bac','#653e9b','#b65775','#822111','#a46a21','#aa8831','#076239','#1a764d','#1c4587','#41236d','#83334c')]
+        [ValidateSet('Amethyst','BananaMania','Bermuda','BilobaFlower','Black','BlueRomance','BrandyPunch','BurntSienna','Cadillac','Camelot','CeruleanBlue','ChathamsBlue','Concrete','CornflowerBlue','CreamCan','Cupid','DeepBlush','Desert','DoveGray','DustyGray','Eucalyptus','Flesh','FringyFlower','Gallery','Goldenrod','Illusion','Jewel','Koromiko','LightCornflowerBlue','LightMoonRaker','LightMountainMeadow','LightShamrock','LuxorGold','MandysPink','MediumPurple','Meteorite','MoonRaker','MountainMeadow','Oasis','OceanGreen','OldGold','Perano','PersianPink','PigPink','Pueblo','RedOrange','RoyalBlue','RoyalPurple','Salem','Salomie','SeaPink','Shamrock','Silver','Tabasco','Tequila','Thunderbird','TropicalBlue','TulipTree','Tundora','VistaBlue','Watercourse','WaterLeaf','White','YellowOrange')]
         [string]
         $BackgroundColor,
         [parameter(Mandatory = $false)]
-        [ValidateSet('#000000','#434343','#666666','#999999','#cccccc','#efefef','#f3f3f3','#ffffff','#fb4c2f','#ffad47','#fad165','#16a766','#43d692','#4a86e8','#a479e2','#f691b3','#f6c5be','#ffe6c7','#fef1d1','#b9e4d0','#c6f3de','#c9daf8','#e4d7f5','#fcdee8','#efa093','#ffd6a2','#fce8b3','#89d3b2','#a0eac9','#a4c2f4','#d0bcf1','#fbc8d9','#e66550','#ffbc6b','#fcda83','#44b984','#68dfa9','#6d9eeb','#b694e8','#f7a7c0','#cc3a21','#eaa041','#f2c960','#149e60','#3dc789','#3c78d8','#8e63ce','#e07798','#ac2b16','#cf8933','#d5ae49','#0b804b','#2a9c68','#285bac','#653e9b','#b65775','#822111','#a46a21','#aa8831','#076239','#1a764d','#1c4587','#41236d','#83334c')]
+        [ValidateSet('Amethyst','BananaMania','Bermuda','BilobaFlower','Black','BlueRomance','BrandyPunch','BurntSienna','Cadillac','Camelot','CeruleanBlue','ChathamsBlue','Concrete','CornflowerBlue','CreamCan','Cupid','DeepBlush','Desert','DoveGray','DustyGray','Eucalyptus','Flesh','FringyFlower','Gallery','Goldenrod','Illusion','Jewel','Koromiko','LightCornflowerBlue','LightMoonRaker','LightMountainMeadow','LightShamrock','LuxorGold','MandysPink','MediumPurple','Meteorite','MoonRaker','MountainMeadow','Oasis','OceanGreen','OldGold','Perano','PersianPink','PigPink','Pueblo','RedOrange','RoyalBlue','RoyalPurple','Salem','Salomie','SeaPink','Shamrock','Silver','Tabasco','Tequila','Thunderbird','TropicalBlue','TulipTree','Tundora','VistaBlue','Watercourse','WaterLeaf','White','YellowOrange')]
         [string]
         $TextColor,
         [parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true, ParameterSetName = "Fields")]
@@ -54,6 +54,74 @@ function Update-GSGmailLabel {
         [Google.Apis.Gmail.v1.Data.Label]
         $InputObject
     )
+    Begin {
+        $colorDict = @{
+            Amethyst            = '#8e63ce'
+            BananaMania         = '#fce8b3'
+            Bermuda             = '#68dfa9'
+            BilobaFlower        = '#b694e8'
+            Black               = '#000000'
+            BlueRomance         = '#c6f3de'
+            BrandyPunch         = '#cf8933'
+            BurntSienna         = '#e66550'
+            Cadillac            = '#b65775'
+            Camelot             = '#83334c'
+            CeruleanBlue        = '#285bac'
+            ChathamsBlue        = '#1c4587'
+            Concrete            = '#f3f3f3'
+            CornflowerBlue      = '#4a86e8'
+            LightCornflowerBlue = '#6d9eeb'
+            CreamCan            = '#f2c960'
+            Cupid               = '#fbc8d9'
+            DeepBlush           = '#e07798'
+            Desert              = '#a46a21'
+            DoveGray            = '#666666'
+            DustyGray           = '#999999'
+            Eucalyptus          = '#2a9c68'
+            Flesh               = '#ffd6a2'
+            FringyFlower        = '#b9e4d0'
+            Gallery             = '#efefef'
+            Goldenrod           = '#fad165'
+            Illusion            = '#f7a7c0'
+            Jewel               = '#1a764d'
+            Koromiko            = '#ffbc6b'
+            LightMountainMeadow = '#16a766'
+            LightShamrock       = '#43d692'
+            LuxorGold           = '#aa8831'
+            MandysPink          = '#f6c5be'
+            MediumPurple        = '#a479e2'
+            Meteorite           = '#41236d'
+            MoonRaker           = '#d0bcf1'
+            LightMoonRaker      = '#e4d7f5'
+            MountainMeadow      = '#149e60'
+            Oasis               = '#fef1d1'
+            OceanGreen          = '#44b984'
+            OldGold             = '#d5ae49'
+            Perano              = '#a4c2f4'
+            PersianPink         = '#f691b3'
+            PigPink             = '#fcdee8'
+            Pueblo              = '#822111'
+            RedOrange           = '#fb4c2f'
+            RoyalBlue           = '#3c78d8'
+            RoyalPurple         = '#653e9b'
+            Salem               = '#0b804b'
+            Salomie             = '#fcda83'
+            SeaPink             = '#efa093'
+            Shamrock            = '#3dc789'
+            Silver              = '#cccccc'
+            Tabasco             = '#ac2b16'
+            Tequila             = '#ffe6c7'
+            Thunderbird         = '#cc3a21'
+            TropicalBlue        = '#c9daf8'
+            TulipTree           = '#eaa041'
+            Tundora             = '#434343'
+            VistaBlue           = '#89d3b2'
+            Watercourse         = '#076239'
+            WaterLeaf           = '#a0eac9'
+            White               = '#ffffff'
+            YellowOrange        = '#ffad47'
+        }
+    }
     Process {
         switch ($PSCmdlet.ParameterSetName) {
             InputObject {
@@ -85,7 +153,7 @@ function Update-GSGmailLabel {
             if ($PSBoundParameters.Keys -contains 'BackgroundColor' -or $PSBoundParameters.Keys -contains 'TextColor') {
                 $color = New-Object 'Google.Apis.Gmail.v1.Data.LabelColor'
                 foreach ($prop in $PSBoundParameters.Keys | Where-Object {$color.PSObject.Properties.Name -contains $_}) {
-                    $color.$prop = $PSBoundParameters[$prop]
+                    $color.$prop = $colorDict[$PSBoundParameters[$prop]]
                 }
                 $body.Color = $color
             }
