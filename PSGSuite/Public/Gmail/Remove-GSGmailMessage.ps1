@@ -2,18 +2,16 @@ function Remove-GSGmailMessage {
     <#
     .SYNOPSIS
     Removes a Gmail message from the user
-    
+
     .DESCRIPTION
     Removes a Gmail message from the user
-    
-    .PARAMETER User
-    The primary email of the user to remove the message from
 
-    Defaults to the AdminEmail user
-    
     .PARAMETER Id
     The Id of the message to remove
-    
+
+    .PARAMETER Filter
+    The Gmail query to pull the list of messages to remove instead of passing the MessageId directly
+
     .PARAMETER Method
     The method used to delete the message
 
@@ -22,29 +20,38 @@ function Remove-GSGmailMessage {
     * "Delete": permanently deletes the message (NON-RECOVERABLE!)
 
     Default value is 'Trash'
-    
+
+    .PARAMETER User
+    The primary email of the user to remove the message from
+
+    Defaults to the AdminEmail user
+
     .EXAMPLE
     Remove-GSGmailMessage -User joe -Id 161622d7b76b7e1e,1616227c34d435f2
 
     Moves the 2 message Id's from Joe's inbox into their TRASH after confirmation
     #>
-    [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
+    [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High",DefaultParameterSetName = "MessageId")]
     Param
     (
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
-        [Alias("PrimaryEmail","UserKey","Mail")]
-        [string]
-        $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
-        [Alias('MessageID')]
+        [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true,ParameterSetName = "MessageId")]
+        [Alias('MessageId')]
         [String[]]
         $Id,
+        [parameter(Mandatory = $true, ParameterSetName = "Filter")]
+        [Alias('Query')]
+        [string]
+        $Filter,
         [parameter(Mandatory = $false)]
         [ValidateSet('Trash','Delete')]
         [String]
-        $Method = 'Trash'
+        $Method = 'Trash',
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [Alias("PrimaryEmail","UserKey","Mail")]
+        [string]
+        $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($MyInvocation.InvocationName -eq 'Move-GSGmailMessageToTrash') {
             $Method = 'Trash'
         }
@@ -60,10 +67,16 @@ function Remove-GSGmailMessage {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
+        $msgId = switch ($PSCmdlet.ParameterSetName) {
+            MessageId {
+                $Id
+            }
+            Filter {
+                (Get-GSGmailMessageList -Filter $Filter -User $User).Id
+            }
+        }
         try {
-            foreach ($mId in $Id) {
+            foreach ($mId in $msgId) {
                 $request = switch ($Method) {
                     Trash {
                         $service.Users.Messages.Trash($User,$mId)

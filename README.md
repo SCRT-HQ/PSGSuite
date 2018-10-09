@@ -129,7 +129,12 @@ Update-GSSheetValue               Export-GSSheet
 
 #### 2.15.2
 
-* Added `Set-GSGmailLabel` to configure various properties exposed by Users.Labels.Update() API.
+* [Pull Request #94](https://github.com/scrthq/PSGSuite/pull/94) **Thanks, [@dwrusse](https://github.com/dwrusse)!**
+  * Added `Update-GSGmailLabel` to enable updating of Gmail label properties
+  * Added `Update-GSGmailMessageLabel` enable updating of labels attached to Gmail messages
+* [Issue #93](https://github.com/scrthq/PSGSuite/issues/93)
+  * Updated `Remove-GSGmailMessage` to include a `-Filter` parameter to allow removal of messages matching a filter in a single command
+  * Improved pipeline support for `Remove-GSGmailMessage`
 
 #### 2.15.1
 
@@ -141,10 +146,10 @@ Update-GSSheetValue               Export-GSSheet
 
 #### 2.15.0
 
-- Updated Gmail Delegation functions to use the .NET SDK after Google announced delegation support for the Gmail API
-- Cleaned up `Get-GSGmailDelegates` by removing the trailing `s` (now `Get-GSGmailDelegate`). Added the original function as an alias to the new function for backwards compatibility with scripts.
-- Removed the `Raw` parameter from `Get-GSGmailDelegate` since it's no longer applicable.
-- Enabled `Get-GSGmailDelegate` to perform both Get and List requests (previously only performed List requests)
+* Updated Gmail Delegation functions to use the .NET SDK after Google announced delegation support for the Gmail API
+* Cleaned up `Get-GSGmailDelegates` by removing the trailing `s` (now `Get-GSGmailDelegate`). Added the original function as an alias to the new function for backwards compatibility with scripts.
+* Removed the `Raw` parameter from `Get-GSGmailDelegate` since it's no longer applicable.
+* Enabled `Get-GSGmailDelegate` to perform both Get and List requests (previously only performed List requests)
 
 #### 2.14.1
 

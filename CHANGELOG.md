@@ -1,61 +1,61 @@
-# Changelog
+# Changelog <!-- omit in toc -->
 
-<!-- TOC -->
+* [2.15.2](#2152)
+* [2.15.1](#2151)
+* [2.15.0](#2150)
+* [2.14.1](#2141)
+* [2.14.0](#2140)
+* [2.13.2](#2132)
+* [2.13.1](#2131)
+* [2.13.0](#2130)
+* [2.12.1](#2121)
+* [2.12.0](#2120)
+* [2.11.0](#2110)
+* [2.10.2](#2102)
+* [2.10.1](#2101)
+* [2.10.0](#2100)
+* [2.9.0](#290)
+* [2.8.1](#281)
+* [2.8.0](#280)
+* [2.7.2](#272)
+* [2.7.1](#271)
+* [2.7.0](#270)
+* [2.6.3](#263)
+* [2.6.2](#262)
+* [2.6.1](#261)
+* [2.6.0](#260)
+* [2.5.4](#254)
+* [2.5.3](#253)
+* [2.5.2](#252)
+* [2.5.1](#251)
+* [2.5.0](#250)
+* [2.4.0](#240)
+* [2.3.0](#230)
+* [2.2.1](#221)
+* [2.2.0](#220)
+* [2.1.5](#215)
+* [2.1.3 / 2.1.4](#213--214)
+* [2.1.2](#212)
+* [2.1.1](#211)
+* [2.1.0](#210)
+* [2.0.3](#203)
+* [2.0.2](#202)
+* [2.0.1](#201)
+* [2.0.0](#200)
+  * [New Functionality](#new-functionality)
+  * [Breaking Changes in 2.0.0](#breaking-changes-in-200)
+    * [Gmail Delegation Management Removed](#gmail-delegation-management-removed)
+    * [Functions Removed](#functions-removed)
+    * [Functions Aliased](#functions-aliased)
 
-- [Changelog](#changelog)
-  - [2.15.2](#2152)
-  - [2.15.1](#2151)
-  - [2.15.0](#2150)
-  - [2.14.1](#2141)
-  - [2.14.0](#2140)
-  - [2.13.2](#2132)
-  - [2.13.1](#2131)
-  - [2.13.0](#2130)
-  - [2.12.1](#2121)
-  - [2.12.0](#2120)
-  - [2.11.0](#2110)
-  - [2.10.2](#2102)
-  - [2.10.1](#2101)
-  - [2.10.0](#2100)
-  - [2.9.0](#290)
-  - [2.8.1](#281)
-  - [2.8.0](#280)
-  - [2.7.2](#272)
-  - [2.7.1](#271)
-  - [2.7.0](#270)
-  - [2.6.3](#263)
-  - [2.6.2](#262)
-  - [2.6.1](#261)
-  - [2.6.0](#260)
-  - [2.5.4](#254)
-  - [2.5.3](#253)
-  - [2.5.2](#252)
-  - [2.5.1](#251)
-  - [2.5.0](#250)
-  - [2.4.0](#240)
-  - [2.3.0](#230)
-  - [2.2.1](#221)
-  - [2.2.0](#220)
-  - [2.1.5](#215)
-  - [2.1.3 / 2.1.4](#213--214)
-  - [2.1.2](#212)
-  - [2.1.1](#211)
-  - [2.1.0](#210)
-  - [2.0.3](#203)
-  - [2.0.2](#202)
-  - [2.0.1](#201)
-  - [2.0.0](#200)
-    - [New Functionality](#new-functionality)
-    - [Breaking Changes in 2.0.0](#breaking-changes-in-200)
-      - [Gmail Delegation Management Removed](#gmail-delegation-management-removed)
-      - [Functions Removed](#functions-removed)
-      - [Functions Aliased](#functions-aliased)
+## 2.15.2
 
-<!-- /TOC -->
-
-#### 2.15.2
-
-* Added `Set-GSGmailLabel` to configure various properties exposed by Users.Labels.Update() API.
+* [Pull Request #94](https://github.com/scrthq/PSGSuite/pull/94) **Thanks, [@dwrusse](https://github.com/dwrusse)!**
+  * Added `Update-GSGmailLabel` to enable updating of Gmail label properties
+  * Added `Update-GSGmailMessageLabel` enable updating of labels attached to Gmail messages
+* [Issue #93](https://github.com/scrthq/PSGSuite/issues/93)
+  * Updated `Remove-GSGmailMessage` to include a `-Filter` parameter to allow removal of messages matching a filter in a single command
+  * Improved pipeline support for `Remove-GSGmailMessage`
 
 ## 2.15.1
 
@@ -67,10 +67,10 @@
 
 ## 2.15.0
 
-- Updated Gmail Delegation functions to use the .NET SDK after Google announced delegation support for the Gmail API
-- Cleaned up `Get-GSGmailDelegates` by removing the trailing `s` (now `Get-GSGmailDelegate`). Added the original function as an alias to the new function for backwards compatibility with scripts.
-- Removed the `Raw` parameter from `Get-GSGmailDelegate` since it's no longer applicable.
-- Enabled `Get-GSGmailDelegate` to perform both Get and List requests (previously only performed List requests)
+* Updated Gmail Delegation functions to use the .NET SDK after Google announced delegation support for the Gmail API
+* Cleaned up `Get-GSGmailDelegates` by removing the trailing `s` (now `Get-GSGmailDelegate`). Added the original function as an alias to the new function for backwards compatibility with scripts.
+* Removed the `Raw` parameter from `Get-GSGmailDelegate` since it's no longer applicable.
+* Enabled `Get-GSGmailDelegate` to perform both Get and List requests (previously only performed List requests)
 
 ## 2.14.1
 

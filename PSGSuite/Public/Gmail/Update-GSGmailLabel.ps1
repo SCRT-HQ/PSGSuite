@@ -38,9 +38,6 @@ function Update-GSGmailLabel {
 
     Defaults to the AdminEmail user
 
-    .PARAMETER InputObject
-    Pipeline input Label objects, used when applying updates to output of `Get-GSGmailLabel`
-
     .EXAMPLE
     Update-GSGmailLabel -User user@domain.com -LabelId Label_79 -BackgroundColor Black -TextColor Bermuda
 
@@ -51,10 +48,10 @@ function Update-GSGmailLabel {
 
     Updates all labels with LabelListVisibility of 'labelShowIfUnread' with new background and text colors and sets all of them to always show
     #>
-    [cmdletbinding(DefaultParameterSetName = "Fields")]
+    [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $true, Position = 0, ValueFromPipelineByPropertyName = $true, ParameterSetName = "Fields")]
+        [parameter(Mandatory = $true, Position = 0, ValueFromPipelineByPropertyName = $true)]
         [Alias("Id")]
         [string[]]
         $LabelId,
@@ -77,14 +74,11 @@ function Update-GSGmailLabel {
         [ValidateSet('Amethyst','BananaMania','Bermuda','BilobaFlower','Black','BlueRomance','BrandyPunch','BurntSienna','Cadillac','Camelot','CeruleanBlue','ChathamsBlue','Concrete','CornflowerBlue','CreamCan','Cupid','DeepBlush','Desert','DoveGray','DustyGray','Eucalyptus','Flesh','FringyFlower','Gallery','Goldenrod','Illusion','Jewel','Koromiko','LightCornflowerBlue','LightMoonRaker','LightMountainMeadow','LightShamrock','LuxorGold','MandysPink','MediumPurple','Meteorite','MoonRaker','MountainMeadow','Oasis','OceanGreen','OldGold','Perano','PersianPink','PigPink','Pueblo','RedOrange','RoyalBlue','RoyalPurple','Salem','Salomie','SeaPink','Shamrock','Silver','Tabasco','Tequila','Thunderbird','TropicalBlue','TulipTree','Tundora','VistaBlue','Watercourse','WaterLeaf','White','YellowOrange')]
         [string]
         $TextColor,
-        [parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true, ParameterSetName = "Fields")]
+        [parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail", "UserKey", "Mail")]
         [ValidateNotNullOrEmpty()]
         [string]
-        $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $true, ValueFromPipeline = $true, ParameterSetName = "InputObject")]
-        [Google.Apis.Gmail.v1.Data.Label]
-        $InputObject
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
         $colorDict = @{
@@ -155,52 +149,42 @@ function Update-GSGmailLabel {
         }
     }
     Process {
-        switch ($PSCmdlet.ParameterSetName) {
-            InputObject {
-                $U = $InputObject.User
-                $labels = @($InputObject.Id)
-            }
-            Fields {
-                $U = $User
-                $labels = $LabelId
-            }
+        if ($User -ceq 'me') {
+            $User = $Script:PSGSuite.AdminEmail
         }
-        if ($U -ceq 'me') {
-            $U = $Script:PSGSuite.AdminEmail
-        }
-        elseif ($U -notlike "*@*.*") {
-            $U = "$($U)@$($Script:PSGSuite.Domain)"
+        elseif ($User -notlike "*@*.*") {
+            $User = "$($User)@$($Script:PSGSuite.Domain)"
         }
         $serviceParams = @{
             Scope       = 'https://mail.google.com'
             ServiceType = 'Google.Apis.Gmail.v1.GmailService'
-            User        = $U
+            User        = $User
         }
         $service = New-GoogleService @serviceParams
-        try {
-            $body = New-Object 'Google.Apis.Gmail.v1.Data.Label'
-            foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {
-                $body.$prop = $PSBoundParameters[$prop]
-            }
-            if ($PSBoundParameters.Keys -contains 'BackgroundColor' -or $PSBoundParameters.Keys -contains 'TextColor') {
-                $color = New-Object 'Google.Apis.Gmail.v1.Data.LabelColor'
-                foreach ($prop in $PSBoundParameters.Keys | Where-Object {$color.PSObject.Properties.Name -contains $_}) {
-                    $color.$prop = $colorDict[$PSBoundParameters[$prop]]
-                }
-                $body.Color = $color
-            }
-            foreach ($label in $labels) {
-                Write-Verbose "Updating Label Id '$label' for user '$U'"
-                $request = $service.Users.Labels.Patch($body, $U, $label)
-                $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
-            }
+        $body = New-Object 'Google.Apis.Gmail.v1.Data.Label'
+        foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {
+            $body.$prop = $PSBoundParameters[$prop]
         }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
+        if ($PSBoundParameters.Keys -contains 'BackgroundColor' -or $PSBoundParameters.Keys -contains 'TextColor') {
+            $color = New-Object 'Google.Apis.Gmail.v1.Data.LabelColor'
+            foreach ($prop in $PSBoundParameters.Keys | Where-Object {$color.PSObject.Properties.Name -contains $_}) {
+                $color.$prop = $colorDict[$PSBoundParameters[$prop]]
             }
-            else {
-                Write-Error $_
+            $body.Color = $color
+        }
+        foreach ($label in $LabelId) {
+            try {
+                Write-Verbose "Updating Label Id '$label' for user '$User'"
+                $request = $service.Users.Labels.Patch($body, $User, $label)
+                $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
+            }
+            catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                else {
+                    Write-Error $_
+                }
             }
         }
     }
