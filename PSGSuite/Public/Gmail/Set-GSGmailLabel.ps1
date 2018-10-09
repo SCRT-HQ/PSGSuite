@@ -37,15 +37,15 @@ function Set-GSGmailLabel {
         $sourceObject = (Get-GSGmailLabel -user $user -LabelId $LabelId),
         [parameter(Mandatory = $false, Position = 1, ValueFromPipelineByPropertyName = $true)]
         [ValidateSet("labelHide","labelShow","labelShowIfUnread")]
-        [string] 
+        [string[]] 
         $labelListVisibility = $sourceObject.labelListVisibility,
         [parameter(Mandatory = $false, Position = 2, ValueFromPipelineByPropertyName = $true)]
         [ValidateSet("hide","show")]
-        [string] 
+        [string[]] 
         $messageListVisibility = $sourceObject.messageListVisibility,
-        [parameter(Mandatory = $false, Position = 1, ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $false, Position = 3, ValueFromPipelineByPropertyName = $true)]
         [string] 
-        $name = $sourceObject.Name
+        $Name = $sourceObject.Name
     )
     Begin {
         if ($User -ceq 'me') {
