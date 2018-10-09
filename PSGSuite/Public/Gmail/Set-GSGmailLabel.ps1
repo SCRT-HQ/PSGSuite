@@ -69,7 +69,7 @@ function Set-GSGmailLabel {
                     LabelListVisibility = $labelListVisibility
                     MessageListVisibility = $messageListVisibility
                 }
-                $request = $service.Users.Labels.Update($User, $label, $updateObj)
+                $request = $service.Users.Labels.Update($updateObj, $User, $label)
                 Write-Verbose "Updating Label Id '$label' for user '$User'"
                 $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
             }
