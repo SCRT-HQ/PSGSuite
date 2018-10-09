@@ -7,17 +7,49 @@ function Update-GSGmailLabel {
     Updates Gmail label information for the specified labelid
 
     .PARAMETER LabelId
-    The unique Id of the label to update.  Required.
+    The unique Id of the label to update
+
+    .PARAMETER LabelListVisibility
+    The visibility of the label in the label list in the Gmail web interface.
+
+    Acceptable values are:
+    * "labelHide": Do not show the label in the label list.
+    * "labelShow": Show the label in the label list. (Default)
+    * "labelShowIfUnread": Show the label if there are any unread messages with that label.
+
+    .PARAMETER MessageListVisibility
+    The visibility of messages with this label in the message list in the Gmail web interface.
+
+    Acceptable values are:
+    * "hide": Do not show the label in the message list.
+    * "show": Show the label in the message list. (Default)
+
+    .PARAMETER Name
+    The display name of the label
+
+    .PARAMETER BackgroundColor
+    The background color of the label
+
+    .PARAMETER TextColor
+    The text color of the label
 
     .PARAMETER User
     The user to update label information for
 
     Defaults to the AdminEmail user
 
+    .PARAMETER InputObject
+    Pipeline input Label objects, used when applying updates to output of `Get-GSGmailLabel`
+
     .EXAMPLE
     Update-GSGmailLabel -User user@domain.com -LabelId Label_79 -BackgroundColor Black -TextColor Bermuda
 
     Updates the specified Gmail label with new background and text colors
+
+    .EXAMPLE
+    Get-GSGmailLabel | Where-Object {$_.LabelListVisibility -eq 'labelShowIfUnread'} | Update-GSGmailLabel -LabelListVisibility labelShow -BackgroundColor Bermuda -TextColor Tundora
+
+    Updates all labels with LabelListVisibility of 'labelShowIfUnread' with new background and text colors and sets all of them to always show
     #>
     [cmdletbinding(DefaultParameterSetName = "Fields")]
     Param
