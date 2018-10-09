@@ -1,5 +1,6 @@
-# Changelog <!-- omit in toc -->
+# Changelog
 
+* [2.15.3](#2153)
 * [2.15.2](#2152)
 * [2.15.1](#2151)
 * [2.15.0](#2150)
@@ -47,6 +48,11 @@
     * [Gmail Delegation Management Removed](#gmail-delegation-management-removed)
     * [Functions Removed](#functions-removed)
     * [Functions Aliased](#functions-aliased)
+
+## 2.15.3
+
+* [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
+  * Fixed `Add-GSCourseParticipant` error: `"Cannot convert the "student@uni.edu" value of type "System.String" to type "Google.Apis.Classroom.v1.Data.Student"."`
 
 ## 2.15.2
 

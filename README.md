@@ -127,6 +127,11 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.15.3
+
+* [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
+  * Fixed `Add-GSCourseParticipant` error: `"Cannot convert the "student@uni.edu" value of type "System.String" to type "Google.Apis.Classroom.v1.Data.Student"."`
+
 #### 2.15.2
 
 * [Pull Request #94](https://github.com/scrthq/PSGSuite/pull/94) **Thanks, [@dwrusse](https://github.com/dwrusse)!**
