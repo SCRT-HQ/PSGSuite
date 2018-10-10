@@ -16,10 +16,11 @@ function Get-GSClassroomUserProfile {
     .EXAMPLE
     Get-GSClassroomUserProfile -UserId aristotle@athens.edu
     #>
-    [cmdletbinding(DefaultParameterSetName = "List")]
+    [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $true,Position = 0)]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
+        [Alias('Id','PrimaryEmail','Mail','UserKey')]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $UserId

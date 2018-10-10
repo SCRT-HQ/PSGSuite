@@ -1,4 +1,4 @@
-function Update-GSGmailMessageLabel {
+function Update-GSGmailMessageLabels {
     <#
     .SYNOPSIS
     Updates Gmail label information for the specified message
@@ -11,6 +11,9 @@ function Update-GSGmailMessageLabel {
 
     .PARAMETER Filter
     The Gmail query to pull the list of messages to update instead of passing the MessageId directly.
+
+    .PARAMETER MaxToModify
+    The maximum amount of emails you would like to remove. Use this with the `Filter` parameter as a safeguard.
 
     .PARAMETER AddLabel
     The label(s) to add to the message. This supports either the unique LabelId or the Display Name for the label
@@ -39,6 +42,9 @@ function Update-GSGmailMessageLabel {
         [Alias('Query')]
         [string]
         $Filter,
+        [parameter(Mandatory = $false,ParameterSetName = "Filter")]
+        [int]
+        $MaxToModify,
         [parameter(Mandatory = $false)]
         [string[]]
         $AddLabel,
@@ -74,17 +80,55 @@ function Update-GSGmailMessageLabel {
                 (Get-GSGmailMessageList -Filter $Filter -User $User).Id
             }
         }
-        $service = New-GoogleService @serviceParams
-        $userLabels = @{}
-        Get-GSGmailLabel -User $User -Verbose:$false | ForEach-Object {
-            $userLabels[$_.Name] = $_.Id
+        if ($PSBoundParameters.Keys -contains 'MaxToModify' -and $msgId.Count -gt $MaxToModify) {
+            Write-Error "MaxToModify is set to $MaxToModify but total modifications are $($msgId.Count). No action taken."
         }
-        $body = New-Object 'Google.Apis.Gmail.v1.Data.ModifyMessageRequest'
-        if ($PSBoundParameters.Keys -contains 'AddLabel') {
-            $addLs = New-Object 'System.Collections.Generic.List[System.String]'
-            foreach ($label in $AddLabel) {
+        else {
+            $service = New-GoogleService @serviceParams
+            $userLabels = @{}
+            Get-GSGmailLabel -User $User -Verbose:$false | ForEach-Object {
+                $userLabels[$_.Name] = $_.Id
+            }
+            $body = New-Object 'Google.Apis.Gmail.v1.Data.ModifyMessageRequest'
+            if ($PSBoundParameters.Keys -contains 'AddLabel') {
+                $addLs = New-Object 'System.Collections.Generic.List[System.String]'
+                foreach ($label in $AddLabel) {
+                    try {
+                        $addLs.Add($userLabels[$label])
+                    }
+                    catch {
+                        if ($ErrorActionPreference -eq 'Stop') {
+                            $PSCmdlet.ThrowTerminatingError($_)
+                        }
+                        else {
+                            Write-Error $_
+                        }
+                    }
+                }
+                $body.AddLabelIds = $addLs
+            }
+            if ($PSBoundParameters.Keys -contains 'RemoveLabel') {
+                $remLs = New-Object 'System.Collections.Generic.List[System.String]'
+                foreach ($label in $RemoveLabel) {
+                    try {
+                        $remLs.Add($userLabels[$label])
+                    }
+                    catch {
+                        if ($ErrorActionPreference -eq 'Stop') {
+                            $PSCmdlet.ThrowTerminatingError($_)
+                        }
+                        else {
+                            Write-Error $_
+                        }
+                    }
+                }
+                $body.RemoveLabelIds = $remLs
+            }
+            foreach ($message in $msgId) {
                 try {
-                    $addLs.Add($userLabels[$label])
+                    $request = $service.Users.Messages.Modify($body, $User, $message)
+                    Write-Verbose "Updating Labels on Message '$message' for user '$User'"
+                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
                 }
                 catch {
                     if ($ErrorActionPreference -eq 'Stop') {
@@ -93,39 +137,6 @@ function Update-GSGmailMessageLabel {
                     else {
                         Write-Error $_
                     }
-                }
-            }
-            $body.AddLabelIds = $addLs
-        }
-        if ($PSBoundParameters.Keys -contains 'RemoveLabel') {
-            $remLs = New-Object 'System.Collections.Generic.List[System.String]'
-            foreach ($label in $RemoveLabel) {
-                try {
-                    $remLs.Add($userLabels[$label])
-                }
-                catch {
-                    if ($ErrorActionPreference -eq 'Stop') {
-                        $PSCmdlet.ThrowTerminatingError($_)
-                    }
-                    else {
-                        Write-Error $_
-                    }
-                }
-            }
-            $body.RemoveLabelIds = $remLs
-        }
-        foreach ($message in $msgId) {
-            try {
-                $request = $service.Users.Messages.Modify($body, $User, $message)
-                Write-Verbose "Updating Labels on Message '$message' for user '$User'"
-                $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
-            }
-            catch {
-                if ($ErrorActionPreference -eq 'Stop') {
-                    $PSCmdlet.ThrowTerminatingError($_)
-                }
-                else {
-                    Write-Error $_
                 }
             }
         }

@@ -12,6 +12,9 @@ function Remove-GSGmailMessage {
     .PARAMETER Filter
     The Gmail query to pull the list of messages to remove instead of passing the MessageId directly
 
+    .PARAMETER MaxToModify
+    The maximum amount of emails you would like to remove. Use this with the `Filter` parameter as a safeguard.
+
     .PARAMETER Method
     The method used to delete the message
 
@@ -42,6 +45,9 @@ function Remove-GSGmailMessage {
         [Alias('Query')]
         [string]
         $Filter,
+        [parameter(Mandatory = $false,ParameterSetName = "Filter")]
+        [int]
+        $MaxToModify,
         [parameter(Mandatory = $false)]
         [ValidateSet('Trash','Delete')]
         [String]
@@ -74,35 +80,40 @@ function Remove-GSGmailMessage {
                 (Get-GSGmailMessageList -Filter $Filter -User $User).Id
             }
         }
-        $service = New-GoogleService @serviceParams
-        try {
-            foreach ($mId in $msgId) {
-                $request = switch ($Method) {
-                    Trash {
-                        $service.Users.Messages.Trash($User,$mId)
-                        $message = "moved to TRASH"
-                    }
-                    Delete {
-                        $service.Users.Messages.Delete($User,$mId)
-                        $message = "deleted"
-                    }
-                }
-                if ($PSCmdlet.ShouldProcess("Removing Message Id '$mId' for user '$User'")) {
-                    Write-Verbose "Removing Message Id '$mId' for user '$User'"
-                    $res = $request.Execute()
-                    if ($res) {
-                        $res | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
-                    }
-                    Write-Verbose "Message ID '$mId' successfully $message for user '$User'"
-                }
-            }
+        if ($PSBoundParameters.Keys -contains 'MaxToModify' -and $msgId.Count -gt $MaxToModify) {
+            Write-Error "MaxToModify is set to $MaxToModify but total modifications are $($msgId.Count). No action taken."
         }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
+        else {
+            $service = New-GoogleService @serviceParams
+            try {
+                foreach ($mId in $msgId) {
+                    $request = switch ($Method) {
+                        Trash {
+                            $service.Users.Messages.Trash($User,$mId)
+                            $message = "moved to TRASH"
+                        }
+                        Delete {
+                            $service.Users.Messages.Delete($User,$mId)
+                            $message = "deleted"
+                        }
+                    }
+                    if ($PSCmdlet.ShouldProcess("Removing Message Id '$mId' for user '$User'")) {
+                        Write-Verbose "Removing Message Id '$mId' for user '$User'"
+                        $res = $request.Execute()
+                        if ($res) {
+                            $res | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
+                        }
+                        Write-Verbose "Message ID '$mId' successfully $message for user '$User'"
+                    }
+                }
             }
-            else {
-                Write-Error $_
+            catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                else {
+                    Write-Error $_
+                }
             }
         }
     }

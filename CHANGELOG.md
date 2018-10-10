@@ -54,13 +54,15 @@
 * [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
   * Fixed `Add-GSCourseParticipant` error: `"Cannot convert the "student@uni.edu" value of type "System.String" to type "Google.Apis.Classroom.v1.Data.Student"."`
   * Set `$request.Fields = "*"` for `Get-GSCourseParticipant` and `Get-GSClassroomUserProfile` to return all available fields for the `Profile`, including `EmailAddress`
+* [Issue #93](https://github.com/scrthq/PSGSuite/issues/93)
+  * Added: `MaxToModify` parameter to `Remove-GSGmailMessage` and `Update-GSGmailMessageLabels` in the `Filter` parameter set to prevent removing/updating more messages than expected when using a filter to gather the list of messages to update.
 * Added: `Id` alias for `User` parameter on `Get-GSUser` for better pipeline support
 
 ## 2.15.2
 
 * [Pull Request #94](https://github.com/scrthq/PSGSuite/pull/94) **Thanks, [@dwrusse](https://github.com/dwrusse)!**
   * Added `Update-GSGmailLabel` to enable updating of Gmail label properties
-  * Added `Update-GSGmailMessageLabel` enable updating of labels attached to Gmail messages
+  * Added `Update-GSGmailMessageLabels` enable updating of labels attached to Gmail messages
 * [Issue #93](https://github.com/scrthq/PSGSuite/issues/93)
   * Updated `Remove-GSGmailMessage` to include a `-Filter` parameter to allow removal of messages matching a filter in a single command
   * Improved pipeline support for `Remove-GSGmailMessage`
