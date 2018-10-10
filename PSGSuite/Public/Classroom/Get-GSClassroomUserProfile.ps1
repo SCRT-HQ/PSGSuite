@@ -44,6 +44,7 @@ function Get-GSClassroomUserProfile {
                 }
                 Write-Verbose "Getting Classroom User Profile for '$part'"
                 $request = $service.UserProfiles.Get($part)
+                $request.Fields = "*"
                 $request.Execute()
             }
             catch {
