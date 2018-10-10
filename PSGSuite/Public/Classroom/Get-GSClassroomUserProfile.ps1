@@ -16,10 +16,11 @@ function Get-GSClassroomUserProfile {
     .EXAMPLE
     Get-GSClassroomUserProfile -UserId aristotle@athens.edu
     #>
-    [cmdletbinding(DefaultParameterSetName = "List")]
+    [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $true,Position = 0)]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
+        [Alias('Id','PrimaryEmail','Mail','UserKey')]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $UserId
@@ -44,6 +45,7 @@ function Get-GSClassroomUserProfile {
                 }
                 Write-Verbose "Getting Classroom User Profile for '$part'"
                 $request = $service.UserProfiles.Get($part)
+                $request.Fields = "*"
                 $request.Execute()
             }
             catch {

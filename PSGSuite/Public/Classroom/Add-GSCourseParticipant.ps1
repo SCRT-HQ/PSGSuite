@@ -78,7 +78,7 @@ function Add-GSCourseParticipant {
                 }
                 $body.UserId = $part
                 Write-Verbose "Adding Student '$part' to Course '$CourseId'"
-                $request = $service.Courses.Students.Create($part,$CourseId)
+                $request = $service.Courses.Students.Create($body,$CourseId)
                 $request.Execute()
             }
             catch {
@@ -106,7 +106,7 @@ function Add-GSCourseParticipant {
                 }
                 $body.UserId = $part
                 Write-Verbose "Adding Teacher '$part' to Course '$CourseId'"
-                $request = $service.Courses.Teachers.Create($part,$CourseId)
+                $request = $service.Courses.Teachers.Create($body,$CourseId)
                 $request.Execute()
             }
             catch {
