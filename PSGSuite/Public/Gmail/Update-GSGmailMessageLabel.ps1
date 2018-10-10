@@ -75,16 +75,16 @@ function Update-GSGmailMessageLabel {
             }
         }
         $service = New-GoogleService @serviceParams
-        $userLabels = @{}
-        Get-GSGmailLabel -User $User -Verbose:$false | ForEach-Object {
-            $userLabels[$_.Name] = $_.Id
-        }
+        #$userLabels = @{}
+        #Get-GSGmailLabel -User $User -Verbose:$false | ForEach-Object {
+        #    $userLabels[$_.Name] = $_.Id
+        #}
         $body = New-Object 'Google.Apis.Gmail.v1.Data.ModifyMessageRequest'
         if ($PSBoundParameters.Keys -contains 'AddLabel') {
             $addLs = New-Object 'System.Collections.Generic.List[System.String]'
             foreach ($label in $AddLabel) {
                 try {
-                    $addLs.Add($userLabels[$label])
+                    $addLs.Add($label)
                 }
                 catch {
                     if ($ErrorActionPreference -eq 'Stop') {
@@ -101,7 +101,7 @@ function Update-GSGmailMessageLabel {
             $remLs = New-Object 'System.Collections.Generic.List[System.String]'
             foreach ($label in $RemoveLabel) {
                 try {
-                    $remLs.Add($userLabels[$label])
+                    $remLs.Add($label)
                 }
                 catch {
                     if ($ErrorActionPreference -eq 'Stop') {
