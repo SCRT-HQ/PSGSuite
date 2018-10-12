@@ -116,7 +116,7 @@ function Get-GSUser {
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [ValidateSet("Base","OneLevel","Subtree")]
         [String]
-        $SearchScope,
+        $SearchScope = "Subtree",
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [Switch]
         $ShowDeleted,
@@ -149,56 +149,143 @@ function Get-GSUser {
         $SortOrder
     )
     Begin {
-        if ($PSCmdlet.ParameterSetName -eq 'Get' -and $MyInvocation.InvocationName -ne 'Get-GSUserList') {
-            $serviceParams = @{
-                Scope       = 'https://www.googleapis.com/auth/admin.directory.user.readonly'
-                ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
-            }
-            $service = New-GoogleService @serviceParams
+        $serviceParams = @{
+            Scope       = 'https://www.googleapis.com/auth/admin.directory.user.readonly'
+            ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
+        $service = New-GoogleService @serviceParams
     }
     Process {
-        try {
-            switch ($PSCmdlet.ParameterSetName) {
-                Get {
-                    if ($MyInvocation.InvocationName -ne 'Get-GSUserList') {
-                        foreach ($U in $User) {
-                            if ( -not ($U -as [decimal])) {
-                                if ($U -ceq 'me') {
-                                    $U = $Script:PSGSuite.AdminEmail
-                                }
-                                elseif ($U -notlike "*@*.*") {
-                                    $U = "$($U)@$($Script:PSGSuite.Domain)"
-                                }
-                            }
-                            Write-Verbose "Getting User '$U'"
-                            $request = $service.Users.Get($U)
-                            $request.Projection = $Projection
-                            $request.ViewType = ($ViewType -replace '_','')
-                            if ($CustomFieldMask) {
-                                $request.CustomFieldMask = $CustomFieldMask
-                            }
-                            if ($Fields) {
-                                $request.Fields = "$($Fields -join ",")"
-                            }
-                            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru  | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.PrimaryEmail} -PassThru -Force
+        if ($MyInvocation.InvocationName -ne 'Get-GSUserList' -and $PSCmdlet.ParameterSetName -eq 'Get') {
+            foreach ($U in $User) {
+                try {
+                    if ( -not ($U -as [decimal])) {
+                        if ($U -ceq 'me') {
+                            $U = $Script:PSGSuite.AdminEmail
+                        }
+                        elseif ($U -notlike "*@*.*") {
+                            $U = "$($U)@$($Script:PSGSuite.Domain)"
                         }
                     }
-                    else {
-                        Get-GSUserListPrivate @PSBoundParameters
+                    Write-Verbose "Getting User '$U'"
+                    $request = $service.Users.Get($U)
+                    $request.Projection = $Projection
+                    $request.ViewType = ($ViewType -replace '_','')
+                    if ($CustomFieldMask) {
+                        $request.CustomFieldMask = $CustomFieldMask
                     }
+                    if ($Fields) {
+                        $request.Fields = "$($Fields -join ",")"
+                    }
+                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru  | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.PrimaryEmail} -PassThru -Force
                 }
-                List {
-                    Get-GSUserListPrivate @PSBoundParameters
+                catch {
+                    if ($ErrorActionPreference -eq 'Stop') {
+                        $PSCmdlet.ThrowTerminatingError($_)
+                    }
+                    else {
+                        Write-Error $_
+                    }
                 }
             }
         }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
+        else {
+            try {
+                $request = $service.Users.List()
+                $request.Projection = $Projection
+                if ($PSBoundParameters.Keys -contains 'Domain') {
+                    $verbScope = "domain '$($PSBoundParameters['Domain'])'"
+                    $request.Domain = $PSBoundParameters['Domain']
+                }
+                elseif ($Script:PSGSuite.Preference) {
+                    switch ($Script:PSGSuite.Preference) {
+                        Domain {
+                            $verbScope = "domain '$($Script:PSGSuite.Domain)'"
+                            $request.Domain = $Script:PSGSuite.Domain
+                        }
+                        CustomerID {
+                            $verbScope = "customer '$($Script:PSGSuite.CustomerID)'"
+                            $request.Customer = "$($Script:PSGSuite.CustomerID)"
+                        }
+                    }
+                }
+                else {
+                    $verbScope = "customer 'my_customer'"
+                    $request.Customer = "my_customer"
+                }
+                if ($PageSize) {
+                    $request.MaxResults = $PageSize
+                }
+                foreach ($prop in $PSBoundParameters.Keys | Where-Object {$_ -in @('OrderBy','SortOrder','CustomFieldMask','ShowDeleted','ViewType')}) {
+                    $request.$prop = $PSBoundParameters[$prop]
+                }
+                if (![String]::IsNullOrEmpty($Filter) -or $SearchBase) {
+                    if ($Filter -eq '*') {
+                        $Filter = ""
+                    }
+                    else {
+                        $Filter = "$($Filter -join " ")"
+                    }
+                    if ($SearchBase) {
+                        $Filter += " OrgUnitPath='$SearchBase'"
+                    }
+                    $Filter = $Filter -replace " -eq ","=" -replace " -like ",":" -replace " -match ",":" -replace " -contains ",":" -creplace "'True'","True" -creplace "'False'","False"
+                    $request.Query = $Filter.Trim()
+                    if ([String]::IsNullOrEmpty($Filter.Trim())) {
+                        Write-Verbose "Getting all Users for $verbScope"
+                    }
+                    else {
+                        Write-Verbose "Getting Users for $verbScope matching filter: `"$($Filter.Trim())`""
+                    }
+                }
+                else {
+                    Write-Verbose "Getting all Users for $verbScope"
+                }
+                $response = New-Object System.Collections.ArrayList
+                [int]$i = 1
+                do {
+                    $result = $request.Execute()
+                    if ($result.UsersValue) {
+                        $result.UsersValue | ForEach-Object {
+                            $_ | Add-Member -MemberType NoteProperty -Name 'User' -Value $_.PrimaryEmail -PassThru | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.PrimaryEmail} -Force
+                            [void]$response.Add($_)
+                        }
+                    }
+                    $request.PageToken = $result.NextPageToken
+                    [int]$retrieved = ($i + $result.UsersValue.Count) - 1
+                    Write-Verbose "Retrieved $retrieved users..."
+                    [int]$i = $i + $result.UsersValue.Count
+                }
+                until (!$result.NextPageToken)
+                if ($SearchScope -ne "Subtree") {
+                    if (!$SearchBase) {
+                        $SearchBase = "/"
+                    }
+                    $response = switch ($SearchScope) {
+                        Base {
+                            $response | Where-Object {$_.OrgUnitPath -eq $SearchBase}
+                        }
+                        OneLevel {
+                            $maxDepth = ($SearchBase -split "/" | Where-Object {$_}).Count + 1
+                            $children = $response | Select-Object -ExpandProperty OrgUnitPath -Unique | ForEach-Object {
+                                if (($_ -split "/" | Where-Object {$_}).Count -le $maxDepth) {
+                                    $_
+                                }
+                            }
+                            $response | Where-Object {$_.OrgUnitPath -in $children}
+                        }
+                    }
+                    Write-Verbose "Total users in SearchScope: $($response.Count)"
+                }
+                return $response
             }
-            else {
-                Write-Error $_
+            catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                else {
+                    Write-Error $_
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 # Changelog
 
+* [2.15.4](#2154)
 * [2.15.3](#2153)
 * [2.15.2](#2152)
 * [2.15.1](#2151)
@@ -48,6 +49,18 @@
     * [Gmail Delegation Management Removed](#gmail-delegation-management-removed)
     * [Functions Removed](#functions-removed)
     * [Functions Aliased](#functions-aliased)
+
+## 2.15.4
+
+* [Issue #96](https://github.com/scrthq/PSGSuite/issues/96)
+  * Updated the following on `Get-GSGroup`:
+    * Set default scope to `Customer` so that getting the list of groups expectedly gets all of them, not just the ones in your primary domain
+    * Added `Domain` parameter to specify which domain to list groups from your customer account
+    * Added `Filter` parameter to only list groups matching the Group query syntax
+    * Moved the `Get-GSGroupListPrivate` private function into the body of `Get-GSGroup` for error clarity
+* Others:
+  * Moved the `Get-GSUserListPrivate` private function into the body of `Get-GSUser` for error clarity
+  * Improved error handling for User and Message List functions when there are no results.
 
 ## 2.15.3
 
