@@ -36,9 +36,9 @@ task Init {
     "`n"
     Set-Location $ProjectRoot
 
-    'Configuration', 'PSDeploy', 'Pester', 'Coveralls' | Foreach-Object {
+    'Configuration', 'PSDeploy', 'Pester' | Foreach-Object {
         if (-not (Get-Module -Name $_ -ListAvailable -Verbose:$false -ErrorAction SilentlyContinue)) {
-            Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -Confirm:$false -ErrorAction Stop
+            Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Confirm:$false -ErrorAction Stop
         }
         Import-Module -Name $_ -Verbose:$false -Force -ErrorAction Stop
     }
@@ -59,7 +59,7 @@ task Clean -depends Init {
 
 task Compile -depends Clean {
     # Create module output directory
-    $functionsToExport = @()
+    $functionsToExport = @('Get-GSToken','New-GoogleService')
     $modDir = New-Item -Path $outputModDir -ItemType Directory -ErrorAction SilentlyContinue
     New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue > $null
 
@@ -181,7 +181,7 @@ finally {
     Copy-Item -Path $env:BHPSModuleManifest -Destination $outputModVerDir
 
     # Update FunctionsToExport on manifest
-    Update-ModuleManifest -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -FunctionsToExport $functionsToExport
+    Update-ModuleManifest -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -FunctionsToExport ($functionsToExport | Sort-Object)
 
     "    Created compiled module at [$outputModDir]"
 } -description 'Compiles module from source'
