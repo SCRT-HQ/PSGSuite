@@ -269,7 +269,7 @@ Task Deploy -Depends Pester {
         if ($versionToDeploy) {
             Update-Metadata -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -PropertyName ModuleVersion -Value $versionToDeploy
             "    Publishing version [$($versionToDeploy)] to PSGallery..."
-            Publish-Module -Path $outputModVerDir -NuGetApiKey $env:PSGalleryApiKey -Repository PSGallery
+            Publish-Module -Path $outputModVerDir -NuGetApiKey $env:NugetApiKey -Repository PSGallery
         }
         else {
             Write-Host -ForegroundColor Yellow "No module version matched! Negating deployment to prevent errors"
