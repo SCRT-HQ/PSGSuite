@@ -60,6 +60,7 @@ task Clean -depends Init {
 task Compile -depends Clean {
     # Create module output directory
     $functionsToExport = @('Get-GSToken','New-GoogleService')
+    $aliasesToExport = (. $sut\Aliases\PSGSuite.Aliases.ps1).Keys
     $modDir = New-Item -Path $outputModDir -ItemType Directory -ErrorAction SilentlyContinue
     New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue > $null
 
@@ -89,12 +90,14 @@ Import-GoogleSDK
 
 foreach (`$key in `$aliasHash.Keys) {
     try {
-        Set-Alias -Name `$key -Value `$aliasHash[`$key] -Force
+        New-Alias -Name `$key -Value `$aliasHash[`$key] -Force
     }
     catch {
         Write-Error "[ALIAS: `$(`$key)] `$(`$_.Exception.Message.ToString())"
     }
 }
+
+Export-ModuleMember -Alias '*'
 
 if (!(Test-Path (Join-Path "~" ".scrthq"))) {
     New-Item -Path (Join-Path "~" ".scrthq") -ItemType Directory -Force | Out-Null
@@ -172,16 +175,14 @@ try {
 catch {
     Write-Warning "There was no config returned! Please make sure you are using the correct key or have a configuration already saved."
 }
-finally {
-    Export-ModuleMember -Alias *
-}
+
 "@ | Add-Content -Path $psm1 -Encoding UTF8
 
     # Copy over manifest
     Copy-Item -Path $env:BHPSModuleManifest -Destination $outputModVerDir
 
     # Update FunctionsToExport on manifest
-    Update-ModuleManifest -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -FunctionsToExport ($functionsToExport | Sort-Object)
+    Update-ModuleManifest -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -FunctionsToExport ($functionsToExport | Sort-Object) -AliasesToExport ($aliasesToExport | Sort-Object)
 
     "    Created compiled module at [$outputModDir]"
 } -description 'Compiles module from source'
