@@ -1,16 +1,15 @@
 function Get-GSShortUrlListPrivate {
     [cmdletbinding()]
-    Param
-    (
-      [parameter(Mandatory = $false,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
-      [Alias("PrimaryEmail","UserKey","Mail","Email")]
-      [ValidateNotNullOrEmpty()]
-      [String[]]
-      $User = $Script:PSGSuite.AdminEmail,
-      [parameter(Mandatory=$false)]
-      [ValidateSet("Full","Analytics_Clicks")]
-      [string]
-      $Projection = "Full"
+    Param (
+        [parameter(Mandatory = $false,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
+        [Alias("PrimaryEmail","UserKey","Mail","Email")]
+        [ValidateNotNullOrEmpty()]
+        [String[]]
+        $User = $Script:PSGSuite.AdminEmail,
+        [parameter(Mandatory=$false)]
+        [ValidateSet("Full","Analytics_Clicks")]
+        [string]
+        $Projection = "Full"
     )
     Process {
         foreach ($U in $User) {

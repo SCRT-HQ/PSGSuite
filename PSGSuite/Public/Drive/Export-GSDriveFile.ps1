@@ -2,18 +2,18 @@ function Export-GSDriveFile {
     <#
     .SYNOPSIS
     Exports a Drive file as if you chose "Export" from the File menu when viewing the file
-    
+
     .DESCRIPTION
     Exports a Drive file as if you chose "Export" from the File menu when viewing the file
-    
+
     .PARAMETER FileID
     The unique Id of the file to export
-    
+
     .PARAMETER User
     The email or unique Id of the owner of the Drive file
 
     Defaults to the AdminEmail user
-    
+
     .PARAMETER Type
     The type of local file you would like to export the Drive file as
 
@@ -32,12 +32,12 @@ function Export-GSDriveFile {
     * "PNG"
     * "RichText"
     * "SVG"
-    
+
     .PARAMETER OutFilePath
     The directory path that you would like to export the Drive file to
 
     Defaults to the current working directory
-    
+
     .PARAMETER Projection
     The defined subset of fields to be returned
 
@@ -46,10 +46,10 @@ function Export-GSDriveFile {
     * "Standard"
     * "Full"
     * "Access"
-    
+
     .PARAMETER Fields
     The specific fields to returned
-    
+
     .EXAMPLE
     Export-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -Type CSV -OutFilePath .\SheetExport.csv
 
@@ -57,7 +57,7 @@ function Export-GSDriveFile {
     #>
     [CmdLetBinding(DefaultParameterSetName = "Depth")]
     Param
-    (      
+    (
         [parameter(Mandatory = $true,Position = 0)]
         [String]
         $FileID,
@@ -95,7 +95,7 @@ function Export-GSDriveFile {
                     @("createdTime","description","fileExtension","id","lastModifyingUser","modifiedTime","name","ownedByMe","owners","parents","permissionIds","permissions","shared","sharedWithMeTime","sharingUser","viewedByMe","viewedByMeTime","viewersCanCopyContent","writersCanShare")
                 }
                 Full {
-                   @("appProperties","capabilities","contentHints","createdTime","description","explicitlyTrashed","fileExtension","folderColorRgb","fullFileExtension","hasAugmentedPermissions","hasThumbnail","headRevisionId","iconLink","id","imageMediaMetadata","isAppAuthorized","kind","lastModifyingUser","md5Checksum","mimeType","modifiedByMe","modifiedByMeTime","modifiedTime","name","originalFilename","ownedByMe","owners","parents","permissionIds","permissions","properties","quotaBytesUsed","shared","sharedWithMeTime","sharingUser","size","spaces","starred","teamDriveId","thumbnailLink","thumbnailVersion","trashed","trashedTime","trashingUser","version","videoMediaMetadata","viewedByMe","viewedByMeTime","viewersCanCopyContent","webContentLink","webViewLink","writersCanShare")
+                    @("appProperties","capabilities","contentHints","createdTime","description","explicitlyTrashed","fileExtension","folderColorRgb","fullFileExtension","hasAugmentedPermissions","hasThumbnail","headRevisionId","iconLink","id","imageMediaMetadata","isAppAuthorized","kind","lastModifyingUser","md5Checksum","mimeType","modifiedByMe","modifiedByMeTime","modifiedTime","name","originalFilename","ownedByMe","owners","parents","permissionIds","permissions","properties","quotaBytesUsed","shared","sharedWithMeTime","sharingUser","size","spaces","starred","teamDriveId","thumbnailLink","thumbnailVersion","trashed","trashedTime","trashingUser","version","videoMediaMetadata","viewedByMe","viewedByMeTime","viewersCanCopyContent","webContentLink","webViewLink","writersCanShare")
                 }
             }
         }

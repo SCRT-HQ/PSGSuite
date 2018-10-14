@@ -1,5 +1,6 @@
 # Changelog
 
+* [2.16.0](#2160)
 * [2.15.4](#2154)
 * [2.15.3](#2153)
 * [2.15.2](#2152)
@@ -49,6 +50,10 @@
     * [Gmail Delegation Management Removed](#gmail-delegation-management-removed)
     * [Functions Removed](#functions-removed)
     * [Functions Aliased](#functions-aliased)
+
+## 2.16.0
+
+- Updated: Build script to compile module into a single PSM1 file for cleanliness and loading speed improvements
 
 ## 2.15.4
 

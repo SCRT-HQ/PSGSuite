@@ -127,6 +127,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.16.0
+
+- Updated: Build script to compile module into a single PSM1 file for cleanliness and loading speed improvements
+
 #### 2.15.4
 
 * [Issue #96](https://github.com/scrthq/PSGSuite/issues/96)
