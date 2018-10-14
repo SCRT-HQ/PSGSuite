@@ -127,6 +127,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.16.1
+
+- Fixed: Module deployment segment in psake script deploying decompiled/broken module
+
 #### 2.16.0
 
 - Updated: Build script to compile module into a single PSM1 file for cleanliness and loading speed improvements

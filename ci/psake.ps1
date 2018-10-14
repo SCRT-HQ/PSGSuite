@@ -267,13 +267,16 @@ Task Deploy -Depends Pester {
         }
         # Bump the module version
         if ($versionToDeploy) {
-            Update-Metadata -Path $env:BHPSModuleManifest -PropertyName ModuleVersion -Value $versionToDeploy
+            Update-Metadata -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -PropertyName ModuleVersion -Value $versionToDeploy
+            "    Publishing version [$($versionToDeploy)] to PSGallery..."
+            Publish-Module -Path $outputModVerDir -NuGetApiKey $env:PSGalleryApiKey -Repository PSGallery
         }
         else {
             Write-Host -ForegroundColor Yellow "No module version matched! Negating deployment to prevent errors"
             $env:BHCommitMessage = $env:BHCommitMessage.Replace('!deploy','')
         }
         $lines
+
     }
     else {
         Write-Host -ForegroundColor Magenta "Build system is not AppVeyor, commit message does not contain '!deploy' and/or branch is not 'master' -- skipping module update!"
@@ -281,10 +284,10 @@ Task Deploy -Depends Pester {
 
     $lines
 
-    $Params = @{
+    <# $Params = @{
         Path    = $ProjectRoot
         Force   = $true
         Recurse = $false
     }
-    Invoke-PSDeploy @Verbose @Params
+    Invoke-PSDeploy @Verbose @Params #>
 } -description 'Deploy module to PSGallery'
