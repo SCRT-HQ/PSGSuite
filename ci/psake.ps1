@@ -40,6 +40,9 @@ task Init {
         if (-not (Get-Module -Name $_ -ListAvailable -Verbose:$false -ErrorAction SilentlyContinue)) {
             Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Confirm:$false -ErrorAction Stop
         }
+        elseif ($_ -eq 'Pester') {
+            Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Confirm:$false -ErrorAction Stop -Force
+        }
         Import-Module -Name $_ -Verbose:$false -Force -ErrorAction Stop
     }
 } -description 'Initialize build environment'
