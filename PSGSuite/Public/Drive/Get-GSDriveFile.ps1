@@ -2,21 +2,21 @@ function Get-GSDriveFile {
     <#
     .SYNOPSIS
     Gets information about or downloads a Drive file
-    
+
     .DESCRIPTION
     Gets information about or downloads a Drive file
-    
+
     .PARAMETER FileId
     The unique Id of the file to get
-    
+
     .PARAMETER User
     The email or unique Id of the owner of the Drive file
 
     Defaults to the AdminEmail user
-    
+
     .PARAMETER OutFilePath
     The directory path that you would like to download the Drive file to. If excluded, only the Drive file information will be returned
-    
+
     .PARAMETER Projection
     The defined subset of fields to be returned
 
@@ -25,15 +25,15 @@ function Get-GSDriveFile {
     * "Standard"
     * "Full"
     * "Access"
-    
+
     .PARAMETER Fields
     The specific fields to returned
-    
+
     .EXAMPLE
     Get-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976'
 
     Gets the information for the file
-    
+
     .EXAMPLE
     Get-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -OutFilePath (Get-Location).Path
 
@@ -74,7 +74,7 @@ function Get-GSDriveFile {
                     @("createdTime","description","fileExtension","id","lastModifyingUser","modifiedTime","name","ownedByMe","owners","parents","permissionIds","permissions","shared","sharedWithMeTime","sharingUser","viewedByMe","viewedByMeTime","viewersCanCopyContent","writersCanShare")
                 }
                 Full {
-                   @("appProperties","capabilities","contentHints","createdTime","description","explicitlyTrashed","fileExtension","folderColorRgb","fullFileExtension","hasAugmentedPermissions","hasThumbnail","headRevisionId","iconLink","id","imageMediaMetadata","isAppAuthorized","kind","lastModifyingUser","md5Checksum","mimeType","modifiedByMe","modifiedByMeTime","modifiedTime","name","originalFilename","ownedByMe","owners","parents","permissionIds","permissions","properties","quotaBytesUsed","shared","sharedWithMeTime","sharingUser","size","spaces","starred","teamDriveId","thumbnailLink","thumbnailVersion","trashed","trashedTime","trashingUser","version","videoMediaMetadata","viewedByMe","viewedByMeTime","viewersCanCopyContent","webContentLink","webViewLink","writersCanShare")
+                    @("appProperties","capabilities","contentHints","createdTime","description","explicitlyTrashed","fileExtension","folderColorRgb","fullFileExtension","hasAugmentedPermissions","hasThumbnail","headRevisionId","iconLink","id","imageMediaMetadata","isAppAuthorized","kind","lastModifyingUser","md5Checksum","mimeType","modifiedByMe","modifiedByMeTime","modifiedTime","name","originalFilename","ownedByMe","owners","parents","permissionIds","permissions","properties","quotaBytesUsed","shared","sharedWithMeTime","sharingUser","size","spaces","starred","teamDriveId","thumbnailLink","thumbnailVersion","trashed","trashedTime","trashingUser","version","videoMediaMetadata","viewedByMe","viewedByMeTime","viewersCanCopyContent","webContentLink","webViewLink","writersCanShare")
                 }
             }
         }
