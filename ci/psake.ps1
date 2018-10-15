@@ -187,7 +187,12 @@ catch {
     # Update FunctionsToExport on manifest
     Update-ModuleManifest -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -FunctionsToExport ($functionsToExport | Sort-Object) -AliasesToExport ($aliasesToExport | Sort-Object)
 
+    if ((Get-Item (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")).BaseName -cne $env:BHProjectName) {
+        Rename-Item (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -NewName "$($env:BHProjectName).psd1" -Force
+    }
     "    Created compiled module at [$outputModDir]"
+    "    Output version directory contents"
+    Get-ChildItem $outputModVerDir
 } -description 'Compiles module from source'
 
 task Pester -Depends Compile {
