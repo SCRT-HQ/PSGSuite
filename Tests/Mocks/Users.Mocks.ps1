@@ -33,7 +33,6 @@ Mock 'New-GoogleService' -ModuleName PSGSuite -ParameterFilter {$ServiceType -eq
                 $left = $filter.Split('=',2)[1].Trim()
                 $right = $filter.Split('=',2)[2].Trim("'")
                 $filtered = $userList | Where-Object {$_.$left -like "$right*"}
-                Write-Verbose "The query is `"$filter`" : Left [$left] : Right [$right]"
                 return ([PSCustomObject]@{
                     UsersValue = $filtered
                 })
