@@ -1,6 +1,6 @@
 $PSVersion = $PSVersionTable.PSVersion.Major
 $ModuleName = "PSGSuite"
-$projectRoot = Resolve-Path "$PSScriptRoot\.."
+$projectRoot = Resolve-Path "$PSScriptRoot\..\.."
 $ModulePath = Resolve-Path "$projectRoot\out\$ModuleName"
 $decompiledModulePath = Resolve-Path "$projectRoot\$ModuleName"
 $env:EnablePSGSuiteDebug = $true

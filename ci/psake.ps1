@@ -47,7 +47,8 @@ task Init {
     }
 } -description 'Initialize build environment'
 
-task Test -Depends Init, Compile, Pester -description 'Run test suite'
+task Test -Depends Init, Compile, Pester -description 'Compile and run test suite'
+task TestOnly -depends Init, PesterOnly -description 'Run tests only'
 
 task Clean -depends Init {
     Remove-Module -Name $env:BHProjectName -Force -ErrorAction SilentlyContinue
@@ -192,10 +193,44 @@ catch {
     }
     "    Created compiled module at [$outputModDir]"
     "    Output version directory contents"
-    Get-ChildItem $outputModVerDir
+    Get-ChildItem $outputModVerDir | Select-Object Mode,Length,Name | Format-Table -Autosize
 } -description 'Compiles module from source'
 
 task Pester -Depends Compile {
+    Push-Location
+    Set-Location -PassThru $outputModDir
+    if(-not $ENV:BHProjectPath) {
+        Set-BuildEnvironment -Path $PSScriptRoot\..
+    }
+
+    $origModulePath = $env:PSModulePath
+    if ( $env:PSModulePath.split($pathSeperator) -notcontains $outputDir ) {
+        $env:PSModulePath = ($outputDir + $pathSeperator + $origModulePath)
+    }
+
+    Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Verbose:$false
+    Import-Module -Name $outputModDir -Force -Verbose:$false
+    $testResultsXml = Join-Path -Path $outputDir -ChildPath $TestFile
+    $testResults = Invoke-Pester -Path $tests -PassThru -OutputFile $testResultsXml -OutputFormat NUnitXml
+
+    # Upload test artifacts to AppVeyor
+    If ($ENV:APPVEYOR) {
+        (New-Object 'System.Net.WebClient').UploadFile(
+            ([Uri]"https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)"),
+            $testResultsXml
+        )
+    }
+    Remove-Item $testResultsXml -Force -ErrorAction SilentlyContinue
+
+    if ($testResults.FailedCount -gt 0) {
+        $testResults | Format-List
+        Write-Error -Message 'One or more Pester tests failed. Build cannot continue!'
+    }
+    Pop-Location
+    $env:PSModulePath = $origModulePath
+} -description 'Run Pester tests'
+
+task PesterOnly -Depends Init {
     Push-Location
     Set-Location -PassThru $outputModDir
     if(-not $ENV:BHProjectPath) {
