@@ -1,5 +1,3 @@
-
-#Set-PSGSuiteConfig -ConfigName 'Pester' -P12KeyPath '.\test.p12' -AppEmail 'mockapp@iam.google.com' -AdminEmail 'mockadmin@test.com' -CustomerID C10000000 -Domain 'test.com' -Preference CustomerID -ServiceAccountClientID 10000000000000000000
 InModuleScope PSGSuite {
     Mock 'New-GoogleService' {
         [CmdletBinding()]
@@ -139,7 +137,7 @@ InModuleScope PSGSuite {
                 $result.OrgUnitPath | Should -BeExactly "/Users/$id"
             }
             It 'Should throw when getting user3@domain.com' {
-                {Get-GSUser -User 'user3@domain.com'} | Should -Throw "User not found!"
+                {Get-GSUser -User 'user3@domain.com' -Verbose} | Should -Throw "User not found!"
             }
         }
     }
