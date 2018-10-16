@@ -108,13 +108,10 @@ InModuleScope PSGSuite {
                 param($item)
                 $result.PrimaryEmail | Should -Contain $item
             }
-            $testCase = @('user1@domain.com','user1.1@domain.com','user1.2@domain.com') | Foreach-Object {@{item = $_}}
+            $testCase = @('user1@domain.com','user1.1@domain.com','user1.2@domain.com','user3@domain.com') | Foreach-Object {@{item = $_}}
             It "[Filtered list] PrimaryEmail should not contain <item>" -TestCases $testCase {
                 param($item)
                 $result.PrimaryEmail | Should -Not -Contain $item
-            }
-            It '[Filtered list] PrimaryEmail should not contain "user3@domain.com"' {
-                $result.PrimaryEmail | Should -Not -Contain 'user3@domain.com'
             }
         }
         Context 'When Get-GSUser gets a user' {
