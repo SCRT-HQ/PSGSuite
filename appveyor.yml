@@ -22,21 +22,5 @@ only_commits:
 build: false
 
 test_script:
-  - pwsh: >-
-      if ($env:PSVersion -eq 'Core') {
-        $string = "Running PowerShell $($PSVersionTable.PSVersion.ToString()) tests on image '$env:APPVEYOR_BUILD_WORKER_IMAGE'";
-        Write-Host -ForegroundColor Magenta $string;
-        . .\ci\init.ps1;
-      } else {
-        $string = "Skipping PowerShell $($PSVersionTable.PSVersion.ToString()) tests on image '$env:APPVEYOR_BUILD_WORKER_IMAGE'";
-        Write-Warning $string;
-      }
-  - ps: >-
-      if ($env:PSVersion -eq 'Windows') {
-        $string = "Running PowerShell $($PSVersionTable.PSVersion.ToString()) tests on image '$env:APPVEYOR_BUILD_WORKER_IMAGE'";
-        Write-Host -ForegroundColor Magenta $string;
-        . .\ci\init.ps1;
-      } else {
-        $string = "Skipping PowerShell $($PSVersionTable.PSVersion.ToString()) tests on image '$env:APPVEYOR_BUILD_WORKER_IMAGE'";
-        Write-Warning $string;
-      }
+  - pwsh: if ($env:PSVersion -eq 'Core') {. .\build.ps1}
+  - ps: if ($env:PSVersion -eq 'Windows') {. .\build.ps1}

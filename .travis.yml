@@ -23,19 +23,11 @@ notifications:
     on_failure: always
     on_start: always
 before_install:
-- chmod +x ci/download.sh
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; brew install openssl; brew
-  install python3; mkdir -p /usr/local/lib; ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib
-  /usr/local/lib/; ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/;
-  fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -y install python3; nvm
-  install v6.0.0; fi
+- chmod +x pwsh_download.sh
 install:
-- pushd ci
-- "./download.sh"
-- popd
+- ./pwsh_download.sh
 before_script:
 - export PATH=~/.local/bin:$PATH
 script:
 - ulimit -n 4096
-- pwsh -File ci/init.ps1
+- pwsh -File build.ps1

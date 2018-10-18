@@ -63,7 +63,7 @@ task Clean -depends Init {
 
 task Compile -depends Clean {
     # Create module output directory
-    $functionsToExport = @('Get-GSToken','New-GoogleService')
+    $functionsToExport = @()
     $aliasesToExport = (. $sut\Aliases\PSGSuite.Aliases.ps1).Keys
     $modDir = New-Item -Path $outputModDir -ItemType Directory -ErrorAction SilentlyContinue
     New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue > $null
@@ -75,7 +75,6 @@ task Compile -depends Clean {
     Get-ChildItem -Path (Join-Path -Path $sut -ChildPath 'Private') -Recurse -File | ForEach-Object {
         "$(Get-Content $_.FullName -Raw)`n" | Add-Content -Path $psm1 -Encoding UTF8
     }
-    "if (`$env:EnablePSGSuiteDebug) {Export-ModuleMember -Function @('Get-GSToken','New-GoogleService')}`n" | Add-Content -Path $psm1 -Encoding UTF8
     Get-ChildItem -Path (Join-Path -Path $sut -ChildPath 'Public') -Recurse -File | ForEach-Object {
         "$(Get-Content $_.FullName -Raw)`nExport-ModuleMember -Function '$($_.BaseName)'`n" | Add-Content -Path $psm1 -Encoding UTF8
         $functionsToExport += $_.BaseName
@@ -188,7 +187,8 @@ catch {
     # Update FunctionsToExport on manifest
     Update-ModuleManifest -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -FunctionsToExport ($functionsToExport | Sort-Object) -AliasesToExport ($aliasesToExport | Sort-Object)
 
-    if ((Get-Item (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")).BaseName -cne $env:BHProjectName) {
+    if ((Get-ChildItem $outputModVerDir | Where-Object {$_.Name -eq "$($env:BHProjectName).psd1"}).BaseName -cne $env:BHProjectName) {
+        "    Renaming manifest to correct casing"
         Rename-Item (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -NewName "$($env:BHProjectName).psd1" -Force
     }
     "    Created compiled module at [$outputModDir]"

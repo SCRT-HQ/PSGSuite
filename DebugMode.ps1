@@ -7,11 +7,11 @@
 
 # Enable Debug Mode to export the New-GoogleService function during module import
 # by setting the environment variable '$env:EnablePSGSuiteDebug' to $true
-$env:EnablePSGSuiteDebug = $true
+$env:EnablePSGSuiteDebug = $false
 
 Get-Module PSGSuite | Remove-Module -Force
 
-. ([System.IO.Path]::Combine("$PSScriptRoot","ci","init.ps1")) -Task Compile
+. .\build.ps1 -Task Compile
 
 # Force import the module in the repo path so that updated functions are reloaded
 $modulePath = [System.IO.Path]::Combine("$PSScriptRoot","out","PSGSuite")
