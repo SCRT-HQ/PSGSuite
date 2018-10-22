@@ -28,6 +28,10 @@ Mock 'New-GoogleService' -ModuleName PSGSuite -ParameterFilter {$ServiceType -eq
                     }
                 }
             }
+            $userList += New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.User' -Property @{
+                PrimaryEmail = "admin@domain.com"
+                OrgUnitPath = "/Users"
+            }
             if ( -not [String]::IsNullOrEmpty($this.Query)) {
                 $filter = $this.Query.Trim()
                 $left = $filter.Split('=',2)[1].Trim()

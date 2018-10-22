@@ -15,10 +15,11 @@ function Get-GSToken {
         [ValidateNotNullOrEmpty()]
         [string[]]
         $Scopes,
-        [parameter(Mandatory = $false,HelpMessage = "What is the full path to your Google Service Account's P12 key file?")]
+        [parameter(Mandatory = $false)]
+        [Alias('User')]
         [ValidateNotNullOrEmpty()]
         [String]
-        $P12KeyPath = $Script:PSGSuite.P12KeyPath,
+        $AdminEmail = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false)]
         [ValidateNotNullOrEmpty()]
         [String]
@@ -26,7 +27,7 @@ function Get-GSToken {
         [parameter(Mandatory = $false)]
         [ValidateNotNullOrEmpty()]
         [String]
-        $AdminEmail = $Script:PSGSuite.AdminEmail
+        $P12KeyPath = $Script:PSGSuite.P12KeyPath
     )
     function Invoke-URLEncode ($Object) {
         ([String]([System.Convert]::ToBase64String($Object))).TrimEnd('=').Replace('+','-').Replace('/','_')

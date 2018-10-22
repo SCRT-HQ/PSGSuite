@@ -106,21 +106,21 @@ if (!(Test-Path (Join-Path "~" ".scrthq"))) {
     New-Item -Path (Join-Path "~" ".scrthq") -ItemType Directory -Force | Out-Null
 }
 
-if (`$PSVersionTable.ContainsKey('PSEdition') -and `$PSVersionTable.PSEdition -eq 'Core' -and !`$EncryptionKey -and !`$IsWindows) {
+if (`$PSVersionTable.ContainsKey('PSEdition') -and `$PSVersionTable.PSEdition -eq 'Core' -and !`$Global:PSGSuiteKey -and !`$IsWindows) {
     if (!(Test-Path (Join-Path (Join-Path "~" ".scrthq") "BlockCoreCLREncryptionWarning.txt"))) {
         Write-Warning "CoreCLR does not support DPAPI encryption! Setting a basic AES key to prevent errors. Please create a unique key as soon as possible as this will only obfuscate secrets from plain text in the Configuration, the key is not secure as is. If you would like to prevent this message from displaying in the future, run the following command:`n`nBlock-CoreCLREncryptionWarning`n"
     }
-    `$EncryptionKey = [Byte[]]@(1..16)
+    `$Global:PSGSuiteKey = [Byte[]]@(1..16)
     `$ConfigScope = "User"
 }
 
-if (`$EncryptionKey -is [System.Security.SecureString]) {
+if (`$Global:PSGSuiteKey -is [System.Security.SecureString]) {
     `$Method = "SecureString"
     if (!`$ConfigScope) {
         `$ConfigScope = "Machine"
     }
 }
-elseif (`$EncryptionKey -is [System.Byte[]]) {
+elseif (`$Global:PSGSuiteKey -is [System.Byte[]]) {
     `$Method = "AES Key"
     if (!`$ConfigScope) {
         `$ConfigScope = "Machine"
@@ -134,22 +134,22 @@ else {
 Add-MetadataConverter -Converters @{
     [SecureString] = {
         `$encParams = @{}
-        if (`$script:EncryptionKey -is [System.Byte[]]) {
-            `$encParams["Key"] = `$script:EncryptionKey
+        if (`$Global:PSGSuiteKey -is [System.Byte[]]) {
+            `$encParams["Key"] = `$Global:PSGSuiteKey
         }
-        elseif (`$script:EncryptionKey -is [System.Security.SecureString]) {
-            `$encParams["SecureKey"] = `$script:EncryptionKey
+        elseif (`$Global:PSGSuiteKey -is [System.Security.SecureString]) {
+            `$encParams["SecureKey"] = `$Global:PSGSuiteKey
         }
         'Secure "{0}"' -f (ConvertFrom-SecureString `$_ @encParams)
     }
     "Secure" = {
         param([string]`$String)
         `$encParams = @{}
-        if (`$script:EncryptionKey -is [System.Byte[]]) {
-            `$encParams["Key"] = `$script:EncryptionKey
+        if (`$Global:PSGSuiteKey -is [System.Byte[]]) {
+            `$encParams["Key"] = `$Global:PSGSuiteKey
         }
-        elseif (`$script:EncryptionKey -is [System.Security.SecureString]) {
-            `$encParams["SecureKey"] = `$script:EncryptionKey
+        elseif (`$Global:PSGSuiteKey -is [System.Security.SecureString]) {
+            `$encParams["SecureKey"] = `$Global:PSGSuiteKey
         }
         ConvertTo-SecureString `$String @encParams
     }

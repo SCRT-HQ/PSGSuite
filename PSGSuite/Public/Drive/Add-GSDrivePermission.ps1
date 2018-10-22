@@ -2,18 +2,18 @@ function Add-GSDrivePermission {
     <#
     .SYNOPSIS
     Adds a new permission to a Drive file
-    
+
     .DESCRIPTION
     Adds a new permission to a Drive file
-    
+
     .PARAMETER User
     The owner of the Drive file
 
     Defaults to the AdminEmail user
-    
+
     .PARAMETER FileId
     The unique Id of the Drive file you would like to add the permission to
-    
+
     .PARAMETER Role
     The role/permission set you would like to give the email $EmailAddress
 
@@ -23,7 +23,7 @@ function Add-GSDrivePermission {
     * "Commenter"
     * "Reader"
     * "Organizer"
-    
+
     .PARAMETER Type
     The type of the grantee
 
@@ -32,36 +32,42 @@ function Add-GSDrivePermission {
     * "Group": a group email
     * "Domain": the entire domain
     * "Anyone": public access
-    
+
     .PARAMETER EmailAddress
     The email address of the user or group to which this permission refers
-    
+
     .PARAMETER Domain
     The domain to which this permission refers
-    
+
     .PARAMETER ExpirationTime
-    The time at which this permission will expire. 
-    
-    Expiration times have the following restrictions: 
+    The time at which this permission will expire.
+
+    Expiration times have the following restrictions:
     * They can only be set on user and group permissions
     * The time must be in the future
-    * The time cannot be more than a year in the future 
-    
+    * The time cannot be more than a year in the future
+
     .PARAMETER EmailMessage
     A plain text custom message to include in the notification email
-    
+
     .PARAMETER SendNotificationEmail
-    Whether to send a notification email when sharing to users or groups. This defaults to true for users and groups, and is not allowed for other requests. It must not be disabled for ownership transfers
-    
+    Whether to send a notification email when sharing to users or groups.
+
+    This defaults to **FALSE** for users and groups in PSGSuite, and is not allowed for other requests.
+
+    **It must not be disabled for ownership transfers**
+
     .PARAMETER AllowFileDiscovery
-    Whether the permission allows the file to be discovered through search. This is only applicable for permissions of type domain or anyone
-    
+    Whether the permission allows the file to be discovered through search.
+
+    This is only applicable for permissions of type domain or anyone
+
     .PARAMETER TransferOwnership
     Confirms transfer of ownership if the Role is set to 'Owner'. You can also force the same behavior by passing -Confirm:$false instead
-    
+
     .PARAMETER UseDomainAdminAccess
     Whether the request should be treated as if it was issued by a domain administrator; if set to true, then the requester will be granted access if they are an administrator of the domain to which the item belongs
-    
+
     .EXAMPLE
     Add-GSDrivePermission -FileId "1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976" -Role Owner -Type User -EmailAddress joe -SendNotificationEmail -Confirm:$false
 
@@ -165,6 +171,14 @@ function Add-GSDrivePermission {
                     Type {
                         $body.$key = ($PSBoundParameters[$key]).ToLower()
                     }
+                    SendNotificationEmail {
+                        if ($PSBoundParameters[$key]) {
+                            $body.$key = $PSBoundParameters[$key]
+                        }
+                        else {
+                            $body.$key = $false
+                        }
+                    }
                     Default {
                         if ($body.PSObject.Properties.Name -contains $key) {
                             $body.$key = $PSBoundParameters[$key]
@@ -178,6 +192,9 @@ function Add-GSDrivePermission {
                 if ($request.PSObject.Properties.Name -contains $key -and $key -ne 'FileId') {
                     $request.$key = $PSBoundParameters[$key]
                 }
+            }
+            if ($PSBoundParameters.Keys -notcontains 'SendNotificationEmail') {
+                $request.SendNotificationEmail = $false
             }
             Write-Verbose "Adding Drive Permission of '$Role' for user '$EmailAddress' on Id '$FileID'"
             $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
