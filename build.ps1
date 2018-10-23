@@ -2,7 +2,9 @@
 [cmdletbinding(DefaultParameterSetName = 'task')]
 param(
     [parameter(ParameterSetName = 'task', Position = 0)]
-    [string[]]$Task = 'Default',
+    [ValidateSet('Init','Clean','Compile','Pester','PesterOnly','Deploy')]
+    [string[]]
+    $Task = @('Init','Clean','Compile','Pester'),
 
     [parameter(ParameterSetName = 'help')]
     [switch]$Help,
@@ -91,9 +93,17 @@ else {
     $Task = if ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master" -and $PSVersionTable.PSVersion.Major -lt 6 -and -not [String]::IsNullOrEmpty($env:NugetApiKey)) {
         'Deploy'
     }
+    elseif ($ENV:BHBuildSystem -ne 'VSTS' -and $Task -like 'Deploy*') {
+        Write-Host ""
+        Write-Warning "Current build system is $($ENV:BHBuildSystem). Defaulting to Default task..."
+        Write-Host ""
+        @('Init','Clean','Compile','Pester')
+    }
     else {
         $Task
     }
+    Write-Host -ForegroundColor Green "Modules successfully resolved..."
+    Write-Host -ForegroundColor Green "Invoking psake with task list: [ $($Task -join ', ') ]`n"
     Invoke-psake -buildFile "$PSScriptRoot\psake.ps1" -taskList $Task -nologo -Verbose:$PSBoundParameters['Verbose']
     exit ( [int]( -not $psake.build_success ) )
 }

@@ -15,13 +15,13 @@
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Travis CI -->
   <a href="https://travis-ci.org/scrthq/PSGSuite">
-    <img src="https://travis-ci.org/scrthq/PSGSuite.svg?branch=master"
+    <img src="https://img.shields.io/travis/scrthq/PSGSuite.svg?logo=travis&style=flat"
       alt="Travis CI" title="Travis CI" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- PS Gallery -->
   <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
     <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat"
-      alt="PowerShell Gallery - Install PSGSuite" title="PowerShell Gallery - Install PSGSuite" />
+      alt="PowerShell Gallery" title="PowerShell Gallery" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Gitter -->
   <a href="https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
