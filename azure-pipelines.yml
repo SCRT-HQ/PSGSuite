@@ -25,8 +25,8 @@ phases:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: Built Module'
     inputs:
-      PathtoPublish: Release
-      ArtifactName: Release
+      PathtoPublish: out/PSGSuite
+      ArtifactName: CompiledModule
 
 
 - phase: Phase_2
@@ -38,12 +38,6 @@ phases:
     name: Hosted VS2017
 
   steps:
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
-    inputs:
-      artifactName: Release
-      downloadPath: '$(Build.SourcesDirectory)'
-
   - powershell: . ./build.ps1 -Task Pester
     displayName: Test
 
@@ -64,12 +58,6 @@ phases:
     name: Hosted Ubuntu 1604
 
   steps:
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
-    inputs:
-      artifactName: Release
-      downloadPath: '$(Build.SourcesDirectory)'
-
   - powershell: . ./build.ps1 -Task Pester
     displayName: Test
 
@@ -90,12 +78,6 @@ phases:
     name: Hosted macOS
 
   steps:
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
-    inputs:
-      artifactName: Release
-      downloadPath: '$(Build.SourcesDirectory)'
-
   - powershell: . ./build.ps1 -Task Pester
     displayName: Test
 
@@ -119,12 +101,6 @@ phases:
   - script: 'choco install powershell-core --yes'
     displayName: 'Install Powershell v6'
 
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
-    inputs:
-      artifactName: Release
-      downloadPath: '$(Build.SourcesDirectory)'
-
   - powershell: |
       $Env:Path = [Environment]::GetEnvironmentVariable('Path',[EnvironmentVariableTarget]::Machine)
       pwsh -command ". ./build.ps1 -Task Pester"
@@ -147,3 +123,7 @@ phases:
   condition: succeeded()
   queue:
     name: Hosted VS2017
+
+  steps:
+  - powershell: Write-Host 'Deployed!'
+    displayName: Deploy
