@@ -93,15 +93,15 @@ else {
     $Task = if ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master" -and $PSVersionTable.PSVersion.Major -lt 6 -and -not [String]::IsNullOrEmpty($env:NugetApiKey)) {
         'Deploy'
     }
-    elseif ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -notmatch '!deploy' -and $env:BHBranchName -eq "master" -and $PSVersionTable.PSVersion.Major -lt 6 -and -not [String]::IsNullOrEmpty($env:NugetApiKey)) {
+    elseif ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -notmatch '!deploy' -and $env:BHBranchName -eq "master" -and $PSVersionTable.PSVersion.Major -lt 6 -and -not [String]::IsNullOrEmpty($env:NugetApiKey) -and $Task -eq 'Deploy') {
         Write-Host ""
-        Write-Warning "Current build system is $($ENV:BHBuildSystem), but commit message does not match '!deploy'. Setting task to Init..."
+        Write-Warning "Current build system is $($ENV:BHBuildSystem), but commit message does not match '!deploy'. Changing task to Init..."
         Write-Host ""
         'Init'
     }
-    elseif ($ENV:BHBuildSystem -ne 'VSTS' -and $Task -like 'Deploy*') {
+    elseif ($ENV:BHBuildSystem -ne 'VSTS' -and $Task -eq 'Deploy') {
         Write-Host ""
-        Write-Warning "Current build system is $($ENV:BHBuildSystem). Defaulting task list..."
+        Write-Warning "Current build system is $($ENV:BHBuildSystem). Changing to default task list..."
         Write-Host ""
         @('Init','Clean','Compile','Pester')
     }

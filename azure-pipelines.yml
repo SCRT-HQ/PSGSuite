@@ -38,7 +38,7 @@ phases:
     name: Hosted VS2017
 
   steps:
-  - powershell: . ./build.ps1 -Task Pester
+  - powershell: . ./build.ps1
     displayName: Test Module
 
   - task: PublishTestResults@2
@@ -58,7 +58,7 @@ phases:
     name: Hosted Ubuntu 1604
 
   steps:
-  - powershell: . ./build.ps1 -Task Pester
+  - powershell: . ./build.ps1
     displayName: Test Module
 
   - task: PublishTestResults@2
@@ -78,7 +78,7 @@ phases:
     name: Hosted macOS
 
   steps:
-  - powershell: . ./build.ps1 -Task Pester
+  - powershell: . ./build.ps1
     displayName: Test Module
 
   - task: PublishTestResults@2
@@ -103,7 +103,7 @@ phases:
 
   - powershell: |
       $Env:Path = [Environment]::GetEnvironmentVariable('Path',[EnvironmentVariableTarget]::Machine)
-      pwsh -command ". ./build.ps1 -Task Pester"
+      pwsh -command ". ./build.ps1"
     displayName: Test Module
 
   - task: PublishTestResults@2
