@@ -3,6 +3,11 @@
 <img src="bin/img/psgsuite2.0.0.png" alt="PSGSuite 2.0.0 released!" />
 </br>
 </br>
+  <!-- Azure Pipelines -->
+  <a href="https://dev.azure.com/scrthq/SCRT%20HQ/_build/latest?definitionId=2">
+    <img src="https://dev.azure.com/scrthq/SCRT%20HQ/_apis/build/status/PSGSuite-CI"
+      alt="Azure Pipelines" title="Azure Pipelines" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- AppVeyor -->
   <a href="https://ci.appveyor.com/project/scrthq/psgsuite/branch/master">
     <img src="https://ci.appveyor.com/api/projects/status/u6pgrn4cs8iagcee/branch/master?svg=true"
@@ -126,6 +131,10 @@ Update-GSSheetValue               Export-GSSheet
 ```
 
 ### Most recent changes
+
+#### 2.17.1
+
+- Validated deployment via Azure Pipelines
 
 #### 2.17.0
 

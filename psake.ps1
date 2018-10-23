@@ -196,7 +196,7 @@ catch {
     Get-ChildItem $outputModVerDir | Select-Object Mode,Length,Name | Format-Table -Autosize
 } -description 'Compiles module from source'
 
-task Pester -Depends Compile {
+$pesterScriptBlock = {
     Push-Location
     Set-Location -PassThru $outputModDir
     if(-not $ENV:BHProjectPath) {
@@ -219,8 +219,8 @@ task Pester -Depends Compile {
             ([Uri]"https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)"),
             $testResultsXml
         )
+        Remove-Item $testResultsXml -Force -ErrorAction SilentlyContinue
     }
-    Remove-Item $testResultsXml -Force -ErrorAction SilentlyContinue
 
     if ($testResults.FailedCount -gt 0) {
         $testResults | Format-List
@@ -228,44 +228,14 @@ task Pester -Depends Compile {
     }
     Pop-Location
     $env:PSModulePath = $origModulePath
-} -description 'Run Pester tests'
+}
 
-task PesterOnly -Depends Init {
-    Push-Location
-    Set-Location -PassThru $outputModDir
-    if(-not $ENV:BHProjectPath) {
-        Set-BuildEnvironment -Path $PSScriptRoot\..
-    }
+task Pester -Depends Compile $pesterScriptBlock -description 'Run Pester tests'
 
-    $origModulePath = $env:PSModulePath
-    if ( $env:PSModulePath.split($pathSeperator) -notcontains $outputDir ) {
-        $env:PSModulePath = ($outputDir + $pathSeperator + $origModulePath)
-    }
+task PesterOnly -Depends Init $pesterScriptBlock -description 'Run Pester tests'
 
-    Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Verbose:$false
-    Import-Module -Name $outputModDir -Force -Verbose:$false
-    $testResultsXml = Join-Path -Path $outputDir -ChildPath $TestFile
-    $testResults = Invoke-Pester -Path $tests -PassThru -OutputFile $testResultsXml -OutputFormat NUnitXml
-
-    # Upload test artifacts to AppVeyor
-    If ($ENV:APPVEYOR) {
-        (New-Object 'System.Net.WebClient').UploadFile(
-            ([Uri]"https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)"),
-            $testResultsXml
-        )
-    }
-    Remove-Item $testResultsXml -Force -ErrorAction SilentlyContinue
-
-    if ($testResults.FailedCount -gt 0) {
-        $testResults | Format-List
-        Write-Error -Message 'One or more Pester tests failed. Build cannot continue!'
-    }
-    Pop-Location
-    $env:PSModulePath = $origModulePath
-} -description 'Run Pester tests'
-
-Task Deploy -Depends Pester {
-    if ($ENV:BHBuildSystem -eq 'AppVeyor' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") {
+$deployScriptBlock = {
+    if ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") {
         # Load the module, read the exported functions, update the psd1 FunctionsToExport
         $commParsed = $env:BHCommitMessage | Select-String -Pattern '\sv\d\.\d\.\d\s'
         if ($commParsed) {
@@ -315,19 +285,11 @@ Task Deploy -Depends Pester {
             Write-Host -ForegroundColor Yellow "No module version matched! Negating deployment to prevent errors"
             $env:BHCommitMessage = $env:BHCommitMessage.Replace('!deploy','')
         }
-        $lines
 
     }
     else {
-        Write-Host -ForegroundColor Magenta "Build system is not AppVeyor, commit message does not contain '!deploy' and/or branch is not 'master' -- skipping module update!"
+        Write-Host -ForegroundColor Magenta "Build system is not VSTS, commit message does not contain '!deploy' and/or branch is not 'master' -- skipping module update!"
     }
+}
 
-    $lines
-
-    <# $Params = @{
-        Path    = $ProjectRoot
-        Force   = $true
-        Recurse = $false
-    }
-    Invoke-PSDeploy @Verbose @Params #>
-} -description 'Deploy module to PSGallery'
+Task Deploy -Depends Compile $deployScriptBlock -description 'Deploy module to PSGallery'

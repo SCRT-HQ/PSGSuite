@@ -88,7 +88,7 @@ if ($Help) {
 }
 else {
     Set-BuildEnvironment -Force
-    $Task = if ($ENV:BHBuildSystem -eq 'AppVeyor' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master" -and $PSVersionTable.PSVersion.Major -lt 6) {
+    $Task = if ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master" -and $PSVersionTable.PSVersion.Major -lt 6) {
         'Deploy'
     }
     else {

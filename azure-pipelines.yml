@@ -20,13 +20,13 @@ phases:
 
   steps:
   - powershell: . ./build.ps1 -Task Compile
-    displayName: Compile
+    displayName: Compile Module
 
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: Built Module'
+    displayName: 'Publish Artifact: Compiled Module'
     inputs:
-      PathtoPublish: Release
-      ArtifactName: Release
+      PathtoPublish: out/PSGSuite
+      ArtifactName: PSGSuite
 
 
 - phase: Phase_2
@@ -38,14 +38,8 @@ phases:
     name: Hosted VS2017
 
   steps:
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
-    inputs:
-      artifactName: Release
-      downloadPath: '$(Build.SourcesDirectory)'
-
   - powershell: . ./build.ps1 -Task Pester
-    displayName: Test
+    displayName: Test Module
 
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/Test*.xml'
@@ -64,14 +58,8 @@ phases:
     name: Hosted Ubuntu 1604
 
   steps:
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
-    inputs:
-      artifactName: Release
-      downloadPath: '$(Build.SourcesDirectory)'
-
   - powershell: . ./build.ps1 -Task Pester
-    displayName: Test
+    displayName: Test Module
 
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/Test*.xml'
@@ -90,14 +78,8 @@ phases:
     name: Hosted macOS
 
   steps:
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
-    inputs:
-      artifactName: Release
-      downloadPath: '$(Build.SourcesDirectory)'
-
   - powershell: . ./build.ps1 -Task Pester
-    displayName: Test
+    displayName: Test Module
 
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/Test*.xml'
@@ -119,16 +101,11 @@ phases:
   - script: 'choco install powershell-core --yes'
     displayName: 'Install Powershell v6'
 
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
-    inputs:
-      artifactName: Release
-      downloadPath: '$(Build.SourcesDirectory)'
-
   - powershell: |
       $Env:Path = [Environment]::GetEnvironmentVariable('Path',[EnvironmentVariableTarget]::Machine)
       pwsh -command ". ./build.ps1 -Task Pester"
-    displayName: Test
+    displayName: Test Module
+
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/Test-*.xml'
     inputs:
@@ -147,3 +124,9 @@ phases:
   condition: succeeded()
   queue:
     name: Hosted VS2017
+
+  steps:
+  - powershell: |
+      $Env:NuGetApiKey = '$(NuGetApiKey)'
+      . ./build.ps1 -Task Deploy
+    displayName: Deploy
