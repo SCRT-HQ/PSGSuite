@@ -129,4 +129,4 @@ phases:
   - powershell: |
       $Env:NuGetApiKey = '$(NuGetApiKey)'
       . ./build.ps1 -Task Deploy
-    displayName: Deploy
+    displayName: Deploy to PowerShell Gallery

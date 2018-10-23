@@ -2,7 +2,7 @@
 [cmdletbinding(DefaultParameterSetName = 'task')]
 param(
     [parameter(ParameterSetName = 'task', Position = 0)]
-    [ValidateSet('Init','Clean','Compile','Pester','PesterOnly','Deploy')]
+    [ValidateSet('Init','Clean','Compile','Pester','PesterOnly','Deploy','Skip')]
     [string[]]
     $Task = @('Init','Clean','Compile','Pester'),
 
@@ -95,9 +95,9 @@ else {
     }
     elseif ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -notmatch '!deploy' -and $env:BHBranchName -eq "master" -and $PSVersionTable.PSVersion.Major -lt 6 -and -not [String]::IsNullOrEmpty($env:NugetApiKey) -and $Task -eq 'Deploy') {
         Write-Host ""
-        Write-Warning "Current build system is $($ENV:BHBuildSystem), but commit message does not match '!deploy'. Changing task to Init..."
+        Write-Warning "Current build system is $($ENV:BHBuildSystem), but commit message does not match '!deploy'. Changing task to Skip..."
         Write-Host ""
-        'Init'
+        'Skip'
     }
     elseif ($ENV:BHBuildSystem -ne 'VSTS' -and $Task -eq 'Deploy') {
         Write-Host ""

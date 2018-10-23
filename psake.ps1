@@ -29,6 +29,10 @@ Properties {
 #Task Default -Depends Init,Test,Build,Deploy
 task default -depends Test
 
+task Skip {
+    "    Skipping psake for this job!"
+}
+
 task Init {
     "`nSTATUS: Testing with PowerShell $psVersion"
     "Build System Details:"
