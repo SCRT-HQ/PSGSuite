@@ -93,9 +93,15 @@ else {
     $Task = if ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master" -and $PSVersionTable.PSVersion.Major -lt 6 -and -not [String]::IsNullOrEmpty($env:NugetApiKey)) {
         'Deploy'
     }
+    elseif ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -notmatch '!deploy' -and $env:BHBranchName -eq "master" -and $PSVersionTable.PSVersion.Major -lt 6 -and -not [String]::IsNullOrEmpty($env:NugetApiKey)) {
+        Write-Host ""
+        Write-Warning "Current build system is $($ENV:BHBuildSystem), but commit message does not match '!deploy'. Setting task to Init..."
+        Write-Host ""
+        'Init'
+    }
     elseif ($ENV:BHBuildSystem -ne 'VSTS' -and $Task -like 'Deploy*') {
         Write-Host ""
-        Write-Warning "Current build system is $($ENV:BHBuildSystem). Defaulting to Default task..."
+        Write-Warning "Current build system is $($ENV:BHBuildSystem). Defaulting task list..."
         Write-Host ""
         @('Init','Clean','Compile','Pester')
     }
