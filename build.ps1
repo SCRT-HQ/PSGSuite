@@ -81,7 +81,7 @@ function Resolve-Module {
     }
 }
 
-'BuildHelpers', 'psake' | Resolve-Module -UpdateModules:$PSBoundParameters['UpdateModules'] -Verbose:$PSBoundParameters['Verbose']
+'BuildHelpers','psake' | Resolve-Module -UpdateModules:$PSBoundParameters['UpdateModules'] -Verbose:$PSBoundParameters['Verbose']
 
 if ($Help) {
     Get-PSakeScriptTasks -buildFile "$PSScriptRoot\psake.ps1" |
@@ -90,23 +90,20 @@ if ($Help) {
 }
 else {
     Set-BuildEnvironment -Force
-    $Task = if ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master" -and $PSVersionTable.PSVersion.Major -lt 6 -and -not [String]::IsNullOrEmpty($env:NugetApiKey)) {
-        'Deploy'
+    if ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -notmatch '!deploy' -and $env:BHBranchName -eq "master" -and $PSVersionTable.PSVersion.Major -lt 6 -and -not [String]::IsNullOrEmpty($env:NugetApiKey) -and $Task -eq 'Deploy') {
+        Write-Host ""
+        Write-Warning "Current build system is $($ENV:BHBuildSystem), but commit message does not match '!deploy'. Skipping psake for this job..."
+        Write-Host ""
+        exit 0
     }
-    elseif ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -notmatch '!deploy' -and $env:BHBranchName -eq "master" -and $PSVersionTable.PSVersion.Major -lt 6 -and -not [String]::IsNullOrEmpty($env:NugetApiKey) -and $Task -eq 'Deploy') {
-        Write-Host ""
-        Write-Warning "Current build system is $($ENV:BHBuildSystem), but commit message does not match '!deploy'. Changing task to Skip..."
-        Write-Host ""
-        'Skip'
+    elseif ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master" -and $PSVersionTable.PSVersion.Major -lt 6 -and -not [String]::IsNullOrEmpty($env:NugetApiKey)) {
+        $Task = 'Deploy'
     }
     elseif ($ENV:BHBuildSystem -ne 'VSTS' -and $Task -eq 'Deploy') {
         Write-Host ""
         Write-Warning "Current build system is $($ENV:BHBuildSystem). Changing to default task list..."
         Write-Host ""
-        @('Init','Clean','Compile','Pester')
-    }
-    else {
-        $Task
+        $Task = @('Init','Clean','Compile','Pester')
     }
     Write-Host -ForegroundColor Green "Modules successfully resolved..."
     Write-Host -ForegroundColor Green "Invoking psake with task list: [ $($Task -join ', ') ]`n"
