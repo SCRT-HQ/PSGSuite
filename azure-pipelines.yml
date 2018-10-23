@@ -20,13 +20,13 @@ phases:
 
   steps:
   - powershell: . ./build.ps1 -Task Compile
-    displayName: Compile
+    displayName: Compile Module
 
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: Built Module'
+    displayName: 'Publish Artifact: Compiled Module'
     inputs:
       PathtoPublish: out/PSGSuite
-      ArtifactName: CompiledModule
+      ArtifactName: PSGSuite
 
 
 - phase: Phase_2
@@ -39,7 +39,7 @@ phases:
 
   steps:
   - powershell: . ./build.ps1 -Task Pester
-    displayName: Test
+    displayName: Test Module
 
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/Test*.xml'
@@ -59,7 +59,7 @@ phases:
 
   steps:
   - powershell: . ./build.ps1 -Task Pester
-    displayName: Test
+    displayName: Test Module
 
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/Test*.xml'
@@ -79,7 +79,7 @@ phases:
 
   steps:
   - powershell: . ./build.ps1 -Task Pester
-    displayName: Test
+    displayName: Test Module
 
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/Test*.xml'
@@ -104,7 +104,8 @@ phases:
   - powershell: |
       $Env:Path = [Environment]::GetEnvironmentVariable('Path',[EnvironmentVariableTarget]::Machine)
       pwsh -command ". ./build.ps1 -Task Pester"
-    displayName: Test
+    displayName: Test Module
+
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/Test-*.xml'
     inputs:

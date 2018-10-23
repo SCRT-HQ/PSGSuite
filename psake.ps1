@@ -219,8 +219,8 @@ task Pester -Depends Compile {
             ([Uri]"https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)"),
             $testResultsXml
         )
+        Remove-Item $testResultsXml -Force -ErrorAction SilentlyContinue
     }
-    Remove-Item $testResultsXml -Force -ErrorAction SilentlyContinue
 
     if ($testResults.FailedCount -gt 0) {
         $testResults | Format-List
