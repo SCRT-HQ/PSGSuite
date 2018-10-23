@@ -127,6 +127,17 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.17.0
+
+* [Issue #102](https://github.com/scrthq/PSGSuite/issues/102)
+  * Fixed: `$EncryptionKey` PSM1 parameter now stores the AES key correctly so SecureStrings are encrypted/decrypted as intended.
+* [Issue #103](https://github.com/scrthq/PSGSuite/issues/103)
+  * Updated: `SendNotificationEmail` parameter on `Add-GSDrivePermission` defaults to false for all User & Group permissions that are not ownership transfers.
+  * Updated: Documentation for `SendNotificationEmail` parameter on `Add-GSDrivePermission` for clarity towards default Google API parameter values.
+* Moved: `Get-GSToken` and `New-GoogleService` to Public functions under the Authentication section
+* Added: More unit testing for `Get-GSUser`
+* Updated: `psake` build script
+
 #### 2.16.1
 
 - Fixed: Module deployment segment in psake script deploying decompiled/broken module

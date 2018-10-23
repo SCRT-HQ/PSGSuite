@@ -9,6 +9,7 @@ function New-GoogleService {
         [String]
         $ServiceType,
         [Parameter(Mandatory = $false,Position = 2)]
+        [Alias('AdminEmail')]
         [String]
         $User = $script:PSGSuite.AdminEmail
     )

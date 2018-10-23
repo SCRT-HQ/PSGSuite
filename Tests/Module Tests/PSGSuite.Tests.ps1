@@ -1,8 +1,7 @@
 $PSVersion = $PSVersionTable.PSVersion.Major
-$ModuleName = "PSGSuite"
-$projectRoot = Resolve-Path "$PSScriptRoot\.."
-$ModulePath = Resolve-Path "$projectRoot\out\$ModuleName"
-$decompiledModulePath = Resolve-Path "$projectRoot\$ModuleName"
+$projectRoot = Resolve-Path "$PSScriptRoot\..\.."
+$ModulePath = Resolve-Path "$projectRoot\out\$($env:BHProjectName)"
+$decompiledModulePath = Resolve-Path "$projectRoot\$($env:BHProjectName)"
 $env:EnablePSGSuiteDebug = $true
 
 # Verbose output for non-master builds on appveyor
@@ -17,12 +16,7 @@ $moduleRoot = Split-Path (Resolve-Path "$ModulePath\*\*.psd1")
 
 Import-Module $ModulePath -Force -Verbose:$false
 
-Describe "Module tests: $ModuleName" {
-    Context "Confirm private functions are not exported on module import" {
-        It "Should throw when checking for New-MimeMessage in the exported commands" {
-            {Get-Command -Name New-MimeMessage -Module PSGSuite -ErrorAction Stop} | Should -Throw "The term 'New-MimeMessage' is not recognized as the name of a cmdlet, function, script file, or operable program."
-        }
-    }
+Describe "Module tests: $($env:BHProjectName)" {
     Context "Confirm files are valid Powershell syntax" {
         $scripts = Get-ChildItem $decompiledModulePath -Include *.ps1,*.psm1,*.psd1 -Recurse
 
@@ -36,6 +30,13 @@ Describe "Module tests: $ModuleName" {
             $errors = $null
             $null = [System.Management.Automation.PSParser]::Tokenize($contents, [ref]$errors)
             $errors.Count | Should Be 0
+        }
+    }
+    Context "Confirm private functions are not exported on module import" {
+        $testCase = Get-ChildItem "$decompiledModulePath\Private" -Recurse -Include *.ps1 | Foreach-Object {@{item = $_.BaseName}}
+        It "Should throw when checking for '<item>' in the module commands" -TestCases $testCase {
+            param($item)
+            {Get-Command -Name $item -Module $env:BHProjectName -ErrorAction Stop} | Should -Throw "The term '$item' is not recognized as the name of a cmdlet, function, script file, or operable program."
         }
     }
     Context "Confirm all aliases are created" {

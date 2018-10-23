@@ -1,0 +1,5 @@
+resources:
+  repositories:
+  - repository: common
+    type: github
+    name: scrthq/PSGSuite

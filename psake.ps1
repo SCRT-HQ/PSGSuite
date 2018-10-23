@@ -47,7 +47,8 @@ task Init {
     }
 } -description 'Initialize build environment'
 
-task Test -Depends Init, Compile, Pester -description 'Run test suite'
+task Test -Depends Init, Compile, Pester -description 'Compile and run test suite'
+task TestOnly -depends Init, PesterOnly -description 'Run tests only'
 
 task Clean -depends Init {
     Remove-Module -Name $env:BHProjectName -Force -ErrorAction SilentlyContinue
@@ -62,7 +63,7 @@ task Clean -depends Init {
 
 task Compile -depends Clean {
     # Create module output directory
-    $functionsToExport = @('Get-GSToken','New-GoogleService')
+    $functionsToExport = @()
     $aliasesToExport = (. $sut\Aliases\PSGSuite.Aliases.ps1).Keys
     $modDir = New-Item -Path $outputModDir -ItemType Directory -ErrorAction SilentlyContinue
     New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue > $null
@@ -74,7 +75,6 @@ task Compile -depends Clean {
     Get-ChildItem -Path (Join-Path -Path $sut -ChildPath 'Private') -Recurse -File | ForEach-Object {
         "$(Get-Content $_.FullName -Raw)`n" | Add-Content -Path $psm1 -Encoding UTF8
     }
-    "if (`$env:EnablePSGSuiteDebug) {Export-ModuleMember -Function @('Get-GSToken','New-GoogleService')}`n" | Add-Content -Path $psm1 -Encoding UTF8
     Get-ChildItem -Path (Join-Path -Path $sut -ChildPath 'Public') -Recurse -File | ForEach-Object {
         "$(Get-Content $_.FullName -Raw)`nExport-ModuleMember -Function '$($_.BaseName)'`n" | Add-Content -Path $psm1 -Encoding UTF8
         $functionsToExport += $_.BaseName
@@ -106,21 +106,21 @@ if (!(Test-Path (Join-Path "~" ".scrthq"))) {
     New-Item -Path (Join-Path "~" ".scrthq") -ItemType Directory -Force | Out-Null
 }
 
-if (`$PSVersionTable.ContainsKey('PSEdition') -and `$PSVersionTable.PSEdition -eq 'Core' -and !`$EncryptionKey -and !`$IsWindows) {
+if (`$PSVersionTable.ContainsKey('PSEdition') -and `$PSVersionTable.PSEdition -eq 'Core' -and !`$Global:PSGSuiteKey -and !`$IsWindows) {
     if (!(Test-Path (Join-Path (Join-Path "~" ".scrthq") "BlockCoreCLREncryptionWarning.txt"))) {
         Write-Warning "CoreCLR does not support DPAPI encryption! Setting a basic AES key to prevent errors. Please create a unique key as soon as possible as this will only obfuscate secrets from plain text in the Configuration, the key is not secure as is. If you would like to prevent this message from displaying in the future, run the following command:`n`nBlock-CoreCLREncryptionWarning`n"
     }
-    `$EncryptionKey = [Byte[]]@(1..16)
+    `$Global:PSGSuiteKey = [Byte[]]@(1..16)
     `$ConfigScope = "User"
 }
 
-if (`$EncryptionKey -is [System.Security.SecureString]) {
+if (`$Global:PSGSuiteKey -is [System.Security.SecureString]) {
     `$Method = "SecureString"
     if (!`$ConfigScope) {
         `$ConfigScope = "Machine"
     }
 }
-elseif (`$EncryptionKey -is [System.Byte[]]) {
+elseif (`$Global:PSGSuiteKey -is [System.Byte[]]) {
     `$Method = "AES Key"
     if (!`$ConfigScope) {
         `$ConfigScope = "Machine"
@@ -134,22 +134,22 @@ else {
 Add-MetadataConverter -Converters @{
     [SecureString] = {
         `$encParams = @{}
-        if (`$script:EncryptionKey -is [System.Byte[]]) {
-            `$encParams["Key"] = `$script:EncryptionKey
+        if (`$Global:PSGSuiteKey -is [System.Byte[]]) {
+            `$encParams["Key"] = `$Global:PSGSuiteKey
         }
-        elseif (`$script:EncryptionKey -is [System.Security.SecureString]) {
-            `$encParams["SecureKey"] = `$script:EncryptionKey
+        elseif (`$Global:PSGSuiteKey -is [System.Security.SecureString]) {
+            `$encParams["SecureKey"] = `$Global:PSGSuiteKey
         }
         'Secure "{0}"' -f (ConvertFrom-SecureString `$_ @encParams)
     }
     "Secure" = {
         param([string]`$String)
         `$encParams = @{}
-        if (`$script:EncryptionKey -is [System.Byte[]]) {
-            `$encParams["Key"] = `$script:EncryptionKey
+        if (`$Global:PSGSuiteKey -is [System.Byte[]]) {
+            `$encParams["Key"] = `$Global:PSGSuiteKey
         }
-        elseif (`$script:EncryptionKey -is [System.Security.SecureString]) {
-            `$encParams["SecureKey"] = `$script:EncryptionKey
+        elseif (`$Global:PSGSuiteKey -is [System.Security.SecureString]) {
+            `$encParams["SecureKey"] = `$Global:PSGSuiteKey
         }
         ConvertTo-SecureString `$String @encParams
     }
@@ -187,10 +187,50 @@ catch {
     # Update FunctionsToExport on manifest
     Update-ModuleManifest -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -FunctionsToExport ($functionsToExport | Sort-Object) -AliasesToExport ($aliasesToExport | Sort-Object)
 
+    if ((Get-ChildItem $outputModVerDir | Where-Object {$_.Name -eq "$($env:BHProjectName).psd1"}).BaseName -cne $env:BHProjectName) {
+        "    Renaming manifest to correct casing"
+        Rename-Item (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -NewName "$($env:BHProjectName).psd1" -Force
+    }
     "    Created compiled module at [$outputModDir]"
+    "    Output version directory contents"
+    Get-ChildItem $outputModVerDir | Select-Object Mode,Length,Name | Format-Table -Autosize
 } -description 'Compiles module from source'
 
 task Pester -Depends Compile {
+    Push-Location
+    Set-Location -PassThru $outputModDir
+    if(-not $ENV:BHProjectPath) {
+        Set-BuildEnvironment -Path $PSScriptRoot\..
+    }
+
+    $origModulePath = $env:PSModulePath
+    if ( $env:PSModulePath.split($pathSeperator) -notcontains $outputDir ) {
+        $env:PSModulePath = ($outputDir + $pathSeperator + $origModulePath)
+    }
+
+    Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Verbose:$false
+    Import-Module -Name $outputModDir -Force -Verbose:$false
+    $testResultsXml = Join-Path -Path $outputDir -ChildPath $TestFile
+    $testResults = Invoke-Pester -Path $tests -PassThru -OutputFile $testResultsXml -OutputFormat NUnitXml
+
+    # Upload test artifacts to AppVeyor
+    If ($ENV:APPVEYOR) {
+        (New-Object 'System.Net.WebClient').UploadFile(
+            ([Uri]"https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)"),
+            $testResultsXml
+        )
+    }
+    Remove-Item $testResultsXml -Force -ErrorAction SilentlyContinue
+
+    if ($testResults.FailedCount -gt 0) {
+        $testResults | Format-List
+        Write-Error -Message 'One or more Pester tests failed. Build cannot continue!'
+    }
+    Pop-Location
+    $env:PSModulePath = $origModulePath
+} -description 'Run Pester tests'
+
+task PesterOnly -Depends Init {
     Push-Location
     Set-Location -PassThru $outputModDir
     if(-not $ENV:BHProjectPath) {

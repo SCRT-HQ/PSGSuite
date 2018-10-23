@@ -177,7 +177,7 @@ function Get-GSUser {
                     if ($Fields) {
                         $request.Fields = "$($Fields -join ",")"
                     }
-                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru  | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.PrimaryEmail} -PassThru -Force
+                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -Force -PassThru  | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.PrimaryEmail} -PassThru -Force
                 }
                 catch {
                     if ($ErrorActionPreference -eq 'Stop') {
@@ -247,7 +247,7 @@ function Get-GSUser {
                     $result = $request.Execute()
                     if ($result.UsersValue) {
                         $result.UsersValue | ForEach-Object {
-                            $_ | Add-Member -MemberType NoteProperty -Name 'User' -Value $_.PrimaryEmail -PassThru | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.PrimaryEmail} -Force
+                            $_ | Add-Member -MemberType NoteProperty -Name 'User' -Value $_.PrimaryEmail -Force -PassThru | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.PrimaryEmail} -Force
                             [void]$response.Add($_)
                         }
                     }
