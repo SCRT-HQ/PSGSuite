@@ -126,5 +126,7 @@ phases:
     name: Hosted VS2017
 
   steps:
-  - powershell: Write-Host 'Deployed!'
+  - powershell: |
+      $Env:NuGetApiKey = '$(NuGetApiKey)'
+      . ./build.ps1 -Task Deploy
     displayName: Deploy

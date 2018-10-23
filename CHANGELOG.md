@@ -1,5 +1,6 @@
 # Changelog
 
+* [2.17.1](#2171)
 * [2.17.0](#2170)
 * [2.16.1](#2161)
 * [2.16.0](#2160)
@@ -52,6 +53,10 @@
     * [Gmail Delegation Management Removed](#gmail-delegation-management-removed)
     * [Functions Removed](#functions-removed)
     * [Functions Aliased](#functions-aliased)
+
+## 2.17.1
+
+- Validated deployment via Azure Pipelines
 
 ## 2.17.0
 

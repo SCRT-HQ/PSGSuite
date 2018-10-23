@@ -132,6 +132,10 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.17.1
+
+- Validated deployment via Azure Pipelines
+
 #### 2.17.0
 
 * [Issue #102](https://github.com/scrthq/PSGSuite/issues/102)
