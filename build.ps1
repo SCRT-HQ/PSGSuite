@@ -103,16 +103,16 @@ else {
         $Task -eq 'Deploy' -and (
             $ENV:BHBuildSystem -ne 'VSTS' -or
             $env:BHCommitMessage -notmatch '!deploy' -or
-            $env:BHBranchName -ne "master" -or
-            $PSVersionTable.PSVersion.Major -eq 5 -or
+            $env:BHBranchName -ne 'master' -or
+            $PSVersionTable.PSVersion.Major -ne 5 -or
             $null -eq $env:NugetApiKey
         )
     ) {
         "Task is 'Deploy', but conditions are not correct for deployment:`n" +
-        "    + Current build system is VSTS     : $env:BHBuildSystem`n" +
-        "    + Current branch is master         : $env:BHBranchName`n" +
-        "    + Commit message matches '!deploy' : $env:BHCommitMessage`n" +
-        "    + Current PS version is 5          : $($PSVersionTable.PSVersion.ToString())`n" +
+        "    + Current build system is VSTS     : $($env:BHBuildSystem -eq 'VSTS') [$env:BHBuildSystem]`n" +
+        "    + Current branch is master         : $($env:BHBranchName -eq 'master') [$env:BHBranchName]`n" +
+        "    + Commit message matches '!deploy' : $($env:BHCommitMessage -match '!deploy') [$env:BHCommitMessage]`n" +
+        "    + Current PS major version is 5    : $($PSVersionTable.PSVersion.Major -eq 5) [$($PSVersionTable.PSVersion.ToString())]`n" +
         "    + NuGet API key is not null        : $($null -ne $env:NugetApiKey)`n" +
         "Skipping psake for this job!" | Write-Host -ForegroundColor Yellow
         exit 0
