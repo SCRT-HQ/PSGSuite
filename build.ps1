@@ -102,6 +102,7 @@ else {
     if (
         $Task -eq 'Deploy' -and (
             $ENV:BHBuildSystem -ne 'VSTS' -or
+            $env:SourceBranch -like '*pull*' -or
             $env:BHCommitMessage -notmatch '!deploy' -or
             $env:BHBranchName -ne 'master' -or
             $PSVersionTable.PSVersion.Major -ne 5 -or
