@@ -81,32 +81,47 @@ function Resolve-Module {
     }
 }
 
-'BuildHelpers','psake' | Resolve-Module -UpdateModules:$PSBoundParameters['UpdateModules'] -Verbose:$PSBoundParameters['Verbose']
+$update = @{}
+$verbose = @{}
+if ($PSBoundParameters.ContainsKey('UpdateModules')) {
+    $update['UpdateModules'] = $PSBoundParameters['UpdateModules']
+}
+if ($PSBoundParameters.ContainsKey('Verbose')) {
+    $verbose['Verbose'] = $PSBoundParameters['Verbose']
+}
 
 if ($Help) {
+    'psake' | Resolve-Module @update @verbose
     Get-PSakeScriptTasks -buildFile "$PSScriptRoot\psake.ps1" |
         Sort-Object -Property Name |
         Format-Table -Property Name, Description, Alias, DependsOn
 }
 else {
+    'BuildHelpers' | Resolve-Module @update @verbose
     Set-BuildEnvironment -Force
-    if ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -notmatch '!deploy' -and $env:BHBranchName -eq "master" -and $PSVersionTable.PSVersion.Major -lt 6 -and -not [String]::IsNullOrEmpty($env:NugetApiKey) -and $Task -eq 'Deploy') {
-        Write-Host ""
-        Write-Warning "Current build system is $($ENV:BHBuildSystem), but commit message does not match '!deploy'. Skipping psake for this job..."
-        Write-Host ""
+    if (
+        $Task -eq 'Deploy' -and (
+            $ENV:BHBuildSystem -ne 'VSTS' -or
+            $env:BHCommitMessage -notmatch '!deploy' -or
+            $env:BHBranchName -ne "master" -or
+            $PSVersionTable.PSVersion.Major -eq 5 -or
+            $null -eq $env:NugetApiKey
+        )
+    ) {
+        "Task is 'Deploy', but conditions are not correct for deployment:`n" +
+        "    + Current build system is VSTS     : $env:BHBuildSystem`n" +
+        "    + Current branch is master         : $env:BHBranchName`n" +
+        "    + Commit message matches '!deploy' : $env:BHCommitMessage`n" +
+        "    + Current PS version is 5          : $($PSVersionTable.PSVersion.ToString())`n" +
+        "    + NuGet API key is not null        : $($null -ne $env:NugetApiKey)`n" +
+        "Skipping psake for this job!" | Write-Host -ForegroundColor Yellow
         exit 0
     }
-    elseif ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master" -and $PSVersionTable.PSVersion.Major -lt 6 -and -not [String]::IsNullOrEmpty($env:NugetApiKey)) {
-        $Task = 'Deploy'
+    else {
+        'psake' | Resolve-Module @update @verbose
+        Write-Host -ForegroundColor Green "Modules successfully resolved..."
+        Write-Host -ForegroundColor Green "Invoking psake with task list: [ $($Task -join ', ') ]`n"
+        Invoke-psake -buildFile "$PSScriptRoot\psake.ps1" -taskList $Task -nologo @verbose
+        exit ( [int]( -not $psake.build_success ) )
     }
-    elseif ($ENV:BHBuildSystem -ne 'VSTS' -and $Task -eq 'Deploy') {
-        Write-Host ""
-        Write-Warning "Current build system is $($ENV:BHBuildSystem). Changing to default task list..."
-        Write-Host ""
-        $Task = @('Init','Clean','Compile','Pester')
-    }
-    Write-Host -ForegroundColor Green "Modules successfully resolved..."
-    Write-Host -ForegroundColor Green "Invoking psake with task list: [ $($Task -join ', ') ]`n"
-    Invoke-psake -buildFile "$PSScriptRoot\psake.ps1" -taskList $Task -nologo -Verbose:$PSBoundParameters['Verbose']
-    exit ( [int]( -not $psake.build_success ) )
 }

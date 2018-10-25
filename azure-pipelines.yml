@@ -107,10 +107,10 @@ phases:
     displayName: Test Module
 
   - task: PublishTestResults@2
-    displayName: 'Publish Test Results **/Test-*.xml'
+    displayName: 'Publish Test Results **/Test*.xml'
     inputs:
       testRunner: NUnit
-      testResultsFiles: '**/Test-*.xml'
+      testResultsFiles: '**/Test*.xml'
     condition: succeededOrFailed()
 
 - phase: Phase_6
