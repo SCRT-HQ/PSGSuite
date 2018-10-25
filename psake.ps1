@@ -37,6 +37,7 @@ task Init {
     "`nSTATUS: Testing with PowerShell $psVersion"
     "Build System Details:"
     Get-Item ENV:BH*
+    Get-Item ENV:BUILD_*
     "`n"
     Set-Location $ProjectRoot
 
