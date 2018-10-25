@@ -25,8 +25,8 @@ phases:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: Compiled Module'
     inputs:
-      PathtoPublish: out/PSGSuite
-      ArtifactName: PSGSuite
+      PathtoPublish: BuildOutput
+      ArtifactName: BuildOutput
 
 
 - phase: Phase_2
@@ -107,10 +107,10 @@ phases:
     displayName: Test Module
 
   - task: PublishTestResults@2
-    displayName: 'Publish Test Results **/Test-*.xml'
+    displayName: 'Publish Test Results **/Test*.xml'
     inputs:
       testRunner: NUnit
-      testResultsFiles: '**/Test-*.xml'
+      testResultsFiles: '**/Test*.xml'
     condition: succeededOrFailed()
 
 - phase: Phase_6
@@ -127,6 +127,7 @@ phases:
 
   steps:
   - powershell: |
+      $env:SourceBranch = '$(Build.SourceBranch)'
       $Env:NuGetApiKey = '$(NuGetApiKey)'
       . ./build.ps1 -Task Deploy
     displayName: Deploy to PowerShell Gallery

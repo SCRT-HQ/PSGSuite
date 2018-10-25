@@ -10,4 +10,4 @@ Param
     $ConfigName
 )
 $ModuleRoot = $PSScriptRoot
-New-Variable -Name PSGSuiteKey -Value $EncryptionKey -Scope Global -Force -PassThru
+New-Variable -Name PSGSuiteKey -Value $EncryptionKey -Scope Global -Force
