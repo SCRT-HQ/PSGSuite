@@ -12,10 +12,10 @@ Properties {
     $sut = $env:BHModulePath
     $tests = "$projectRoot\Tests"
     $Timestamp = Get-Date -Uformat "%Y%m%d-%H%M%S"
-    $PSVersion = $PSVersionTable.PSVersion.Major
+    $PSVersion = $PSVersionTable.PSVersion.ToString()
     $TestFile = "TestResults_PS$PSVersion`_$TimeStamp.xml"
     $lines = '----------------------------------------------------------------------'
-    $outputDir = Join-Path -Path $projectRoot -ChildPath 'out'
+    $outputDir = $env:BHBuildOutput
     $outputModDir = Join-Path -Path $outputDir -ChildPath $env:BHProjectName
     $manifest = Import-PowerShellDataFile -Path $env:BHPSModuleManifest
     $outputModVerDir = Join-Path -Path $outputModDir -ChildPath $manifest.ModuleVersion
@@ -58,8 +58,9 @@ task Clean -depends Init {
     Remove-Module -Name $env:BHProjectName -Force -ErrorAction SilentlyContinue
 
     if (Test-Path -Path $outputDir) {
-        Get-ChildItem -Path $outputDir -Recurse -File | Where-Object {$_.BaseName -eq $env:BHProjectName} | Remove-Item -Force -Recurse
-    } else {
+        Get-ChildItem -Path $outputDir -Recurse -File | Where-Object {$_.BaseName -eq $env:BHProjectName -or $_.Name -like "Test*.xml"} | Remove-Item -Force -Recurse
+    }
+    else {
         New-Item -Path $outputDir -ItemType Directory > $null
     }
     "    Cleaned previous output directory [$outputDir]"
@@ -92,6 +93,13 @@ task Compile -depends Clean {
     @"
 
 Import-GoogleSDK
+
+if (`$global:PSGSuiteKey -and `$MyInvocation.BoundParameters['Debug']) {
+    `$prevDebugPref = `$DebugPreference
+    `$DebugPreference = "Continue"
+    Write-Debug "```$global:PSGSuiteKey is set to a `$(`$global:PSGSuiteKey.Count * 8)-bit key!"
+    `$DebugPreference = `$prevDebugPref
+}
 
 `$aliasHash = $aliasHashContents
 

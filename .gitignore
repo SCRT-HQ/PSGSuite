@@ -10,4 +10,5 @@ DLLUnpackStg
 DLLUnpackStg/*
 FunctionBackups
 FunctionBackups/*
-out/*
+BuildOutput/*
+*config.csv

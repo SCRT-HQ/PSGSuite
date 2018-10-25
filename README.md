@@ -8,16 +8,6 @@
     <img src="https://dev.azure.com/scrthq/SCRT%20HQ/_apis/build/status/PSGSuite-CI"
       alt="Azure Pipelines" title="Azure Pipelines" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <!-- AppVeyor -->
-  <a href="https://ci.appveyor.com/project/scrthq/psgsuite/branch/master">
-    <img src="https://ci.appveyor.com/api/projects/status/u6pgrn4cs8iagcee/branch/master?svg=true"
-      alt="AppVeyor" title="AppVeyor" />
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <!-- Travis CI -->
-  <a href="https://travis-ci.org/scrthq/PSGSuite">
-    <img src="https://img.shields.io/travis/scrthq/PSGSuite.svg?logo=travis&style=flat"
-      alt="Travis CI" title="Travis CI" />
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- PS Gallery -->
   <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
     <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat"
@@ -132,9 +122,14 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.17.2
+
+* [Issue #103](https://github.com/scrthq/PSGSuite/issues/103)
+  * Fixed: `SendNotificationEmail` is now correctly defaulting to `$false`, but attempting to actually send the notification email results in an error. This is now corrected.
+
 #### 2.17.1
 
-- Validated deployment via Azure Pipelines
+* Validated deployment via Azure Pipelines
 
 #### 2.17.0
 

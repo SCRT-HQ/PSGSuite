@@ -1,5 +1,6 @@
 # Changelog
 
+* [2.17.2](#2172)
 * [2.17.1](#2171)
 * [2.17.0](#2170)
 * [2.16.1](#2161)
@@ -53,6 +54,11 @@
     * [Gmail Delegation Management Removed](#gmail-delegation-management-removed)
     * [Functions Removed](#functions-removed)
     * [Functions Aliased](#functions-aliased)
+
+## 2.17.2
+
+* [Issue #103](https://github.com/scrthq/PSGSuite/issues/103)
+  * Fixed: `SendNotificationEmail` is now correctly defaulting to `$false`, but attempting to actually send the notification email results in an error. This is now corrected.
 
 ## 2.17.1
 

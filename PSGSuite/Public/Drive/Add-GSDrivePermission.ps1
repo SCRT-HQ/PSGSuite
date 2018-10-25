@@ -171,14 +171,6 @@ function Add-GSDrivePermission {
                     Type {
                         $body.$key = ($PSBoundParameters[$key]).ToLower()
                     }
-                    SendNotificationEmail {
-                        if ($PSBoundParameters[$key]) {
-                            $body.$key = $PSBoundParameters[$key]
-                        }
-                        else {
-                            $body.$key = $false
-                        }
-                    }
                     Default {
                         if ($body.PSObject.Properties.Name -contains $key) {
                             $body.$key = $PSBoundParameters[$key]
