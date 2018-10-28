@@ -1,4 +1,5 @@
-Import-Module '.\out\PSGSuite\2.17.0\PSGSuite.psd1' -Force
+<#
+Import-Module PSGSuite
 
 $STypes = @(
     'Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService'
@@ -19,6 +20,7 @@ $STypes | ForEach-Object {
     $shortName = $_.Split('.')[-1]
     New-Variable -Name $shortName -Value (New-Object $_) -Force
 }
+#>
 
 $global:Users = New-Object System.Collections.ArrayList
 1..2 | ForEach-Object {
@@ -58,20 +60,32 @@ class GoogleRequest {
     }
 
     [Object[]] Execute() {
-        return $true
+        throw "Must Override Method"
     }
     [Object[]] ExecuteAsStream() {
-        return $true
+        throw "Must Override Method"
     }
     [Object[]] ExecuteAsStreamAsync() {
-        return $true
+        throw "Must Override Method"
     }
     [Object[]] ExecuteAsync() {
-        return $true
+        throw "Must Override Method"
     }
 }
 
 class DirectoryUsersListRequest : GoogleRequest {
+    [String] $Projection
+    [String] $Domain
+    [String] $Customer
+    [String] $MaxResults
+    [String] $OrderBy
+    [String] $SortOrder
+    [String] $CustomFieldMask
+    [String] $ShowDeleted = $false
+    [String] $ViewType
+    [String] $Query
+    [String] $PageToken
+
     DirectoryUsersListRequest() {
 
     }
@@ -80,7 +94,7 @@ class DirectoryUsersListRequest : GoogleRequest {
     }
     [Object[]] Execute() {
         if ( -not [String]::IsNullOrEmpty($this.Query)) {
-            Write-Verbose "Query:`n$($this.Query.Trim())"
+            Write-Verbose "Query: $($this.Query.Trim())"
             $filter = $this.Query.Trim()
             $i = 0
             if ($null -eq $filter.Split('=',2)[$i].Trim()) {
@@ -103,11 +117,26 @@ class DirectoryUsersListRequest : GoogleRequest {
 
 class DirectoryUsersGetRequest : GoogleRequest {
     [String] $UserKey
+    [String] $Projection
+    [String] $Domain
+    [String] $Customer
+    [String] $MaxResults
+    [String] $OrderBy
+    [String] $SortOrder
+    [String] $CustomFieldMask
+    [String] $ShowDeleted = $false
+    [String] $ViewType
+
     DirectoryUsersGetRequest([String] $UserKey) {
         $this.UserKey = $UserKey
     }
     [Object] Execute() {
-        return ($global:Users | Where-Object {$_.PrimaryEmail -eq $this.UserKey -or $_.Id -eq $this.UserKey})
+        if ($user = $global:Users | Where-Object {$_.PrimaryEmail -eq $this.UserKey -or $_.Id -eq $this.UserKey}) {
+            return $user
+        }
+        else {
+            throw "User not found!"
+        }
     }
 }
 #endregion

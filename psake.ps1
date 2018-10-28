@@ -206,7 +206,7 @@ catch {
     }
     "    Created compiled module at [$outputModDir]"
     "    Output version directory contents"
-    Get-ChildItem $outputModVerDir | Select-Object Mode,Length,Name | Format-Table -Autosize
+    Get-ChildItem $outputModVerDir | Format-Table -Autosize
 } -description 'Compiles module from source'
 
 $pesterScriptBlock = {
