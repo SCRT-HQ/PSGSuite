@@ -10,8 +10,8 @@ trigger:
     exclude:
     - refs/tag/*
 
-phases:
-- phase: Phase_1
+jobs:
+- job: Job_1
   displayName: Compile Module
 
   condition: succeeded()
@@ -29,10 +29,10 @@ phases:
       ArtifactName: BuildOutput
 
 
-- phase: Phase_2
+- job: Job_2
   displayName: Test Module on Windows (PSv5)
 
-  dependsOn: Phase_1
+  dependsOn: Job_1
   condition: succeeded()
   queue:
     name: Hosted VS2017
@@ -49,10 +49,10 @@ phases:
     condition: succeededOrFailed()
 
 
-- phase: Phase_3
+- job: Job_3
   displayName: Test Module on Ubuntu
 
-  dependsOn: Phase_1
+  dependsOn: Job_1
   condition: succeeded()
   queue:
     name: Hosted Ubuntu 1604
@@ -69,10 +69,10 @@ phases:
     condition: succeededOrFailed()
 
 
-- phase: Phase_4
+- job: Job_4
   displayName: Test Module on macOS
 
-  dependsOn: Phase_1
+  dependsOn: Job_1
   condition: succeeded()
   queue:
     name: Hosted macOS
@@ -89,10 +89,10 @@ phases:
     condition: succeededOrFailed()
 
 
-- phase: Phase_5
+- job: Job_5
   displayName: Test Module on Windows (PSv6)
 
-  dependsOn: Phase_1
+  dependsOn: Job_1
   condition: succeeded()
   queue:
     name: Hosted VS2017
@@ -113,14 +113,14 @@ phases:
       testResultsFiles: '**/Test*.xml'
     condition: succeededOrFailed()
 
-- phase: Phase_6
+- job: Job_6
   displayName: Deploy Module
 
   dependsOn:
-  - Phase_2
-  - Phase_3
-  - Phase_4
-  - Phase_5
+  - Job_2
+  - Job_3
+  - Job_4
+  - Job_5
   condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceVersionMessage'], '!deploy'))
   queue:
     name: Hosted VS2017
