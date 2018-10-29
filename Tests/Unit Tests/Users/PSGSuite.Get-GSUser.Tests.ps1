@@ -1,7 +1,7 @@
 InModuleScope PSGSuite {
     Write-Verbose "Loading mocked versions of New-GoogleService"
     . ([System.IO.Path]::Combine("$env:BHProjectPath","Tests","Mocks","Users.Mocks.ps1"))
-    Describe 'Directory function mock tests' {
+    Describe 'Get-GSUser mock tests' {
         Context 'When a mocked Directory service is created' {
             It 'ApplicationName should be $null' {
                 $service = New-GoogleService -ServiceType 'Google.Apis.Admin.Directory.directory_v1.DirectoryService' -Scope 'Mock' -User 'MockUser@test.com' -Verbose
