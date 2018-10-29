@@ -1,4 +1,3 @@
-$PSVersion = $PSVersionTable.PSVersion.Major
 $projectRoot = Resolve-Path "$PSScriptRoot\..\.."
 $ModulePath = Resolve-Path "$projectRoot\BuildOutput\$($env:BHProjectName)"
 $decompiledModulePath = Resolve-Path "$projectRoot\$($env:BHProjectName)"
@@ -16,7 +15,8 @@ $moduleRoot = Split-Path (Resolve-Path "$ModulePath\*\*.psd1")
 
 Import-Module $ModulePath -Force -Verbose:$false
 
-Describe "Module tests: $($env:BHProjectName)" {
+
+Describe "Module tests: $($env:BHProjectName)" -Tag 'Module' {
     Context "Confirm files are valid Powershell syntax" {
         $scripts = Get-ChildItem $decompiledModulePath -Include *.ps1,*.psm1,*.psd1 -Recurse
 
@@ -60,7 +60,7 @@ Describe "Module tests: $($env:BHProjectName)" {
     }
 }
 
-Describe "Function contents" {
+Describe "Function contents" -Tag 'Module' {
     Context "All non-helper public functions should use Write-Verbose" {
         $scripts = Get-ChildItem "$decompiledModulePath\Public" -Include *.ps1 -Recurse | Where-Object {$_.FullName -notlike "*Helpers*"}
         $testCase = $scripts | Foreach-Object {@{file = $_;Name = $_.BaseName}}

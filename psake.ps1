@@ -52,9 +52,6 @@ task Init {
     }
 } -description 'Initialize build environment'
 
-task Test -Depends Init, Compile, Pester -description 'Compile and run test suite'
-task TestOnly -depends Init, PesterOnly -description 'Run tests only'
-
 task Clean -depends Init {
     Remove-Module -Name $env:BHProjectName -Force -ErrorAction SilentlyContinue
 
@@ -224,17 +221,24 @@ $pesterScriptBlock = {
     Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Verbose:$false
     Import-Module -Name $outputModDir -Force -Verbose:$false
     $testResultsXml = Join-Path -Path $outputDir -ChildPath $TestFile
-    $testResults = Invoke-Pester -Path $tests -PassThru -OutputFile $testResultsXml -OutputFormat NUnitXml
-
-    # Upload test artifacts to AppVeyor
-    If ($ENV:APPVEYOR) {
-        (New-Object 'System.Net.WebClient').UploadFile(
-            ([Uri]"https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)"),
-            $testResultsXml
-        )
-        Remove-Item $testResultsXml -Force -ErrorAction SilentlyContinue
+    $pesterParams = @{
+        OutputFormat = 'NUnitXml'
+        OutputFile = $testResultsXml
+        PassThru = $true
+        Path = $tests
     }
-
+    if ($PSVersionTable.PSVersion.Major -lt 6) {
+        ### $pesterParams['CodeCoverage'] = (Join-Path $outputModVerDir "$($env:BHProjectName).psm1")
+    }
+    if ($global:ExcludeTag) {
+        $pesterParams['ExcludeTag'] = $global:ExcludeTag
+        "    Invoking Pester and excluding tag(s) [$($global:ExcludeTag -join ', ')]..."
+    }
+    else {
+        '    Invoking Pester...'
+    }
+    $testResults = Invoke-Pester @pesterParams
+    '    Pester invocation complete!'
     if ($testResults.FailedCount -gt 0) {
         $testResults | Format-List
         Write-Error -Message 'One or more Pester tests failed. Build cannot continue!'
@@ -243,9 +247,9 @@ $pesterScriptBlock = {
     $env:PSModulePath = $origModulePath
 }
 
-task Pester -Depends Compile $pesterScriptBlock -description 'Run Pester tests'
+task Test -Depends Compile $pesterScriptBlock -description 'Run Pester tests'
 
-task PesterOnly -Depends Init $pesterScriptBlock -description 'Run Pester tests'
+task TestOnly -Depends Init $pesterScriptBlock -description 'Run Pester tests only [no module compilation]'
 
 $deployScriptBlock = {
     if ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") {

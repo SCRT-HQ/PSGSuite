@@ -1,27 +1,4 @@
-<#
-Import-Module PSGSuite
-
-$STypes = @(
-    'Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService'
-    'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
-    'Google.Apis.Admin.Reports.reports_v1.ReportsService'
-    'Google.Apis.Calendar.v3.CalendarService'
-    'Google.Apis.Classroom.v1.ClassroomService'
-    'Google.Apis.Drive.v3.DriveService'
-    'Google.Apis.Gmail.v1.GmailService'
-    'Google.Apis.Groupssettings.v1.GroupssettingsService'
-    'Google.Apis.HangoutsChat.v1.HangoutsChatService'
-    'Google.Apis.Licensing.v1.LicensingService'
-    'Google.Apis.Sheets.v4.SheetsService'
-    'Google.Apis.Tasks.v1.TasksService'
-    'Google.Apis.Urlshortener.v1.UrlshortenerService'
-)
-$STypes | ForEach-Object {
-    $shortName = $_.Split('.')[-1]
-    New-Variable -Name $shortName -Value (New-Object $_) -Force
-}
-#>
-
+#region: Test object collections
 $global:Users = New-Object System.Collections.ArrayList
 1..2 | ForEach-Object {
     [Void]$global:Users.Add((New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.User' -Property @{
@@ -35,44 +12,19 @@ $global:Users = New-Object System.Collections.ArrayList
         }))
     }
 }
+1..2 | ForEach-Object {
+    [Void]$global:Users.Add((New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.User' -Property @{
+        PrimaryEmail = "user$($_)@domain2.com"
+        OrgUnitPath = "/Users/$_"
+    }))
+}
 [Void]$global:Users.Add((New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.User' -Property @{
     PrimaryEmail = "admin@domain.com"
     OrgUnitPath = "/Users"
 }))
+#endregion
 
-#region: Requests
-class GoogleRequest {
-    [String] $Customer
-    [String] $CustomFieldMask
-    [String] $Domain
-    [String] $Fields
-    [String] $Key
-    [Int] $MaxResults
-    [String] $OauthToken
-    [String] $PageToken
-    [Bool] $PrettyPrint
-    [String] $Query
-    [String] $QuotaUser
-    [String] $ShowDeleted
-
-    GoogleRequest() {
-
-    }
-
-    [Object[]] Execute() {
-        throw "Must Override Method"
-    }
-    [Object[]] ExecuteAsStream() {
-        throw "Must Override Method"
-    }
-    [Object[]] ExecuteAsStreamAsync() {
-        throw "Must Override Method"
-    }
-    [Object[]] ExecuteAsync() {
-        throw "Must Override Method"
-    }
-}
-
+#region: Requests - These should inherit from the GoogleRequest core class
 class DirectoryUsersListRequest : GoogleRequest {
     [String] $Projection
     [String] $Domain
@@ -93,7 +45,7 @@ class DirectoryUsersListRequest : GoogleRequest {
 
     }
     [Object[]] Execute() {
-        if ( -not [String]::IsNullOrEmpty($this.Query)) {
+        $results = if ( -not [String]::IsNullOrEmpty($this.Query)) {
             Write-Verbose "Query: $($this.Query.Trim())"
             $filter = $this.Query.Trim()
             $i = 0
@@ -108,10 +60,14 @@ class DirectoryUsersListRequest : GoogleRequest {
             })
         }
         else {
-            return ([PSCustomObject]@{
-                UsersValue = $global:Users
-            })
+            $global:Users
         }
+        if ( -not [String]::IsNullOrEmpty($this.Domain)) {
+            $results = $results | Where-Object {$_.PrimaryEmail -like "*$($this.domain)"}
+        }
+        return ([PSCustomObject]@{
+            UsersValue = $results
+        })
     }
 }
 
@@ -135,7 +91,33 @@ class DirectoryUsersGetRequest : GoogleRequest {
             return $user
         }
         else {
-            throw "User not found!"
+            throw "User $($this.UserKey) not found!"
+        }
+    }
+}
+
+class DirectoryUsersInsertRequest : GoogleRequest {
+    [Object] $Body
+    [String] $Projection
+    [String] $Domain
+    [String] $Customer
+    [String] $MaxResults
+    [String] $OrderBy
+    [String] $SortOrder
+    [String] $CustomFieldMask
+    [String] $ShowDeleted = $false
+    [String] $ViewType
+
+    DirectoryUsersInsertRequest([Object] $Body) {
+        $this.Body = $Body
+    }
+    [Object] Execute() {
+        if ($global:Users | Where-Object {$_.PrimaryEmail -eq $this.Body.PrimaryEmail}) {
+            throw "User $($this.Body.PrimaryEmail) already exists!"
+        }
+        else {
+            [Void]$global:Users.Add($this.Body)
+            return ($this.Body)
         }
     }
 }
@@ -176,6 +158,10 @@ class DirectoryUsersResource {
     [DirectoryUsersGetRequest] Get([String] $UserKey) {
         return [DirectoryUsersGetRequest]::new($UserKey)
     }
+
+    [DirectoryUsersInsertRequest] Insert([Object] $Body) {
+        return [DirectoryUsersInsertRequest]::new($Body)
+    }
 }
 class DirectoryGroupsResource {
     [DirectoryGroupsAliasesResource] $Aliases
@@ -187,23 +173,7 @@ class DirectoryGroupsResource {
 }
 #endregion
 
-#region: Services
-class GoogleService {
-    [String] $APIKey
-    [String] $ApplicationName
-    [String] $BasePath
-    [String] $BaseUri
-    [String] $BatchPath
-    [String] $BatchUri
-    [System.Collections.Generic.List[String]] $Features
-    [Bool] $GZipEnabled
-    [String] $Name
-
-    GoogleService() {
-
-    }
-}
-
+#region: Service - This should inherit from the GoogleService core class
 class DirectoryService : GoogleService {
     [DirectoryUsersResource] $Users
     [DirectoryGroupsResource] $Groups
@@ -214,5 +184,12 @@ class DirectoryService : GoogleService {
         $this.Groups = [DirectoryGroupsResource]::new()
         $this.ApplicationName = $null
     }
+}
+#endregion
+
+#region: New-GoogleService mock
+Mock 'New-GoogleService' -ModuleName PSGSuite -ParameterFilter {$ServiceType -eq 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'} -MockWith {
+    Write-Verbose "Mocking New-GoogleService for ServiceType '$ServiceType' using the DirectoryService class"
+    return [DirectoryService]::new()
 }
 #endregion
