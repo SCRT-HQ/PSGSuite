@@ -15,7 +15,7 @@ InModuleScope PSGSuite {
     Describe 'DirectoryService' -Tag 'Core' {
         Context 'When a mocked Directory service is created' {
             It 'ApplicationName should be $null' {
-                $service = New-GoogleService -ServiceType 'Google.Apis.Admin.Directory.directory_v1.DirectoryService' -Scope 'Mock' -User 'MockUser@test.com' -Verbose
+                $service = New-GoogleService -ServiceType 'Google.Apis.Admin.Directory.directory_v1.DirectoryService' -Scope 'Mock' -User 'MockUser@test.com'
                 $service.ApplicationName | Should -BeNullOrEmpty
             }
         }
@@ -24,7 +24,7 @@ InModuleScope PSGSuite {
 
     Describe 'Get-GSUser mock tests' -Tag 'Directory' {
         Context 'When Get-GSUser lists users' {
-            $result = Get-GSUser -Filter * -Verbose
+            $result = Get-GSUser -Filter *
             $testCase = @('user1@domain.com','user1.1@domain.com','user1.2@domain.com','user2@domain.com','user2.1@domain.com','user2.2@domain.com','user1@domain2.com','user2@domain2.com','admin@domain.com') | Foreach-Object {@{item = $_}}
             It "[Full list] PrimaryEmail should contain <item>" -TestCases $testCase {
                 param($item)
@@ -33,7 +33,7 @@ InModuleScope PSGSuite {
             It '[Full list] PrimaryEmail should not contain "user3@domain.com"' {
                 $result.PrimaryEmail | Should -Not -Contain 'user3@domain.com'
             }
-            $result = Get-GSUser -SearchBase "/Users/2" -SearchScope Subtree -Verbose
+            $result = Get-GSUser -SearchBase "/Users/2" -SearchScope Subtree
             $testCase = @('user2@domain.com','user2.1@domain.com','user2.2@domain.com') | Foreach-Object {@{item = $_}}
             It "[Filtered list] PrimaryEmail should contain <item>" -TestCases $testCase {
                 param($item)
@@ -46,7 +46,7 @@ InModuleScope PSGSuite {
             }
         }
         Context 'When Get-GSUser lists users from a specific domain' {
-            $result = Get-GSUser -Filter * -Domain domain2.com -Verbose
+            $result = Get-GSUser -Filter * -Domain domain2.com
             $testCase = @('user1@domain2.com','user2@domain2.com') | Foreach-Object {@{item = $_}}
             It "[Domain list] PrimaryEmail should contain <item>" -TestCases $testCase {
                 param($item)
@@ -60,11 +60,11 @@ InModuleScope PSGSuite {
             $testCase = @('user1@domain.com','user1.1@domain.com','user1.2@domain.com','user2@domain.com','user2.1@domain.com','user2.2@domain.com','admin@domain.com') | Foreach-Object {@{item = $_}}
             It "Should not throw when getting <item>" -TestCases $testCase {
                 param($item)
-                {Get-GSUser -User $item -Verbose} | Should -Not -Throw
+                {Get-GSUser -User $item} | Should -Not -Throw
             }
             It "Should return correct PrimaryEmail when getting <item>" -TestCases $testCase {
                 param($item)
-                $result = Get-GSUser -User $item -Verbose
+                $result = Get-GSUser -User $item
                 $result.PrimaryEmail | Should -BeExactly $item
             }
             $testCase = @('user1@domain.com','user2@domain.com') | Foreach-Object {@{item = $_}}
@@ -72,14 +72,14 @@ InModuleScope PSGSuite {
                 param($item)
                 $namePart = $item -replace '@.*'
                 $id = $namePart.SubString($namePart.Length -1)
-                $result = Get-GSUser -User $item -Verbose
+                $result = Get-GSUser -User $item
                 $result.OrgUnitPath | Should -BeExactly "/Users/$id"
             }
             It 'Should throw when getting user3@domain.com' {
-                {Get-GSUser -User 'user3@domain.com' -Verbose} | Should -Throw -ExpectedMessage "User user3@domain.com not found!"
+                {Get-GSUser -User 'user3@domain.com'} | Should -Throw -ExpectedMessage "User user3@domain.com not found!"
             }
             It 'Should get the AdminEmail user when no user or filter is specified' {
-                (Get-GSUser -Verbose).PrimaryEmail | Should -BeExactly 'admin@domain.com'
+                (Get-GSUser).PrimaryEmail | Should -BeExactly 'admin@domain.com'
             }
         }
     }
