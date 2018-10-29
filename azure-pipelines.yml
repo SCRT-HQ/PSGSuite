@@ -15,8 +15,8 @@ jobs:
   displayName: Compile Module
 
   condition: succeeded()
-  queue:
-    name: Hosted VS2017
+  pool:
+    vmImage: Hosted VS2017
 
   steps:
   - powershell: . ./build.ps1 -Task Init,Clean,Compile
@@ -34,8 +34,8 @@ jobs:
 
   dependsOn: Job_1
   condition: succeeded()
-  queue:
-    name: Hosted VS2017
+  pool:
+    vmImage: Hosted VS2017
 
   steps:
   - powershell: . ./build.ps1
@@ -54,8 +54,8 @@ jobs:
 
   dependsOn: Job_1
   condition: succeeded()
-  queue:
-    name: Hosted Ubuntu 1604
+  pool:
+    vmImage: Hosted Ubuntu 1604
 
   steps:
   - powershell: . ./build.ps1
@@ -74,8 +74,8 @@ jobs:
 
   dependsOn: Job_1
   condition: succeeded()
-  queue:
-    name: Hosted macOS
+  pool:
+    vmImage: Hosted macOS
 
   steps:
   - powershell: . ./build.ps1
@@ -94,8 +94,8 @@ jobs:
 
   dependsOn: Job_1
   condition: succeeded()
-  queue:
-    name: Hosted VS2017
+  pool:
+    vmImage: Hosted VS2017
 
   steps:
   - script: 'choco install powershell-core --yes'
@@ -122,8 +122,8 @@ jobs:
   - Job_4
   - Job_5
   condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceVersionMessage'], '!deploy'))
-  queue:
-    name: Hosted VS2017
+  pool:
+    vmImage: Hosted VS2017
 
   steps:
   - powershell: |
