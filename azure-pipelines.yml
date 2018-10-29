@@ -10,13 +10,13 @@ trigger:
     exclude:
     - refs/tag/*
 
-jobs:
-- job: Job_1
+phases:
+- phase: Phase_1
   displayName: Compile Module
 
   condition: succeeded()
-  pool:
-    vmImage: Hosted VS2017
+  queue:
+    name: Hosted VS2017
 
   steps:
   - powershell: . ./build.ps1 -Task Init,Clean,Compile
@@ -29,13 +29,13 @@ jobs:
       ArtifactName: BuildOutput
 
 
-- job: Job_2
+- phase: Phase_2
   displayName: Test Module on Windows (PSv5)
 
-  dependsOn: Job_1
+  dependsOn: Phase_1
   condition: succeeded()
-  pool:
-    vmImage: Hosted VS2017
+  queue:
+    name: Hosted VS2017
 
   steps:
   - powershell: . ./build.ps1
@@ -49,13 +49,13 @@ jobs:
     condition: succeededOrFailed()
 
 
-- job: Job_3
+- phase: Phase_3
   displayName: Test Module on Ubuntu
 
-  dependsOn: Job_1
+  dependsOn: Phase_1
   condition: succeeded()
-  pool:
-    vmImage: Hosted Ubuntu 1604
+  queue:
+    name: Hosted Ubuntu 1604
 
   steps:
   - powershell: . ./build.ps1
@@ -69,13 +69,13 @@ jobs:
     condition: succeededOrFailed()
 
 
-- job: Job_4
+- phase: Phase_4
   displayName: Test Module on macOS
 
-  dependsOn: Job_1
+  dependsOn: Phase_1
   condition: succeeded()
-  pool:
-    vmImage: Hosted macOS
+  queue:
+    name: Hosted macOS
 
   steps:
   - powershell: . ./build.ps1
@@ -89,13 +89,13 @@ jobs:
     condition: succeededOrFailed()
 
 
-- job: Job_5
+- phase: Phase_5
   displayName: Test Module on Windows (PSv6)
 
-  dependsOn: Job_1
+  dependsOn: Phase_1
   condition: succeeded()
-  pool:
-    vmImage: Hosted VS2017
+  queue:
+    name: Hosted VS2017
 
   steps:
   - script: 'choco install powershell-core --yes'
@@ -105,7 +105,6 @@ jobs:
       $Env:Path = [Environment]::GetEnvironmentVariable('Path',[EnvironmentVariableTarget]::Machine)
       pwsh -command ". ./build.ps1"
     displayName: Test Module
-
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/Test*.xml'
     inputs:
@@ -113,17 +112,17 @@ jobs:
       testResultsFiles: '**/Test*.xml'
     condition: succeededOrFailed()
 
-- job: Job_6
+- phase: Phase_6
   displayName: Deploy Module
 
   dependsOn:
-  - Job_2
-  - Job_3
-  - Job_4
-  - Job_5
+  - Phase_2
+  - Phase_3
+  - Phase_4
+  - Phase_5
   condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceVersionMessage'], '!deploy'))
-  pool:
-    vmImage: Hosted VS2017
+  queue:
+    name: Hosted VS2017
 
   steps:
   - powershell: |
