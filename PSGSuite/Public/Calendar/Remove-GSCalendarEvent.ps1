@@ -71,4 +71,3 @@ function Remove-GSCalendarEvent {
         }
     }
 }
-
