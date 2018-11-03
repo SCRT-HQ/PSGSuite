@@ -3,20 +3,15 @@
 <img src="bin/img/psgsuite2.0.0.png" alt="PSGSuite 2.0.0 released!" />
 </br>
 </br>
-  <!-- AppVeyor -->
-  <a href="https://ci.appveyor.com/project/scrthq/psgsuite/branch/master">
-    <img src="https://ci.appveyor.com/api/projects/status/u6pgrn4cs8iagcee/branch/master?svg=true"
-      alt="AppVeyor" title="AppVeyor" />
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <!-- Travis CI -->
-  <a href="https://travis-ci.org/scrthq/PSGSuite">
-    <img src="https://travis-ci.org/scrthq/PSGSuite.svg?branch=master"
-      alt="Travis CI" title="Travis CI" />
+  <!-- Azure Pipelines -->
+  <a href="https://dev.azure.com/scrthq/SCRT%20HQ/_build/latest?definitionId=2">
+    <img src="https://dev.azure.com/scrthq/SCRT%20HQ/_apis/build/status/PSGSuite-CI"
+      alt="Azure Pipelines" title="Azure Pipelines" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- PS Gallery -->
   <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
     <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat"
-      alt="PowerShell Gallery - Install PSGSuite" title="PowerShell Gallery - Install PSGSuite" />
+      alt="PowerShell Gallery" title="PowerShell Gallery" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Gitter -->
   <a href="https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
@@ -126,6 +121,55 @@ Update-GSSheetValue               Export-GSSheet
 ```
 
 ### Most recent changes
+
+#### 2.17.2
+
+* [Issue #103](https://github.com/scrthq/PSGSuite/issues/103)
+  * Fixed: `SendNotificationEmail` is now correctly defaulting to `$false`, but attempting to actually send the notification email results in an error. This is now corrected.
+
+#### 2.17.1
+
+* Validated deployment via Azure Pipelines
+
+#### 2.17.0
+
+* [Issue #102](https://github.com/scrthq/PSGSuite/issues/102)
+  * Fixed: `$EncryptionKey` PSM1 parameter now stores the AES key correctly so SecureStrings are encrypted/decrypted as intended.
+* [Issue #103](https://github.com/scrthq/PSGSuite/issues/103)
+  * Updated: `SendNotificationEmail` parameter on `Add-GSDrivePermission` defaults to false for all User & Group permissions that are not ownership transfers.
+  * Updated: Documentation for `SendNotificationEmail` parameter on `Add-GSDrivePermission` for clarity towards default Google API parameter values.
+* Moved: `Get-GSToken` and `New-GoogleService` to Public functions under the Authentication section
+* Added: More unit testing for `Get-GSUser`
+* Updated: `psake` build script
+
+#### 2.16.1
+
+- Fixed: Module deployment segment in psake script deploying decompiled/broken module
+
+#### 2.16.0
+
+- Updated: Build script to compile module into a single PSM1 file for cleanliness and loading speed improvements
+
+#### 2.15.4
+
+* [Issue #96](https://github.com/scrthq/PSGSuite/issues/96)
+  * Updated the following on `Get-GSGroup`:
+    * Set default scope to `Customer` so that getting the list of groups expectedly gets all of them, not just the ones in your primary domain
+    * Added `Domain` parameter to specify which domain to list groups from your customer account
+    * Added `Filter` parameter to only list groups matching the Group query syntax
+    * Moved the `Get-GSGroupListPrivate` private function into the body of `Get-GSGroup` for error clarity
+* Others:
+  * Moved the `Get-GSUserListPrivate` private function into the body of `Get-GSUser` for error clarity
+  * Improved error handling for User and Message List functions when there are no results.
+
+#### 2.15.3
+
+* [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
+  * Fixed `Add-GSCourseParticipant` error: `"Cannot convert the "student@uni.edu" value of type "System.String" to type "Google.Apis.Classroom.v1.Data.Student"."`
+  * Set `$request.Fields = "*"` for `Get-GSCourseParticipant` and `Get-GSClassroomUserProfile` to return all available fields for the `Profile`, including `EmailAddress`
+* [Issue #93](https://github.com/scrthq/PSGSuite/issues/93)
+  * Added: `MaxToModify` parameter to `Remove-GSGmailMessage` and `Update-GSGmailMessageLabels` in the `Filter` parameter set to prevent removing/updating more messages than expected when using a filter to gather the list of messages to update.
+* Added: `Id` alias for `User` parameter on `Get-GSUser` for better pipeline support
 
 #### 2.15.2
 

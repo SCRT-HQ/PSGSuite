@@ -1,21 +1,21 @@
 function Import-SpecificConfiguration {
-    <# 
+    <#
     .Synopsis
-      Import the full, layered configuration for the module.
-      Allows for specification of scoped module to load, in case different scopes have different encryption levels
+    Import the full, layered configuration for the module.
+    Allows for specification of scoped module to load, in case different scopes have different encryption levels
     .Description
-      Imports the DefaultPath Configuration file, and then imports the Machine, Roaming (enterprise), and local config files, if they exist.
-      Each configuration file is layered on top of the one before (so only needs to set values which are different)
+    Imports the DefaultPath Configuration file, and then imports the Machine, Roaming (enterprise), and local config files, if they exist.
+    Each configuration file is layered on top of the one before (so only needs to set values which are different)
     .Example
-      $Configuration = Import-Configuration
-    
-      This example shows how to use Import-Configuration in your module to load the cached data
-    
+    $Configuration = Import-Configuration
+
+    This example shows how to use Import-Configuration in your module to load the cached data
+
     .Example
-      $Configuration = Get-Module Configuration | Import-Configuration
-    
-      This example shows how to use Import-Configuration in your module to load data cached for another module
-     #>
+    $Configuration = Get-Module Configuration | Import-Configuration
+
+    This example shows how to use Import-Configuration in your module to load data cached for another module
+    #>
     [CmdletBinding(DefaultParameterSetName = '__CallStack')]
     param(
         # A callstack. You should not ever pass this.
@@ -58,7 +58,7 @@ function Import-SpecificConfiguration {
         # Will be used in the returned storage path
         [Parameter(ParameterSetName = "ManualOverride", Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [String]$Name = $(if ($Module) {
-                $Module.Name 
+                $Module.Name
             }),
 
         # The full path (including file name) of a default Configuration.psd1 file
@@ -66,13 +66,13 @@ function Import-SpecificConfiguration {
         [Parameter(ParameterSetName = "ManualOverride", ValueFromPipelineByPropertyName = $true)]
         [Alias("ModuleBase")]
         [String]$DefaultPath = $(if ($Module) {
-                Join-Path $Module.ModuleBase Configuration.psd1 
+                Join-Path $Module.ModuleBase Configuration.psd1
             }),
-        
+
         [Parameter(ParameterSetName = "Path",Mandatory = $true)]
         [ValidateScript( {Test-Path $_})]
         [string]$Path,
-        
+
         [Parameter(Mandatory = $false)]
         [ValidateSet("User", "Machine", "Enterprise", $null)]
         [string]$Scope = $Script:ConfigScope,
@@ -101,7 +101,7 @@ function Import-SpecificConfiguration {
             Write-Verbose "Default config found: $DefaultPath"
         }
         else {
-            @{} 
+            @{}
         }
 
         $Parameters = @{
@@ -124,7 +124,7 @@ function Import-SpecificConfiguration {
                     Write-Verbose "Machine config found: $MachinePath"
                 }
                 else {
-                    @{} 
+                    @{}
                 }
             }
 
@@ -136,7 +136,7 @@ function Import-SpecificConfiguration {
                     Write-Verbose "Enterprise config found: $EnterprisePath"
                 }
                 else {
-                    @{} 
+                    @{}
                 }
             }
 
@@ -148,7 +148,7 @@ function Import-SpecificConfiguration {
                     Write-Verbose "LocalUser config found: $LocalUserPath"
                 }
                 else {
-                    @{} 
+                    @{}
                 }
             }
             switch ($Scope) {
@@ -166,7 +166,7 @@ function Import-SpecificConfiguration {
                 }
                 Default {
                     Write-Verbose "Importing layered configuration"
-                    $Configuration | 
+                    $Configuration |
                         Update-Object $Machine |
                         Update-Object $Enterprise |
                         Update-Object $LocalUser

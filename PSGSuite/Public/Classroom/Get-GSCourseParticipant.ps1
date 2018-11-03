@@ -89,6 +89,7 @@ function Get-GSCourseParticipant {
                         }
                         Write-Verbose "Getting Student '$part' for Course '$CourseId'"
                         $request = $service.Courses.Students.Get($CourseId,$part)
+                        $request.Fields = "*"
                         $request.Execute()
                     }
                     catch {
@@ -115,6 +116,7 @@ function Get-GSCourseParticipant {
                         }
                         Write-Verbose "Getting Teacher '$part' for Course '$CourseId'"
                         $request = $service.Courses.Teachers.Get($CourseId,$part)
+                        $request.Fields = "*"
                         $request.Execute()
                     }
                     catch {
@@ -139,6 +141,7 @@ function Get-GSCourseParticipant {
                                 $service.Courses.Students.List($CourseId)
                             }
                         }
+                        $request.Fields = "*"
                         [int]$retrieved = 0
                         [int]$i = 1
                         do {

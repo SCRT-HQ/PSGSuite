@@ -2,32 +2,32 @@ function Get-GSGmailMessageList {
     <#
     .SYNOPSIS
     Gets a list of messages
-    
+
     .DESCRIPTION
     Gets a list of messages
-    
+
     .PARAMETER User
     The primary email of the user to list messages for
 
     Defaults to the AdminEmail user
-    
+
     .PARAMETER Filter
     Only return messages matching the specified query. Supports the same query format as the Gmail search box. For example, "from:someuser@example.com rfc822msgid: is:unread"
 
     More info on Gmail search operators here: https://support.google.com/mail/answer/7190?hl=en
-    
+
     .PARAMETER LabelIds
     Only return messages with labels that match all of the specified label IDs
-    
+
     .PARAMETER ExcludeChats
     Exclude chats from the message list
-    
+
     .PARAMETER IncludeSpamTrash
     Include messages from SPAM and TRASH in the results
-    
+
     .PARAMETER PageSize
     The page size of the result set
-    
+
     .EXAMPLE
     Get-GSGmailMessageList -Filter "to:me","after:2017/12/25" -ExcludeChats
 
@@ -36,28 +36,28 @@ function Get-GSGmailMessageList {
     [cmdletbinding()]
     Param
     (
-      [parameter(Mandatory=$false,ValueFromPipelineByPropertyName = $true)]
-      [Alias("PrimaryEmail","UserKey","Mail")]
-      [String]
-      $User = $Script:PSGSuite.AdminEmail,
-      [parameter(Mandatory=$false)]
-      [Alias('Query')]
-      [String[]]
-      $Filter,
-      [parameter(Mandatory=$false)]
-      [Alias('LabelId')]
-      [String[]]
-      $LabelIds,
-      [parameter(Mandatory=$false)]
-      [switch]
-      $ExcludeChats,
-      [parameter(Mandatory=$false)]
-      [switch]
-      $IncludeSpamTrash,
-      [parameter(Mandatory=$false)]
-      [ValidateRange(1,500)]
-      [Int]
-      $PageSize="500"
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [Alias("PrimaryEmail","UserKey","Mail")]
+        [String]
+        $User = $Script:PSGSuite.AdminEmail,
+        [parameter(Mandatory = $false)]
+        [Alias('Query')]
+        [String[]]
+        $Filter,
+        [parameter(Mandatory = $false)]
+        [Alias('LabelId')]
+        [String[]]
+        $LabelIds,
+        [parameter(Mandatory = $false)]
+        [switch]
+        $ExcludeChats,
+        [parameter(Mandatory = $false)]
+        [switch]
+        $IncludeSpamTrash,
+        [parameter(Mandatory = $false)]
+        [ValidateRange(1,500)]
+        [Int]
+        $PageSize = "500"
     )
     Process {
         try {
@@ -73,12 +73,12 @@ function Get-GSGmailMessageList {
                     ServiceType = 'Google.Apis.Gmail.v1.GmailService'
                     User        = $U
                 }
-                if ($ExcludeChats){
-                    if($Filter){
-                        $Filter+="-in:chats"
+                if ($ExcludeChats) {
+                    if ($Filter) {
+                        $Filter += "-in:chats"
                     }
-                    else{
-                        $Filter="-in:chats"
+                    else {
+                        $Filter = "-in:chats"
                     }
                 }
                 $service = New-GoogleService @serviceParams
@@ -110,7 +110,9 @@ function Get-GSGmailMessageList {
                 [int]$i = 1
                 do {
                     $result = $request.Execute()
-                    $result.Messages | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'Filter' -Value $Filter -PassThru
+                    if ($result.Messages) {
+                        $result.Messages | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'Filter' -Value $Filter -PassThru
+                    }
                     if ($result.NextPageToken) {
                         $request.PageToken = $result.NextPageToken
                     }

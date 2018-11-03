@@ -2,27 +2,27 @@ function Copy-GSDriveFile {
     <#
     .SYNOPSIS
     Make a copy of a file in Drive
-    
+
     .DESCRIPTION
     Make a copy of a file in Drive
-    
+
     .PARAMETER FileID
     The unique Id of the file to copy
-    
+
     .PARAMETER User
     The email or unique Id of the owner of the Drive file
 
     Defaults to the AdminEmail user
-    
+
     .PARAMETER Name
     The name of the new Drive file copy
-    
+
     .PARAMETER Description
     The description of the new Drive file copy
-    
+
     .PARAMETER Parents
     The parent Ids of the new Drive file copy
-    
+
     .PARAMETER Projection
     The defined subset of fields to be returned
 
@@ -31,10 +31,10 @@ function Copy-GSDriveFile {
     * "Standard"
     * "Full"
     * "Access"
-    
+
     .PARAMETER Fields
     The specific fields to returned
-    
+
     .EXAMPLE
     Copy-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -Name "New Daily Checklist"
 
@@ -79,7 +79,7 @@ function Copy-GSDriveFile {
                     @("createdTime","description","fileExtension","id","lastModifyingUser","modifiedTime","name","ownedByMe","owners","parents","permissionIds","permissions","shared","sharedWithMeTime","sharingUser","viewedByMe","viewedByMeTime","viewersCanCopyContent","writersCanShare")
                 }
                 Full {
-                   @("appProperties","capabilities","contentHints","createdTime","description","explicitlyTrashed","fileExtension","folderColorRgb","fullFileExtension","hasAugmentedPermissions","hasThumbnail","headRevisionId","iconLink","id","imageMediaMetadata","isAppAuthorized","kind","lastModifyingUser","md5Checksum","mimeType","modifiedByMe","modifiedByMeTime","modifiedTime","name","originalFilename","ownedByMe","owners","parents","permissionIds","permissions","properties","quotaBytesUsed","shared","sharedWithMeTime","sharingUser","size","spaces","starred","teamDriveId","thumbnailLink","thumbnailVersion","trashed","trashedTime","trashingUser","version","videoMediaMetadata","viewedByMe","viewedByMeTime","viewersCanCopyContent","webContentLink","webViewLink","writersCanShare")
+                    @("appProperties","capabilities","contentHints","createdTime","description","explicitlyTrashed","fileExtension","folderColorRgb","fullFileExtension","hasAugmentedPermissions","hasThumbnail","headRevisionId","iconLink","id","imageMediaMetadata","isAppAuthorized","kind","lastModifyingUser","md5Checksum","mimeType","modifiedByMe","modifiedByMeTime","modifiedTime","name","originalFilename","ownedByMe","owners","parents","permissionIds","permissions","properties","quotaBytesUsed","shared","sharedWithMeTime","sharingUser","size","spaces","starred","teamDriveId","thumbnailLink","thumbnailVersion","trashed","trashedTime","trashingUser","version","videoMediaMetadata","viewedByMe","viewedByMeTime","viewersCanCopyContent","webContentLink","webViewLink","writersCanShare")
                 }
             }
         }

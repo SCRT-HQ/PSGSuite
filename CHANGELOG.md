@@ -1,5 +1,12 @@
-# Changelog <!-- omit in toc -->
+# Changelog
 
+* [2.17.2](#2172)
+* [2.17.1](#2171)
+* [2.17.0](#2170)
+* [2.16.1](#2161)
+* [2.16.0](#2160)
+* [2.15.4](#2154)
+* [2.15.3](#2153)
 * [2.15.2](#2152)
 * [2.15.1](#2151)
 * [2.15.0](#2150)
@@ -48,11 +55,59 @@
     * [Functions Removed](#functions-removed)
     * [Functions Aliased](#functions-aliased)
 
+## 2.17.2
+
+* [Issue #103](https://github.com/scrthq/PSGSuite/issues/103)
+  * Fixed: `SendNotificationEmail` is now correctly defaulting to `$false`, but attempting to actually send the notification email results in an error. This is now corrected.
+
+## 2.17.1
+
+- Validated deployment via Azure Pipelines
+
+## 2.17.0
+
+* [Issue #102](https://github.com/scrthq/PSGSuite/issues/102)
+  * Fixed: `$EncryptionKey` PSM1 parameter now stores the AES key correctly so SecureStrings are encrypted/decrypted as intended.
+* [Issue #103](https://github.com/scrthq/PSGSuite/issues/103)
+  * Updated: `SendNotificationEmail` parameter on `Add-GSDrivePermission` defaults to false for all User & Group permissions that are not ownership transfers.
+  * Updated: Documentation for `SendNotificationEmail` parameter on `Add-GSDrivePermission` for clarity towards default Google API parameter values.
+* Added: More unit testing for `Get-GSUser`
+* Updated: `psake` build script
+
+## 2.16.1
+
+* Fixed: Module deployment segment in psake script deploying decompiled/broken module
+
+## 2.16.0
+
+* Updated: Build script to compile module into a single PSM1 file for cleanliness and loading speed improvements
+
+## 2.15.4
+
+* [Issue #96](https://github.com/scrthq/PSGSuite/issues/96)
+  * Updated the following on `Get-GSGroup`:
+    * Set default scope to `Customer` so that getting the list of groups expectedly gets all of them, not just the ones in your primary domain
+    * Added `Domain` parameter to specify which domain to list groups from your customer account
+    * Added `Filter` parameter to only list groups matching the Group query syntax
+    * Moved the `Get-GSGroupListPrivate` private function into the body of `Get-GSGroup` for error clarity
+* Others:
+  * Moved the `Get-GSUserListPrivate` private function into the body of `Get-GSUser` for error clarity
+  * Improved error handling for User and Message List functions when there are no results.
+
+## 2.15.3
+
+* [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
+  * Fixed `Add-GSCourseParticipant` error: `"Cannot convert the "student@uni.edu" value of type "System.String" to type "Google.Apis.Classroom.v1.Data.Student"."`
+  * Set `$request.Fields = "*"` for `Get-GSCourseParticipant` and `Get-GSClassroomUserProfile` to return all available fields for the `Profile`, including `EmailAddress`
+* [Issue #93](https://github.com/scrthq/PSGSuite/issues/93)
+  * Added: `MaxToModify` parameter to `Remove-GSGmailMessage` and `Update-GSGmailMessageLabels` in the `Filter` parameter set to prevent removing/updating more messages than expected when using a filter to gather the list of messages to update.
+* Added: `Id` alias for `User` parameter on `Get-GSUser` for better pipeline support
+
 ## 2.15.2
 
 * [Pull Request #94](https://github.com/scrthq/PSGSuite/pull/94) **Thanks, [@dwrusse](https://github.com/dwrusse)!**
   * Added `Update-GSGmailLabel` to enable updating of Gmail label properties
-  * Added `Update-GSGmailMessageLabel` enable updating of labels attached to Gmail messages
+  * Added `Update-GSGmailMessageLabels` enable updating of labels attached to Gmail messages
 * [Issue #93](https://github.com/scrthq/PSGSuite/issues/93)
   * Updated `Remove-GSGmailMessage` to include a `-Filter` parameter to allow removal of messages matching a filter in a single command
   * Improved pipeline support for `Remove-GSGmailMessage`

@@ -1,0 +1,133 @@
+resources:
+- repo: self
+  clean: true
+
+trigger:
+  branches:
+    include:
+    - master
+    - "*"
+    exclude:
+    - refs/tag/*
+
+phases:
+- phase: Phase_1
+  displayName: Compile Module
+
+  condition: succeeded()
+  queue:
+    name: Hosted VS2017
+
+  steps:
+  - powershell: . ./build.ps1 -Task Init,Clean,Compile
+    displayName: Compile Module
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: Compiled Module'
+    inputs:
+      PathtoPublish: BuildOutput
+      ArtifactName: BuildOutput
+
+
+- phase: Phase_2
+  displayName: Test Module on Windows (PSv5)
+
+  dependsOn: Phase_1
+  condition: succeeded()
+  queue:
+    name: Hosted VS2017
+
+  steps:
+  - powershell: . ./build.ps1
+    displayName: Test Module
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results **/Test*.xml'
+    inputs:
+      testRunner: NUnit
+      testResultsFiles: '**/Test*.xml'
+    condition: succeededOrFailed()
+
+
+- phase: Phase_3
+  displayName: Test Module on Ubuntu
+
+  dependsOn: Phase_1
+  condition: succeeded()
+  queue:
+    name: Hosted Ubuntu 1604
+
+  steps:
+  - powershell: . ./build.ps1
+    displayName: Test Module
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results **/Test*.xml'
+    inputs:
+      testRunner: NUnit
+      testResultsFiles: '**/Test*.xml'
+    condition: succeededOrFailed()
+
+
+- phase: Phase_4
+  displayName: Test Module on macOS
+
+  dependsOn: Phase_1
+  condition: succeeded()
+  queue:
+    name: Hosted macOS
+
+  steps:
+  - powershell: . ./build.ps1
+    displayName: Test Module
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results **/Test*.xml'
+    inputs:
+      testRunner: NUnit
+      testResultsFiles: '**/Test*.xml'
+    condition: succeededOrFailed()
+
+
+- phase: Phase_5
+  displayName: Test Module on Windows (PSv6)
+
+  dependsOn: Phase_1
+  condition: succeeded()
+  queue:
+    name: Hosted VS2017
+
+  steps:
+  - script: 'choco install powershell-core --yes'
+    displayName: 'Install Powershell v6'
+
+  - powershell: |
+      $Env:Path = [Environment]::GetEnvironmentVariable('Path',[EnvironmentVariableTarget]::Machine)
+      pwsh -command ". ./build.ps1"
+    displayName: Test Module
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results **/Test*.xml'
+    inputs:
+      testRunner: NUnit
+      testResultsFiles: '**/Test*.xml'
+    condition: succeededOrFailed()
+
+- phase: Phase_6
+  displayName: Deploy Module
+
+  dependsOn:
+  - Phase_2
+  - Phase_3
+  - Phase_4
+  - Phase_5
+  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceVersionMessage'], '!deploy'))
+  queue:
+    name: Hosted VS2017
+
+  steps:
+  - powershell: |
+      $env:SourceBranch = '$(Build.SourceBranch)'
+      $Env:NuGetApiKey = '$(NuGetApiKey)'
+      . ./build.ps1 -Task Deploy
+    displayName: Deploy to PowerShell Gallery

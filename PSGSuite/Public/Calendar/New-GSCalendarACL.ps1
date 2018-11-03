@@ -1,13 +1,13 @@
 function New-GSCalendarACL {
     <#
     .SYNOPSIS
-    Adds Google User to Calendar 
-    
+    Adds Google User to Calendar
+
     .DESCRIPTION
     Adds Google User to Calendar
-  
+
     .PARAMETER User
-    The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config. 
+    The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
 
     Defaults to the AdminEmail in the config.
 
@@ -17,15 +17,15 @@ function New-GSCalendarACL {
     Defaults to the user's primary calendar.
 
     .PARAMETER Role
-    The role assigned to the scope. 
-    
+    The role assigned to the scope.
+
     Available values are:
     * "none" - Provides no access.
     * "freeBusyReader" - Provides read access to free/busy information.
     * "reader" - Provides read access to the calendar. Private events will appear to users with reader access, but event details will be hidden.
     * "writer" - Provides read and write access to the calendar. Private events will appear to users with writer access, and event details will be visible.
     * "owner" - Provides ownership of the calendar. This role has all of the permissions of the writer role with the additional ability to see and manipulate ACLs.
-    
+
     .PARAMETER Value
     The email address of a user or group, or the name of a domain, depending on the scope type. Omitted for type "default".
 
@@ -41,9 +41,9 @@ function New-GSCalendarACL {
     Note: The permissions granted to the "default", or public, scope apply to any user, authenticated or not.
 
     .EXAMPLE
-    New-GSCalendarACL -CalendarID jennyappleseed@domain.com -Role reader -Value Jonnyappleseed@domain.com -Type user 
+    New-GSCalendarACL -CalendarID jennyappleseed@domain.com -Role reader -Value Jonnyappleseed@domain.com -Type user
 
-    Gives Jonnyappleseed@domain.com reader access to jennyappleseed's calendar. 
+    Gives Jonnyappleseed@domain.com reader access to jennyappleseed's calendar.
     #>
     [cmdletbinding(DefaultParameterSetName = "AttendeeEmails")]
     Param
@@ -93,7 +93,7 @@ function New-GSCalendarACL {
                             }
                             Type {
                                 $scopeData.Type = $PSBoundParameters[$key]
-                            }   
+                            }
                             Value {
                                 $scopeData.Value = $PSBoundParameters[$key]
                             }
