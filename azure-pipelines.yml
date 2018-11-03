@@ -105,7 +105,6 @@ phases:
       $Env:Path = [Environment]::GetEnvironmentVariable('Path',[EnvironmentVariableTarget]::Machine)
       pwsh -command ". ./build.ps1"
     displayName: Test Module
-
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/Test*.xml'
     inputs:
