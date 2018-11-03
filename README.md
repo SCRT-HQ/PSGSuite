@@ -127,6 +127,8 @@ Update-GSSheetValue               Export-GSSheet
 * Added Get-GSContactList
 * Added Remove-GSContact
 * Added Remove-GSCalendarEvent
+* Added New-GSGmailLabel
+* Added Remmove-GSGmailLabel
 
 #### 2.17.2
 
