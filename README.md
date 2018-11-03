@@ -122,6 +122,12 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.17.3
+
+* Added Get-GSContactList
+* Added Remove-GSContact
+* Added Remove-GSCalendarEvent
+
 #### 2.17.2
 
 * [Issue #103](https://github.com/scrthq/PSGSuite/issues/103)
