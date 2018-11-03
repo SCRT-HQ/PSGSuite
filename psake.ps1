@@ -41,7 +41,7 @@ task Init {
     "`n"
     Set-Location $ProjectRoot
 
-    'Configuration', 'PSDeploy', 'Pester' | Foreach-Object {
+    'Configuration', 'Pester' | Foreach-Object {
         if (-not (Get-Module -Name $_ -ListAvailable -Verbose:$false -ErrorAction SilentlyContinue)) {
             Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Confirm:$false -ErrorAction Stop
         }
