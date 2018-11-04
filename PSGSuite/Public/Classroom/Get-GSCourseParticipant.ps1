@@ -36,6 +36,9 @@ function Get-GSCourseParticipant {
     .PARAMETER User
     The user to authenticate the request as
 
+    .PARAMETER Fields
+    The specific fields to fetch
+
     .EXAMPLE
     Get-GSCourseParticipant -Teacher aristotle@athens.edu
     #>
@@ -58,7 +61,10 @@ function Get-GSCourseParticipant {
         $Student,
         [parameter(Mandatory = $false)]
         [String]
-        $User = $Script:PSGSuite.AdminEmail
+        $User = $Script:PSGSuite.AdminEmail,
+        [parameter(Mandatory = $false)]
+        [String[]]
+        $Fields = '*'
     )
     Begin {
         if ($User -ceq 'me') {
@@ -89,7 +95,7 @@ function Get-GSCourseParticipant {
                         }
                         Write-Verbose "Getting Student '$part' for Course '$CourseId'"
                         $request = $service.Courses.Students.Get($CourseId,$part)
-                        $request.Fields = "*"
+                        $request.Fields = "$($Fields -join ",")"
                         $request.Execute()
                     }
                     catch {
@@ -116,7 +122,7 @@ function Get-GSCourseParticipant {
                         }
                         Write-Verbose "Getting Teacher '$part' for Course '$CourseId'"
                         $request = $service.Courses.Teachers.Get($CourseId,$part)
-                        $request.Fields = "*"
+                        $request.Fields = "$($Fields -join ",")"
                         $request.Execute()
                     }
                     catch {
@@ -141,7 +147,7 @@ function Get-GSCourseParticipant {
                                 $service.Courses.Students.List($CourseId)
                             }
                         }
-                        $request.Fields = "*"
+                        $request.Fields = "$($Fields -join ",")"
                         [int]$retrieved = 0
                         [int]$i = 1
                         do {
