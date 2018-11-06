@@ -63,13 +63,15 @@
 
 * [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
   * Added: `Get-GSCourseParticipant` and `Get-GSClassroomUserProfile` now have the `Fields` parameter
-* [Issue #53](https://github.com/scrthq/PSGSuite/issues/53)
-  * Added Get-GSContactList
-  * Added Remove-GSContact
-* Other additions
-  * Added Remove-GSCalendarEvent
-  * Added New-GSGmailLabel
-  * Added Remmove-GSGmailLabel
+* [Issue #53](https://github.com/scrthq/PSGSuite/issues/53) via [PR #108](https://github.com/scrthq/PSGSuite/pull/108) - _Thanks, [@dwrusse](https://github.com/dwrusse)!_
+  * Added: `Get-GSContactList`
+  * Added: `Remove-GSContact`
+* Other additions via [PR #108](https://github.com/scrthq/PSGSuite/pull/108) - _Thanks, [@dwrusse](https://github.com/dwrusse)!_
+  * Added: `Remove-GSCalendarEvent`
+  * Added: `New-GSGmailLabel`
+  * Added: `Remove-GSGmailLabel`
+* More additions
+  * Added: `Sync-GSUserCache` to create a hashtable of users for quick lookups throughout scripts
 
 ## 2.17.2
 
