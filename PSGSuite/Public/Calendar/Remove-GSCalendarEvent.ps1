@@ -2,15 +2,15 @@ function Remove-GSCalendarEvent {
     <#
     .SYNOPSIS
     Removes a calendar event
-    
+
     .DESCRIPTION
     Removes a calendar event
 
     .PARAMETER User
-    The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config. 
+    The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
 
     Defaults to the AdminEmail in the config.
-    
+
     .PARAMETER CalendarID
     The calendar ID of the calendar you would like to list events from.
 
@@ -24,6 +24,7 @@ function Remove-GSCalendarEvent {
 
     Removes the specified event from user@domain.com's calendar.
     #>
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = "High")]
     Param
     (
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
@@ -32,9 +33,10 @@ function Remove-GSCalendarEvent {
         [String]
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
-        [String[]]
+        [String]
         $CalendarID = "primary",
         [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
+        [Alias('Id')]
         [String[]]
         $EventID
     )
@@ -53,20 +55,22 @@ function Remove-GSCalendarEvent {
         $service = New-GoogleService @serviceParams
     }
     Process {
-        try {
-            foreach ($E in $EventId) {
-                Write-Verbose "Deleting Event Id '$E' from user '$User'"
-                $request = $service.Events.Delete($CalendarID, $E)
-                $request.Execute()
-                Write-Verbose "Label Id '$E' deleted successfully from user '$User'"
+        foreach ($E in $EventId) {
+            try {
+                if ($PSCmdlet.ShouldProcess("Deleting Event Id '$E' from user '$User'")) {
+                    Write-Verbose "Deleting Event Id '$E' from user '$User'"
+                    $request = $service.Events.Delete($CalendarID, $E)
+                    $request.Execute()
+                    Write-Verbose "Label Id '$E' deleted successfully from user '$User'"
+                }
             }
-        }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
-            }
-            else {
-                Write-Error $_
+            catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                else {
+                    Write-Error $_
+                }
             }
         }
     }
