@@ -1,13 +1,13 @@
-function Update-GSGmailLabel {
+function New-GSGmailLabel {
     <#
     .SYNOPSIS
-    Updates Gmail label information for the specified labelid
+    Adds a Gmail label
 
     .DESCRIPTION
-    Updates Gmail label information for the specified labelid
+    Adds a Gmail label
 
-    .PARAMETER LabelId
-    The unique Id of the label to update
+    .PARAMETER Name
+    The name of the label to add
 
     .PARAMETER LabelListVisibility
     The visibility of the label in the label list in the Gmail web interface.
@@ -23,9 +23,6 @@ function Update-GSGmailLabel {
     Acceptable values are:
     * "hide": Do not show the label in the message list.
     * "show": Show the label in the message list. (Default)
-
-    .PARAMETER Name
-    The display name of the label
 
     .PARAMETER BackgroundColor
     The background color of the label
@@ -168,38 +165,29 @@ function Update-GSGmailLabel {
         YellowOrange        = '#ffad47'
 
     .PARAMETER User
-    The user to update label information for
+    The primary email of the user to add the label to
 
     Defaults to the AdminEmail user
 
     .EXAMPLE
-    Update-GSGmailLabel -User user@domain.com -LabelId Label_79 -BackgroundColor Black -TextColor Bermuda
+    New-GSGmailLabel -Name Label1
 
-    Updates the specified Gmail label with new background and text colors
-
-    .EXAMPLE
-    Get-GSGmailLabel | Where-Object {$_.LabelListVisibility -eq 'labelShowIfUnread'} | Update-GSGmailLabel -LabelListVisibility labelShow -BackgroundColor Bermuda -TextColor Tundora
-
-    Updates all labels with LabelListVisibility of 'labelShowIfUnread' with new background and text colors and sets all of them to always show
+    Adds the label "Label1" to the AdminEmail
     #>
     [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $true, Position = 0, ValueFromPipelineByPropertyName = $true)]
-        [Alias("Id")]
-        [string[]]
-        $LabelId,
-        [parameter(Mandatory = $false, Position = 1)]
-        [ValidateSet("labelHide","labelShow","labelShowIfUnread")]
-        [string]
-        $LabelListVisibility,
-        [parameter(Mandatory = $false, Position = 2)]
-        [ValidateSet("hide","show")]
-        [string]
-        $MessageListVisibility,
-        [parameter(Mandatory = $false, Position = 3)]
+        [parameter(Mandatory = $true, Position = 0)]
         [string]
         $Name,
+        [parameter(Mandatory = $false)]
+        [ValidateSet('labelHide','labelShow','labelShowIfUnread')]
+        [string]
+        $LabelListVisibility = "labelShow",
+        [parameter(Mandatory = $false)]
+        [ValidateSet('show','hide')]
+        [string]
+        $MessageListVisibility = "show",
         [parameter(Mandatory = $false)]
         [ValidateSet('Amethyst','BananaMania','Bermuda','BilobaFlower','Black','BlueRomance','BrandyPunch','BurntSienna','Cadillac','Camelot','CeruleanBlue','ChathamsBlue','Concrete','CornflowerBlue','CreamCan','Cupid','DeepBlush','Desert','DoveGray','DustyGray','Eucalyptus','Flesh','FringyFlower','Gallery','Goldenrod','Illusion','Jewel','Koromiko','LightCornflowerBlue','LightMoonRaker','LightMountainMeadow','LightShamrock','LuxorGold','MandysPink','MediumPurple','Meteorite','MoonRaker','MountainMeadow','Oasis','OceanGreen','OldGold','Perano','PersianPink','PigPink','Pueblo','RedOrange','RoyalBlue','RoyalPurple','Salem','Salomie','SeaPink','Shamrock','Silver','Tabasco','Tequila','Thunderbird','TropicalBlue','TulipTree','Tundora','VistaBlue','Watercourse','WaterLeaf','White','YellowOrange')]
         [string]
@@ -281,8 +269,6 @@ function Update-GSGmailLabel {
             White               = '#ffffff'
             YellowOrange        = '#ffad47'
         }
-    }
-    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -295,6 +281,9 @@ function Update-GSGmailLabel {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
+    }
+
+    Process {
         $body = New-Object 'Google.Apis.Gmail.v1.Data.Label'
         foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {
             $body.$prop = $PSBoundParameters[$prop]
@@ -306,19 +295,17 @@ function Update-GSGmailLabel {
             }
             $body.Color = $color
         }
-        foreach ($label in $LabelId) {
-            try {
-                Write-Verbose "Updating Label Id '$label' for user '$User'"
-                $request = $service.Users.Labels.Patch($body, $User, $label)
-                $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
+        try {
+            Write-Verbose "Creating Label '$Name' for user '$User'"
+            $request = $service.Users.Labels.Create($body, $User)
+            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
+        }
+        catch {
+            if ($ErrorActionPreference -eq 'Stop') {
+                $PSCmdlet.ThrowTerminatingError($_)
             }
-            catch {
-                if ($ErrorActionPreference -eq 'Stop') {
-                    $PSCmdlet.ThrowTerminatingError($_)
-                }
-                else {
-                    Write-Error $_
-                }
+            else {
+                Write-Error $_
             }
         }
     }

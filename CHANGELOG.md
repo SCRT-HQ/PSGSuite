@@ -1,5 +1,6 @@
 # Changelog
 
+* [2.17.3](#2173)
 * [2.17.2](#2172)
 * [2.17.1](#2171)
 * [2.17.0](#2170)
@@ -54,6 +55,14 @@
     * [Gmail Delegation Management Removed](#gmail-delegation-management-removed)
     * [Functions Removed](#functions-removed)
     * [Functions Aliased](#functions-aliased)
+
+#### 2.17.3
+
+* Added Get-GSContactList
+* Added Remove-GSContact
+* Added Remove-GSCalendarEvent
+* Added New-GSGmailLabel
+* Added Remmove-GSGmailLabel
 
 ## 2.17.2
 
