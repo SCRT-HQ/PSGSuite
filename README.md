@@ -122,6 +122,11 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.17.3
+
+* [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
+  * Added: `Get-GSCourseParticipant` and `Get-GSClassroomUserProfile` now have the `Fields` parameter
+
 #### 2.17.2
 
 * [Issue #103](https://github.com/scrthq/PSGSuite/issues/103)
