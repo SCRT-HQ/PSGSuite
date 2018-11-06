@@ -254,7 +254,7 @@ task TestOnly -Depends Init $pesterScriptBlock -description 'Run Pester tests on
 $deployScriptBlock = {
     if ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") {
         # Load the module, read the exported functions, update the psd1 FunctionsToExport
-        $commParsed = $env:BHCommitMessage | Select-String -Pattern '\sv\d\.\d\.\d\s'
+        $commParsed = $env:BHCommitMessage | Select-String -Pattern '\sv\d+\.\d+\.\d+\s'
         if ($commParsed) {
             $commitVer = $commParsed.Matches.Value.Trim().Replace('v','')
         }
