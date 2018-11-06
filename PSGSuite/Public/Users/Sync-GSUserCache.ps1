@@ -51,6 +51,7 @@ function Sync-GSUserCache {
         $global:GSUserCache = @{}
     }
     Process {
+        Write-Verbose "Syncing users to `$global:GSUserCache"
         Get-GSUser -Filter $Filter | ForEach-Object {
             if ($Keys -contains 'Id') {
                 $global:GSUserCache[$_.Id] = $_
