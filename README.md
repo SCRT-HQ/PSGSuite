@@ -156,11 +156,11 @@ Update-GSSheetValue               Export-GSSheet
 
 #### 2.16.1
 
-- Fixed: Module deployment segment in psake script deploying decompiled/broken module
+* Fixed: Module deployment segment in psake script deploying decompiled/broken module
 
 #### 2.16.0
 
-- Updated: Build script to compile module into a single PSM1 file for cleanliness and loading speed improvements
+* Updated: Build script to compile module into a single PSM1 file for cleanliness and loading speed improvements
 
 #### 2.15.4
 
