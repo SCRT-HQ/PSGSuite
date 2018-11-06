@@ -1,7 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
-  * [2.17.3](#2173)
+  * [2.18.0](#2180)
   * [2.17.2](#2172)
   * [2.17.1](#2171)
   * [2.17.0](#2170)
@@ -59,7 +59,7 @@
 
 ***
 
-## 2.17.3
+## 2.18.0
 
 * [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
   * Added: `Get-GSCourseParticipant` and `Get-GSClassroomUserProfile` now have the `Fields` parameter
