@@ -124,11 +124,15 @@ Update-GSSheetValue               Export-GSSheet
 
 #### 2.17.3
 
-* Added Get-GSContactList
-* Added Remove-GSContact
-* Added Remove-GSCalendarEvent
-* Added New-GSGmailLabel
-* Added Remmove-GSGmailLabel
+* [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
+  * Added: `Get-GSCourseParticipant` and `Get-GSClassroomUserProfile` now have the `Fields` parameter
+* [Issue #53](https://github.com/scrthq/PSGSuite/issues/53)
+  * Added Get-GSContactList
+  * Added Remove-GSContact
+* Other additions
+  * Added Remove-GSCalendarEvent
+  * Added New-GSGmailLabel
+  * Added Remmove-GSGmailLabel
 
 #### 2.17.2
 
