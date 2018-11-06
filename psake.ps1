@@ -41,7 +41,7 @@ task Init {
     "`n"
     Set-Location $ProjectRoot
 
-    'Configuration', 'PSDeploy', 'Pester' | Foreach-Object {
+    'Configuration', 'Pester' | Foreach-Object {
         if (-not (Get-Module -Name $_ -ListAvailable -Verbose:$false -ErrorAction SilentlyContinue)) {
             Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Confirm:$false -ErrorAction Stop
         }
@@ -294,9 +294,15 @@ $deployScriptBlock = {
         }
         # Bump the module version
         if ($versionToDeploy) {
-            Update-Metadata -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -PropertyName ModuleVersion -Value $versionToDeploy
-            "    Publishing version [$($versionToDeploy)] to PSGallery..."
-            Publish-Module -Path $outputModVerDir -NuGetApiKey $env:NugetApiKey -Repository PSGallery
+            try {
+                "    Publishing version [$($versionToDeploy)] to PSGallery..."
+                Update-Metadata -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -PropertyName ModuleVersion -Value $versionToDeploy
+                Publish-Module -Path $outputModVerDir -NuGetApiKey $env:NugetApiKey -Repository PSGallery
+                "    Deployment successful!"
+            }
+            catch {
+                Write-Error $_ -ErrorAction Stop
+            }
         }
         else {
             Write-Host -ForegroundColor Yellow "No module version matched! Negating deployment to prevent errors"

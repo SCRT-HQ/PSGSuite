@@ -13,6 +13,9 @@ function Get-GSClassroomUserProfile {
     * the email address of the user
     * the string literal "me", indicating the requesting user
 
+    .PARAMETER Fields
+    The specific fields to fetch
+
     .EXAMPLE
     Get-GSClassroomUserProfile -UserId aristotle@athens.edu
     #>
@@ -23,7 +26,10 @@ function Get-GSClassroomUserProfile {
         [Alias('Id','PrimaryEmail','Mail','UserKey')]
         [ValidateNotNullOrEmpty()]
         [String[]]
-        $UserId
+        $UserId,
+        [parameter(Mandatory = $false)]
+        [String[]]
+        $Fields = '*'
     )
     Begin {
         $serviceParams = @{
@@ -45,7 +51,7 @@ function Get-GSClassroomUserProfile {
                 }
                 Write-Verbose "Getting Classroom User Profile for '$part'"
                 $request = $service.UserProfiles.Get($part)
-                $request.Fields = "*"
+                $request.Fields = "$($Fields -join ",")"
                 $request.Execute()
             }
             catch {

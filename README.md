@@ -122,13 +122,18 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
-#### 2.17.3
+#### 2.18.0
 
-* Added Get-GSContactList
-* Added Remove-GSContact
-* Added Remove-GSCalendarEvent
-* Added New-GSGmailLabel
-* Added Remmove-GSGmailLabel
+* [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
+  * Added: `Get-GSCourseParticipant` and `Get-GSClassroomUserProfile` now have the `Fields` parameter
+  * Added: `Sync-GSUserCache` to create a hashtable of users for quick lookups throughout scripts
+* [Issue #53](https://github.com/scrthq/PSGSuite/issues/53) via [PR #108](https://github.com/scrthq/PSGSuite/pull/108) - _Thanks, [@dwrusse](https://github.com/dwrusse)!_
+  * Added: `Get-GSContactList`
+  * Added: `Remove-GSContact`
+* Other additions via [PR #108](https://github.com/scrthq/PSGSuite/pull/108) - _Thanks, [@dwrusse](https://github.com/dwrusse)!_
+  * Added: `Remove-GSCalendarEvent`
+  * Added: `New-GSGmailLabel`
+  * Added: `Remove-GSGmailLabel`
 
 #### 2.17.2
 
@@ -152,11 +157,11 @@ Update-GSSheetValue               Export-GSSheet
 
 #### 2.16.1
 
-- Fixed: Module deployment segment in psake script deploying decompiled/broken module
+* Fixed: Module deployment segment in psake script deploying decompiled/broken module
 
 #### 2.16.0
 
-- Updated: Build script to compile module into a single PSM1 file for cleanliness and loading speed improvements
+* Updated: Build script to compile module into a single PSM1 file for cleanliness and loading speed improvements
 
 #### 2.15.4
 
