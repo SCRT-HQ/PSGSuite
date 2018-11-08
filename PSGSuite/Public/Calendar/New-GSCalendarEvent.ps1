@@ -2,62 +2,65 @@ function New-GSCalendarEvent {
     <#
     .SYNOPSIS
     Creates a new calendar event
-    
+
     .DESCRIPTION
     Creates a new calendar event
-    
+
     .PARAMETER Summary
     Event summary
-    
+
     .PARAMETER Description
     Event description
-    
+
     .PARAMETER User
-    The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config. 
+    The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
 
     Defaults to the AdminEmail in the config.
-    
+
     .PARAMETER CalendarID
     The calendar ID of the calendar you would like to list events from.
 
     Defaults to the user's primary calendar.
-    
+
     .PARAMETER AttendeeEmails
-    The email addresses of the attendees to add. 
-    
+    The email addresses of the attendees to add.
+
     NOTE: This performs simple adds without additional attendee options. If additional options are needed, use the Attendees parameter instead.
-    
+
     .PARAMETER Attendees
     The EventAttendee object(s) to add. Use Add-GSEventAttendee with this parameter for best results.
-    
+
     .PARAMETER Location
     Event location
-    
+
     .PARAMETER EventColor
     Color of the event as seen in Calendar
-    
+
+    .PARAMETER DisableReminder
+    When $true, disables inheritance of the default Reminders from the Calendar the event was created on.
+
     .PARAMETER LocalStartDateTime
     Start date and time of the event. Lowest precendence of the three StartDate parameters.
 
     Defaults to the time the function is ran.
-    
+
     .PARAMETER LocalEndDateTime
     End date and time of the event. Lowest precendence of the three EndDate parameters.
 
     Defaults to 30 minutes after the time the function is ran.
-    
+
     .PARAMETER StartDate
     String representation of the start date. Middle precendence of the three StartDate parameters.
-    
+
     .PARAMETER EndDate
     String representation of the end date. Middle precendence of the three EndDate parameters.
-    
+
     .PARAMETER UTCStartDateTime
     String representation of the start date in UTC. Highest precendence of the three StartDate parameters.
-    
+
     .PARAMETER UTCEndDateTime
     String representation of the end date in UTC. Highest precendence of the three EndDate parameters.
-    
+
     .EXAMPLE
     New-GSCalendarEvent "Go to the gym" -StartDate (Get-Date "21:00:00") -EndDate (Get-Date "22:00:00")
 
@@ -93,6 +96,9 @@ function New-GSCalendarEvent {
         [ValidateSet("Periwinkle","Seafoam","Lavender","Coral","Goldenrod","Beige","Cyan","Grey","Blue","Green","Red")]
         [String]
         $EventColor,
+        [parameter(Mandatory = $false)]
+        [Switch]
+        $DisableReminder,
         [parameter(Mandatory = $false)]
         [DateTime]
         $LocalStartDateTime = (Get-Date),
@@ -147,53 +153,59 @@ function New-GSCalendarEvent {
                         Add-GSEventAttendee -Email $_
                     }
                 }
+                $body = New-Object 'Google.Apis.Calendar.v3.Data.Event'
+                if ($Attendees) {
+                    $body.Attendees = [Google.Apis.Calendar.v3.Data.EventAttendee[]]$Attendees
+                }
+                foreach ($key in $PSBoundParameters.Keys) {
+                    switch ($key) {
+                        EventColor {
+                            $body.ColorId = $colorHash[$EventColor]
+                        }
+                        DisableReminder {
+                            $reminder = New-Object 'Google.Apis.Calendar.v3.Data.Event+RemindersData' -Property @{
+                                UseDefault = (-not $DisableReminder)
+                            }
+                            $body.Reminders = $reminder
+                        }
+                        Default {
+                            if ($body.PSObject.Properties.Name -contains $key) {
+                                $body.$key = $PSBoundParameters[$key]
+                            }
+                        }
+                    }
+                }
+                $body.Start = if ($UTCStartDateTime) {
+                    New-Object 'Google.Apis.Calendar.v3.Data.EventDateTime' -Property @{
+                        DateTime = $UTCStartDateTime
+                    }
+                }
+                elseif ($StartDate) {
+                    New-Object 'Google.Apis.Calendar.v3.Data.EventDateTime' -Property @{
+                        Date = (Get-Date $StartDate -Format "yyyy-MM-dd")
+                    }
+                }
+                else {
+                    New-Object 'Google.Apis.Calendar.v3.Data.EventDateTime' -Property @{
+                        DateTime = $LocalStartDateTime
+                    }
+                }
+                $body.End = if ($UTCEndDateTime) {
+                    New-Object 'Google.Apis.Calendar.v3.Data.EventDateTime' -Property @{
+                        DateTime = $UTCEndDateTime
+                    }
+                }
+                elseif ($EndDate) {
+                    New-Object 'Google.Apis.Calendar.v3.Data.EventDateTime' -Property @{
+                        Date = (Get-Date $EndDate -Format "yyyy-MM-dd")
+                    }
+                }
+                else {
+                    New-Object 'Google.Apis.Calendar.v3.Data.EventDateTime' -Property @{
+                        DateTime = $LocalEndDateTime
+                    }
+                }
                 foreach ($calId in $CalendarID) {
-                    $body = New-Object 'Google.Apis.Calendar.v3.Data.Event'
-                    if ($Attendees) {
-                        $body.Attendees = [Google.Apis.Calendar.v3.Data.EventAttendee[]]$Attendees
-                    }
-                    foreach ($key in $PSBoundParameters.Keys) {
-                        switch ($key) {
-                            EventColor {
-                                $body.ColorId = $colorHash[$EventColor]
-                            }
-                            Default {
-                                if ($body.PSObject.Properties.Name -contains $key) {
-                                    $body.$key = $PSBoundParameters[$key]
-                                }
-                            }
-                        }
-                    }
-                    $body.Start = if ($UTCStartDateTime) {
-                        New-Object 'Google.Apis.Calendar.v3.Data.EventDateTime' -Property @{
-                            DateTime = $UTCStartDateTime
-                        }
-                    }
-                    elseif ($StartDate) {
-                        New-Object 'Google.Apis.Calendar.v3.Data.EventDateTime' -Property @{
-                            Date = (Get-Date $StartDate -Format "yyyy-MM-dd")
-                        }
-                    }
-                    else {
-                        New-Object 'Google.Apis.Calendar.v3.Data.EventDateTime' -Property @{
-                            DateTime = $LocalStartDateTime
-                        }
-                    }
-                    $body.End = if ($UTCEndDateTime) {
-                        New-Object 'Google.Apis.Calendar.v3.Data.EventDateTime' -Property @{
-                            DateTime = $UTCEndDateTime
-                        }
-                    }
-                    elseif ($EndDate) {
-                        New-Object 'Google.Apis.Calendar.v3.Data.EventDateTime' -Property @{
-                            Date = (Get-Date $EndDate -Format "yyyy-MM-dd")
-                        }
-                    }
-                    else {
-                        New-Object 'Google.Apis.Calendar.v3.Data.EventDateTime' -Property @{
-                            DateTime = $LocalEndDateTime
-                        }
-                    }
                     Write-Verbose "Creating Calendar Event '$($Summary)' on calendar '$calId' for user '$U'"
                     $request = $service.Events.Insert($body,$calId)
                     $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $calId -PassThru
