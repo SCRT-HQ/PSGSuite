@@ -122,6 +122,17 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.18.1
+
+* [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
+  * Added: Additional scopes during Service creation for `Get-GSCourseParticipant` and `Get-GSClassroomUserProfile` to enable pulling of full user profile information. - _Thanks, [@jdstanberry](https://github.com/jdstanberry)!_
+* [Issue #111](https://github.com/scrthq/PSGSuite/issues/111)
+  * Added: `DisableReminder` switch parameter to `New-GSCalendarEvent` and `Update-GSCalendarEvent` to remove Reminder inheritance from the calendar the event is on as well as any Reminder overload definitions.
+* [Issue #53](https://github.com/scrthq/PSGSuite/issues/53)
+  * Updated: `Get-GSContactList` and `Remove-GSContact` Token retrieval and overall cleanup
+* Various/Other
+  * Updated: `Get-GSToken` to align parameters more with `New-GoogleService`
+
 #### 2.18.0
 
 * [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)

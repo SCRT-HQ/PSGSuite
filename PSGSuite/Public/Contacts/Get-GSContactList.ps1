@@ -21,67 +21,61 @@ Function Get-GSContactList {
         [parameter(Mandatory = $false, Position = 0, ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail", "UserKey", "Mail")]
         [ValidateNotNullOrEmpty()]
-        [string]
+        [string[]]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
-        if ($User -ceq 'me') {
-            $User = $Script:PSGSuite.AdminEmail
-        }
-        elseif ($User -notlike "*@*.*") {
-            $User = "$($User)@$($Script:PSGSuite.Domain)"
-        }
-        $serviceParams = @{
-            Scope       = 'https://www.google.com/m8/feeds'
-            ServiceType = 'Google.Apis.Gmail.v1.GmailService'
-            User        = $User
-        }
-        $service = New-GoogleService @serviceParams
-        $Token = ($service.HttpClientInitializer.GetAccessTokenForRequestAsync()).Result
-        $Uri = "https://www.google.com/m8/feeds/contacts/$($User)/full?max-results=150"
-        $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-        $headers.Add("GData-Version", "3.0")
-        $headers.Add("Authorization", "Bearer $($Token)")
-    }
     Process {
-        try {
-            Write-Verbose "Getting all contacts for user '$User'"
-            $Raw = @()
-            $Response = Invoke-WebRequest -Method Get -Uri $Uri -Headers $headers -ContentType 'application/xml'
-            $Feed = [xml]$Response.Content
-            $Raw += $feed.feed.entry
-            $Next = $Feed.Feed.Link | Where-Object {$_.rel -eq "next"} | Select-Object -ExpandProperty Href
-            While ($Next) {
-                $Response = Invoke-WebRequest -Method Get -Uri $Next -Headers $headers -ContentType 'application/xml'
-                $Feed = [xml]$Response.Content
-                $Raw += $feed.feed.entry
-                $Next = $Feed.Feed.Link | Where-Object {$_.rel -eq "next"} | Select-Object -ExpandProperty Href
-            }
-            If ($Raw) {
-                ForEach ($i in $Raw) {
-                    New-Object PSObject -Property @{
-                        Etag           = $i.etag
-                        Id             = ($i.id.Split("/")[-1])
-                        User           = $User
-                        Updated        = $i.updated
-                        Edited         = $i.edited.'#text'
-                        Category       = $i.category
-                        Title          = $i.title
-                        Name           = $i.name
-                        PhoneNumber    = $i.phonenumber
-                        Path           = $(if($i.email.rel){$i.email.rel}else{$null})
-                        EmailAddresses = $(if($i.email.address){$i.email.address}else{$null})
-                        FullObject     = $i
+        foreach ($U in $User) {
+            try {
+                if ($U -ceq 'me') {
+                    $U = $Script:PSGSuite.AdminEmail
+                }
+                elseif ($U -notlike "*@*.*") {
+                    $U = "$($U)@$($Script:PSGSuite.Domain)"
+                }
+                $Token = Get-GSToken -Scopes 'https://www.google.com/m8/feeds' -AdminEmail $U
+                $Uri = "https://www.google.com/m8/feeds/contacts/$($U)/full?max-results=5000"
+                $headers = @{
+                    Authorization = "Bearer $($Token)"
+                    'GData-Version' = '3.0'
+                }
+                Write-Verbose "Getting all contacts for user '$U'"
+                $Raw = @()
+                do {
+                    $Response = Invoke-WebRequest -Method Get -Uri ([Uri]$Uri) -Headers $headers -ContentType 'application/xml' -Verbose:$false
+                    $Feed = [xml]$Response.Content
+                    $Raw += $feed.feed.entry
+                    $Uri = $Feed.Feed.Link | Where-Object {$_.rel -eq "next"} | Select-Object -ExpandProperty Href
+                    Write-Verbose "Retrieved $($Raw.Count) contacts..."
+                }
+                until (-not $Uri)
+                If ($Raw) {
+                    ForEach ($i in $Raw) {
+                        [PSCustomObject]@{
+                            User           = $U
+                            Id             = ($i.id.Split("/")[-1])
+                            Title          = $i.title
+                            FullName       = $i.name.fullName
+                            GivenName      = $i.name.givenName
+                            FamilyName     = $i.name.familyName
+                            EmailAddresses = $(if($i.email.address){$i.email.address}else{$null})
+                            PhoneNumber    = $i.phonenumber
+                            Updated        = $i.updated
+                            Edited         = $i.edited.'#text'
+                            Path           = $(if($i.email.rel){$i.email.rel}else{$null})
+                            Etag           = $i.etag
+                            FullObject     = $i
+                        }
                     }
                 }
             }
-        }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
-            }
-            else {
-                Write-Error $_
+            catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                else {
+                    Write-Error $_
+                }
             }
         }
     }

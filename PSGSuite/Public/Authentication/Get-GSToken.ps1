@@ -1,17 +1,22 @@
 function Get-GSToken {
     <#
     .Synopsis
-    Gets a Service Account Access Token from Google Apps
+    Requests an Access Token for REST API authentication. Defaults to 3600 seconds token expiration time.
+
     .DESCRIPTION
-    Requests Access Token using Service Account and P12 key file, returns the token directly. Defaults to 3600 seconds token expiration time.
+    Requests an Access Token for REST API authentication. Defaults to 3600 seconds token expiration time.
+
     .EXAMPLE
-    $token = Get-GSToken -P12KeyPath "C:\PSGoogle.p12" -Scopes "https://www.googleapis.com/auth/admin.directory.user" -AppEmail "psg@nf.iam.gserviceaccount.com" -AdminEmail "google.admin.account@domain.com"
-    .EXAMPLE
-    $token = Get-GSToken
+    $Token = Get-GSToken -Scopes 'https://www.google.com/m8/feeds' -AdminEmail $User
+    $headers = @{
+        Authorization = "Bearer $($Token)"
+        'GData-Version' = '3.0'
+    }
     #>
     Param
     (
         [parameter(Mandatory = $true)]
+        [Alias('Scope')]
         [ValidateNotNullOrEmpty()]
         [string[]]
         $Scopes,

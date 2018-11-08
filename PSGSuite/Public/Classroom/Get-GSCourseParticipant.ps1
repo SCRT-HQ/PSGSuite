@@ -74,7 +74,11 @@ function Get-GSCourseParticipant {
             $User = "$($User)@$($Script:PSGSuite.Domain)"
         }
         $serviceParams = @{
-            Scope       = 'https://www.googleapis.com/auth/classroom.rosters'
+            Scope       = @(
+                'https://www.googleapis.com/auth/classroom.rosters'
+                'https://www.googleapis.com/auth/classroom.profile.emails'
+                'https://www.googleapis.com/auth/classroom.profile.photos'
+            )
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
             User        = $User
         }
