@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.19.0](#2190)
   * [2.18.1](#2181)
   * [2.18.0](#2180)
   * [2.17.2](#2172)
@@ -59,6 +60,11 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.19.0
+
+* Added: `Add-GSUserEmail` to support the Emails property.
+* Updated: `Add-GSUser` and `Update-GSUser` to implement the newly supported `Emails` property.
 
 ## 2.18.1
 
