@@ -66,6 +66,7 @@
 * Added: `Add-GSUserEmail` to support the Emails property.
 * Updated: `Add-GSUser` and `Update-GSUser` to implement the newly supported `Emails` property.
 * Fixed: Removed `if ($PSCmdlet.ParameterSetName -eq 'Get')` from `New-GSAdminRoleAssignment` that was making the cmdlet fail.
+* Fixed: `New-GSAdminRoleAssignment` rewrite. (The help of this function was a copy of the `Get-GSAdminRoleAssignment` cmdlet)
 
 ## 2.18.1
 

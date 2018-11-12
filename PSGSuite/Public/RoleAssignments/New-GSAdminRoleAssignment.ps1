@@ -6,24 +6,26 @@ function New-GSAdminRoleAssignment {
     .DESCRIPTION
     Creates a new Admin Role Assignment
 
-    .PARAMETER RoleName
-    The name of the new role
+    .PARAMETER AssignedTo
+    The unique ID of the user this role is assigned to.
 
-    .PARAMETER RolePrivileges
-    The set of privileges that are granted to this role.
+    .PARAMETER RoleId
+    The ID of the role that is assigned.
 
-    .PARAMETER RoleDescription
-    A short description of the role.
+    .PARAMETER OrgUnitId
+    If the role is restricted to an organization unit, this contains the ID for the organization unit the exercise of this role is restricted to.
+
+    .PARAMETER ScopeType
+    The scope in which this role is assigned.
+
+    Acceptable values are:
+    * "CUSTOMER"
+    * "ORG_UNIT"
 
     .EXAMPLE
-    Get-GSAdminRole
+    New-GSAdminRoleAssignment -AssignedTo jsmith -RoleId 9191482342768644
 
-    Gets the list of Admin Roles
-
-    .EXAMPLE
-    Get-GSAdminRole -RoleId '9191482342768644','9191482342768642'
-
-    Gets the admin roles matching the provided Ids
+    Assign a new role to a given user.
     #>
     [cmdletbinding()]
     Param
