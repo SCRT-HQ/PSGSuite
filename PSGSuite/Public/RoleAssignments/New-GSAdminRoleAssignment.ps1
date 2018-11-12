@@ -43,13 +43,12 @@ function New-GSAdminRoleAssignment {
         $ScopeType = 'CUSTOMER'
     )
     Begin {
-        if ($PSCmdlet.ParameterSetName -eq 'Get') {
-            $serviceParams = @{
-                Scope       = 'https://www.googleapis.com/auth/admin.directory.rolemanagement'
-                ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
-            }
-            $service = New-GoogleService @serviceParams
+        $serviceParams = @{
+            Scope       = 'https://www.googleapis.com/auth/admin.directory.rolemanagement'
+            ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
+        $service = New-GoogleService @serviceParams
+
         $customerId = if ($Script:PSGSuite.CustomerID) {
             $Script:PSGSuite.CustomerID
         }
