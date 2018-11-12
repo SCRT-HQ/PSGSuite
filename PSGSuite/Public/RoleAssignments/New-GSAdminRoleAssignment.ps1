@@ -2,24 +2,24 @@ function New-GSAdminRoleAssignment {
     <#
     .SYNOPSIS
     Creates a new Admin Role Assignment
-    
+
     .DESCRIPTION
     Creates a new Admin Role Assignment
-    
+
     .PARAMETER RoleName
     The name of the new role
-    
+
     .PARAMETER RolePrivileges
     The set of privileges that are granted to this role.
 
     .PARAMETER RoleDescription
     A short description of the role.
-    
+
     .EXAMPLE
     Get-GSAdminRole
 
     Gets the list of Admin Roles
-    
+
     .EXAMPLE
     Get-GSAdminRole -RoleId '9191482342768644','9191482342768642'
 
@@ -28,7 +28,7 @@ function New-GSAdminRoleAssignment {
     [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $true,Position = 0)]
+        [parameter(Mandatory = $true, Position = 0)]
         [String[]]
         $AssignedTo,
         [parameter(Mandatory = $true)]
@@ -38,7 +38,7 @@ function New-GSAdminRoleAssignment {
         [String]
         $OrgUnitId,
         [parameter(Mandatory = $false)]
-        [ValidateSet('CUSTOMER','ORG_UNIT')]
+        [ValidateSet('CUSTOMER', 'ORG_UNIT')]
         [String]
         $ScopeType = 'CUSTOMER'
     )
@@ -85,7 +85,7 @@ function New-GSAdminRoleAssignment {
                     }
                 }
                 Write-Verbose "Creating Admin Role Assignment for user '$Assigned' for Role Id '$RoleId'"
-                $request = $service.RoleAssignments.Insert($body,$customerId)
+                $request = $service.RoleAssignments.Insert($body, $customerId)
                 $request.Execute()
             }
             catch {
