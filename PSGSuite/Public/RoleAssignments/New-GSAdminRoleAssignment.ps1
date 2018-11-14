@@ -2,33 +2,35 @@ function New-GSAdminRoleAssignment {
     <#
     .SYNOPSIS
     Creates a new Admin Role Assignment
-    
+
     .DESCRIPTION
     Creates a new Admin Role Assignment
-    
-    .PARAMETER RoleName
-    The name of the new role
-    
-    .PARAMETER RolePrivileges
-    The set of privileges that are granted to this role.
 
-    .PARAMETER RoleDescription
-    A short description of the role.
-    
+    .PARAMETER AssignedTo
+    The unique ID of the user this role is assigned to.
+
+    .PARAMETER RoleId
+    The ID of the role that is assigned.
+
+    .PARAMETER OrgUnitId
+    If the role is restricted to an organization unit, this contains the ID for the organization unit the exercise of this role is restricted to.
+
+    .PARAMETER ScopeType
+    The scope in which this role is assigned.
+
+    Acceptable values are:
+    * "CUSTOMER"
+    * "ORG_UNIT"
+
     .EXAMPLE
-    Get-GSAdminRole
+    New-GSAdminRoleAssignment -AssignedTo jsmith -RoleId 9191482342768644
 
-    Gets the list of Admin Roles
-    
-    .EXAMPLE
-    Get-GSAdminRole -RoleId '9191482342768644','9191482342768642'
-
-    Gets the admin roles matching the provided Ids
+    Assign a new role to a given user.
     #>
     [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $true,Position = 0)]
+        [parameter(Mandatory = $true, Position = 0)]
         [String[]]
         $AssignedTo,
         [parameter(Mandatory = $true)]
@@ -38,18 +40,17 @@ function New-GSAdminRoleAssignment {
         [String]
         $OrgUnitId,
         [parameter(Mandatory = $false)]
-        [ValidateSet('CUSTOMER','ORG_UNIT')]
+        [ValidateSet('CUSTOMER', 'ORG_UNIT')]
         [String]
         $ScopeType = 'CUSTOMER'
     )
     Begin {
-        if ($PSCmdlet.ParameterSetName -eq 'Get') {
-            $serviceParams = @{
-                Scope       = 'https://www.googleapis.com/auth/admin.directory.rolemanagement'
-                ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
-            }
-            $service = New-GoogleService @serviceParams
+        $serviceParams = @{
+            Scope       = 'https://www.googleapis.com/auth/admin.directory.rolemanagement'
+            ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
+        $service = New-GoogleService @serviceParams
+
         $customerId = if ($Script:PSGSuite.CustomerID) {
             $Script:PSGSuite.CustomerID
         }
@@ -85,7 +86,7 @@ function New-GSAdminRoleAssignment {
                     }
                 }
                 Write-Verbose "Creating Admin Role Assignment for user '$Assigned' for Role Id '$RoleId'"
-                $request = $service.RoleAssignments.Insert($body,$customerId)
+                $request = $service.RoleAssignments.Insert($body, $customerId)
                 $request.Execute()
             }
             catch {

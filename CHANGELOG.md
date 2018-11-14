@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.19.0](#2190)
   * [2.18.1](#2181)
   * [2.18.0](#2180)
   * [2.17.2](#2172)
@@ -59,6 +60,14 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.19.0
+
+* [PR #113](https://github.com/scrthq/PSGSuite/pull/113)
+  * Added: `Add-GSUserEmail` to support the Emails property. - _Thanks, [@sguilbault-sherweb](https://github.com/sguilbault-sherweb)!_
+  * Updated: `Add-GSUser` and `Update-GSUser` to implement the newly supported `Emails` property. - _Thanks, [@sguilbault-sherweb](https://github.com/sguilbault-sherweb)!_
+  * Fixed: Removed `if ($PSCmdlet.ParameterSetName -eq 'Get')` from `New-GSAdminRoleAssignment` that was making the cmdlet fail. - _Thanks, [@sguilbault-sherweb](https://github.com/sguilbault-sherweb)!_
+  * Fixed: `New-GSAdminRoleAssignment` help section rewrite. (The help of this function was a copy of the `Get-GSAdminRoleAssignment` cmdlet) - _Thanks, [@sguilbault-sherweb](https://github.com/sguilbault-sherweb)!_
 
 ## 2.18.1
 

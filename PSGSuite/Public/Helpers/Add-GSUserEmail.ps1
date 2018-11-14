@@ -1,48 +1,31 @@
-function Add-GSUserPhone {
+function Add-GSUserEmail {
     <#
     .SYNOPSIS
-    Builds a UserPhone object to use when creating or updating a User
+    Builds a Email object to use when creating or updating a User
 
     .DESCRIPTION
-    Builds a UserPhone object to use when creating or updating a User
+    Builds a Email object to use when creating or updating a User
+
+    .PARAMETER Address
+    The user's email address. Also serves as the email ID. This value can be the user's primary email address or an alias.
 
     .PARAMETER CustomType
-    If the value of type is custom, this property contains the custom type
+    If the value of type is custom, this property contains the custom type.
 
     .PARAMETER Primary
-    Indicates if this is the user's primary phone number. A user may only have one primary phone number
+    Indicates if this is the user's primary email. Only one entry can be marked as primary.
 
     .PARAMETER Type
-    The type of phone number.
+    The type of the email account.
 
     Acceptable values are:
-    * "assistant"
-    * "callback"
-    * "car"
-    * "company_main"
     * "custom"
-    * "grand_central"
     * "home"
-    * "home_fax"
-    * "isdn"
-    * "main"
-    * "mobile"
     * "other"
-    * "other_fax"
-    * "pager"
-    * "radio"
-    * "telex"
-    * "tty_tdd"
     * "work"
-    * "work_fax"
-    * "work_mobile"
-    * "work_pager"
-
-    .PARAMETER Value
-    A human-readable phone number. It may be in any telephone number format
 
     .PARAMETER InputObject
-    Used for pipeline input of an existing UserPhone object to strip the extra attributes and prevent errors
+    Used for pipeline input of an existing Email object to strip the extra attributes and prevent errors
 
     .EXAMPLE
     $address = Add-GSUserAddress -Country USA -Locality Dallas -PostalCode 75000 Region TX -StreetAddress '123 South St' -Type Work -Primary
@@ -62,34 +45,33 @@ function Add-GSUserPhone {
     (
         [Parameter(Mandatory = $false, ParameterSetName = "Fields")]
         [String]
+        $Address,
+        [Parameter(Mandatory = $false, ParameterSetName = "Fields")]
+        [String]
         $CustomType,
         [Parameter(Mandatory = $false, ParameterSetName = "Fields")]
         [Switch]
         $Primary,
         [Parameter(Mandatory = $false, ParameterSetName = "Fields")]
-        [ValidateSet('assistant', 'callback', 'car', 'company_main', 'custom', 'grand_central', 'home', 'home_fax', 'isdn', 'main', 'mobile', 'other', 'other_fax', 'pager', 'radio', 'telex', 'tty_tdd', 'work', 'work_fax', 'work_mobile', 'work_pager')]
+        [ValidateSet('custom', 'home', 'other', 'work')]
         [String]
         $Type,
-        [Parameter(Mandatory = $false, ParameterSetName = "Fields")]
-        [Alias('Phone')]
-        [String]
-        $Value,
         [Parameter(Mandatory = $false, ValueFromPipeline = $true, ParameterSetName = "InputObject")]
-        [Google.Apis.Admin.Directory.directory_v1.Data.UserAddress[]]
+        [Google.Apis.Admin.Directory.directory_v1.Data.UserEmail[]]
         $InputObject
     )
     Begin {
         $propsToWatch = @(
+            'Address'
             'CustomType'
             'Type'
-            'Value'
         )
     }
     Process {
         try {
             switch ($PSCmdlet.ParameterSetName) {
                 Fields {
-                    $obj = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserPhone'
+                    $obj = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserEmail'
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
                         $obj.$prop = $PSBoundParameters[$prop]
                     }
@@ -97,7 +79,7 @@ function Add-GSUserPhone {
                 }
                 InputObject {
                     foreach ($iObj in $InputObject) {
-                        $obj = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserPhone'
+                        $obj = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserEmail'
                         foreach ($prop in $iObj.PSObject.Properties.Name | Where-Object {$obj.PSObject.Properties.Name -contains $_ -and $propsToWatch -contains $_}) {
                             $obj.$prop = $iObj.$prop
                         }
