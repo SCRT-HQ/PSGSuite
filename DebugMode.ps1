@@ -14,7 +14,7 @@ Get-Module PSGSuite | Remove-Module -Force
 . .\build.ps1 -Task Compile
 
 # Force import the module in the repo path so that updated functions are reloaded
-$modulePath = [System.IO.Path]::Combine("$PSScriptRoot","out","PSGSuite")
+$modulePath = [System.IO.Path]::Combine("$PSScriptRoot","BuildOutput","PSGSuite")
 Import-Module $modulePath -Force
 
 Get-Module PSGSuite | Select-Object Name,Version,ModuleBase
