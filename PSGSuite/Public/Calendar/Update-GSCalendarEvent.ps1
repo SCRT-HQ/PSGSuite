@@ -64,6 +64,17 @@ function Update-GSCalendarEvent {
     .PARAMETER UTCEndDateTime
     String representation of the end date in UTC. Highest precendence of the three EndDate parameters.
 
+    .PARAMETER PrivateExtendedProperties
+    A hashtable of properties that are private to the copy of the event that appears on this calendar.
+
+    .PARAMETER SharedExtendedProperties
+    A hashtable of properties that are shared between copies of the event on other attendees' calendars.
+
+    .PARAMETER ExtendedProperties
+    Extended properties of the event. This must be of the type 'Google.Apis.Calendar.v3.Data.Event+ExtendedPropertiesData'.
+
+    This is useful for copying another events ExtendedProperties over when updating an existing event.
+
     .EXAMPLE
     New-GSCalendarEvent "Go to the gym" -StartDate (Get-Date "21:00:00") -EndDate (Get-Date "22:00:00")
 
@@ -123,7 +134,16 @@ function Update-GSCalendarEvent {
         $UTCStartDateTime,
         [parameter(Mandatory = $false)]
         [String]
-        $UTCEndDateTime
+        $UTCEndDateTime,
+        [parameter(Mandatory = $false)]
+        [Hashtable]
+        $PrivateExtendedProperties,
+        [parameter(Mandatory = $false)]
+        [Hashtable]
+        $SharedExtendedProperties,
+        [parameter(Mandatory = $false)]
+        [Google.Apis.Calendar.v3.Data.Event+ExtendedPropertiesData]
+        $ExtendedProperties
     )
     Begin {
         $colorHash = @{
@@ -169,6 +189,34 @@ function Update-GSCalendarEvent {
                         EventColor {
                             $body.ColorId = $colorHash[$EventColor]
                         }
+                        PrivateExtendedProperties {
+                            if (-not $ExtendedProperties) {
+                                $ExtendedProperties = New-Object 'Google.Apis.Calendar.v3.Data.Event+ExtendedPropertiesData' -Property @{
+                                    Private__ = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
+                                    Shared = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
+                                }
+                            }
+                            elseif (-not $ExtendedProperties.Private__) {
+                                $ExtendedProperties.Private__ = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
+                            }
+                            foreach ($prop in $PrivateExtendedProperties.Keys) {
+                                $ExtendedProperties.Private__.Add($prop,$PrivateExtendedProperties[$prop])
+                            }
+                        }
+                        SharedExtendedProperties {
+                            if (-not $ExtendedProperties) {
+                                $ExtendedProperties = New-Object 'Google.Apis.Calendar.v3.Data.Event+ExtendedPropertiesData' -Property @{
+                                    Private__ = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
+                                    Shared = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
+                                }
+                            }
+                            elseif (-not $ExtendedProperties.Shared) {
+                                $ExtendedProperties.Shared = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
+                            }
+                            foreach ($prop in $SharedExtendedProperties.Keys) {
+                                $ExtendedProperties.Shared.Add($prop,$SharedExtendedProperties[$prop])
+                            }
+                        }
                         DisableReminder {
                             $reminder = New-Object 'Google.Apis.Calendar.v3.Data.Event+RemindersData' -Property @{
                                 UseDefault = (-not $DisableReminder)
@@ -181,6 +229,9 @@ function Update-GSCalendarEvent {
                             }
                         }
                     }
+                }
+                if ($ExtendedProperties) {
+                    $body.ExtendedProperties = $ExtendedProperties
                 }
                 $body.Start = if ($UTCStartDateTime) {
                     New-Object 'Google.Apis.Calendar.v3.Data.EventDateTime' -Property @{

@@ -36,6 +36,14 @@ Check out the [GitHub wiki for PSGSuite](https://github.com/scrthq/PSGSuite/wiki
 
 Interested in helping out with PSGSuite development? Please check out our [Contribution Guidelines](https://github.com/scrthq/PSGSuite/blob/master/CONTRIBUTING.md)!
 
+Building the module locally to test changes is as easy as running the `build.ps1` file in the root of the repo. This will compile the module with your changes and import the newly compiled module at the end by default.
+
+Want to run the Pester tests locally? Pass `Test` as the value to the `Task` script parameter like so:
+
+```powershell
+.\build.ps1 -Task Test
+```
+
 ## Code of Conduct
 
 Please adhere to our [Code of Conduct](https://github.com/scrthq/PSGSuite/blob/master/CODE_OF_CONDUCT.md) when interacting with this repo.
@@ -86,6 +94,7 @@ Alias                             Maps To
 -----                             -------
 Add-GSDriveFilePermissions        Add-GSDrivePermission
 Export-PSGSuiteConfiguration      Set-PSGSuiteConfig
+Get-GSCalendarEventList           Get-GSCalendarEvent
 Get-GSCalendarResourceList        Get-GSResourceList
 Get-GSDataTransferApplicationList Get-GSDataTransferApplication
 Get-GSDriveFileInfo               Get-GSDriveFile
@@ -121,6 +130,23 @@ Update-GSSheetValue               Export-GSSheet
 ```
 
 ### Most recent changes
+
+#### 2.20.0
+
+* [Issue #115](https://github.com/scrthq/PSGSuite/issues/115)
+  * Renamed: `Get-GSCalendarEventList` to `Get-GSCalendarEvent` and set the original name as an exported Alias to the new name for backwards compatibility.
+  * Added: `EventId` parameter to `Get-GSCalendarEvent` to specify individual event ID's to get instead of a filtered list.
+  * Added: `PrivateExtendedProperty` parameter to `Get-GSCalendarEvent`.
+  * Added: `SharedExtendedProperty` parameter to `Get-GSCalendarEvent`.
+  * Added: `PrivateExtendedProperties` parameter to `New-GSCalendarEvent` and `Update-GSCalendarEvent`.
+  * Added: `SharedExtendedProperties` parameter to `New-GSCalendarEvent` and `Update-GSCalendarEvent`.
+  * Added: `ExtendedProperties` parameter to `New-GSCalendarEvent` and `Update-GSCalendarEvent`.
+  * Added: `Id` parameter to `New-GSCalendarEvent` and `Update-GSCalendarEvent`.
+* [Issue #117](https://github.com/scrthq/PSGSuite/issues/117)
+  * Fixed: Type error on `States` parameter of `Get-GSStudentGuardianInvitation`.
+* Miscellaneous
+  * Updated Contributing doc with new Build script steps
+  * Removed `DebugMode.ps1` script since it's no longer needed (use `build.ps1` instead)
 
 #### 2.19.0
 
