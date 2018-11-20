@@ -206,6 +206,11 @@ catch {
     Get-ChildItem $outputModVerDir | Format-Table -Autosize
 } -description 'Compiles module from source'
 
+Task Import -Depends Compile {
+    '    Testing import of compiled module'
+    Import-Module (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")
+} -description 'Imports the newly compiled module'
+
 $pesterScriptBlock = {
     Push-Location
     Set-Location -PassThru $outputModDir

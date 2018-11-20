@@ -2,9 +2,9 @@
 [cmdletbinding(DefaultParameterSetName = 'task')]
 param(
     [parameter(ParameterSetName = 'task', Position = 0)]
-    [ValidateSet('Init','Clean','Compile','Test','TestOnly','Deploy','Skip')]
+    [ValidateSet('Init','Clean','Compile','Import','Test','TestOnly','Deploy','Skip')]
     [string[]]
-    $Task = @('Init','Clean','Compile','Test'),
+    $Task = @('Init','Clean','Compile','Import'),
 
     [parameter(ParameterSetName = 'help')]
     [switch]$Help,
@@ -143,6 +143,9 @@ else {
             $global:ExcludeTag = $null
         }
         Invoke-psake @psakeParams @verbose
+        if ($Task -contains 'Import' -and $psake.build_success) {
+            Import-Module ([System.IO.Path]::Combine($env:BHBuildOutput,$env:BHProjectName)) -Verbose:$false
+        }
         exit ( [int]( -not $psake.build_success ) )
     }
 }

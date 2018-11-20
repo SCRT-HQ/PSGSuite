@@ -2,17 +2,17 @@
 
 <!-- TOC -->
 
-- [Contributing to PSGSuite](#contributing-to-psgsuite)
-    - [Git and Pull requests](#git-and-pull-requests)
-    - [Overview](#overview)
-        - [Step by Step](#step-by-step)
-        - [Contributing Guidelines](#contributing-guidelines)
-        - [Updating the Wiki](#updating-the-wiki)
-    - [Getting Started](#getting-started)
-        - [Enabling Debug Mode](#enabling-debug-mode)
-        - [Google .NET SDK Documentation](#google-net-sdk-documentation)
-            - [.NET/API Documentation Links](#netapi-documentation-links)
-    - [Keeping in Touch](#keeping-in-touch)
+* [Contributing to PSGSuite](#contributing-to-psgsuite)
+    * [Git and Pull requests](#git-and-pull-requests)
+    * [Overview](#overview)
+        * [Step by Step (High-Level)](#step-by-step-high-level)
+        * [Contributing Guidelines](#contributing-guidelines)
+        * [Updating the Wiki](#updating-the-wiki)
+    * [Getting Started](#getting-started)
+        * [Enabling Debug Mode](#enabling-debug-mode)
+        * [Google .NET SDK Documentation](#google-net-sdk-documentation)
+            * [.NET/API Documentation Links](#netapi-documentation-links)
+    * [Keeping in Touch](#keeping-in-touch)
 
 <!-- /TOC -->
 
@@ -27,9 +27,9 @@ Thank you for your interest in helping PSGSuite grow! Below you'll find some gui
 
 ## Overview
 
-### Step by Step
+### Step by Step (High-Level)
 
-Here's the overall flow of making contributions:  
+Here's the overall flow of making contributions:
 1. Fork the repo
 2. Make your edits / additions on your fork
 3. Push your changes back to your fork on GitHub
@@ -46,12 +46,12 @@ Please follow these guidelines for any content being added:
     * work in any OS;
         * any code that includes paths must build the path using OS-agnostic methods, i.e. by using `Resolve-Path`, `Join-Path` and `Split-Path`
         * paths also need to use correct casing, as some OS's are case-sensitive in terms of paths
-* **Public functions must...** 
+* **Public functions must...**
     * include comment-based help (this is used to drive the Wiki updates on deployment)
     * include Write-Verbose calls to describe what the function is doing (CI tests will fail the build if any don't)
     * be placed in the correct APU/use-case folder in the Public sub-directory of the module path (if it's a new API/use-case, create the new folder as well)
     * use `SupportsShouldProcess` if...
-        * the function's verb is `Remove` or `Set`. 
+        * the function's verb is `Remove` or `Set`.
         * it can be included on `Update` functions as well, if felt that the actions executed by the function should be guarded
         * `Get` functions should **never** need `SupportsShouldProcess`
 * **Every Pull Request must...**
@@ -65,7 +65,7 @@ Please follow these guidelines for any content being added:
 
 ### Updating the Wiki
 
-* Wiki updates are scripted during deployment builds, so there is no need to manually update the Wiki. 
+* Wiki updates are scripted during deployment builds, so there is no need to manually update the Wiki.
 * Any new or updated comment-based help content will be transformed to Markdown using `platyPS` and pushed to the Wiki repo when deployment conditions are met.
 
 ## Getting Started
