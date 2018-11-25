@@ -131,6 +131,14 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.20.1
+
+* [Issue #121](https://github.com/scrthq/PSGSuite/issues/121)
+  * Added: `Update-GSGroupMember` to allow setting a group member's Role and/or DeliverySettings
+* Miscellaneous
+  * Added: GitHub release automation to deploy task
+  * Added: Twitter update automation on new version release to deploy task
+
 #### 2.20.0
 
 * [Issue #115](https://github.com/scrthq/PSGSuite/issues/115)

@@ -53,6 +53,10 @@ task Init {
 } -description 'Initialize build environment'
 
 task Clean -depends Init {
+    $zipPath = [System.IO.Path]::Combine($PSScriptRoot,"$($env:BHProjectName).zip")
+    if (Test-Path $zipPath) {
+        Remove-Item $zipPath -Force
+    }
     Remove-Module -Name $env:BHProjectName -Force -ErrorAction SilentlyContinue
 
     if (Test-Path -Path $outputDir) {
@@ -214,7 +218,7 @@ Task Import -Depends Compile {
 $pesterScriptBlock = {
     Push-Location
     Set-Location -PassThru $outputModDir
-    if(-not $ENV:BHProjectPath) {
+    if (-not $ENV:BHProjectPath) {
         Set-BuildEnvironment -Path $PSScriptRoot\..
     }
 
@@ -228,9 +232,9 @@ $pesterScriptBlock = {
     $testResultsXml = Join-Path -Path $outputDir -ChildPath $TestFile
     $pesterParams = @{
         OutputFormat = 'NUnitXml'
-        OutputFile = $testResultsXml
-        PassThru = $true
-        Path = $tests
+        OutputFile   = $testResultsXml
+        PassThru     = $true
+        Path         = $tests
     }
     if ($PSVersionTable.PSVersion.Major -lt 6) {
         ### $pesterParams['CodeCoverage'] = (Join-Path $outputModVerDir "$($env:BHProjectName).psm1")
@@ -257,7 +261,87 @@ task Test -Depends Compile $pesterScriptBlock -description 'Run Pester tests'
 task TestOnly -Depends Init $pesterScriptBlock -description 'Run Pester tests only [no module compilation]'
 
 $deployScriptBlock = {
-    if ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") {
+    function Publish-GitHubRelease {
+        <#
+            .SYNOPSIS
+            Publishes a release to GitHub Releases. Borrowed from https://www.herebedragons.io/powershell-create-github-release-with-artifact
+        #>
+        [CmdletBinding()]
+        Param (
+            [parameter(Mandatory = $true)]
+            [String]
+            $VersionNumber,
+            [parameter(Mandatory = $false)]
+            [String]
+            $CommitId = 'master',
+            [parameter(Mandatory = $true)]
+            [String]
+            $ReleaseNotes,
+            [parameter(Mandatory = $true)]
+            [ValidateScript( {Test-Path $_})]
+            [String]
+            $ArtifactPath,
+            [parameter(Mandatory = $true)]
+            [String]
+            $GitHubUsername,
+            [parameter(Mandatory = $true)]
+            [String]
+            $GitHubRepository,
+            [parameter(Mandatory = $true)]
+            [String]
+            $GitHubApiKey,
+            [parameter(Mandatory = $false)]
+            [Switch]
+            $PreRelease,
+            [parameter(Mandatory = $false)]
+            [Switch]
+            $Draft
+        )
+        $releaseData = @{
+            tag_name         = [string]::Format("v{0}", $VersionNumber)
+            target_commitish = $CommitId
+            name             = [string]::Format("$($env:BHProjectName) v{0}", $VersionNumber)
+            body             = $ReleaseNotes
+            draft            = [bool]$Draft
+            prerelease       = [bool]$PreRelease
+        }
+
+        $auth = 'Basic ' + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($gitHubApiKey + ":x-oauth-basic"))
+
+        $releaseParams = @{
+            Uri         = "https://api.github.com/repos/$GitHubUsername/$GitHubRepository/releases"
+            Method      = 'POST'
+            Headers     = @{
+                Authorization = $auth
+            }
+            ContentType = 'application/json'
+            Body        = (ConvertTo-Json $releaseData -Compress)
+        }
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        $result = Invoke-RestMethod @releaseParams
+        $uploadUri = $result | Select-Object -ExpandProperty upload_url
+        $uploadUri = $uploadUri -creplace '\{\?name,label\}'
+        $artifact = Get-Item $ArtifactPath
+        $uploadUri = $uploadUri + "?name=$($artifact.Name)"
+        $uploadFile = $artifact.FullName
+
+        $uploadParams = @{
+            Uri         = $uploadUri
+            Method      = 'POST'
+            Headers     = @{
+                Authorization = $auth
+            }
+            ContentType = 'application/zip'
+            InFile      = $uploadFile
+        }
+        $result = Invoke-RestMethod @uploadParams
+    }
+    if (($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") -or $global:ForceDeploy -eq $true) {
+        if ($null -eq (Get-Module PoshTwit -ListAvailable)) {
+            "    Installing PoshTwit module..."
+            Install-Module PoshTwit -Scope CurrentUser
+        }
+        Import-Module PoshTwit -Verbose:$false
         # Load the module, read the exported functions, update the psd1 FunctionsToExport
         $commParsed = $env:BHCommitMessage | Select-String -Pattern '\sv\d+\.\d+\.\d+\s'
         if ($commParsed) {
@@ -300,10 +384,55 @@ $deployScriptBlock = {
         # Bump the module version
         if ($versionToDeploy) {
             try {
-                "    Publishing version [$($versionToDeploy)] to PSGallery..."
-                Update-Metadata -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -PropertyName ModuleVersion -Value $versionToDeploy
-                Publish-Module -Path $outputModVerDir -NuGetApiKey $env:NugetApiKey -Repository PSGallery
-                "    Deployment successful!"
+                if ($ENV:BHBuildSystem -eq 'VSTS' -and -not [String]::IsNullOrEmpty($env:NugetApiKey)) {
+                    "    Publishing version [$($versionToDeploy)] to PSGallery..."
+                    Update-Metadata -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -PropertyName ModuleVersion -Value $versionToDeploy
+                    Publish-Module -Path $outputModVerDir -NuGetApiKey $env:NugetApiKey -Repository PSGallery
+                    "    Deployment successful!"
+                }
+                else {
+                    "    [SKIPPED] Deployment of version [$($versionToDeploy)] to PSGallery"
+                }
+                $commitId = git rev-parse --verify HEAD
+                if (-not [String]::IsNullOrEmpty($env:GitHubPAT)) {
+                    "    Creating Release ZIP..."
+                    $zipPath = [System.IO.Path]::Combine($PSScriptRoot,"$($env:BHProjectName).zip")
+                    if (Test-Path $zipPath) {
+                        Remove-Item $zipPath -Force
+                    }
+                    Add-Type -Assembly System.IO.Compression.FileSystem
+                    [System.IO.Compression.ZipFile]::CreateFromDirectory($outputModDir,$zipPath)
+                    "    Publishing Release v$($versionToDeploy) @ commit Id [$($commitId)] to GitHub..."
+                    $gitHubParams = @{
+                        VersionNumber    = $versionToDeploy.ToString()
+                        CommitId         = $commitId
+                        ReleaseNotes     = $env:BHCommitMessage
+                        ArtifactPath     = $zipPath
+                        GitHubUsername   = 'scrthq'
+                        GitHubRepository = $env:BHProjectName
+                        GitHubApiKey     = $env:GitHubPAT
+                        Draft            = $false
+                    }
+                    Publish-GitHubRelease @gitHubParams
+                    "    Release creation successful!"
+                }
+                else {
+                    "    [SKIPPED] Publishing Release v$($versionToDeploy) @ commit Id [$($commitId)] to GitHub"
+                }
+                if ($ENV:BHBuildSystem -eq 'VSTS' -and -not [String]::IsNullOrEmpty($env:TwitterAccessSecret) -and -not [String]::IsNullOrEmpty($env:TwitterAccessToken) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerKey) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerSecret)) {
+                    "    Publishing tweet about new release..."
+                    $manifest = Import-PowerShellDataFile -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")
+                    $text = "$($env:BHProjectName) v$($versionToDeploy) is now available on the #PSGallery! #PowerShell"
+                    $manifest.PrivateData.PSData.Tags | Foreach-Object {
+                        $text += " #$($_)"
+                    }
+                    "    Tweet text: $text"
+                    Publish-Tweet -Tweet $text -ConsumerKey $env:TwitterConsumerKey -ConsumerSecret $env:TwitterConsumerSecret -AccessToken $env:TwitterAccessToken -AccessSecret $env:TwitterAccessSecret
+                    "    Tweet successful!"
+                }
+                else {
+                    "    [SKIPPED] Twitter update of new release"
+                }
             }
             catch {
                 Write-Error $_ -ErrorAction Stop
@@ -320,4 +449,6 @@ $deployScriptBlock = {
     }
 }
 
-Task Deploy -Depends Compile $deployScriptBlock -description 'Deploy module to PSGallery'
+Task Deploy -Depends Import $deployScriptBlock -description 'Deploy module to PSGallery' -preaction {
+    Import-Module -Name $outputModDir -Force -Verbose:$false
+}
