@@ -257,7 +257,7 @@ task Test -Depends Compile $pesterScriptBlock -description 'Run Pester tests'
 task TestOnly -Depends Init $pesterScriptBlock -description 'Run Pester tests only [no module compilation]'
 
 $deployScriptBlock = {
-    if ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") {
+    if (($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") -or $global:ForceDeploy -eq $true) {
         # Load the module, read the exported functions, update the psd1 FunctionsToExport
         $commParsed = $env:BHCommitMessage | Select-String -Pattern '\sv\d+\.\d+\.\d+\s'
         if ($commParsed) {
@@ -300,10 +300,15 @@ $deployScriptBlock = {
         # Bump the module version
         if ($versionToDeploy) {
             try {
-                "    Publishing version [$($versionToDeploy)] to PSGallery..."
-                Update-Metadata -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -PropertyName ModuleVersion -Value $versionToDeploy
-                Publish-Module -Path $outputModVerDir -NuGetApiKey $env:NugetApiKey -Repository PSGallery
-                "    Deployment successful!"
+                if ($env:BUILD_BUILDURI -like 'vstfs:*') {
+                    "    Publishing version [$($versionToDeploy)] to PSGallery..."
+                    Update-Metadata -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -PropertyName ModuleVersion -Value $versionToDeploy
+                    Publish-Module -Path $outputModVerDir -NuGetApiKey $env:NugetApiKey -Repository PSGallery
+                    "    Deployment successful!"
+                }
+                else {
+                    "    [SKIPPED] Deployment of version [$($versionToDeploy)] to PSGallery"
+                }
             }
             catch {
                 Write-Error $_ -ErrorAction Stop
@@ -320,4 +325,6 @@ $deployScriptBlock = {
     }
 }
 
-Task Deploy -Depends Compile $deployScriptBlock -description 'Deploy module to PSGallery'
+Task Deploy -Depends Compile $deployScriptBlock -description 'Deploy module to PSGallery' -preaction {
+    Import-Module -Name $outputModDir -Force -Verbose:$false
+}
