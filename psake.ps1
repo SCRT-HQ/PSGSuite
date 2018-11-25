@@ -403,7 +403,27 @@ $deployScriptBlock = {
                     Add-Type -Assembly System.IO.Compression.FileSystem
                     [System.IO.Compression.ZipFile]::CreateFromDirectory($outputModDir,$zipPath)
                     "    Publishing Release v$($versionToDeploy) @ commit Id [$($commitId)] to GitHub..."
-                    $ReleaseNotes = (git log -1 --pretty=%B | Select-Object -Skip 2) -join "`n"
+                    $ReleaseNotes = "# Changelog`n`n"
+                    $ReleaseNotes += (git log -1 --pretty=%B | Select-Object -Skip 2) -join "`n"
+                    $ReleaseNotes += "`n`n***`n`n# Instructions`n`n"
+                    $ReleaseNotes += @"
+**IMPORTANT: You MUST have the module '[Configuration](https://github.com/poshcode/Configuration)' installed as a prerequisite! Installing the module from the repo source or the release page does not automatically install dependencies!!**
+
+1. [Click here](https://github.com/scrthq/PSGSuite/releases/download/v$($versionToDeploy.ToString())/PSGSuite.zip) to download the *PSGSuite.zip* file attached to the release.
+2. **If on Windows**: Right-click the downloaded zip, select Properties, then unblock the file.
+    > _This is to prevent having to unblock each file individually after unzipping._
+3. Unzip the archive.
+4. (Optional) Place the module folder somewhere in your ``PSModulePath``.
+    > _You can view the paths listed by running the environment variable ```$env:PSModulePath``_
+5. Import the module, using the full path to the PSD1 file in place of ``PSGSuite`` if the unzipped module folder is not in your ``PSModulePath``:
+    ``````powershell
+    # In `$env:PSModulePath
+    Import-Module PSGSuite
+
+    # Otherwise, provide the path to the manifest:
+    Import-Module -Path C:\PSGSuite\$($versionToDeploy.ToString())\PSGSuite.psd1
+    ``````
+"@
                     $gitHubParams = @{
                         VersionNumber    = $versionToDeploy.ToString()
                         CommitId         = $commitId
@@ -423,9 +443,13 @@ $deployScriptBlock = {
                 if ($ENV:BHBuildSystem -eq 'VSTS' -and -not [String]::IsNullOrEmpty($env:TwitterAccessSecret) -and -not [String]::IsNullOrEmpty($env:TwitterAccessToken) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerKey) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerSecret)) {
                     "    Publishing tweet about new release..."
                     $manifest = Import-PowerShellDataFile -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")
-                    $text = "$($env:BHProjectName) v$($versionToDeploy) is now available on the #PSGallery! #PowerShell"
+                    $text = "$($env:BHProjectName) v$($versionToDeploy) is now available on the #PSGallery! https://www.powershellgallery.com/packages/$($env:BHProjectName) #PowerShell"
                     $manifest.PrivateData.PSData.Tags | Foreach-Object {
                         $text += " #$($_)"
+                    }
+                    if ($text.Length -gt 280) {
+                        "    Trimming [$($text.Length - 280)] extra characters from tweet text to get to 280 character limit..."
+                        $text = $text.Substring(0,280)
                     }
                     "    Tweet text: $text"
                     Publish-Tweet -Tweet $text -ConsumerKey $env:TwitterConsumerKey -ConsumerSecret $env:TwitterConsumerSecret -AccessToken $env:TwitterAccessToken -AccessSecret $env:TwitterAccessSecret
