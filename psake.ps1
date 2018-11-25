@@ -403,10 +403,11 @@ $deployScriptBlock = {
                     Add-Type -Assembly System.IO.Compression.FileSystem
                     [System.IO.Compression.ZipFile]::CreateFromDirectory($outputModDir,$zipPath)
                     "    Publishing Release v$($versionToDeploy) @ commit Id [$($commitId)] to GitHub..."
+                    $ReleaseNotes = (git log -1 --pretty=%B | Select-Object -Skip 2) -join "`n"
                     $gitHubParams = @{
                         VersionNumber    = $versionToDeploy.ToString()
                         CommitId         = $commitId
-                        ReleaseNotes     = $env:BHCommitMessage
+                        ReleaseNotes     = $ReleaseNotes
                         ArtifactPath     = $zipPath
                         GitHubUsername   = 'scrthq'
                         GitHubRepository = $env:BHProjectName
