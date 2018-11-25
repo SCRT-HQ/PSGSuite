@@ -131,6 +131,12 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.20.2
+
+* [Issue #120](https://github.com/scrthq/PSGSuite/issues/120)
+  * Added: `Update-GSMobileDevice` to allow taking action on Mobile Devices
+  * Fixed: Bug in `Remove-GSMobileDevice` with incorrect variable name
+
 #### 2.20.1
 
 * [Issue #121](https://github.com/scrthq/PSGSuite/issues/121)
