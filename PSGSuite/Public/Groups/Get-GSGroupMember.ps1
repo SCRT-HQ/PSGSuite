@@ -45,10 +45,7 @@ function Get-GSGroupMember {
     )
     Begin {
         $serviceParams = @{
-            Scope       = @(
-                'https://www.googleapis.com/auth/admin.directory.group'
-                'https://www.googleapis.com/auth/admin.directory.group.member'
-            )
+            Scope       = 'https://www.googleapis.com/auth/admin.directory.group'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams

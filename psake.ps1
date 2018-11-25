@@ -411,7 +411,7 @@ $deployScriptBlock = {
                         GitHubUsername   = 'scrthq'
                         GitHubRepository = $env:BHProjectName
                         GitHubApiKey     = $env:GitHubPAT
-                        Draft            = $true
+                        Draft            = $false
                     }
                     Publish-GitHubRelease @gitHubParams
                     "    Release creation successful!"
@@ -422,12 +422,12 @@ $deployScriptBlock = {
                 if ($ENV:BHBuildSystem -eq 'VSTS' -and -not [String]::IsNullOrEmpty($env:TwitterAccessSecret) -and -not [String]::IsNullOrEmpty($env:TwitterAccessToken) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerKey) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerSecret)) {
                     "    Publishing tweet about new release..."
                     $manifest = Import-PowerShellDataFile -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")
-                    $text = "$($env:BHProjectName) v$($versionToDeploy) is now available on the #PowerShell Gallery!"
+                    $text = "$($env:BHProjectName) v$($versionToDeploy) is now available on the #PSGallery! #PowerShell"
                     $manifest.PrivateData.PSData.Tags | Foreach-Object {
                         $text += " #$($_)"
                     }
                     "    Tweet text: $text"
-                    Publish-Tweet -Tweet $text -ConsumerKey $env:TwitterConsumerKey -ConsumerSecret $env:TwitterConsumerSecret -AccessToken $env:TwitterAccessToken -AccessSecret $env:TwitterAccessSecret -Verbose
+                    Publish-Tweet -Tweet $text -ConsumerKey $env:TwitterConsumerKey -ConsumerSecret $env:TwitterConsumerSecret -AccessToken $env:TwitterAccessToken -AccessSecret $env:TwitterAccessSecret
                     "    Tweet successful!"
                 }
                 else {
