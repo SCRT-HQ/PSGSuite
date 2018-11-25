@@ -2,16 +2,16 @@
     <#
     .SYNOPSIS
     Removes a mobile device from Device Management
-    
+
     .DESCRIPTION
     Removes a mobile device from Device Management
-    
+
     .PARAMETER ResourceID
     The unique Id of the mobile device you would like to remove
-    
+
     .EXAMPLE
     Remove-GSMobileDevice -ResourceId 'AFiQxQ8Qgd-rouSmcd2UnuvhYV__WXdacTgJhPEA1QoQJrK1hYbKJXm-8JFlhZOjBF4aVbhleS2FVQk5lI069K2GULpteTlLVpKLJFSLSL'
-    
+
     Removes the mobile device with the specified Id
     #>
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
@@ -31,7 +31,7 @@
     }
     Process {
         try {
-            foreach ($R in $DeviceId) {
+            foreach ($R in $ResourceId) {
                 if ($PSCmdlet.ShouldProcess("Removing Mobile Device '$R'")) {
                     Write-Verbose "Removing Mobile Device '$R'"
                     $request = $service.Mobiledevices.Delete($Script:PSGSuite.CustomerID,$R)

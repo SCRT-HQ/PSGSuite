@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.20.2](#2202)
   * [2.20.1](#2201)
   * [2.20.0](#2200)
   * [2.19.0](#2190)
@@ -62,6 +63,12 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.20.2
+
+* [Issue #120](https://github.com/scrthq/PSGSuite/issues/120)
+  * Added: `Update-GSMobileDevice` to allow taking action on Mobile Devices
+  * Fixed: Bug in `Remove-GSMobileDevice` with incorrect variable name
 
 ## 2.20.1
 
