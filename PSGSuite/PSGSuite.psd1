@@ -128,7 +128,7 @@ All other functions are either intact or have an alias included to support backw
             # Prerelease = '-alpha'
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags       = 'Google', 'GSuite', 'Apps', 'G', 'Suite', 'REST', 'API', 'Admin', 'PSModule', 'Directory', 'User', 'Goo.gl', 'PSEdition_Core', 'PSEdition_Desktop'
+            Tags       = 'GSuite', 'Google', 'Apps', 'API', 'Drive', 'Gmail', 'Admin', 'Automation', 'PSEdition_Core', 'PSEdition_Desktop'
 
             # A URL to the license for this module.
             # LicenseUri = ''
