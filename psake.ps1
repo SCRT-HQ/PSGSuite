@@ -421,7 +421,7 @@ $deployScriptBlock = {
     Import-Module PSGSuite
 
     # Otherwise, provide the path to the manifest:
-    Import-Module -Path C:\PSGSuite\$($versionToDeploy.ToString())\PSGSuite.psd1
+    Import-Module -Path C:\MyPSModules\PSGSuite\$($versionToDeploy.ToString())\PSGSuite.psd1
     ``````
 "@
                     $gitHubParams = @{
