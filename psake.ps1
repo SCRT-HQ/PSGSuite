@@ -409,19 +409,19 @@ $deployScriptBlock = {
                     $ReleaseNotes += @"
 **IMPORTANT: You MUST have the module '[Configuration](https://github.com/poshcode/Configuration)' installed as a prerequisite! Installing the module from the repo source or the release page does not automatically install dependencies!!**
 
-1. [Click here](https://github.com/scrthq/PSGSuite/releases/download/v$($versionToDeploy.ToString())/PSGSuite.zip) to download the *PSGSuite.zip* file attached to the release.
+1. [Click here](https://github.com/scrthq/$($env:BHProjectName)/releases/download/v$($versionToDeploy.ToString())/$($env:BHProjectName).zip) to download the *$($env:BHProjectName).zip* file attached to the release.
 2. **If on Windows**: Right-click the downloaded zip, select Properties, then unblock the file.
     > _This is to prevent having to unblock each file individually after unzipping._
 3. Unzip the archive.
 4. (Optional) Place the module folder somewhere in your ``PSModulePath``.
     > _You can view the paths listed by running the environment variable ```$env:PSModulePath``_
-5. Import the module, using the full path to the PSD1 file in place of ``PSGSuite`` if the unzipped module folder is not in your ``PSModulePath``:
+5. Import the module, using the full path to the PSD1 file in place of ``$($env:BHProjectName)`` if the unzipped module folder is not in your ``PSModulePath``:
     ``````powershell
     # In `$env:PSModulePath
-    Import-Module PSGSuite
+    Import-Module $($env:BHProjectName)
 
     # Otherwise, provide the path to the manifest:
-    Import-Module -Path C:\MyPSModules\PSGSuite\$($versionToDeploy.ToString())\PSGSuite.psd1
+    Import-Module -Path C:\MyPSModules\$($env:BHProjectName)\$($versionToDeploy.ToString())\$($env:BHProjectName).psd1
     ``````
 "@
                     $gitHubParams = @{
