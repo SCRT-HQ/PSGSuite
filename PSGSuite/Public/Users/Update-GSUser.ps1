@@ -146,6 +146,9 @@ function Update-GSUser {
         [Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization[]]
         $Organizations,
         [parameter(Mandatory = $false)]
+        [Google.Apis.Admin.Directory.directory_v1.Data.UserRelation[]]
+        $Relations,
+        [parameter(Mandatory = $false)]
         [Google.Apis.Admin.Directory.directory_v1.Data.UserPhone[]]
         $Phones,
         [parameter(Mandatory = $false)]
@@ -250,6 +253,13 @@ function Update-GSUser {
                                 $orgList.Add($organization)
                             }
                             $body.Organizations = $orgList
+                        }
+                        Relations {
+                            $relList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserRelation]'
+                            foreach ($relation in $Relations) {
+                                $relList.Add($relation)
+                            }
+                            $body.Relations = $relList
                         }
                         Phones {
                             $phoneList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserPhone]'
