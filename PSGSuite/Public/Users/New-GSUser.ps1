@@ -202,7 +202,7 @@ function New-GSUser {
                 switch ($prop) {
                     PrimaryEmail {
                         if ($PSBoundParameters[$prop] -notlike "*@*.*") {
-                            $PSBoundParameters[$prop] = "$($PSBoundParameters[$prop])@$($script:PSGSuite.Domain)"
+                            $PSBoundParameters[$prop] = "$($PSBoundParameters[$prop])@$($Script:PSGSuite.Domain)"
                         }
                         $body.$prop = $PSBoundParameters[$prop]
                     }
