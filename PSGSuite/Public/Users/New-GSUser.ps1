@@ -50,6 +50,11 @@ function New-GSUser {
 
     This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization[]' object type. You can create objects of this type easily by using the function 'Add-GSUserOrganization'
 
+    .PARAMETER Relations
+    The relation objects of the user
+
+    This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserRelation[]' object type. You can create objects of this type easily by using the function 'Add-GSUserRelation'
+
     .PARAMETER Phones
     The phone objects of the user
 
@@ -143,6 +148,9 @@ function New-GSUser {
         [Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization[]]
         $Organizations,
         [parameter(Mandatory = $false)]
+        [Google.Apis.Admin.Directory.directory_v1.Data.UserRelation[]]
+        $Relations,
+        [parameter(Mandatory = $false)]
         [Google.Apis.Admin.Directory.directory_v1.Data.UserPhone[]]
         $Phones,
         [parameter(Mandatory = $false)]
@@ -221,6 +229,13 @@ function New-GSUser {
                             $orgList.Add($organization)
                         }
                         $body.Organizations = $orgList
+                    }
+                    Relations {
+                        $relList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserRelation]'
+                        foreach ($relation in $Relations) {
+                            $relList.Add($relation)
+                        }
+                        $body.Relations = $relList
                     }
                     Phones {
                         $phoneList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserPhone]'
