@@ -26,7 +26,7 @@ function Remove-GSUserPhone {
     Process {
         try {
             $header = @{
-                Authorization = "Bearer $(Get-GSToken -P12KeyPath $global:PSGSuite.P12KeyPath -Scopes "https://www.googleapis.com/auth/admin.directory.user" -AppEmail $global:PSGSuite.AppEmail -AdminEmail $global:PSGSuite.AdminEmail -Verbose:$false)"
+                Authorization = "Bearer $(Get-GSToken -P12KeyPath $script:PSGSuite.P12KeyPath -Scopes "https://www.googleapis.com/auth/admin.directory.user" -AppEmail $global:PSGSuite.AppEmail -AdminEmail $global:PSGSuite.AdminEmail -Verbose:$false)"
             }
             $body = '{ "phones": null }'
             $hook = "https://www.googleapis.com/admin/directory/v1/users/$User"
