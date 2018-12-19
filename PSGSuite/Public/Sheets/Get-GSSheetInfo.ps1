@@ -2,37 +2,37 @@ function Get-GSSheetInfo {
     <#
     .SYNOPSIS
     Gets metadata about a SpreadSheet
-    
+
     .DESCRIPTION
     Gets metadata about a SpreadSheet
-    
+
     .PARAMETER SpreadsheetId
     The unique Id of the SpreadSheet to retrieve info for
-    
+
     .PARAMETER User
     The owner of the SpreadSheet
-    
+
     .PARAMETER SheetName
     The name of the Sheet to retrieve info for
-    
+
     .PARAMETER Range
     The specific range of the Sheet to retrieve info for
-    
+
     .PARAMETER IncludeGridData
     Whether or not to include Grid Data in the response
-    
+
     .PARAMETER Fields
     The fields to return in the response
 
     Available values are:
-    * "NamedRanges"
-    * "Properties"
-    * "Sheets"
-    * "SpreadsheetId"
-    
+    * "namedRanges"
+    * "properties"
+    * "sheets"
+    * "spreadsheetId"
+
     .PARAMETER Raw
     If $true, return the raw response, otherwise, return a flattened response for readability
-    
+
     .EXAMPLE
     Get-GSSheetInfo -SpreadsheetId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976'
 
@@ -40,7 +40,7 @@ function Get-GSSheetInfo {
     #>
     [cmdletbinding()]
     Param
-    (      
+    (
         [parameter(Mandatory = $true)]
         [String]
         $SpreadsheetId,
@@ -99,7 +99,7 @@ function Get-GSSheetInfo {
                 $request.Ranges = [Google.Apis.Util.Repeatable[String]]::new([String[]]$Range)
             }
             if ($Fields) {
-                $request.Fields = "$($Fields -join ",")"
+                $request.Fields = "$(($Fields | ForEach-Object {$f = $_;@("namedRanges","properties","sheets","spreadsheetId") | Where-Object {$_ -eq $f}}) -join ",")"
             }
             elseif ($PSBoundParameters.Keys -contains 'IncludeGridData') {
                 $request.IncludeGridData = $IncludeGridData

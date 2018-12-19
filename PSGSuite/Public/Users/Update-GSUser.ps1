@@ -48,15 +48,28 @@ function Update-GSUser {
 
     This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserExternalId[]' object type. You can create objects of this type easily by using the function 'Add-GSUserExternalId'
 
+    To CLEAR all values for a user, pass `$null` as the value for this parameter.
+
     .PARAMETER Organizations
     The organization objects of the user
 
     This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization[]' object type. You can create objects of this type easily by using the function 'Add-GSUserOrganization'
 
+    To CLEAR all values for a user, pass `$null` as the value for this parameter.
+
+    .PARAMETER Relations
+    A list of the user's relationships to other users.
+
+    This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserRelation[]' object type. You can create objects of this type easily by using the function 'Add-GSUserRelation'
+
+    To CLEAR all values for a user, pass `$null` as the value for this parameter.
+
     .PARAMETER Phones
     The phone objects of the user
 
     This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserPhone[]' object type. You can create objects of this type easily by using the function 'Add-GSUserPhone'
+
+    To CLEAR all values for a user, pass `$null` as the value for this parameter.
 
     .PARAMETER IncludeInGlobalAddressList
     Indicates if the user's profile is visible in the G Suite global address list when the contact sharing feature is enabled for the domain. For more information about excluding user profiles, see the administration help center: http://support.google.com/a/bin/answer.py?answer=1285988
@@ -198,6 +211,7 @@ function Update-GSUser {
                 $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.User'
                 $name = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserName'
                 $nameUpdated = $false
+                $toClear = @{}
                 foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_ -or $name.PSObject.Properties.Name -contains $_}) {
                     switch ($prop) {
                         PrimaryEmail {
@@ -241,32 +255,52 @@ function Update-GSUser {
                             $body.Emails = $emailList
                         }
                         ExternalIds {
-                            $extIdList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserExternalId]'
-                            foreach ($extId in $ExternalIds) {
-                                $extIdList.Add($extId)
+                            if ($null -ne $ExternalIds) {
+                                $extIdList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserExternalId]'
+                                foreach ($extId in $ExternalIds) {
+                                    $extIdList.Add($extId)
+                                }
+                                $body.ExternalIds = $extIdList
                             }
-                            $body.ExternalIds = $extIdList
+                            else {
+                                $toClear['externalIds'] = $null
+                            }
                         }
                         Organizations {
-                            $orgList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization]'
-                            foreach ($organization in $Organizations) {
-                                $orgList.Add($organization)
+                            if ($null -ne $Organizations) {
+                                $orgList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization]'
+                                foreach ($organization in $Organizations) {
+                                    $orgList.Add($organization)
+                                }
+                                $body.Organizations = $orgList
                             }
-                            $body.Organizations = $orgList
+                            else {
+                                $toClear['organizations'] = $null
+                            }
                         }
                         Relations {
-                            $relList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserRelation]'
-                            foreach ($relation in $Relations) {
-                                $relList.Add($relation)
+                            if ($null -ne $Relations) {
+                                $relList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserRelation]'
+                                foreach ($relation in $Relations) {
+                                    $relList.Add($relation)
+                                }
+                                $body.Relations = $relList
                             }
-                            $body.Relations = $relList
+                            else {
+                                $toClear['relations'] = $null
+                            }
                         }
                         Phones {
-                            $phoneList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserPhone]'
-                            foreach ($phone in $Phones) {
-                                $phoneList.Add($phone)
+                            if ($null -ne $Relations) {
+                                $phoneList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserPhone]'
+                                foreach ($phone in $Phones) {
+                                    $phoneList.Add($phone)
+                                }
+                                $body.Phones = $phoneList
                             }
-                            $body.Phones = $phoneList
+                            else {
+                                $toClear['phones'] = $null
+                            }
                         }
                         IsAdmin {
                             if ($userObj.IsAdmin -eq $PSBoundParameters[$prop]) {
@@ -293,6 +327,14 @@ function Update-GSUser {
                 }
                 $request = $service.Users.Update($body, $userObj.Id)
                 $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
+                if ($toClear.Keys.Count) {
+                    $header = @{
+                        Authorization = "Bearer $(Get-GSToken -Scopes "https://www.googleapis.com/auth/admin.directory.user" -Verbose:$false)"
+                    }
+                    $uri = [Uri]"https://www.googleapis.com/admin/directory/v1/users/$U"
+                    Write-Verbose "Clearing out all values for User '$U' on the following properties: [ $($toClear.Keys -join ", ") ]"
+                    $null = Invoke-RestMethod -Method Put -Uri $uri -Headers $header -Body $($toClear | ConvertTo-Json -Depth 5 -Compress) -ContentType 'application/json' -Verbose:$false -ErrorAction Stop
+                }
             }
             catch {
                 if ($ErrorActionPreference -eq 'Stop') {
