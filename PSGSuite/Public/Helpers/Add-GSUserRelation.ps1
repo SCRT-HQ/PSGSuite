@@ -6,16 +6,34 @@ function Add-GSUserRelation {
     .DESCRIPTION
     Builds a Relation object to use when creating or updating a User
 
-    .PARAMETER CustomType
-    If the external ID type is custom, this property holds the custom type
-
     .PARAMETER Type
-    The type of the organization.
+    The type of relation.
 
-    If using a CustomType
+    Acceptable values are:
+    * "admin_assistant"
+    * "assistant"
+    * "brother"
+    * "child"
+    * "custom"
+    * "domestic_partner"
+    * "dotted_line_manager"
+    * "exec_assistant"
+    * "father"
+    * "friend"
+    * "manager"
+    * "mother"
+    * "parent"
+    * "partner"
+    * "referred_by"
+    * "relative"
+    * "sister"
+    * "spouse"
 
     .PARAMETER Value
-    The value of the ID
+    The name of the person the user is related to.
+
+    .PARAMETER CustomType
+    If the value of `Type` is `custom`, this property contains the custom type.
 
     .PARAMETER InputObject
     Used for pipeline input of an existing UserExternalId object to strip the extra attributes and prevent errors
@@ -37,14 +55,15 @@ function Add-GSUserRelation {
     Param
     (
         [Parameter(Mandatory = $false, ParameterSetName = "Fields")]
-        [String]
-        $CustomType,
-        [Parameter(Mandatory = $false, ParameterSetName = "Fields")]
+        [ValidateSet("admin_assistant","assistant","brother","child","custom","domestic_partner","dotted_line_manager","exec_assistant","father","friend","manager","mother","parent","partner","referred_by","relative","sister","spouse")]
         [String]
         $Type,
         [Parameter(Mandatory = $false, ParameterSetName = "Fields")]
         [String]
         $Value,
+        [Parameter(Mandatory = $false, ParameterSetName = "Fields")]
+        [String]
+        $CustomType,
         [Parameter(Mandatory = $false, ParameterSetName = "Fields")]
         [String]
         $ETag,
@@ -60,8 +79,9 @@ function Add-GSUserRelation {
             'ETag'
         )
         if ($PSBoundParameters.Keys -contains 'CustomType') {
-            $PSBoundParameters['Type'] = 'CUSTOM'
+            $PSBoundParameters['Type'] = 'custom'
         }
+        $PSBoundParameters['Type'] = $PSBoundParameters['Type'].ToString().ToLower()
     }
     Process {
         try {

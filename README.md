@@ -131,9 +131,18 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.21.0
+
+* [PR #130](https://github.com/scrthq/PSGSuite/pull/130) / [Issue #129](https://github.com/scrthq/PSGSuite/issues/129)
+  * Added: Support for UserRelations management in `New-GSUser -Relations $relations` and `Update-GSUser -Relations $relations` via `Add-GSUserRelation` helper function. - _Thanks, [@mattwoolnough](https://github.com/mattwoolnough)!_
+  * Added: Logic to `Update-GSUser` to enable clearing of all values for user properties `Phones`, `ExternalIds`, `Organizations`, and `Relations` by REST API call via passing `$null` as the value when calling `Update-GSUser`. - _Thanks, [@mattwoolnough](https://github.com/mattwoolnough)!_
+* [Issue #129](https://github.com/scrthq/PSGSuite/issues/129)
+  * Fixed: Documentation for `Get-GSSheetInfo` around the `Fields` parameter.
+  * Added: Additional correction of casing for `Fields` values in `Get-GSSheetInfo` so that it will always submit the values using the correct case, even if providing the incorrect case as the value to the parameter.
+
 #### 2.20.2
 
-* [Issue #120](https://github.com/scrthq/PSGSuite/issues/120)
+* [Issue #128](https://github.com/scrthq/PSGSuite/issues/128)
   * Added: `Update-GSMobileDevice` to allow taking action on Mobile Devices
   * Fixed: Bug in `Remove-GSMobileDevice` with incorrect variable name
 

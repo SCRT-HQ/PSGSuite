@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.21.0](#2210)
   * [2.20.2](#2202)
   * [2.20.1](#2201)
   * [2.20.0](#2200)
@@ -63,6 +64,15 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.21.0
+
+* [PR #130](https://github.com/scrthq/PSGSuite/pull/130) / [Issue #129](https://github.com/scrthq/PSGSuite/issues/129)
+  * Added: Support for UserRelations management in `New-GSUser -Relations $relations` and `Update-GSUser -Relations $relations` via `Add-GSUserRelation` helper function. - _Thanks, [@mattwoolnough](https://github.com/mattwoolnough)!_
+  * Added: Logic to `Update-GSUser` to enable clearing of all values for user properties `Phones`, `ExternalIds`, `Organizations`, and `Relations` by REST API call via passing `$null` as the value when calling `Update-GSUser`. - _Thanks, [@mattwoolnough](https://github.com/mattwoolnough)!_
+* [Issue #129](https://github.com/scrthq/PSGSuite/issues/129)
+  * Fixed: Documentation for `Get-GSSheetInfo` around the `Fields` parameter.
+  * Added: Additional correction of casing for `Fields` values in `Get-GSSheetInfo` so that it will always submit the values using the correct case, even if providing the incorrect case as the value to the parameter.
 
 ## 2.20.2
 
