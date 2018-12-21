@@ -8,6 +8,11 @@
     <img src="https://dev.azure.com/scrthq/SCRT%20HQ/_apis/build/status/PSGSuite-CI"
       alt="Azure Pipelines" title="Azure Pipelines" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- Codacy -->
+  <a href="https://www.codacy.com/app/scrthq/PSGSuite?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scrthq/PSGSuite&amp;utm_campaign=Badge_Grade">
+    <img src="https://api.codacy.com/project/badge/Grade/0d5203a1cf1945fe94c46b779eecb7f0"
+      alt="Codacy" title="Codacy" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- PS Gallery -->
   <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
     <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat"
@@ -130,6 +135,14 @@ Update-GSSheetValue               Export-GSSheet
 ```
 
 ### Most recent changes
+
+#### 2.21.1
+
+* [Issue #131](https://github.com/scrthq/PSGSuite/issues/131) - _Free/standard Google Account support_
+  * Fixed: Handling of scopes in `New-GoogleService` for authentication when a client_secrets.json file is used instead of the typical .p12 key.
+  * Updated: Documentation to show how to use an account that is not a G Suite admin or G Suite user at all with PSGSuite
+  * Updated: `*-PSGSuiteConfig` commands now store the client_secrets.json string contents directly on the encrypted config once provided either the path or the string contents directly, allowing users to remove any plain text credentials once loaded into the encrypted config.
+  * Updated: `Get-GSToken` now uses `New-GoogleService` under the hood, so `client_secrets.json` will work with Contacts API.
 
 #### 2.21.0
 

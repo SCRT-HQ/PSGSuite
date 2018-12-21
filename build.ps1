@@ -30,14 +30,16 @@ function Resolve-Module {
 
         $PSDefaultParameterValues = @{
             '*-Module:Verbose' = $false
+            'Find-Module:Repository' = 'PSGallery'
+            'Import-Module:ErrorAction' = 'Stop'
+            'Import-Module:Verbose' = $false
+            'Import-Module:Force' = $true
             'Install-Module:ErrorAction' = 'Stop'
             'Install-Module:Force' = $true
             'Install-Module:Scope' = 'CurrentUser'
             'Install-Module:Verbose' = $false
             'Install-Module:AllowClobber' = $true
-            'Import-Module:ErrorAction' = 'Stop'
-            'Import-Module:Verbose' = $false
-            'Import-Module:Force' = $true
+            'Install-Module:Repository' = 'PSGallery'
         }
     }
 

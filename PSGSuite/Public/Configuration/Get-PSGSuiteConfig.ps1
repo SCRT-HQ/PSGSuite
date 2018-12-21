@@ -2,24 +2,24 @@ function Get-PSGSuiteConfig {
     <#
     .SYNOPSIS
     Loads the specified PSGSuite config
-    
+
     .DESCRIPTION
     Loads the specified PSGSuite config
-    
+
     .PARAMETER ConfigName
     The config name to load
-    
+
     .PARAMETER Path
     The path of the config to load if non-default.
 
     This can be used to load either a legacy XML config from an older version of PSGSuite or a specific .PSD1 config created with version 2.0.0 or greater
-    
+
     .PARAMETER Scope
     The config scope to load
-    
+
     .PARAMETER PassThru
     If specified, returns the config after loading it
-    
+
     .EXAMPLE
     Get-PSGSuiteConfig personalDomain -PassThru
 
@@ -88,6 +88,7 @@ function Get-PSGSuiteConfig {
         Select-Object -Property @{l = 'ConfigName';e = {$choice}},
                                 @{l = 'P12KeyPath';e = {Decrypt $_.P12KeyPath}},
                                 @{l = 'ClientSecretsPath';e = {Decrypt $_.ClientSecretsPath}},
+                                @{l = 'ClientSecrets';e = {Decrypt $_.ClientSecrets}},
                                 @{l = 'AppEmail';e = {Decrypt $_.AppEmail}},
                                 @{l = 'AdminEmail';e = {Decrypt $_.AdminEmail}},
                                 @{l = 'CustomerID';e = {Decrypt $_.CustomerID}},
