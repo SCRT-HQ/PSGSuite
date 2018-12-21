@@ -24,13 +24,27 @@ function New-GoogleService {
                     }
                 ).FromCertificate($certificate)
             }
-            elseif ($script:PSGSuite.ClientSecretsPath) {
+            elseif ($script:PSGSuite.ClientSecretsPath -or $script:PSGSuite.ClientSecrets) {
+                $ClientSecretsScopes = @(
+                    'https://www.google.com/m8/feeds'
+                    'https://mail.google.com'
+                    'https://www.googleapis.com/auth/gmail.settings.basic'
+                    'https://www.googleapis.com/auth/gmail.settings.sharing'
+                    'https://www.googleapis.com/auth/calendar'
+                    'https://www.googleapis.com/auth/drive'
+                    'https://www.googleapis.com/auth/tasks'
+                    'https://www.googleapis.com/auth/tasks.readonly'
+                )
+                if (!$script:PSGSuite.ClientSecrets) {
+                    $script:PSGSuite.ClientSecrets = (Get-Content $script:PSGSuite.ClientSecretsPath -Raw)
+                    Set-PSGSuiteConfig -ConfigName $script:PSGSuite.ConfigName -ClientSecretsPath $script:PSGSuite.ClientSecretsPath -Verbose:$false
+                }
                 Write-Verbose "Building UserCredentials from ClientSecrets as user '$User'"
-                $stream = New-Object System.IO.FileStream $script:PSGSuite.ClientSecretsPath,'Open','Read'
+                $stream = New-Object System.IO.MemoryStream $([System.Text.Encoding]::ASCII.GetBytes(($script:PSGSuite.ClientSecrets))),$null
                 $credPath = Join-Path (Resolve-Path (Join-Path "~" ".scrthq")) "PSGSuite"
                 $credential = [Google.Apis.Auth.OAuth2.GoogleWebAuthorizationBroker]::AuthorizeAsync(
                     [Google.Apis.Auth.OAuth2.GoogleClientSecrets]::Load($stream).Secrets,
-                    [string[]]$Scope,
+                    [string[]]$ClientSecretsScopes,
                     $User,
                     [System.Threading.CancellationToken]::None,
                     [Google.Apis.Util.Store.FileDataStore]::new($credPath,$true)

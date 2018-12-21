@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.21.1](#2211)
   * [2.21.0](#2210)
   * [2.20.2](#2202)
   * [2.20.1](#2201)
@@ -64,6 +65,14 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.21.1
+
+* [Issue #131](https://github.com/scrthq/PSGSuite/issues/131) - _Free/standard Google Account support_
+  * Fixed: Handling of scopes in `New-GoogleService` for authentication when a client_secrets.json file is used instead of the typical .p12 key.
+  * Updated: Documentation to show how to use an account that is not a G Suite admin or G Suite user at all with PSGSuite
+  * Updated: `*-PSGSuiteConfig` commands now store the client_secrets.json string contents directly on the encrypted config once provided either the path or the string contents directly, allowing users to remove any plain text credentials once loaded into the encrypted config.
+  * Updated: `Get-GSToken` now uses `New-GoogleService` under the hood, so `client_secrets.json` will work with Contacts API.
 
 ## 2.21.0
 
