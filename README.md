@@ -136,6 +136,11 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.21.2
+
+* [Issue #136](https://github.com/scrthq/PSGSuite/issues/136)
+  * Fixed: `Start-GSDriveFileUpload` failing when specifying a user other than the Admin user to do the upload as.
+
 #### 2.21.1
 
 * [Issue #131](https://github.com/scrthq/PSGSuite/issues/131) - _Free/standard Google Account support_

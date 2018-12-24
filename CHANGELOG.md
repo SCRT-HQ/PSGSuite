@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.21.2](#2212)
   * [2.21.1](#2211)
   * [2.21.0](#2210)
   * [2.20.2](#2202)
@@ -65,6 +66,11 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.21.2
+
+* [Issue #136](https://github.com/scrthq/PSGSuite/issues/136)
+  * Fixed: `Start-GSDriveFileUpload` failing when specifying a user other than the Admin user to do the upload as.
 
 ## 2.21.1
 
