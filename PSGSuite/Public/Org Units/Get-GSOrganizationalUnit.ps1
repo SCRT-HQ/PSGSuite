@@ -2,13 +2,13 @@ function Get-GSOrganizationalUnit {
     <#
     .SYNOPSIS
     Gets Organizational Unit information
-    
+
     .DESCRIPTION
     Gets Organizational Unit information
-    
+
     .PARAMETER SearchBase
     The OrgUnitPath you would like to search for. This can be the single OrgUnit to return or the top level of which to return children of
-    
+
     .PARAMETER SearchScope
     The depth at which to return the list of OrgUnits children
 
@@ -20,12 +20,13 @@ function Get-GSOrganizationalUnit {
     * "Children": same as OneLevel
 
     Defaults to 'All'
-    
+
     .EXAMPLE
     Get-GSOrganizationalUnit -SearchBase "/" -SearchScope Base
 
     Gets the top level Organizational Unit information
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.OrgUnit')]
     [cmdletbinding()]
     Param
     (

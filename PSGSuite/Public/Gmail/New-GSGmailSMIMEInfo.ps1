@@ -2,30 +2,31 @@ function New-GSGmailSMIMEInfo {
     <#
     .SYNOPSIS
     Adds Gmail S/MIME info
-    
+
     .DESCRIPTION
     Adds Gmail S/MIME info
-    
+
     .PARAMETER SendAsEmail
     The email address that appears in the "From:" header for mail sent using this alias.
-    
+
     .PARAMETER Pkcs12
     PKCS#12 format containing a single private/public key pair and certificate chain. This format is only accepted from client for creating a new SmimeInfo and is never returned, because the private key is not intended to be exported. PKCS#12 may be encrypted, in which case encryptedKeyPassword should be set appropriately.
-    
+
     .PARAMETER EncryptedKeyPassword
     Encrypted key password, when key is encrypted.
 
     .PARAMETER IsDefault
     Whether this SmimeInfo is the default one for this user's send-as address.
-    
+
     .PARAMETER User
     The user's email address
-    
+
     .EXAMPLE
     New-GSGmailSMIMEInfo -SendAsEmail 'joe@otherdomain.com' -Pkcs12 .\MyCert.pfx -User joe@domain.com
 
     Creates a specified S/MIME for Joe's SendAsEmail 'joe@otherdomain.com' using the provided PKCS12 certificate
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.SmimeInfo')]
     [cmdletbinding()]
     Param
     (

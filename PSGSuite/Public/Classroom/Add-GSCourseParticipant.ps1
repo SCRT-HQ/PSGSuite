@@ -33,6 +33,7 @@ function Add-GSCourseParticipant {
     .EXAMPLE
     Add-GSCourseParticipant -CourseId 'architecture-101' -Student plato@athens.edu,aristotle@athens.edu -Teacher zeus@athens.edu
     #>
+    [OutputType('Google.Apis.Classroom.v1.Data.Student')]
     [cmdletbinding()]
     Param
     (

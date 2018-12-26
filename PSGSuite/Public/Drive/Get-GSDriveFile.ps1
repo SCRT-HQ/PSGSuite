@@ -39,6 +39,7 @@ function Get-GSDriveFile {
 
     Gets the information for the file and saves the file in the current working directory
     #>
+    [OutputType('Google.Apis.Drive.v3.Data.File')]
     [cmdletbinding(DefaultParameterSetName = "Depth")]
     Param
     (

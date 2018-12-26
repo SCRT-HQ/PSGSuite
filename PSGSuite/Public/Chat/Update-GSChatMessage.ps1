@@ -2,7 +2,7 @@ function Update-GSChatMessage {
     <#
     .SYNOPSIS
     Updates a Chat message, i.e. for a CardClicked response
-    
+
     .DESCRIPTION
     Updates a Chat message, i.e. for a CardClicked response
 
@@ -55,13 +55,13 @@ function Update-GSChatMessage {
     Add-GSChatKeyValue -TopLabel "Chocolate Budget" -Content '$5.00' -Icon DOLLAR |
     Add-GSChatKeyValue -TopLabel "Actual Spending" -Content '$5,000,000!' -BottomLabel "WTF" -Icon AIRPLANE |
     Add-GSChatImage -ImageUrl "https://media.tenor.com/images/f78545a9b520ecf953578b4be220f26d/tenor.gif" -LinkImage |
-    Add-GSChatCardSection -SectionHeader "Dollar bills, y'all" -OutVariable sect1 | 
-    Add-GSChatButton -Text "Launch nuke" -OnClick (Add-GSChatOnClick -Url "https://github.com/scrthq/PSGSuite") -Verbose -OutVariable button1 | 
-    Add-GSChatButton -Text "Unleash hounds" -OnClick (Add-GSChatOnClick -Url "https://admin.google.com/?hl=en&authuser=0") -Verbose -OutVariable button2 | 
-    Add-GSChatCardSection -SectionHeader "What should we do?" -OutVariable sect2 | 
+    Add-GSChatCardSection -SectionHeader "Dollar bills, y'all" -OutVariable sect1 |
+    Add-GSChatButton -Text "Launch nuke" -OnClick (Add-GSChatOnClick -Url "https://github.com/scrthq/PSGSuite") -Verbose -OutVariable button1 |
+    Add-GSChatButton -Text "Unleash hounds" -OnClick (Add-GSChatOnClick -Url "https://admin.google.com/?hl=en&authuser=0") -Verbose -OutVariable button2 |
+    Add-GSChatCardSection -SectionHeader "What should we do?" -OutVariable sect2 |
     Add-GSChatCard -HeaderTitle "Makin' moves with" -HeaderSubtitle "DEM GOODIES" -OutVariable card |
-    Add-GSChatTextParagraph -Text "This message sent by <b>PSGSuite</b> via WebHook!" | 
-    Add-GSChatCardSection -SectionHeader "Additional Info" -OutVariable sect2 | 
+    Add-GSChatTextParagraph -Text "This message sent by <b>PSGSuite</b> via WebHook!" |
+    Add-GSChatCardSection -SectionHeader "Additional Info" -OutVariable sect2 |
     Send-GSChatMessage -Text "Got that report, boss:" -FallbackText "Mistakes have been made..." -Webhook ReportRoom
 
     This example shows the pipeline capabilities of the Chat functions in PSGSuite. Starting from top to bottom:
@@ -85,6 +85,7 @@ function Update-GSChatMessage {
 
     This gets the first 5 Services returned by Get-Service, creates KeyValue widgets for each, wraps it in a section with a header, then sends it to the Reports Webhook
     #>
+    [OutputType('Google.Apis.HangoutsChat.v1.Data.Message')]
     [cmdletbinding(DefaultParameterSetName = "Update")]
     Param
     (

@@ -2,20 +2,21 @@ function Get-GSGmailAutoForwardingSettings {
     <#
     .SYNOPSIS
     Gets AutoForwarding settings
-    
+
     .DESCRIPTION
     Gets AutoForwarding settings
-    
+
     .PARAMETER User
     The user to get the AutoForwarding settings for
 
     Defaults to the AdminEmail user
-    
+
     .EXAMPLE
     Get-GSGmailAutoForwardingSettings
 
     Gets the AutoForwarding settings for the AdminEmail user
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.AutoForwarding')]
     [cmdletbinding()]
     Param
     (

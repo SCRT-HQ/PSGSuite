@@ -2,20 +2,21 @@ function Get-GSGmailProfile {
     <#
     .SYNOPSIS
     Gets Gmail profile for the user
-    
+
     .DESCRIPTION
     Gets Gmail profile for the user
-    
+
     .PARAMETER User
     The user to get profile of
 
     Defaults to the AdminEmail user
-    
+
     .EXAMPLE
     Get-GSGmailProfile
 
     Gets the Gmail profile of the AdminEmail user
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.Profile')]
     [cmdletbinding()]
     Param
     (

@@ -23,6 +23,7 @@
 
     Provide Peter delegate access to Tony's inbox.
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.Delegate')]
     [cmdletbinding()]
     Param
     (

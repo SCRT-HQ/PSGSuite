@@ -2,20 +2,21 @@ function Get-GSDriveProfile {
     <#
     .SYNOPSIS
     Gets Drive profile for the user
-    
+
     .DESCRIPTION
     Gets Drive profile for the user
-    
+
     .PARAMETER User
     The user to get profile of
 
     Defaults to the AdminEmail user
-    
+
     .EXAMPLE
     Get-GSDriveProfile
 
     Gets the Drive profile of the AdminEmail user
     #>
+    [OutputType('Google.Apis.Drive.v3.Data.About')]
     [cmdletbinding()]
     Param
     (

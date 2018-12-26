@@ -182,6 +182,7 @@ function Update-GSGmailLabel {
 
     Updates all labels with LabelListVisibility of 'labelShowIfUnread' with new background and text colors and sets all of them to always show
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.Label')]
     [cmdletbinding()]
     Param
     (

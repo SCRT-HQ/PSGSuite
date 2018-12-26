@@ -2,36 +2,37 @@
     <#
     .SYNOPSIS
     Updates an OrgUnit
-    
+
     .DESCRIPTION
     Updates an Organizational Unit
-    
+
     .PARAMETER OrgUnitID
     The unique Id of the OrgUnit to update
-    
+
     .PARAMETER OrgUnitPath
     The path of the OrgUnit to update
-    
+
     .PARAMETER Name
     The new name for the OrgUnit
-    
+
     .PARAMETER ParentOrgUnitId
     The new Parent ID for the OrgUnit
-    
+
     .PARAMETER ParentOrgUnitPath
     The path of the new Parent for the OrgUnit
-    
+
     .PARAMETER Description
     The new description for the OrgUnit
-    
+
     .PARAMETER BlockInheritance
     Determines if a sub-organizational unit can inherit the settings of the parent organization. The default value is false, meaning a sub-organizational unit inherits the settings of the nearest parent organizational unit. For more information on inheritance and users in an organization structure, see the administration help center: http://support.google.com/a/bin/answer.py?hl=en&answer=182442&topic=1227584&ctx=topic
-    
+
     .EXAMPLE
     Update-GSOrganizationalUnit -OrgUnitPath "/Testing" -Name "Testing More" -Description "Doing some more testing"
 
     Updates the OrgUnit '/Testing' with a new name "Testing More" and new description "Doing some more testing"
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.OrgUnit')]
     [cmdletbinding(DefaultParameterSetName = "Id")]
     Param
     (

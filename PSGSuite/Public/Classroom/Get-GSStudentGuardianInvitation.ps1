@@ -37,6 +37,7 @@ function Get-GSStudentGuardianInvitation {
 
     Gets the list of guardian invitations for this student.
     #>
+    [OutputType('Google.Apis.Classroom.v1.Data.GuardianInvitation')]
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (

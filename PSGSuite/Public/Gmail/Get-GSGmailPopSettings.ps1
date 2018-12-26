@@ -2,20 +2,21 @@ function Get-GSGmailPopSettings {
     <#
     .SYNOPSIS
     Gets POP settings
-    
+
     .DESCRIPTION
     Gets POP settings
-    
+
     .PARAMETER User
     The user to get the POP settings for
 
     Defaults to the AdminEmail user
-    
+
     .EXAMPLE
     Get-GSGmailPopSettings
 
     Gets the POP settings for the AdminEmail user
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.PopSettings')]
     [cmdletbinding()]
     Param
     (

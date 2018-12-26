@@ -27,6 +27,7 @@
 
     Transfers all of Joe's data to Mark
     #>
+    [OutputType('Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfer')]
     [cmdletbinding()]
     Param (
         [parameter(Mandatory=$true,Position=0)]

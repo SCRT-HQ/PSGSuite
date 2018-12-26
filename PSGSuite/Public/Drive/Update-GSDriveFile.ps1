@@ -2,28 +2,28 @@ function Update-GSDriveFile {
     <#
     .SYNOPSIS
     Updates the metadata for a Drive file
-    
+
     .DESCRIPTION
     Updates the metadata for a Drive file
-    
+
     .PARAMETER FileId
     The unique Id of the Drive file to Update
-    
+
     .PARAMETER Path
     The path to the local file whose content you would like to upload to Drive.
-    
+
     .PARAMETER Name
     The new name of the Drive file
-    
+
     .PARAMETER Description
     The new description of the Drive file
-    
+
     .PARAMETER AddParents
     The parent Ids to add
-    
+
     .PARAMETER RemoveParents
     The parent Ids to remove
-    
+
     .PARAMETER Projection
     The defined subset of fields to be returned
 
@@ -32,23 +32,24 @@ function Update-GSDriveFile {
     * "Standard"
     * "Full"
     * "Access"
-    
+
     .PARAMETER Fields
     The specific fields to returned
-    
+
     .PARAMETER User
     The email or unique Id of the Drive file owner
-    
+
     .EXAMPLE
     Update-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -Name "To-Do Progress"
 
     Updates the Drive file with a new name, "To-Do Progress"
-    
+
     .EXAMPLE
     Update-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -Path "C:\Pics\NewPic.png"
 
     Updates the Drive file with the content of the file at that path. In this example, the Drive file is a PNG named "Test.png". This will change the content of the file in Drive to match NewPic.png as well as rename it to "NewPic.png"
     #>
+    [OutputType('Google.Apis.Drive.v3.Data.File')]
     [cmdletbinding(DefaultParameterSetName = "Depth")]
     Param
     (

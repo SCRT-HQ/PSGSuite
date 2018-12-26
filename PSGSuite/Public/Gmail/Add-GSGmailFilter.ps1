@@ -2,62 +2,63 @@
     <#
     .SYNOPSIS
     Adds a new Gmail filter
-    
+
     .DESCRIPTION
     Adds a new Gmail filter
-    
+
     .PARAMETER User
     The email of the user you are adding the filter for
-    
+
     .PARAMETER From
     The sender's display name or email address.
-    
+
     .PARAMETER To
     The recipient's display name or email address. Includes recipients in the "to", "cc", and "bcc" header fields. You can use simply the local part of the email address. For example, "example" and "example@" both match "example@gmail.com". This field is case-insensitive
-    
+
     .PARAMETER Subject
     Case-insensitive phrase found in the message's subject. Trailing and leading whitespace are be trimmed and adjacent spaces are collapsed
-    
+
     .PARAMETER Query
     Only return messages matching the specified query. Supports the same query format as the Gmail search box. For example, "from:someuser@example.com rfc822msgid: is:unread"
-    
+
     .PARAMETER NegatedQuery
     Only return messages not matching the specified query. Supports the same query format as the Gmail search box. For example, "from:someuser@example.com rfc822msgid: is:unread"
-    
+
     .PARAMETER HasAttachment
     Whether the message has any attachment
-    
+
     .PARAMETER ExcludeChats
     Whether the response should exclude chats
-    
+
     .PARAMETER AddLabelIDs
     List of labels to add to the message
-    
+
     .PARAMETER RemoveLabelIDs
     List of labels to remove from the message
-    
+
     .PARAMETER Forward
     Email address that the message should be forwarded to
-    
+
     .PARAMETER Size
     The size of the entire RFC822 message in bytes, including all headers and attachments
-    
+
     .PARAMETER SizeComparison
-    How the message size in bytes should be in relation to the size field. 
+    How the message size in bytes should be in relation to the size field.
 
     Acceptable values are:
     * "larger"
     * "smaller"
     * "unspecified"
-    
+
     .PARAMETER Raw
     If $true, returns the raw response. If not passed or -Raw:$false, response is formatted as a flat object for readability
-    
+
     .EXAMPLE
     Add-GSGmailFilter -To admin@domain.com -ExcludeChats -Forward "admin_directMail@domain.com"
 
     Adds a filter for the AdminEmail user to forward all mail sent directly to the to "admin_directMail@domain.com"
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.Filter')]
     [cmdletbinding()]
     Param
     (

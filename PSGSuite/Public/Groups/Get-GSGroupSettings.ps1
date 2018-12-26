@@ -2,20 +2,21 @@ function Get-GSGroupSettings {
     <#
     .SYNOPSIS
     Gets a group's settings
-    
+
     .DESCRIPTION
     Gets a group's settings
-    
+
     .PARAMETER Identity
     The email of the group
 
     If only the email name-part is passed, the full email will be contstructed using the Domain from the active config
-    
+
     .EXAMPLE
     Get-GSGroupSettings admins
 
     Gets the group settings for admins@domain.com
     #>
+    [OutputType('Google.Apis.Groupssettings.v1.Data.Groups')]
     [cmdletbinding()]
     Param
     (

@@ -2,27 +2,28 @@ function Get-GSUserLicense {
     <#
     .SYNOPSIS
     Gets the G Suite license information for a user or list of users
-    
+
     .DESCRIPTION
     Gets the G Suite license information for a user or list of users
-    
+
     .PARAMETER User
-    The primary email or unique Id of the user to retrieve license information for 
-    
+    The primary email or unique Id of the user to retrieve license information for
+
     .PARAMETER License
     The license SKU to retrieve information for. If excluded, searches all license SKUs
-    
+
     .PARAMETER ProductID
     The product Id to list licenses for
-    
+
     .PARAMETER PageSize
     The page size of the result set
-    
+
     .EXAMPLE
     Get-GSUserLicense
 
     Gets the full list of licenses for the customer
     #>
+    [OutputType('Google.Apis.Licensing.v1.Data.LicenseAssignment')]
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (
@@ -103,7 +104,7 @@ function Get-GSUserLicense {
                                     $request = $service.LicenseAssignments.Get($productHash[$License],$License,$U)
                                     $response = $request.Execute()
                                 }
-                                catch { 
+                                catch {
                                 }
                                 if ($response) {
                                     break

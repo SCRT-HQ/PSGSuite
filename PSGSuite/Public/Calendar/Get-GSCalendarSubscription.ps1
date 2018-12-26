@@ -2,23 +2,24 @@ function Get-GSCalendarSubscription {
     <#
     .SYNOPSIS
     Gets a subscribed calendar from a users calendar list. Returns the full calendar list if no CalendarId is specified.
-    
+
     .DESCRIPTION
     Gets a subscribed calendar from a users calendar list. Returns the full calendar list if no CalendarId is specified.
-    
+
     .PARAMETER User
     The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
 
     Defaults to the AdminEmail in the config
-    
+
     .PARAMETER CalendarID
     The calendar ID of the calendar you would like to get info for. If left blank, returns the list of calendars the user is subscribed to.
-    
+
     .EXAMPLE
     Get-GSCalendarSubscription
 
     Gets the AdminEmail user's calendar list
     #>
+    [OutputType('Google.Apis.Calendar.v3.Data.CalendarListEntry')]
     [cmdletbinding()]
     Param
     (

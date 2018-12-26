@@ -2,23 +2,24 @@ function Get-GSGmailForwardingAddress {
     <#
     .SYNOPSIS
     Gets Gmail forwarding address information for the user
-    
+
     .DESCRIPTION
     Gets Gmail forwarding address information for the user
-    
+
     .PARAMETER ForwardingAddress
     The forwarding address you would like to get info for. If excluded, gets the list of forwarding addresses and their info for the user
-    
+
     .PARAMETER User
     The user to get the forwarding addresses for
 
     Defaults to the AdminEmail user
-    
+
     .EXAMPLE
     Get-GSGmailForwardingAddress
 
     Gets the list of forwarding addresses for the AdminEmail user
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.ForwardingAddress')]
     [cmdletbinding()]
     Param
     (

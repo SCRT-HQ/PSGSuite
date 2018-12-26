@@ -50,6 +50,7 @@ function New-GSCourse {
     .EXAMPLE
     New-GSCourse -Name "The Rebublic" -OwnerId plato@athens.edu -Id the-republic-s01 -Section s01 -DescriptionHeading "The definition of justice, the order and character of the just city-state and the just man" -Room academy-01
     #>
+    [OutputType('Google.Apis.Classroom.v1.Data.Course')]
     [cmdletbinding()]
     Param
     (

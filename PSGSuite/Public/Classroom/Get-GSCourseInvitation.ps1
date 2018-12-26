@@ -25,6 +25,7 @@ function Get-GSCourseInvitation {
     .EXAMPLE
     Get-GSCourseInvitation -CourseId philosophy-101
     #>
+    [OutputType('Google.Apis.Classroom.v1.Data.Invitation')]
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (

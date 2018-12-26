@@ -2,21 +2,22 @@ function Set-GSUserLicense {
     <#
     .SYNOPSIS
     Sets the license for a user
-    
+
     .DESCRIPTION
     Sets the license for a user
-    
+
     .PARAMETER User
     The user's current primary email address
-    
+
     .PARAMETER License
     The license SKU to set for the user
-    
+
     .EXAMPLE
     Set-GSUserLicense -User joe -License Google-Apps-For-Business
 
     Sets Joe to a Google-Apps-For-Business license
     #>
+    [OutputType('Google.Apis.Licensing.v1.Data.LicenseAssignment')]
     [cmdletbinding()]
     Param
     (

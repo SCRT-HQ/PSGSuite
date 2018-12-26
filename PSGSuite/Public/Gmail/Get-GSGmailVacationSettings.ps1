@@ -2,20 +2,21 @@ function Get-GSGmailVacationSettings {
     <#
     .SYNOPSIS
     Gets Vacation settings
-    
+
     .DESCRIPTION
     Gets Vacation settings
-    
+
     .PARAMETER User
     The user to get the Vacation settings for
 
     Defaults to the AdminEmail user
-    
+
     .EXAMPLE
     Get-GSGmailVacationSettings
 
     Gets the Vacation settings for the AdminEmail user
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.VacationSettings')]
     [cmdletbinding()]
     Param
     (

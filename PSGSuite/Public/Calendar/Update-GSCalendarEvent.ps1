@@ -80,6 +80,7 @@ function Update-GSCalendarEvent {
 
     Creates an event titled "Go to the gym" for 9-10PM the day the function is ran.
     #>
+    [OutputType('Google.Apis.Calendar.v3.Data.Event')]
     [cmdletbinding(DefaultParameterSetName = "AttendeeEmails")]
     Param
     (
