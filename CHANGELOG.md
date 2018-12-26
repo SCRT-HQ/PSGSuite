@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.21.3](#2213)
   * [2.21.2](#2212)
   * [2.21.1](#2211)
   * [2.21.0](#2210)
@@ -66,6 +67,13 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.21.3
+
+* [Issue #131](https://github.com/scrthq/PSGSuite/issues/131)
+  * Fixed: Changed `CodeReceiver` to use `PromptCodeReceiver` when client is PowerShell Core, as `LocalServerCodeReceiver` does not appear to redirect correctly and auth fails. Same behavior in Core regardless of OS.
+* Miscellaneous
+  * Added: `OutputType` to all functions that return standard objects.
 
 ## 2.21.2
 

@@ -136,6 +136,13 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.21.3
+
+* [Issue #131](https://github.com/scrthq/PSGSuite/issues/131)
+  * Fixed: Changed `CodeReceiver` to use `PromptCodeReceiver` when client is PowerShell Core, as `LocalServerCodeReceiver` does not appear to redirect correctly and auth fails. Same behavior in Core regardless of OS.
+* Miscellaneous
+  * Added: `OutputType` to all functions that return standard objects.
+
 #### 2.21.2
 
 * [Issue #136](https://github.com/scrthq/PSGSuite/issues/136)
