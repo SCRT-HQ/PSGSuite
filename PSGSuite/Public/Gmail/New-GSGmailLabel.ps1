@@ -174,6 +174,7 @@ function New-GSGmailLabel {
 
     Adds the label "Label1" to the AdminEmail
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.Label')]
     [cmdletbinding()]
     Param
     (

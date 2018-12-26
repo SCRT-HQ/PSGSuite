@@ -2,21 +2,22 @@ function New-GSGroupAlias {
     <#
     .SYNOPSIS
     Creates a new alias for a G Suite group
-    
+
     .DESCRIPTION
     Creates a new alias for a G Suite group
-    
+
     .PARAMETER Group
     The group to create the alias for
-    
+
     .PARAMETER Alias
     The alias or list of aliases to create for the group
-    
+
     .EXAMPLE
     New-GSGroupAlias -Group humanresources@domain.com -Alias 'hr@domain.com','hrhelp@domain.com'
 
     Creates 2 new aliases for group Human Resources as 'hr@domain.com' and 'hrhelp@domain.com'
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Alias')]
     [cmdletbinding()]
     Param
     (

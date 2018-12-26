@@ -19,6 +19,7 @@ function Get-GSClassroomUserProfile {
     .EXAMPLE
     Get-GSClassroomUserProfile -UserId aristotle@athens.edu
     #>
+    [OutputType('Google.Apis.Classroom.v1.Data.UserProfile')]
     [cmdletbinding()]
     Param
     (

@@ -29,6 +29,7 @@ function New-GSCourseInvitation {
     .EXAMPLE
     New-GSCourseInvitation -CourseId philosophy-101 -UserId aristotle@athens.edu -Role TEACHER
     #>
+    [OutputType('Google.Apis.Classroom.v1.Data.Invitation')]
     [cmdletbinding()]
     Param
     (

@@ -2,16 +2,16 @@
     <#
     .SYNOPSIS
     Gets the list of Mobile Devices registered for the user's account
-    
+
     .DESCRIPTION
     Gets the list of Mobile Devices registered for the user's account
-    
+
     .PARAMETER User
     The user that you would like to retrieve the Mobile Device list for. If no user is specified, it will list all of the Mobile Devices of the CustomerID
-    
+
     .PARAMETER Filter
     Search string in the format given at: http://support.google.com/a/bin/answer.py?hl=en&answer=1408863#search
-    
+
     .PARAMETER Projection
     Restrict information returned to a set of selected fields.
 
@@ -20,12 +20,12 @@
     * "FULL": Includes all metadata fields
 
     Defauls to "FULL"
-    
+
     .PARAMETER PageSize
     Page size of the result set
-    
+
     .PARAMETER OrderBy
-    Device property to use for sorting results. 
+    Device property to use for sorting results.
 
     Acceptable values are:
     * "deviceId": The serial number for a Google Sync mobile device. For Android devices, this is a software generated unique identifier.
@@ -36,19 +36,20 @@
     * "os": The device's operating system.
     * "status": The device status.
     * "type": Type of the device.
-    
+
     .PARAMETER SortOrder
     Whether to return results in ascending or descending order. Must be used with the OrderBy parameter.
 
     Acceptable values are:
     * "ASCENDING": Ascending order.
     * "DESCENDING": Descending order.
-    
+
     .EXAMPLE
     Get-GSMobileDevice
 
     Gets the Mobile Device list for the AdminEmail
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.MobileDevice')]
     [cmdletbinding(DefaultParameterSetName = "User")]
     Param
     (

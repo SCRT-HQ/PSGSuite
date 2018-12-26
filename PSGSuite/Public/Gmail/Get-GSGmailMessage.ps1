@@ -2,24 +2,24 @@ function Get-GSGmailMessage {
     <#
     .SYNOPSIS
     Gets Gmail message details
-    
+
     .DESCRIPTION
     Gets Gmail message details
-    
+
     .PARAMETER User
     The primary email of the user who owns the message
 
     Defaults to the AdminEmail user
-    
+
     .PARAMETER Id
     The Id of the message to retrieve info for
-    
+
     .PARAMETER ParseMessage
     If $true, returns the parsed raw message
-    
+
     .PARAMETER SaveAttachmentsTo
     If the message has attachments, the path to save the attachments to. If excluded, attachments are not saved locally
-    
+
     .PARAMETER Format
     The format of the message metadata to retrieve
 
@@ -30,12 +30,13 @@ function Get-GSGmailMessage {
     * "Raw"
 
     Defaults to "Full", but forces -Format as "Raw" if -ParseMessage or -SaveAttachmentsTo are used
-    
+
     .EXAMPLE
     Get-GSGmailMessage -Id 1615f9a6ee36cb5b -ParseMessage
 
     Gets the full message details for the provided Id and parses out the raw MIME message content
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.Message')]
     [cmdletbinding(DefaultParameterSetName = "Format")]
     Param
     (

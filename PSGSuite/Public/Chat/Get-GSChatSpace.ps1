@@ -2,22 +2,23 @@ function Get-GSChatSpace {
     <#
     .SYNOPSIS
     Gets a Chat space
-    
+
     .DESCRIPTION
     Gets a Chat space
-    
+
     .PARAMETER Space
     The resource name of the space for which membership list is to be fetched, in the form "spaces".
 
     If left blank, returns the list of spaces the bot is a member of
 
     Example: spaces/AAAAMpdlehY
-    
+
     .EXAMPLE
     Get-GSChatSpace
 
     Gets the list of Chat spaces the bot is a member of
     #>
+    [OutputType('Google.Apis.HangoutsChat.v1.Data.Space')]
     [cmdletbinding()]
     Param
     (
@@ -94,7 +95,7 @@ function Get-GSChatSpace {
         $spaceArray | ForEach-Object {
             if ($_.DisplayName) {
                 $spaceHashArray += @{$_.DisplayName = $_.Name}
-                
+
             }
             else {
                 $member = Get-GSChatMember -Space $_.Name -Verbose:$false

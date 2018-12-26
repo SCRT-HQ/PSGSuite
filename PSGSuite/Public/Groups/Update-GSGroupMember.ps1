@@ -35,6 +35,7 @@ function Update-GSGroupMember {
 
     Updates the delivery preference for all members of group 'myGroup@domain.com' to 'ALL_MAIL'
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Member')]
     [cmdletbinding()]
     Param
     (

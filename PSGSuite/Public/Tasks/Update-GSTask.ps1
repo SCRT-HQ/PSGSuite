@@ -2,47 +2,48 @@ function Update-GSTask {
     <#
     .SYNOPSIS
     Updates a Task
-    
+
     .DESCRIPTION
     Updates a Task
-    
+
     .PARAMETER Tasklist
     The Id of the Tasklist the Task is on
-    
+
     .PARAMETER Task
     The Id of the Task
-    
+
     .PARAMETER Title
     The title of the Task
-    
+
     .PARAMETER Completed
     The DateTime of the task completion
-    
+
     .PARAMETER Due
     The DateTime of the task due date
-    
+
     .PARAMETER Notes
     Notes describing the task
-    
+
     .PARAMETER Status
     Status of the task. This is either "needsAction" or "completed".
 
     .PARAMETER Parent
-    Parent task identifier. If the task is created at the top level, this parameter is omitted. 
+    Parent task identifier. If the task is created at the top level, this parameter is omitted.
 
     .PARAMETER Previous
     Previous sibling task identifier. If the task is created at the first position among its siblings, this parameter is omitted.
-    
+
     .PARAMETER User
     The User who owns the Task
 
     Defaults to the AdminUser's email.
-    
+
     .EXAMPLE
     Update-GSTask -Title 'Return Ben Crawford's call -Tasklist MTA3NjIwMjA1NTEzOTk0MjQ0OTk6ODEzNTI1MjE3ODk0MTY2MDow -Task 'MTA3NjIwMjA1NTEzOTk0MjQ0OTk6MDo4MjM4NDQ2MDA0MzIxMDEx' -Status completed
 
     Updates the specified Task's title and marks it as completed
     #>
+    [OutputType('Google.Apis.Tasks.v1.Data.Task')]
     [cmdletbinding()]
     Param
     (

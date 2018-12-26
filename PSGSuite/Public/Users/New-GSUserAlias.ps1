@@ -2,21 +2,22 @@ function New-GSUserAlias {
     <#
     .SYNOPSIS
     Creates a new alias for a G Suite user
-    
+
     .DESCRIPTION
     Creates a new alias for a G Suite user
-    
+
     .PARAMETER User
     The user to create the alias for
-    
+
     .PARAMETER Alias
     The alias or list of aliases to create for the user
-    
+
     .EXAMPLE
     New-GSUserAlias -User john.smith@domain.com -Alias 'jsmith@domain.com','johns@domain.com'
 
     Creates 2 new aliases for user John Smith as 'jsmith@domain.com' and 'johns@domain.com'
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Alias')]
     [cmdletbinding()]
     Param
     (

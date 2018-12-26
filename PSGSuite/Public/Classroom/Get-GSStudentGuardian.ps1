@@ -26,6 +26,7 @@ function Get-GSStudentGuardian {
 
     Gets the list of guardians for all students.
     #>
+    [OutputType('Google.Apis.Classroom.v1.Data.Guardian')]
     [cmdletbinding()]
     Param
     (

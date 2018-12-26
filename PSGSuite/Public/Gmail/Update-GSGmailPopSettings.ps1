@@ -2,24 +2,24 @@ function Update-GSGmailPopSettings {
     <#
     .SYNOPSIS
     Updates POP settings
-    
+
     .DESCRIPTION
     Updates POP settings
-    
+
     .PARAMETER User
     The user to update the POP settings for
-    
+
     .PARAMETER AccessWindow
-    The range of messages which are accessible via POP. 
+    The range of messages which are accessible via POP.
 
     Acceptable values are:
     * "accessWindowUnspecified": Unspecified range.
     * "allMail": Indicates that all unfetched messages are accessible via POP.
     * "disabled": Indicates that no messages are accessible via POP.
     * "fromNowOn": Indicates that unfetched messages received after some past point in time are accessible via POP.
-    
+
     .PARAMETER Disposition
-    The action that will be executed on a message after it has been fetched via POP. 
+    The action that will be executed on a message after it has been fetched via POP.
 
     Acceptable values are:
     * "archive": Archive the message.
@@ -27,12 +27,13 @@ function Update-GSGmailPopSettings {
     * "leaveInInbox": Leave the message in the INBOX.
     * "markRead": Leave the message in the INBOX and mark it as read.
     * "trash": Move the message to the TRASH.
-    
+
     .EXAMPLE
     Update-GSGmailPopSettings -User me -AccessWindow allMail
 
     Sets the POP AccessWindow to 'allMail' for the AdminEmail user
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.PopSettings')]
     [cmdletbinding()]
     Param
     (

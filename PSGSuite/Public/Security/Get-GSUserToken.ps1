@@ -2,23 +2,24 @@
     <#
     .SYNOPSIS
     Gets security tokens for a user
-    
+
     .DESCRIPTION
     Gets security tokens for a user
-    
+
     .PARAMETER User
     The primary email or UserID of the user who you are trying to get info for. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
 
     Defaults to the AdminEmail in the config
-    
+
     .PARAMETER ClientId
     The Id of the client you are trying to get token info for. If excluded, gets the full list of tokens for the user
-    
+
     .EXAMPLE
     Get-GSUserToken -ClientId "Google Chrome"
 
     Gets the token info for "Google Chrome" for the AdminEmail user
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Token')]
     [cmdletbinding()]
     Param
     (

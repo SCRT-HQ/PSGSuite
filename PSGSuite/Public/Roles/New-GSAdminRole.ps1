@@ -2,29 +2,30 @@ function New-GSAdminRole {
     <#
     .SYNOPSIS
     Creates a new Admin Role
-    
+
     .DESCRIPTION
     Creates a new Admin Role
-    
+
     .PARAMETER RoleName
     The name of the new role
-    
+
     .PARAMETER RolePrivileges
     The set of privileges that are granted to this role.
 
     .PARAMETER RoleDescription
     A short description of the role.
-    
+
     .EXAMPLE
     Get-GSAdminRole
 
     Gets the list of Admin Roles
-    
+
     .EXAMPLE
     Get-GSAdminRole -RoleId '9191482342768644','9191482342768642'
 
     Gets the admin roles matching the provided Ids
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Role')]
     [cmdletbinding()]
     Param
     (

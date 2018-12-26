@@ -2,33 +2,34 @@ function Clear-GSSheet {
     <#
     .SYNOPSIS
     Clears a Sheet
-    
+
     .DESCRIPTION
     Clears a Sheet
-    
+
     .PARAMETER SpreadsheetId
     The unique Id of the SpreadSheet
-    
+
     .PARAMETER SheetName
     The name of the Sheet (tab) to clear
-    
+
     .PARAMETER Range
     The specific range to clear. If excluded, clears the entire Sheet
-    
+
     .PARAMETER User
     The primary email of the user who has Edit rights to the target Range/Sheet
-    
+
     .PARAMETER Raw
     If $true, return the raw response, otherwise, return a flattened response for readability
-    
+
     .EXAMPLE
     Clear-GSSheet -SpreadsheetId '1ZVdewVhy-VtVLyGL1lk2kgvySIF_bCfJA6ggn7obGh2U' -SheetName 2017
 
     Clears the Sheet '2017' located on the SpreadSheet Id provided
     #>
+    [OutputType('Google.Apis.Sheets.v4.Data.Spreadsheet')]
     [cmdletbinding()]
     Param
-    (      
+    (
         [parameter(Mandatory = $true,Position = 0)]
         [String]
         $SpreadsheetId,

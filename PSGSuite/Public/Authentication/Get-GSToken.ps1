@@ -27,7 +27,7 @@ function Get-GSToken {
         $AdminEmail = $Script:PSGSuite.AdminEmail
     )
     try {
-        Write-Verbose "Acquiring access token..."
+        Write-Verbose "Acquiring access token"
         $serviceParams = @{
             Scope       = $Scopes
             ServiceType = 'Google.Apis.Gmail.v1.GmailService'

@@ -2,20 +2,21 @@ function Get-GSUserAlias {
     <#
     .SYNOPSIS
     Gets the specified G SUite User's aliases
-    
+
     .DESCRIPTION
     Gets the specified G SUite User's aliases
-    
+
     .PARAMETER User
     The primary email or UserID of the user who you are trying to get aliases for. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
 
     Defaults to the AdminEmail in the config
-    
+
     .EXAMPLE
     Get-GSUserAlias
 
     Gets the list of aliases for the AdminEmail user
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Alias')]
     [cmdletbinding()]
     Param
     (

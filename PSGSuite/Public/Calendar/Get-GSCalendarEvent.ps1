@@ -52,6 +52,7 @@ function Get-GSCalendarEvent {
 
     This gets the single events on the primary calendar of the Admin for the week of Jan 21-28, 2018.
     #>
+    [OutputType('Google.Apis.Calendar.v3.Data.Event')]
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (

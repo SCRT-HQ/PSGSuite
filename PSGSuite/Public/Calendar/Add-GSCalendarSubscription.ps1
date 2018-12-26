@@ -2,63 +2,64 @@ function Add-GSCalendarSubscription {
     <#
     .SYNOPSIS
     Adds a calendar to a users calendar list (aka subscribes to the specified calendar)
-    
+
     .DESCRIPTION
     Adds a calendar to a users calendar list (aka subscribes to the specified calendar)
-    
+
     .PARAMETER User
     The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
-    
+
     .PARAMETER CalendarID
     The calendar ID of the calendar you would like to subscribe the user to
-    
+
     .PARAMETER Selected
     Whether the calendar content shows up in the calendar UI. Optional. The default is False.
-    
+
     .PARAMETER Hidden
     Whether the calendar has been hidden from the list. Optional. The default is False.
-    
+
     .PARAMETER DefaultReminderMethod
     The method used by this reminder. Defaults to email.
-    
+
     Possible values are:
     * "email" - Reminders are sent via email.
     * "sms" - Reminders are sent via SMS. These are only available for G Suite customers. Requests to set SMS reminders for other account types are ignored.
     * "popup" - Reminders are sent via a UI popup.
-    
+
     .PARAMETER DefaultReminderMinutes
     Number of minutes before the start of the event when the reminder should trigger. Defaults to 30 minutes.
-    
+
     Valid values are between 0 and 40320 (4 weeks in minutes).
-    
+
     .PARAMETER DefaultNotificationMethod
     The method used to deliver the notification. Defaults to email.
-    
+
     Possible values are:
     * "email" - Reminders are sent via email.
     * "sms" - Reminders are sent via SMS. This value is read-only and is ignored on inserts and updates. SMS reminders are only available for G Suite customers.
-    
+
     .PARAMETER DefaultNotificationType
     The type of notification. Defaults to eventChange.
-    
+
     Possible values are:
     * "eventCreation" - Notification sent when a new event is put on the calendar.
     * "eventChange" - Notification sent when an event is changed.
     * "eventCancellation" - Notification sent when an event is cancelled.
     * "eventResponse" - Notification sent when an event is changed.
     * "agenda" - An agenda with the events of the day (sent out in the morning).
-    
+
     .PARAMETER Color
     The color of the calendar.
-    
+
     .PARAMETER SummaryOverride
     The summary that the authenticated user has set for this calendar.
-    
+
     .EXAMPLE
     Add-GSCalendarSubscription -User me -CalendarId john.smith@domain.com -Selected -Color Cyan
 
     Adds the calendar 'john.smith@domain.com' to the AdminEmail user's calendar list
     #>
+    [OutputType('Google.Apis.Calendar.v3.Data.CalendarListEntry')]
     [cmdletbinding()]
     Param
     (

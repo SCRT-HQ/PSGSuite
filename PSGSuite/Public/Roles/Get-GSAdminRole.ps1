@@ -2,28 +2,29 @@ function Get-GSAdminRole {
     <#
     .SYNOPSIS
     Gets a specific Admin Role or the list of Admin Roles
-    
+
     .DESCRIPTION
     Gets a specific Admin Role or the list of Admin Roles
-    
+
     .PARAMETER RoleId
     The RoleId(s) you would like to retrieve info for.
 
     If left blank, returns the full list of Roles
-    
+
     .PARAMETER PageSize
     Page size of the result set
-    
+
     .EXAMPLE
     Get-GSAdminRole
 
     Gets the list of Admin Roles
-    
+
     .EXAMPLE
     Get-GSAdminRole -RoleId 9191482342768644,9191482342768642
 
     Gets the admin roles matching the provided Ids
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Role')]
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (

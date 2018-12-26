@@ -2,23 +2,24 @@ function Add-GSGmailForwardingAddress {
     <#
     .SYNOPSIS
     Creates a forwarding address.
-    
+
     .DESCRIPTION
     Creates a forwarding address. If ownership verification is required, a message will be sent to the recipient and the resource's verification status will be set to pending; otherwise, the resource will be created with verification status set to accepted.
-    
+
     .PARAMETER ForwardingAddress
-    An email address to which messages can be forwarded. 
-    
+    An email address to which messages can be forwarded.
+
     .PARAMETER User
     The user to create the forwarding addresses for
 
     Defaults to the AdminEmail user
-    
+
     .EXAMPLE
     Add-GSGmailForwardingAddress "joe@domain.com"
 
     Adds joe@domain.com as a forwarding address for the AdminEmail user
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.ForwardingAddress')]
     [cmdletbinding()]
     Param
     (

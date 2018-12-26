@@ -23,6 +23,7 @@ function Get-GSGroupMember {
 
     Returns the list of owners and managers of the group "admins@domain.com"
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Member')]
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]

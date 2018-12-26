@@ -2,38 +2,39 @@ function Get-GSAdminRoleAssignment {
     <#
     .SYNOPSIS
     Gets a specific Admin Role Assignments or the list of Admin Role Assignments for a given role
-    
+
     .DESCRIPTION
     Gets a specific Admin Role Assignments or the list of Admin Role Assignments for a given role
-    
+
     .PARAMETER RoleAssignmentId
     The RoleAssignmentId(s) you would like to retrieve info for.
 
     If left blank, returns the full list of Role Assignments
-    
+
     .PARAMETER UserKey
     The UserKey(s) you would like to retrieve Role Assignments for. This can be a user's email or their unique UserId
 
     If left blank, returns the full list of Role Assignments
-    
+
     .PARAMETER RoleId
     The RoleId(s) you would like to retrieve Role Assignments for.
 
     If left blank, returns the full list of Role Assignments
-    
+
     .PARAMETER PageSize
     Page size of the result set
-    
+
     .EXAMPLE
     Get-GSAdminRoleAssignment
 
     Gets the list of Admin Role Assignments
-    
+
     .EXAMPLE
     Get-GSAdminRoleAssignment -RoleId 9191482342768644,9191482342768642
 
     Gets the Admin Role Assignments matching the provided RoleIds
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.RoleAssignment')]
     [cmdletbinding(DefaultParameterSetName = "ListUserKey")]
     Param
     (
@@ -138,7 +139,7 @@ function Get-GSAdminRoleAssignment {
                                     $request.UserKey = $uKey
                                     do {
                                         $result = $request.Execute()
-                                        $result.Items | Add-Member -MemberType NoteProperty -Name 'Filter' -Value ([PSCustomObject]@{UserKey = $User}) -PassThru 
+                                        $result.Items | Add-Member -MemberType NoteProperty -Name 'Filter' -Value ([PSCustomObject]@{UserKey = $User}) -PassThru
                                         $request.PageToken = $result.NextPageToken
                                         [int]$retrieved = ($i + $result.Items.Count) - 1
                                         Write-Verbose "Retrieved $retrieved role assignments..."

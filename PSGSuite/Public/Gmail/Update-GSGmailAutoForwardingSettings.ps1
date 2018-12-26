@@ -1,16 +1,16 @@
 function Update-GSGmailAutoForwardingSettings {
     <#
     .SYNOPSIS
-    Updates the auto-forwarding setting for the specified account. A verified forwarding address must be specified when auto-forwarding is enabled. 
-    
+    Updates the auto-forwarding setting for the specified account. A verified forwarding address must be specified when auto-forwarding is enabled.
+
     .DESCRIPTION
     Updates the auto-forwarding setting for the specified account. A verified forwarding address must be specified when auto-forwarding is enabled.
-    
+
     .PARAMETER User
     The user to update the AutoForwarding settings for
-    
+
     .PARAMETER Disposition
-    The state that a message should be left in after it has been forwarded. 
+    The state that a message should be left in after it has been forwarded.
 
     Acceptable values are:
     * "archive": Archive the message.
@@ -18,18 +18,19 @@ function Update-GSGmailAutoForwardingSettings {
     * "leaveInInbox": Leave the message in the INBOX.
     * "markRead": Leave the message in the INBOX and mark it as read.
     * "trash": Move the message to the TRASH.
-    
+
     .PARAMETER EmailAddress
     Email address to which all incoming messages are forwarded. This email address must be a verified member of the forwarding addresses.
-    
+
     .PARAMETER Enabled
     Whether all incoming mail is automatically forwarded to another address.
-    
+
     .EXAMPLE
     Update-GSGmailAutoForwardingSettings -User me -Disposition leaveInInbox -EmailAddress joe@domain.com -Enabled
 
     Enables auto forwarding of all mail for the AdminEmail user. Forwarded mail will be left in their inbox.
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.AutoForwarding')]
     [cmdletbinding()]
     Param
     (

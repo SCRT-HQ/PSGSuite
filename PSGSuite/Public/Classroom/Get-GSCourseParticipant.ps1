@@ -42,6 +42,7 @@ function Get-GSCourseParticipant {
     .EXAMPLE
     Get-GSCourseParticipant -Teacher aristotle@athens.edu
     #>
+    [OutputType('Google.Apis.Classroom.v1.Data.Student')]
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (

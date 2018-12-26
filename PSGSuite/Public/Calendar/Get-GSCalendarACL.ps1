@@ -2,15 +2,15 @@ function Get-GSCalendarACL {
     <#
     .SYNOPSIS
     Gets the ACL calendar for a calendar
-    
+
     .DESCRIPTION
-    Gets the ACL for a calendar 
-    
+    Gets the ACL for a calendar
+
     .PARAMETER User
     The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
 
     Defaults to the AdminEmail in the config
-    
+
     .PARAMETER CalendarId
     The calendar ID of the calendar you would like to list ACLS for.
 
@@ -18,15 +18,16 @@ function Get-GSCalendarACL {
 
     .PARAMETER RuleId
     The Id of the Rule you would like to retrieve specifically. Leave empty to return the full ACL list instead.
-    
+
     .PARAMETER PageSize
     Maximum number of events returned on one result page.
-    
+
     .EXAMPLE
     Get-GSCalendarACL -User me -CalendarID "primary"
-    
+
     This gets the ACL on the primary calendar of the AdminUser.
     #>
+    [OutputType('Google.Apis.Calendar.v3.Data.AclRule')]
     [cmdletbinding(DefaultParameterSetName = 'List')]
     Param
     (

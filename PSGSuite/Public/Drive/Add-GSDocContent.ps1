@@ -2,21 +2,21 @@ function Add-GSDocContent {
     <#
     .SYNOPSIS
     Adds content to a Google Doc via appending new text. This does not overwrite existing content
-    
+
     .DESCRIPTION
     Adds content to a Google Doc via appending new text. This does not overwrite existing content
-    
+
     .PARAMETER FileID
     The unique Id of the file to add content to
-    
+
     .PARAMETER Value
     The content to add
-    
+
     .PARAMETER User
     The email or unique Id of the owner of the Drive file
 
     Defaults to the AdminEmail user
-    
+
     .EXAMPLE
     $newLogStrings | Add-GSDocContent -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976'
 
@@ -24,7 +24,7 @@ function Add-GSDocContent {
     #>
     [CmdLetBinding()]
     Param
-    (      
+    (
         [parameter(Mandatory = $true,Position = 0)]
         [String]
         $FileID,
@@ -72,7 +72,6 @@ function Add-GSDocContent {
             $request.SupportsTeamDrives = $true
             Write-Verbose "Adding content to File '$FileID'"
             $request.Upload() | Out-Null
-            $stream.Close()
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {
@@ -80,6 +79,11 @@ function Add-GSDocContent {
             }
             else {
                 Write-Error $_
+            }
+        }
+        finally {
+            if ($stream) {
+                $stream.Close()
             }
         }
     }

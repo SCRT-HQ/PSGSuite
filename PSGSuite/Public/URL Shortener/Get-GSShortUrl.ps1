@@ -2,30 +2,31 @@ function Get-GSShortUrl {
     <#
     .SYNOPSIS
     Gets information about a user's Short Url's created at https://goo.gl/
-    
+
     .DESCRIPTION
     Gets information about a user's Short Url's created at https://goo.gl/
-    
+
     .PARAMETER ShortUrl
     The Short Url to return information for. If excluded, returns the list of the user's Short Url's
-    
+
     .PARAMETER User
     The primary email of the user you would like to retrieve Short Url information for
 
     Defaults to the AdminEmail user
-    
+
     .PARAMETER Projection
-    	Additional information to return. 
+    	Additional information to return.
 
     Acceptable values are:
     * "ANALYTICS_CLICKS" - Returns short URL click counts.
     * "FULL" - Returns short URL click counts.
-    
+
     .EXAMPLE
     Get-GSShortUrl
 
     Gets the Short Url list of the AdminEmail user
     #>
+    [OutputType('Google.Apis.Urlshortener.v1.Data.Url')]
     [cmdletbinding()]
     Param
     (

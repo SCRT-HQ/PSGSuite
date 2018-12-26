@@ -38,6 +38,7 @@ function Get-GSSheetInfo {
 
     Gets the info for the SpreadSheet provided
     #>
+    [OutputType('Google.Apis.Sheets.v4.Data.Spreadsheet')]
     [cmdletbinding()]
     Param
     (

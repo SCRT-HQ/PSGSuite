@@ -46,6 +46,7 @@
 
     Gets the IT HelpDesk group by name using PowerShell syntax. PowerShell syntax is supported as a best effort, please refer to the Group Search documentation from Google for exact syntax.
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Group')]
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (

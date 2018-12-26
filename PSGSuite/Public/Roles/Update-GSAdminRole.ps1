@@ -2,36 +2,37 @@ function Update-GSAdminRole {
     <#
     .SYNOPSIS
     Update an Admin Role
-    
+
     .DESCRIPTION
     Update an Admin Role
 
     .PARAMETER RoleId
     The Id of the role to update
-    
+
     .PARAMETER RoleName
     The name of the role
-    
+
     .PARAMETER RolePrivileges
     The set of privileges that are granted to this role.
 
     .PARAMETER RoleDescription
     A short description of the role.
-    
+
     .EXAMPLE
     Update-GSAdminRole -RoleId 9191482342768644 -RoleName 'Help_Desk_Level2' -RoleDescription 'Help Desk Level 2'
 
     Updates the specified Admin Role with a new name and description
-    
+
     .EXAMPLE
     Get-GSAdminRole | Where-Object {$_.RoleDescription -like "*Help*Desk*"} | Update-GSAdminRole -RoleId 9191482342768644 -RoleName 'Help_Desk_Level2' -RoleDescription 'Help Desk Level 2'
 
     Updates the specified Admin Role's RolePrivileges to match every other Admin Role with Help Desk in the description. Useful for basing a new role off another to add additional permissions on there
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Role')]
     [cmdletbinding()]
     Param
     (
-        
+
         [parameter(Mandatory = $true,Position = 0)]
         [int64]
         $RoleId,

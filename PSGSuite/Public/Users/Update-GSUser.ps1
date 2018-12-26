@@ -114,6 +114,7 @@ function Update-GSUser {
 
     Updates user john.smith@domain.com with a new primary email of "johnathan.smith@domain.com", sets their Given Name to "Johnathan" and unsuspends them. Their previous primary email "john.smith@domain.com" will become an alias on their account automatically
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.User')]
     [cmdletbinding(SupportsShouldProcess = $true, ConfirmImpact = "High")]
     Param
     (
