@@ -2,32 +2,33 @@ function Move-GSTask {
     <#
     .SYNOPSIS
     Moves the specified task to another position in the task list. This can include putting it as a child task under a new parent and/or move it to a different position among its sibling tasks.
-    
+
     .DESCRIPTION
     Moves the specified task to another position in the task list. This can include putting it as a child task under a new parent and/or move it to a different position among its sibling tasks.
-    
+
     .PARAMETER Tasklist
     The unique Id of the Tasklist where the Task currently resides
-    
+
     .PARAMETER Task
     The unique Id of the Task to move
 
     .PARAMETER Parent
-    Parent task identifier. If the task is created at the top level, this parameter is omitted. 
+    Parent task identifier. If the task is created at the top level, this parameter is omitted.
 
     .PARAMETER Previous
     Previous sibling task identifier. If the task is created at the first position among its siblings, this parameter is omitted.
-    
+
     .PARAMETER User
     The User who owns the Tasklist.
 
     Defaults to the AdminUser's email.
-    
+
     .EXAMPLE
     Clear-GSTasklist -Tasklist 'MTA3NjIwMjA1NTEzOTk0MjQ0OTk6NTMyNDY5NDk1NDM5MzMxO' -Confirm:$false
 
     Clears the specified Tasklist owned by the AdminEmail user and skips the confirmation check
     #>
+    [OutputType('Google.Apis.Tasks.v1.Data.Task')]
     [cmdletbinding()]
     Param
     (

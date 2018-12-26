@@ -25,6 +25,7 @@ function Update-GSMobileDevice {
 
     Approves the mobile device with the specified Id
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.MobileDevice')]
     [cmdletbinding()]
     Param
     (

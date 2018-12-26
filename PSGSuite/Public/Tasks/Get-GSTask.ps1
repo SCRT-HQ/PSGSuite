@@ -2,36 +2,37 @@ function Get-GSTask {
     <#
     .SYNOPSIS
     Gets a specific Task or the list of Tasks
-    
+
     .DESCRIPTION
     Gets a specific Task or the list of Tasks
-    
+
     .PARAMETER User
     The User who owns the Task.
 
     Defaults to the AdminUser's email.
-    
+
     .PARAMETER Task
     The unique Id of the Task.
 
     If left blank, returns the list of Tasks on the Tasklist
-    
+
     .PARAMETER Tasklist
     The unique Id of the Tasklist the Task is on.
-    
+
     .PARAMETER PageSize
     Page size of the result set
-    
+
     .EXAMPLE
     Get-GSTasklist
 
     Gets the list of Tasklists owned by the AdminEmail user
-    
+
     .EXAMPLE
     Get-GSTasklist -Tasklist MTUzNTU0MDYscM0NjKDMTIyNjQ6MDow -User john@domain.com
 
     Gets the Tasklist matching the provided Id owned by John
     #>
+    [OutputType('Google.Apis.Tasks.v1.Data.Task')]
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (

@@ -2,27 +2,28 @@ function New-GSSheet {
     <#
     .SYNOPSIS
     Creates a new SpreadSheet
-    
+
     .DESCRIPTION
     Creates a new SpreadSheet
-    
+
     .PARAMETER Title
     The name of the new SpreadSheet
-    
+
     .PARAMETER User
     The user to create the Sheet for
-    
+
     .PARAMETER Launch
     If $true, opens the new SpreadSheet Url in your default browser
-    
+
     .EXAMPLE
     New-GSSheet -Title "Finance Workbook" -Launch
 
     Creates a new SpreadSheet titled "Finance Workbook" and opens it in the browser on creation
     #>
+    [OutputType('Google.Apis.Sheets.v4.Data.Spreadsheet')]
     [cmdletbinding()]
     Param
-    (      
+    (
         [parameter(Mandatory = $false)]
         [Alias('SheetTitle')]
         [String]

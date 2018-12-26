@@ -2,62 +2,63 @@ function Export-GSSheet {
     <#
     .SYNOPSIS
     Updates a Sheet's values
-    
+
     .DESCRIPTION
     Updates a Sheet's values. Accepts either an Array of objects/strings/ints or a single value
-    
+
     .PARAMETER SpreadsheetId
     The unique Id of the SpreadSheet to update if updating an existing Sheet
-    
+
     .PARAMETER NewSheetTitle
     The title of the new SpreadSheet to be created
-    
+
     .PARAMETER Array
     Array of objects/strings/ints to add to the SpreadSheet
-    
+
     .PARAMETER Value
     A single value to update 1 cell with. Useful if you are tracking the last time updated in a specific cell during a job that updates Sheets
-    
+
     .PARAMETER SheetName
     The name of the Sheet to add the data to. If excluded, defaults to Sheet Id '0'. If a new SpreadSheet is being created, this is set to 'Sheet1' to prevent error
-    
+
     .PARAMETER Style
     The table style you would like to export the data as
 
     Available values are:
     * "Standard": headers are on Row 1, table rows are added as subsequent rows (Default)
     * "Horizontal": headers are on Column A, table rows are added as subsequent columns
-    
+
     .PARAMETER Range
     The specific range to add the value(s) to. If using the -Value parameter, set this to the specific cell you would like to set the value of
-    
+
     .PARAMETER Append
     If $true, skips adding headers to the Sheet
-    
+
     .PARAMETER User
     The primary email of the user that had at least Edit rights to the target Sheet
 
     Defaults to the AdminEmail user
-    
+
     .PARAMETER ValueInputOption
     How the input data should be interpreted
 
-    Available values are: 
+    Available values are:
     * "INPUT_VALUE_OPTION_UNSPECIFIED"
     * "RAW"
     * "USER_ENTERED"
-    
+
     .PARAMETER IncludeValuesInResponse
     Determines if the update response should include the values of the cells that were updated. By default, responses do not include the updated values
-    
+
     .PARAMETER Launch
     If $true, opens the new SpreadSheet Url in your default browser
-    
+
     .EXAMPLE
     $array | Export-GSSheet -NewSheetTitle "Finance Workbook" -Launch
 
 
     #>
+    [OutputType('Google.Apis.Sheets.v4.Data.Spreadsheet')]
     [cmdletbinding(DefaultParameterSetName = "CreateNewSheetArray")]
     Param
     (

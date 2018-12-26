@@ -2,26 +2,27 @@ function Update-GSTasklist {
     <#
     .SYNOPSIS
     Updates a Tasklist title
-    
+
     .DESCRIPTION
     Updates a Tasklist title
-    
+
     .PARAMETER Tasklist
     The unique Id of the Tasklist to update
-    
+
     .PARAMETER Title
     The new title of the Tasklist
-    
+
     .PARAMETER User
     The User who owns the Tasklist.
 
     Defaults to the AdminUser's email.
-    
+
     .EXAMPLE
     Update-GSTasklist -Tasklist 'MTA3NjIwMjA1NTEzOTk0MjQ0OTk6NTMyNDY5NDk1NDM5MzMxOTow' -Title 'Hi-Pri Callbacks'
 
     Updates the specified TaskList with the new title 'Hi-Pri Callbacks'
     #>
+    [OutputType('Google.Apis.Tasks.v1.Data.TaskList')]
     [cmdletbinding()]
     Param
     (

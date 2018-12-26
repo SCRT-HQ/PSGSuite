@@ -27,6 +27,7 @@ function New-GSAdminRoleAssignment {
 
     Assign a new role to a given user.
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.RoleAssignment')]
     [cmdletbinding()]
     Param
     (
