@@ -484,6 +484,6 @@ $deployScriptBlock = {
     }
 }
 
-Task Deploy -Depends Import $deployScriptBlock -description 'Deploy module to PSGallery' -preaction {
+Task Deploy -Depends Init $deployScriptBlock -description 'Deploy module to PSGallery' -preaction {
     Import-Module -Name $outputModDir -Force -Verbose:$false
 }
