@@ -42,13 +42,8 @@ task Init {
     Set-Location $ProjectRoot
 
     'Configuration', 'Pester' | Foreach-Object {
-        if (-not (Get-Module -Name $_ -ListAvailable -Verbose:$false -ErrorAction SilentlyContinue)) {
-            Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Confirm:$false -ErrorAction Stop
-        }
-        elseif ($_ -eq 'Pester') {
-            Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Confirm:$false -ErrorAction Stop -Force
-        }
-        Import-Module -Name $_ -Verbose:$false -Force -ErrorAction Stop
+        Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Confirm:$false -ErrorAction Stop -Force
+        Import-Module -Name $_ -Verbose:$false -ErrorAction Stop -Force
     }
 } -description 'Initialize build environment'
 
