@@ -44,7 +44,7 @@ phases:
       artifactName: BuildOutput
       downloadPath: '$(Build.SourcesDirectory)'
 
-  - powershell: . ./build.ps1 -Task Test
+  - powershell: . ./build.ps1 -Task TestOnly
     displayName: Test Module
 
   - task: PublishTestResults@2
@@ -70,7 +70,7 @@ phases:
       artifactName: BuildOutput
       downloadPath: '$(Build.SourcesDirectory)'
 
-  - powershell: . ./build.ps1 -Task Test
+  - powershell: . ./build.ps1 -Task TestOnly
     displayName: Test Module
 
   - task: PublishTestResults@2
@@ -96,7 +96,7 @@ phases:
       artifactName: BuildOutput
       downloadPath: '$(Build.SourcesDirectory)'
 
-  - powershell: . ./build.ps1 -Task Test
+  - powershell: . ./build.ps1 -Task TestOnly
     displayName: Test Module
 
   - task: PublishTestResults@2
@@ -127,7 +127,7 @@ phases:
 
   - powershell: |
       $Env:Path = [Environment]::GetEnvironmentVariable('Path',[EnvironmentVariableTarget]::Machine)
-      pwsh -command ". ./build.ps1 -Task Test"
+      pwsh -command ". ./build.ps1 -Task TestOnly"
     displayName: Test Module
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/Test*.xml'
