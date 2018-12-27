@@ -44,7 +44,9 @@ phases:
       artifactName: BuildOutput
       downloadPath: '$(Build.SourcesDirectory)'
 
-  - powershell: . ./build.ps1 -Task TestOnly
+  - powershell: |
+      $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
+      . ./build.ps1 -Task TestOnly
     displayName: Test Module
 
   - task: PublishTestResults@2
@@ -70,7 +72,9 @@ phases:
       artifactName: BuildOutput
       downloadPath: '$(Build.SourcesDirectory)'
 
-  - powershell: . ./build.ps1 -Task TestOnly
+  - powershell: |
+      $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
+      . ./build.ps1 -Task TestOnly
     displayName: Test Module
 
   - task: PublishTestResults@2
@@ -96,7 +100,9 @@ phases:
       artifactName: BuildOutput
       downloadPath: '$(Build.SourcesDirectory)'
 
-  - powershell: . ./build.ps1 -Task TestOnly
+  - powershell: |
+      $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
+      . ./build.ps1 -Task TestOnly
     displayName: Test Module
 
   - task: PublishTestResults@2
@@ -126,6 +132,7 @@ phases:
     displayName: 'Install Powershell v6'
 
   - powershell: |
+      $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
       $Env:Path = [Environment]::GetEnvironmentVariable('Path',[EnvironmentVariableTarget]::Machine)
       pwsh -command ". ./build.ps1 -Task TestOnly"
     displayName: Test Module
@@ -156,6 +163,7 @@ phases:
       downloadPath: '$(Build.SourcesDirectory)'
 
   - powershell: |
+      $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
       $Env:GitHubPAT = '$(GitHub.PAT)'
       $Env:NuGetApiKey = '$(NuGetApiKey)'
       $Env:TwitterAccessSecret = '$(Twitter.AccessSecret)'
