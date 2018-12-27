@@ -30,6 +30,23 @@ phases:
 
 
 - phase: Phase_2
+  displayName: Test config import
+
+  dependsOn: Phase_1
+  condition: succeeded()
+  queue:
+    name: Hosted VS2017
+
+  steps:
+  - powershell: |
+      . ./build.ps1
+      Write-Host "Importing config from secure var"
+      Import-PSGSuiteConfig -Json '$(PSGSuiteConfigJson)' -Temporary -Verbose
+      Get-GSUser | Select-Object @{N="GivenName";E={$_.Name.GivenName}},OrgUnitPath,Kind
+    displayName: Test config import
+
+
+- phase: Phase_2
   displayName: Test Module on Windows (PSv5)
 
   dependsOn: Phase_1
@@ -112,7 +129,7 @@ phases:
       testResultsFiles: '**/Test*.xml'
     condition: succeededOrFailed()
 
-- phase: Phase_6
+- phase: Phase_7
   displayName: Deploy Module
 
   dependsOn:
@@ -120,6 +137,7 @@ phases:
   - Phase_3
   - Phase_4
   - Phase_5
+  - Phase_6
   condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   queue:
     name: Hosted VS2017
