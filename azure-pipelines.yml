@@ -29,7 +29,7 @@ phases:
       ArtifactName: BuildOutput
 
 
-- phase: Phase_2
+- phase: Config_1
   displayName: Test config import
 
   dependsOn: Phase_1
@@ -129,15 +129,15 @@ phases:
       testResultsFiles: '**/Test*.xml'
     condition: succeededOrFailed()
 
-- phase: Phase_7
+- phase: Phase_6
   displayName: Deploy Module
 
   dependsOn:
+  - Config_1
   - Phase_2
   - Phase_3
   - Phase_4
   - Phase_5
-  - Phase_6
   condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   queue:
     name: Hosted VS2017
