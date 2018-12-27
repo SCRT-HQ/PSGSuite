@@ -87,6 +87,7 @@ function Get-PSGSuiteConfig {
     $decryptedConfig = $encConf |
         Select-Object -Property @{l = 'ConfigName';e = {$choice}},
                                 @{l = 'P12KeyPath';e = {Decrypt $_.P12KeyPath}},
+                                P12Key,
                                 @{l = 'ClientSecretsPath';e = {Decrypt $_.ClientSecretsPath}},
                                 @{l = 'ClientSecrets';e = {Decrypt $_.ClientSecrets}},
                                 @{l = 'AppEmail';e = {Decrypt $_.AppEmail}},

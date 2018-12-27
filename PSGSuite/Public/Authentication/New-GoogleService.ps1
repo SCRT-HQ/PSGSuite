@@ -14,10 +14,14 @@ function New-GoogleService {
         $User = $script:PSGSuite.AdminEmail
     )
     Process {
-        if ($script:PSGSuite.P12KeyPath) {
+        if ($script:PSGSuite.P12KeyPath -or $script:PSGSuite.P12Key) {
             try {
                 Write-Verbose "Building ServiceAccountCredential from P12Key as user '$User'"
-                $certificate = New-Object 'System.Security.Cryptography.X509Certificates.X509Certificate2' -ArgumentList (Resolve-Path $script:PSGSuite.P12KeyPath),"notasecret",([System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
+                if (-not $script:PSGSuite.P12Key) {
+                    $script:PSGSuite.P12Key = ([System.IO.File]::ReadAllBytes($script:PSGSuite.P12KeyPath))
+                    Set-PSGSuiteConfig -ConfigName $script:PSGSuite.ConfigName -P12Key $script:PSGSuite.P12Key -Verbose:$false
+                }
+                $certificate = New-Object 'System.Security.Cryptography.X509Certificates.X509Certificate2' -ArgumentList ([System.Byte[]]$script:PSGSuite.P12Key),"notasecret",([System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
                 $credential = New-Object 'Google.Apis.Auth.OAuth2.ServiceAccountCredential' (New-Object 'Google.Apis.Auth.OAuth2.ServiceAccountCredential+Initializer' $script:PSGSuite.AppEmail -Property @{
                     User   = $User
                     Scopes = [string[]]$Scope
@@ -41,8 +45,8 @@ function New-GoogleService {
                     'https://www.googleapis.com/auth/tasks.readonly'
                 )
                 if (-not $script:PSGSuite.ClientSecrets) {
-                    $script:PSGSuite.ClientSecrets = (Get-Content $script:PSGSuite.ClientSecretsPath -Raw)
-                    Set-PSGSuiteConfig -ConfigName $script:PSGSuite.ConfigName -ClientSecretsPath $script:PSGSuite.ClientSecretsPath -Verbose:$false
+                    $script:PSGSuite.ClientSecrets = ([System.IO.File]::ReadAllText($script:PSGSuite.ClientSecretsPath))
+                    Set-PSGSuiteConfig -ConfigName $script:PSGSuite.ConfigName -ClientSecrets $script:PSGSuite.ClientSecrets -Verbose:$false
                 }
                 $credPath = Join-Path (Resolve-Path (Join-Path "~" ".scrthq")) "PSGSuite"
                 Write-Verbose "Building UserCredentials from ClientSecrets as user '$User' and prompting for authorization if necessary."

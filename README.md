@@ -136,6 +136,15 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+#### 2.22.0
+
+* Miscellaneous: _Config management and portability updates_
+  * Added: `Export-PSGSuiteConfig` function to export key parts of your config in a transportable JSON file.
+  * Added: `Import-PSGSuiteConfig` function to import a config from a JSON file (i.e. one created with `Export-PSGSuiteConfig`) or from a JSON string (i.e. stored in a secure variable in a CI/CD system.)
+  * Updated: All config functions now store the P12Key or the ClientSecrets JSON string in the encrypted config directly. This is to allow removal of the secrets files as well as enable PSGSuite to run in a contained environment via importing the config from a secure JSON string.
+  * Updated: `[Get|Set|Switch]-PSGSuiteConfig` to include the P12Key and ClientSecrets parameters that enable housing of the key/secret directly on the encrypted config.
+  * Updated: If the global PSGSuite variable `$global:PSGSuite` exists during module import, it will default to using that as it's configuration, otherwise it will import the default config if set.
+
 #### 2.21.3
 
 * [Issue #131](https://github.com/scrthq/PSGSuite/issues/131)
