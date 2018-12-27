@@ -177,7 +177,17 @@ try {
         `$Script:ConfigName = `$ConfigName
     }
     try {
-        Get-PSGSuiteConfig @confParams -ErrorAction Stop
+        if (`$global:PSGSuite) {
+            Write-Warning "Using config `$(if (`$global:PSGSuite.ConfigName){"name '`$(`$global:PSGSuite.ConfigName)' "})found in variable: ```$global:PSGSuite"
+            Write-Verbose "`$((`$global:PSGSuite | Format-List | Out-String).Trim())"
+            if (`$global:PSGSuite -is [System.Collections.Hashtable]) {
+                `$global:PSGSuite = New-Object PSObject -Property `$global:PSGSuite
+            }
+            `$script:PSGSuite = `$global:PSGSuite
+        }
+        else {
+            Get-PSGSuiteConfig @confParams -ErrorAction Stop
+        }
     }
     catch {
         if (Test-Path "`$ModuleRoot\`$env:USERNAME-`$env:COMPUTERNAME-`$env:PSGSuiteDefaultDomain-PSGSuite.xml") {
