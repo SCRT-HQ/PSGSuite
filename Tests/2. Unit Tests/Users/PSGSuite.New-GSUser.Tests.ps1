@@ -9,9 +9,9 @@ InModuleScope PSGSuite {
 
     #region: Load service and config mocks and validate mock via $null ApplicationName
     Write-Verbose "Loading Core mocks"
-    . ([System.IO.Path]::Combine("$env:BHProjectPath","Tests","Mocks","Core.Mocks.ps1"))
+    . ([System.IO.Path]::Combine("$env:BHProjectPath","Tests","0. Mocks","Core.Mocks.ps1"))
     Write-Verbose "Loading DirectoryService mock"
-    . ([System.IO.Path]::Combine("$env:BHProjectPath","Tests","Mocks","DirectoryService.Mocks.ps1"))
+    . ([System.IO.Path]::Combine("$env:BHProjectPath","Tests","0. Mocks","DirectoryService.Mocks.ps1"))
     Describe 'DirectoryService' -Tag 'Core' {
         Context 'When a mocked Directory service is created' {
             It 'ApplicationName should be $null' {
