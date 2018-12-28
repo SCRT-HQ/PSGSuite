@@ -71,7 +71,7 @@
 ## 2.22.1
 
 * Added Remove-GSDriveFile
-* Added Get-GSCalendarList
+* Get-GSCalendarSubscription: Added support for more than 100 results, ShowHidden & ShowDeleted parameters.
 
 ## 2.22.0
 

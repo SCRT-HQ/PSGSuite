@@ -14,6 +14,12 @@ function Get-GSCalendarSubscription {
     .PARAMETER CalendarID
     The calendar ID of the calendar you would like to get info for. If left blank, returns the list of calendars the user is subscribed to.
 
+    .PARAMETER ShowDeleted
+    Whether to include deleted calendar list entries in the result. Optional. The default is False.
+
+    .PARAMETER ShowHidden
+    Whether to show hidden entries. Optional. The default is False.
+
     .EXAMPLE
     Get-GSCalendarSubscription
 
@@ -30,7 +36,13 @@ function Get-GSCalendarSubscription {
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false,Position = 1)]
         [String[]]
-        $CalendarId
+        $CalendarId,
+        [Parameter(Mandatory = $false, Position = 2)]
+        [bool]
+        $ShowDeleted = $false,
+        [Parameter(Mandatory = $false, Position = 3)]
+        [bool]
+        $ShowHidden = $false
     )
     Begin {
         if ($User -ceq 'me') {
@@ -68,7 +80,20 @@ function Get-GSCalendarSubscription {
             try {
                 Write-Verbose "Getting subscribed calendar list for user '$User'"
                 $request = $service.CalendarList.List()
-                $request.Execute() | Select-Object -ExpandProperty Items
+                If ($ShowDeleted -eq $true){
+                    $request.$ShowDeleted = $true
+                }
+                If ($ShowHidden -eq $true){
+                    $request.$ShowHidden = $true
+                }
+                $raw = $request.Execute()
+                $ItemList = [object[]]($raw | Select-Object -ExpandProperty Items)
+                While ($Null -ne $raw.NextPageToken){
+                    $request.SetPageToken($raw.NextPageToken)
+                    $raw = $request.Execute()
+                    $ItemList += $raw | Select-Object -ExpandProperty Items
+                }
+                $ItemList
             }
             catch {
                 if ($ErrorActionPreference -eq 'Stop') {
