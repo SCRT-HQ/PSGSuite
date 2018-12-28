@@ -1,10 +1,10 @@
 function Remove-GSDriveFile {
     <#
     .SYNOPSIS
-    Gets information about or downloads a Drive file
+    Deletes a Drive file
 
     .DESCRIPTION
-    Gets information about or downloads a Drive file
+    Deletes a Drive file
 
     .PARAMETER FileId
     The unique Id of the file to get
@@ -14,30 +14,10 @@ function Remove-GSDriveFile {
 
     Defaults to the AdminEmail user
 
-    .PARAMETER OutFilePath
-    The directory path that you would like to download the Drive file to. If excluded, only the Drive file information will be returned
-
-    .PARAMETER Projection
-    The defined subset of fields to be returned
-
-    Available values are:
-    * "Minimal"
-    * "Standard"
-    * "Full"
-    * "Access"
-
-    .PARAMETER Fields
-    The specific fields to returned
-
     .EXAMPLE
-    Get-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976'
+    Remove-GSDriveFile -User user@domain.com -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976'
 
-    Gets the information for the file
-
-    .EXAMPLE
-    Get-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -OutFilePath (Get-Location).Path
-
-    Gets the information for the file and saves the file in the current working directory
+    Deletes the file with ID 1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976 from the user user@domain.com's Drive
     #>
     [cmdletbinding()]
     Param
