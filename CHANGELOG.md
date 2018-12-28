@@ -68,6 +68,10 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+## 2.22.1
+
+* Added Remove-GSDriveFile
+* Added Get-GSCalendarList
 
 ## 2.22.0
 

@@ -136,6 +136,11 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
+## 2.22.1
+
+* Added Remove-GSDriveFile
+* Added Get-GSCalendarList
+
 #### 2.22.0
 
 * Miscellaneous: _Config management and portability updates_
