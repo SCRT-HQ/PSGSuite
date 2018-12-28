@@ -19,14 +19,14 @@ function Remove-GSDriveFile {
 
     Deletes the file with ID 1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976 from the user user@domain.com's Drive
     #>
-    [cmdletbinding()]
+    [cmdletbinding(SupportsShouldProcess = $true, ConfirmImpact = "High")]
     Param
     (
-        [parameter(Mandatory = $true,Position = 0)]
+        [parameter(Mandatory = $true, Position = 0)]
         [String[]]
         $FileId,
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
-        [Alias('Owner','PrimaryEmail','UserKey','Mail')]
+        [parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
+        [Alias('Owner', 'PrimaryEmail', 'UserKey', 'Mail')]
         [string]
         $User = $Script:PSGSuite.AdminEmail
     )
@@ -46,10 +46,12 @@ function Remove-GSDriveFile {
     }
     Process {
         try {
-            foreach ($file in $FileId) {
-                $request = $service.Files.Delete($file)
-                #$request.SupportsTeamDrives = $true
-                $request.Execute()
+            if ($PSCmdlet.ShouldProcess("Deleting File Id(s) '$FileId' from user '$User'")) {
+                foreach ($file in $FileId) {
+                    $request = $service.Files.Delete($file)
+                    #$request.SupportsTeamDrives = $true
+                    $request.Execute()
+                }
             }
         }
         catch {
