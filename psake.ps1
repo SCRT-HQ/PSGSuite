@@ -41,7 +41,7 @@ task Init {
     "`n"
     Set-Location $ProjectRoot
 
-    'Configuration', 'PSDeploy', 'Pester' | Foreach-Object {
+    'Configuration', 'Pester' | Foreach-Object {
         if (-not (Get-Module -Name $_ -ListAvailable -Verbose:$false -ErrorAction SilentlyContinue)) {
             Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Confirm:$false -ErrorAction Stop
         }
@@ -52,10 +52,11 @@ task Init {
     }
 } -description 'Initialize build environment'
 
-task Test -Depends Init, Compile, Pester -description 'Compile and run test suite'
-task TestOnly -depends Init, PesterOnly -description 'Run tests only'
-
 task Clean -depends Init {
+    $zipPath = [System.IO.Path]::Combine($PSScriptRoot,"$($env:BHProjectName).zip")
+    if (Test-Path $zipPath) {
+        Remove-Item $zipPath -Force
+    }
     Remove-Module -Name $env:BHProjectName -Force -ErrorAction SilentlyContinue
 
     if (Test-Path -Path $outputDir) {
@@ -176,7 +177,17 @@ try {
         `$Script:ConfigName = `$ConfigName
     }
     try {
-        Get-PSGSuiteConfig @confParams -ErrorAction Stop
+        if (`$global:PSGSuite) {
+            Write-Warning "Using config `$(if (`$global:PSGSuite.ConfigName){"name '`$(`$global:PSGSuite.ConfigName)' "})found in variable: ```$global:PSGSuite"
+            Write-Verbose "`$((`$global:PSGSuite | Format-List | Out-String).Trim())"
+            if (`$global:PSGSuite -is [System.Collections.Hashtable]) {
+                `$global:PSGSuite = New-Object PSObject -Property `$global:PSGSuite
+            }
+            `$script:PSGSuite = `$global:PSGSuite
+        }
+        else {
+            Get-PSGSuiteConfig @confParams -ErrorAction Stop
+        }
     }
     catch {
         if (Test-Path "`$ModuleRoot\`$env:USERNAME-`$env:COMPUTERNAME-`$env:PSGSuiteDefaultDomain-PSGSuite.xml") {
@@ -206,13 +217,18 @@ catch {
     }
     "    Created compiled module at [$outputModDir]"
     "    Output version directory contents"
-    Get-ChildItem $outputModVerDir | Select-Object Mode,Length,Name | Format-Table -Autosize
+    Get-ChildItem $outputModVerDir | Format-Table -Autosize
 } -description 'Compiles module from source'
+
+Task Import -Depends Compile {
+    '    Testing import of compiled module'
+    Import-Module (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")
+} -description 'Imports the newly compiled module'
 
 $pesterScriptBlock = {
     Push-Location
     Set-Location -PassThru $outputModDir
-    if(-not $ENV:BHProjectPath) {
+    if (-not $ENV:BHProjectPath) {
         Set-BuildEnvironment -Path $PSScriptRoot\..
     }
 
@@ -224,17 +240,24 @@ $pesterScriptBlock = {
     Remove-Module $ENV:BHProjectName -ErrorAction SilentlyContinue -Verbose:$false
     Import-Module -Name $outputModDir -Force -Verbose:$false
     $testResultsXml = Join-Path -Path $outputDir -ChildPath $TestFile
-    $testResults = Invoke-Pester -Path $tests -PassThru -OutputFile $testResultsXml -OutputFormat NUnitXml
-
-    # Upload test artifacts to AppVeyor
-    If ($ENV:APPVEYOR) {
-        (New-Object 'System.Net.WebClient').UploadFile(
-            ([Uri]"https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)"),
-            $testResultsXml
-        )
-        Remove-Item $testResultsXml -Force -ErrorAction SilentlyContinue
+    $pesterParams = @{
+        OutputFormat = 'NUnitXml'
+        OutputFile   = $testResultsXml
+        PassThru     = $true
+        Path         = $tests
     }
-
+    if ($PSVersionTable.PSVersion.Major -lt 6) {
+        ### $pesterParams['CodeCoverage'] = (Join-Path $outputModVerDir "$($env:BHProjectName).psm1")
+    }
+    if ($global:ExcludeTag) {
+        $pesterParams['ExcludeTag'] = $global:ExcludeTag
+        "    Invoking Pester and excluding tag(s) [$($global:ExcludeTag -join ', ')]..."
+    }
+    else {
+        '    Invoking Pester...'
+    }
+    $testResults = Invoke-Pester @pesterParams
+    '    Pester invocation complete!'
     if ($testResults.FailedCount -gt 0) {
         $testResults | Format-List
         Write-Error -Message 'One or more Pester tests failed. Build cannot continue!'
@@ -243,14 +266,94 @@ $pesterScriptBlock = {
     $env:PSModulePath = $origModulePath
 }
 
-task Pester -Depends Compile $pesterScriptBlock -description 'Run Pester tests'
+task Test -Depends Compile $pesterScriptBlock -description 'Run Pester tests'
 
-task PesterOnly -Depends Init $pesterScriptBlock -description 'Run Pester tests'
+task TestOnly -Depends Init $pesterScriptBlock -description 'Run Pester tests only [no module compilation]'
 
 $deployScriptBlock = {
-    if ($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") {
+    function Publish-GitHubRelease {
+        <#
+            .SYNOPSIS
+            Publishes a release to GitHub Releases. Borrowed from https://www.herebedragons.io/powershell-create-github-release-with-artifact
+        #>
+        [CmdletBinding()]
+        Param (
+            [parameter(Mandatory = $true)]
+            [String]
+            $VersionNumber,
+            [parameter(Mandatory = $false)]
+            [String]
+            $CommitId = 'master',
+            [parameter(Mandatory = $true)]
+            [String]
+            $ReleaseNotes,
+            [parameter(Mandatory = $true)]
+            [ValidateScript( {Test-Path $_})]
+            [String]
+            $ArtifactPath,
+            [parameter(Mandatory = $true)]
+            [String]
+            $GitHubUsername,
+            [parameter(Mandatory = $true)]
+            [String]
+            $GitHubRepository,
+            [parameter(Mandatory = $true)]
+            [String]
+            $GitHubApiKey,
+            [parameter(Mandatory = $false)]
+            [Switch]
+            $PreRelease,
+            [parameter(Mandatory = $false)]
+            [Switch]
+            $Draft
+        )
+        $releaseData = @{
+            tag_name         = [string]::Format("v{0}", $VersionNumber)
+            target_commitish = $CommitId
+            name             = [string]::Format("$($env:BHProjectName) v{0}", $VersionNumber)
+            body             = $ReleaseNotes
+            draft            = [bool]$Draft
+            prerelease       = [bool]$PreRelease
+        }
+
+        $auth = 'Basic ' + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($gitHubApiKey + ":x-oauth-basic"))
+
+        $releaseParams = @{
+            Uri         = "https://api.github.com/repos/$GitHubUsername/$GitHubRepository/releases"
+            Method      = 'POST'
+            Headers     = @{
+                Authorization = $auth
+            }
+            ContentType = 'application/json'
+            Body        = (ConvertTo-Json $releaseData -Compress)
+        }
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        $result = Invoke-RestMethod @releaseParams
+        $uploadUri = $result | Select-Object -ExpandProperty upload_url
+        $uploadUri = $uploadUri -creplace '\{\?name,label\}'
+        $artifact = Get-Item $ArtifactPath
+        $uploadUri = $uploadUri + "?name=$($artifact.Name)"
+        $uploadFile = $artifact.FullName
+
+        $uploadParams = @{
+            Uri         = $uploadUri
+            Method      = 'POST'
+            Headers     = @{
+                Authorization = $auth
+            }
+            ContentType = 'application/zip'
+            InFile      = $uploadFile
+        }
+        $result = Invoke-RestMethod @uploadParams
+    }
+    if (($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") -or $global:ForceDeploy -eq $true) {
+        if ($null -eq (Get-Module PoshTwit -ListAvailable)) {
+            "    Installing PoshTwit module..."
+            Install-Module PoshTwit -Scope CurrentUser
+        }
+        Import-Module PoshTwit -Verbose:$false
         # Load the module, read the exported functions, update the psd1 FunctionsToExport
-        $commParsed = $env:BHCommitMessage | Select-String -Pattern '\sv\d\.\d\.\d\s'
+        $commParsed = $env:BHCommitMessage | Select-String -Pattern '\sv\d+\.\d+\.\d+\s'
         if ($commParsed) {
             $commitVer = $commParsed.Matches.Value.Trim().Replace('v','')
         }
@@ -290,9 +393,85 @@ $deployScriptBlock = {
         }
         # Bump the module version
         if ($versionToDeploy) {
-            Update-Metadata -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -PropertyName ModuleVersion -Value $versionToDeploy
-            "    Publishing version [$($versionToDeploy)] to PSGallery..."
-            Publish-Module -Path $outputModVerDir -NuGetApiKey $env:NugetApiKey -Repository PSGallery
+            try {
+                if ($ENV:BHBuildSystem -eq 'VSTS' -and -not [String]::IsNullOrEmpty($env:NugetApiKey)) {
+                    "    Publishing version [$($versionToDeploy)] to PSGallery..."
+                    Update-Metadata -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -PropertyName ModuleVersion -Value $versionToDeploy
+                    Publish-Module -Path $outputModVerDir -NuGetApiKey $env:NugetApiKey -Repository PSGallery
+                    "    Deployment successful!"
+                }
+                else {
+                    "    [SKIPPED] Deployment of version [$($versionToDeploy)] to PSGallery"
+                }
+                $commitId = git rev-parse --verify HEAD
+                if (-not [String]::IsNullOrEmpty($env:GitHubPAT)) {
+                    "    Creating Release ZIP..."
+                    $zipPath = [System.IO.Path]::Combine($PSScriptRoot,"$($env:BHProjectName).zip")
+                    if (Test-Path $zipPath) {
+                        Remove-Item $zipPath -Force
+                    }
+                    Add-Type -Assembly System.IO.Compression.FileSystem
+                    [System.IO.Compression.ZipFile]::CreateFromDirectory($outputModDir,$zipPath)
+                    "    Publishing Release v$($versionToDeploy) @ commit Id [$($commitId)] to GitHub..."
+                    $ReleaseNotes = "# Changelog`n`n"
+                    $ReleaseNotes += (git log -1 --pretty=%B | Select-Object -Skip 2) -join "`n"
+                    $ReleaseNotes += "`n`n***`n`n# Instructions`n`n"
+                    $ReleaseNotes += @"
+**IMPORTANT: You MUST have the module '[Configuration](https://github.com/poshcode/Configuration)' installed as a prerequisite! Installing the module from the repo source or the release page does not automatically install dependencies!!**
+
+1. [Click here](https://github.com/scrthq/$($env:BHProjectName)/releases/download/v$($versionToDeploy.ToString())/$($env:BHProjectName).zip) to download the *$($env:BHProjectName).zip* file attached to the release.
+2. **If on Windows**: Right-click the downloaded zip, select Properties, then unblock the file.
+    > _This is to prevent having to unblock each file individually after unzipping._
+3. Unzip the archive.
+4. (Optional) Place the module folder somewhere in your ``PSModulePath``.
+    > _You can view the paths listed by running the environment variable ```$env:PSModulePath``_
+5. Import the module, using the full path to the PSD1 file in place of ``$($env:BHProjectName)`` if the unzipped module folder is not in your ``PSModulePath``:
+    ``````powershell
+    # In `$env:PSModulePath
+    Import-Module $($env:BHProjectName)
+
+    # Otherwise, provide the path to the manifest:
+    Import-Module -Path C:\MyPSModules\$($env:BHProjectName)\$($versionToDeploy.ToString())\$($env:BHProjectName).psd1
+    ``````
+"@
+                    $gitHubParams = @{
+                        VersionNumber    = $versionToDeploy.ToString()
+                        CommitId         = $commitId
+                        ReleaseNotes     = $ReleaseNotes
+                        ArtifactPath     = $zipPath
+                        GitHubUsername   = 'scrthq'
+                        GitHubRepository = $env:BHProjectName
+                        GitHubApiKey     = $env:GitHubPAT
+                        Draft            = $false
+                    }
+                    Publish-GitHubRelease @gitHubParams
+                    "    Release creation successful!"
+                }
+                else {
+                    "    [SKIPPED] Publishing Release v$($versionToDeploy) @ commit Id [$($commitId)] to GitHub"
+                }
+                if ($ENV:BHBuildSystem -eq 'VSTS' -and -not [String]::IsNullOrEmpty($env:TwitterAccessSecret) -and -not [String]::IsNullOrEmpty($env:TwitterAccessToken) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerKey) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerSecret)) {
+                    "    Publishing tweet about new release..."
+                    $manifest = Import-PowerShellDataFile -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")
+                    $text = "#$($env:BHProjectName) v$($versionToDeploy) is now available on the #PSGallery! https://www.powershellgallery.com/packages/$($env:BHProjectName) #PowerShell"
+                    $manifest.PrivateData.PSData.Tags | Foreach-Object {
+                        $text += " #$($_)"
+                    }
+                    if ($text.Length -gt 280) {
+                        "    Trimming [$($text.Length - 280)] extra characters from tweet text to get to 280 character limit..."
+                        $text = $text.Substring(0,280)
+                    }
+                    "    Tweet text: $text"
+                    Publish-Tweet -Tweet $text -ConsumerKey $env:TwitterConsumerKey -ConsumerSecret $env:TwitterConsumerSecret -AccessToken $env:TwitterAccessToken -AccessSecret $env:TwitterAccessSecret
+                    "    Tweet successful!"
+                }
+                else {
+                    "    [SKIPPED] Twitter update of new release"
+                }
+            }
+            catch {
+                Write-Error $_ -ErrorAction Stop
+            }
         }
         else {
             Write-Host -ForegroundColor Yellow "No module version matched! Negating deployment to prevent errors"
@@ -305,4 +484,6 @@ $deployScriptBlock = {
     }
 }
 
-Task Deploy -Depends Compile $deployScriptBlock -description 'Deploy module to PSGallery'
+Task Deploy -Depends Import $deployScriptBlock -description 'Deploy module to PSGallery' -preaction {
+    Import-Module -Name $outputModDir -Force -Verbose:$false
+}

@@ -45,6 +45,7 @@ function New-GSCalendarACL {
 
     Gives Jonnyappleseed@domain.com reader access to jennyappleseed's calendar.
     #>
+    [OutputType('Google.Apis.Calendar.v3.Data.AclRule')]
     [cmdletbinding(DefaultParameterSetName = "AttendeeEmails")]
     Param
     (

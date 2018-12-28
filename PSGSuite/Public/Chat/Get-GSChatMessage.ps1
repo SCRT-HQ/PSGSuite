@@ -2,7 +2,7 @@ function Get-GSChatMessage {
     <#
     .SYNOPSIS
     Gets a Chat message
-    
+
     .DESCRIPTION
     Gets a Chat message
 
@@ -10,12 +10,13 @@ function Get-GSChatMessage {
     Resource name of the message to be retrieved, in the form "spaces/messages".
 
     Example: spaces/AAAAMpdlehY/messages/UMxbHmzDlr4.UMxbHmzDlr4
-    
+
     .EXAMPLE
     Get-GSChatMessage -Name 'spaces/AAAAMpdlehY/messages/UMxbHmzDlr4.UMxbHmzDlr4'
 
     Gets the Chat message specified
     #>
+    [OutputType('Google.Apis.HangoutsChat.v1.Data.Message')]
     [cmdletbinding()]
     Param
     (

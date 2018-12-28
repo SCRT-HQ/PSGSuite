@@ -15,6 +15,7 @@ function Get-GSCourseAlias {
     .EXAMPLE
     Get-GSCourseAlias -CourseId 'architecture-101'
     #>
+    [OutputType('Google.Apis.Classroom.v1.Data.CourseAlias')]
     [cmdletbinding()]
     Param
     (

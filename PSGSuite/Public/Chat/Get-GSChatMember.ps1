@@ -2,7 +2,7 @@ function Get-GSChatMember {
     <#
     .SYNOPSIS
     Gets Chat member information
-    
+
     .DESCRIPTION
     Gets Chat member information
 
@@ -10,17 +10,18 @@ function Get-GSChatMember {
     Resource name of the membership to be retrieved, in the form "spaces/members".
 
     Example: spaces/AAAAMpdlehY/members/105115627578887013105
-    
+
     .PARAMETER Space
     The resource name of the space for which membership list is to be fetched, in the form "spaces".
 
     Example: spaces/AAAAMpdlehY
-    
+
     .EXAMPLE
     Get-GSChatMember -Space 'spaces/AAAAMpdlehY'
 
     Gets the list of human members in the Chat space specified
     #>
+    [OutputType('Google.Apis.HangoutsChat.v1.Data.Membership')]
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (
@@ -60,7 +61,7 @@ function Get-GSChatMember {
             }
             List {
                 foreach ($sp in $Space) {
-                    try {   
+                    try {
                         if ($sp -notlike "spaces/*") {
                             try {
                                 $sp = Get-GSChatConfig -SpaceName $sp -ErrorAction Stop

@@ -48,6 +48,7 @@ function Update-GSCourse {
     .EXAMPLE
     Update-GSCourse -Id the-republic-s01 -Name "The Rebublic 101"
     #>
+    [OutputType('Google.Apis.Classroom.v1.Data.Course')]
     [cmdletbinding()]
     Param
     (

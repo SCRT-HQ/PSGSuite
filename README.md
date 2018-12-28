@@ -8,6 +8,11 @@
     <img src="https://dev.azure.com/scrthq/SCRT%20HQ/_apis/build/status/PSGSuite-CI"
       alt="Azure Pipelines" title="Azure Pipelines" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- Codacy -->
+  <a href="https://www.codacy.com/app/scrthq/PSGSuite?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scrthq/PSGSuite&amp;utm_campaign=Badge_Grade">
+    <img src="https://api.codacy.com/project/badge/Grade/0d5203a1cf1945fe94c46b779eecb7f0"
+      alt="Codacy" title="Codacy" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- PS Gallery -->
   <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
     <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat"
@@ -35,6 +40,14 @@ Check out the [GitHub wiki for PSGSuite](https://github.com/scrthq/PSGSuite/wiki
 ## Contributing
 
 Interested in helping out with PSGSuite development? Please check out our [Contribution Guidelines](https://github.com/scrthq/PSGSuite/blob/master/CONTRIBUTING.md)!
+
+Building the module locally to test changes is as easy as running the `build.ps1` file in the root of the repo. This will compile the module with your changes and import the newly compiled module at the end by default.
+
+Want to run the Pester tests locally? Pass `Test` as the value to the `Task` script parameter like so:
+
+```powershell
+.\build.ps1 -Task Test
+```
 
 ## Code of Conduct
 
@@ -86,6 +99,7 @@ Alias                             Maps To
 -----                             -------
 Add-GSDriveFilePermissions        Add-GSDrivePermission
 Export-PSGSuiteConfiguration      Set-PSGSuiteConfig
+Get-GSCalendarEventList           Get-GSCalendarEvent
 Get-GSCalendarResourceList        Get-GSResourceList
 Get-GSDataTransferApplicationList Get-GSDataTransferApplication
 Get-GSDriveFileInfo               Get-GSDriveFile
@@ -122,13 +136,106 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
-#### 2.17.3
+#### 2.22.0
 
-* Added Get-GSContactList
-* Added Remove-GSContact
-* Added Remove-GSCalendarEvent
-* Added New-GSGmailLabel
-* Added Remmove-GSGmailLabel
+* Miscellaneous: _Config management and portability updates_
+  * Added: `Export-PSGSuiteConfig` function to export key parts of your config in a transportable JSON file.
+  * Added: `Import-PSGSuiteConfig` function to import a config from a JSON file (i.e. one created with `Export-PSGSuiteConfig`) or from a JSON string (i.e. stored in a secure variable in a CI/CD system.)
+  * Updated: All config functions now store the P12Key or the ClientSecrets JSON string in the encrypted config directly. This is to allow removal of the secrets files as well as enable PSGSuite to run in a contained environment via importing the config from a secure JSON string.
+  * Updated: `[Get|Set|Switch]-PSGSuiteConfig` to include the P12Key and ClientSecrets parameters that enable housing of the key/secret directly on the encrypted config.
+  * Updated: If the global PSGSuite variable `$global:PSGSuite` exists during module import, it will default to using that as it's configuration, otherwise it will import the default config if set.
+
+#### 2.21.3
+
+* [Issue #131](https://github.com/scrthq/PSGSuite/issues/131)
+  * Fixed: Changed `CodeReceiver` to use `PromptCodeReceiver` when client is PowerShell Core, as `LocalServerCodeReceiver` does not appear to redirect correctly and auth fails. Same behavior in Core regardless of OS.
+* Miscellaneous
+  * Added: `OutputType` to all functions that return standard objects.
+
+#### 2.21.2
+
+* [Issue #136](https://github.com/scrthq/PSGSuite/issues/136)
+  * Fixed: `Start-GSDriveFileUpload` failing when specifying a user other than the Admin user to do the upload as.
+
+#### 2.21.1
+
+* [Issue #131](https://github.com/scrthq/PSGSuite/issues/131) - _Free/standard Google Account support_
+  * Fixed: Handling of scopes in `New-GoogleService` for authentication when a client_secrets.json file is used instead of the typical .p12 key.
+  * Updated: Documentation to show how to use an account that is not a G Suite admin or G Suite user at all with PSGSuite
+  * Updated: `*-PSGSuiteConfig` commands now store the client_secrets.json string contents directly on the encrypted config once provided either the path or the string contents directly, allowing users to remove any plain text credentials once loaded into the encrypted config.
+  * Updated: `Get-GSToken` now uses `New-GoogleService` under the hood, so `client_secrets.json` will work with Contacts API.
+
+#### 2.21.0
+
+* [PR #130](https://github.com/scrthq/PSGSuite/pull/130) / [Issue #129](https://github.com/scrthq/PSGSuite/issues/129)
+  * Added: Support for UserRelations management in `New-GSUser -Relations $relations` and `Update-GSUser -Relations $relations` via `Add-GSUserRelation` helper function. - _Thanks, [@mattwoolnough](https://github.com/mattwoolnough)!_
+  * Added: Logic to `Update-GSUser` to enable clearing of all values for user properties `Phones`, `ExternalIds`, `Organizations`, and `Relations` by REST API call via passing `$null` as the value when calling `Update-GSUser`. - _Thanks, [@mattwoolnough](https://github.com/mattwoolnough)!_
+* [Issue #129](https://github.com/scrthq/PSGSuite/issues/129)
+  * Fixed: Documentation for `Get-GSSheetInfo` around the `Fields` parameter.
+  * Added: Additional correction of casing for `Fields` values in `Get-GSSheetInfo` so that it will always submit the values using the correct case, even if providing the incorrect case as the value to the parameter.
+
+#### 2.20.2
+
+* [Issue #128](https://github.com/scrthq/PSGSuite/issues/128)
+  * Added: `Update-GSMobileDevice` to allow taking action on Mobile Devices
+  * Fixed: Bug in `Remove-GSMobileDevice` with incorrect variable name
+
+#### 2.20.1
+
+* [Issue #121](https://github.com/scrthq/PSGSuite/issues/121)
+  * Added: `Update-GSGroupMember` to allow setting a group member's Role and/or DeliverySettings
+* Miscellaneous
+  * Added: GitHub release automation to deploy task
+  * Added: Twitter update automation on new version release to deploy task
+
+#### 2.20.0
+
+* [Issue #115](https://github.com/scrthq/PSGSuite/issues/115)
+  * Renamed: `Get-GSCalendarEventList` to `Get-GSCalendarEvent` and set the original name as an exported Alias to the new name for backwards compatibility.
+  * Added: `EventId` parameter to `Get-GSCalendarEvent` to specify individual event ID's to get instead of a filtered list.
+  * Added: `PrivateExtendedProperty` parameter to `Get-GSCalendarEvent`.
+  * Added: `SharedExtendedProperty` parameter to `Get-GSCalendarEvent`.
+  * Added: `PrivateExtendedProperties` parameter to `New-GSCalendarEvent` and `Update-GSCalendarEvent`.
+  * Added: `SharedExtendedProperties` parameter to `New-GSCalendarEvent` and `Update-GSCalendarEvent`.
+  * Added: `ExtendedProperties` parameter to `New-GSCalendarEvent` and `Update-GSCalendarEvent`.
+  * Added: `Id` parameter to `New-GSCalendarEvent` and `Update-GSCalendarEvent`.
+* [Issue #117](https://github.com/scrthq/PSGSuite/issues/117)
+  * Fixed: Type error on `States` parameter of `Get-GSStudentGuardianInvitation`.
+* Miscellaneous
+  * Updated Contributing doc with new Build script steps
+  * Removed `DebugMode.ps1` script since it's no longer needed (use `build.ps1` instead)
+
+#### 2.19.0
+
+* [PR #113](https://github.com/scrthq/PSGSuite/pull/113)
+  * Added: `Add-GSUserEmail` to support the Emails property. - _Thanks, [@sguilbault-sherweb](https://github.com/sguilbault-sherweb)!_
+  * Updated: `Add-GSUser` and `Update-GSUser` to implement the newly supported `Emails` property. - _Thanks, [@sguilbault-sherweb](https://github.com/sguilbault-sherweb)!_
+  * Fixed: Removed `if ($PSCmdlet.ParameterSetName -eq 'Get')` from `New-GSAdminRoleAssignment` that was making the cmdlet fail. - _Thanks, [@sguilbault-sherweb](https://github.com/sguilbault-sherweb)!_
+  * Fixed: `New-GSAdminRoleAssignment` help section rewrite. (The help of this function was a copy of the `Get-GSAdminRoleAssignment` cmdlet) - _Thanks, [@sguilbault-sherweb](https://github.com/sguilbault-sherweb)!_
+
+#### 2.18.1
+
+* [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
+  * Added: Additional scopes during Service creation for `Get-GSCourseParticipant` and `Get-GSClassroomUserProfile` to enable pulling of full user profile information. - _Thanks, [@jdstanberry](https://github.com/jdstanberry)!_
+* [Issue #111](https://github.com/scrthq/PSGSuite/issues/111)
+  * Added: `DisableReminder` switch parameter to `New-GSCalendarEvent` and `Update-GSCalendarEvent` to remove Reminder inheritance from the calendar the event is on as well as any Reminder overload definitions.
+* [Issue #53](https://github.com/scrthq/PSGSuite/issues/53)
+  * Updated: `Get-GSContactList` and `Remove-GSContact` Token retrieval and overall cleanup
+* Various/Other
+  * Updated: `Get-GSToken` to align parameters more with `New-GoogleService`
+
+#### 2.18.0
+
+* [Issue #87](https://github.com/scrthq/PSGSuite/issues/87)
+  * Added: `Get-GSCourseParticipant` and `Get-GSClassroomUserProfile` now have the `Fields` parameter
+  * Added: `Sync-GSUserCache` to create a hashtable of users for quick lookups throughout scripts
+* [Issue #53](https://github.com/scrthq/PSGSuite/issues/53) via [PR #108](https://github.com/scrthq/PSGSuite/pull/108) - _Thanks, [@dwrusse](https://github.com/dwrusse)!_
+  * Added: `Get-GSContactList`
+  * Added: `Remove-GSContact`
+* Other additions via [PR #108](https://github.com/scrthq/PSGSuite/pull/108) - _Thanks, [@dwrusse](https://github.com/dwrusse)!_
+  * Added: `Remove-GSCalendarEvent`
+  * Added: `New-GSGmailLabel`
+  * Added: `Remove-GSGmailLabel`
 
 #### 2.17.2
 
@@ -152,11 +259,11 @@ Update-GSSheetValue               Export-GSSheet
 
 #### 2.16.1
 
-- Fixed: Module deployment segment in psake script deploying decompiled/broken module
+* Fixed: Module deployment segment in psake script deploying decompiled/broken module
 
 #### 2.16.0
 
-- Updated: Build script to compile module into a single PSM1 file for cleanliness and loading speed improvements
+* Updated: Build script to compile module into a single PSM1 file for cleanliness and loading speed improvements
 
 #### 2.15.4
 

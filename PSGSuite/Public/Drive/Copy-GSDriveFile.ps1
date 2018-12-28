@@ -40,6 +40,7 @@ function Copy-GSDriveFile {
 
     Copies the Drive file Id to a new Drive file named 'New Daily Checklist'
     #>
+    [OutputType('Google.Apis.Drive.v3.Data.File')]
     [cmdletbinding(DefaultParameterSetName = "Depth")]
     Param
     (

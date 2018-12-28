@@ -17,6 +17,7 @@ function Update-GSUserPhoto {
 
     Updates the Google user photo of the AdminEmail with the image at the specified path
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.UserPhoto')]
     [cmdletbinding()]
     Param
     (

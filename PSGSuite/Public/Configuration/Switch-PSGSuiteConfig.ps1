@@ -2,19 +2,19 @@
     <#
     .SYNOPSIS
     Switches the active config
-    
+
     .DESCRIPTION
     Switches the active config
-    
+
     .PARAMETER ConfigName
     The friendly name of the config you would like to set as active for the session
-    
+
     .PARAMETER Domain
     The domain name for the config you would like to set as active for the session
-    
+
     .PARAMETER SetToDefault
     If passed, also sets the specified config as the default so it's loaded on the next module import
-    
+
     .EXAMPLE
     Switch-PSGSuiteConfig newCustomer
 
@@ -77,7 +77,9 @@
             $script:PSGSuite = [PSCustomObject]($fullConf[$choice]) |
                 Select-Object -Property @{l = 'ConfigName';e = {$choice}},
                                         @{l = 'P12KeyPath';e = {Decrypt $_.P12KeyPath}},
+                                        P12Key,
                                         @{l = 'ClientSecretsPath';e = {Decrypt $_.ClientSecretsPath}},
+                                        @{l = 'ClientSecrets';e = {Decrypt $_.ClientSecrets}},
                                         @{l = 'AppEmail';e = {Decrypt $_.AppEmail}},
                                         @{l = 'AdminEmail';e = {Decrypt $_.AdminEmail}},
                                         @{l = 'CustomerID';e = {Decrypt $_.CustomerID}},

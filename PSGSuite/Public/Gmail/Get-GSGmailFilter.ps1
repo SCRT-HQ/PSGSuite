@@ -2,24 +2,25 @@ function Get-GSGmailFilter {
     <#
     .SYNOPSIS
     Gets Gmail filter details
-    
+
     .DESCRIPTION
     Gets Gmail filter details
-    
+
     .PARAMETER FilterId
     The unique Id of the filter you would like to retrieve information for. If excluded, all filters for the user are returned
-    
+
     .PARAMETER User
     The email of the user you are getting the filter information for
-    
+
     .PARAMETER Raw
     If $true, returns the raw response. If not passed or -Raw:$false, response is formatted as a flat object for readability
-    
+
     .EXAMPLE
     Get-GSGmailFilter -User joe
 
     Gets the list of filters for Joe
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.Filter')]
     [cmdletbinding()]
     Param
     (

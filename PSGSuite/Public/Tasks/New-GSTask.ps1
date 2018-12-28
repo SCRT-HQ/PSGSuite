@@ -2,44 +2,45 @@ function New-GSTask {
     <#
     .SYNOPSIS
     Creates a new Task
-    
+
     .DESCRIPTION
     Creates a new Task
-    
+
     .PARAMETER Title
     The title of the new Task
-    
+
     .PARAMETER Tasklist
     The Id of the Tasklist to create the new Task on
-    
+
     .PARAMETER Completed
     The DateTime of the task completion
-    
+
     .PARAMETER Due
     The DateTime of the task due date
-    
+
     .PARAMETER Notes
     Notes describing the task
-    
+
     .PARAMETER Status
     Status of the task. This is either "needsAction" or "completed".
 
     .PARAMETER Parent
-    Parent task identifier. If the task is created at the top level, this parameter is omitted. 
+    Parent task identifier. If the task is created at the top level, this parameter is omitted.
 
     .PARAMETER Previous
     Previous sibling task identifier. If the task is created at the first position among its siblings, this parameter is omitted.
-    
+
     .PARAMETER User
     The User to create the Task for.
 
     Defaults to the AdminUser's email.
-    
+
     .EXAMPLE
     New-GSTask -Title 'Sweep kitchen','Mow lawn' -Tasklist MTA3NjIwMjA1NTEzOTk0MjQ0OTk6ODEzNTI1MjE3ODk0MTY2MDow
 
     Creates 2 new Tasks titled 'Sweep kitchen' and 'Mow lawn' for the AdminEmail user on the specified Tasklist Id
     #>
+    [OutputType('Google.Apis.Tasks.v1.Data.Task')]
     [cmdletbinding()]
     Param
     (

@@ -2,20 +2,21 @@ function Get-GSGmailImapSettings {
     <#
     .SYNOPSIS
     Gets IMAP settings
-    
+
     .DESCRIPTION
     Gets IMAP settings
-    
+
     .PARAMETER User
     The user to get the IMAP settings for
 
     Defaults to the AdminEmail user
-    
+
     .EXAMPLE
     Get-GSGmailImapSettings
 
     Gets the IMAP settings for the AdminEmail user
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.ImapSettings')]
     [cmdletbinding()]
     Param
     (

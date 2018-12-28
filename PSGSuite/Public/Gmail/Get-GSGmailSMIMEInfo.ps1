@@ -2,28 +2,29 @@ function Get-GSGmailSMIMEInfo {
     <#
     .SYNOPSIS
     Gets Gmail S/MIME info
-    
+
     .DESCRIPTION
     Gets Gmail S/MIME info
-    
+
     .PARAMETER SendAsEmail
     The email address that appears in the "From:" header for mail sent using this alias.
-    
+
     .PARAMETER Id
     The immutable ID for the SmimeInfo.
 
     If left blank, returns the list of S/MIME infos for the SendAsEmail and User
-    
+
     .PARAMETER User
     The user's email address
 
     Defaults to the AdminEmail user
-    
+
     .EXAMPLE
     Get-GSGmailSMIMEInfo -SendAsEmail 'joe@otherdomain.com' -User joe@domain.com
 
     Gets the list of S/MIME infos for Joe's SendAsEmail 'joe@otherdomain.com'
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.SmimeInfo')]
     [cmdletbinding()]
     Param
     (

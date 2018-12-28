@@ -2,23 +2,24 @@
     <#
     .SYNOPSIS
     Gets the list of available Data Transfer Applications and their parameters
-    
+
     .DESCRIPTION
     Gets the list of available Data Transfer Applications and their parameters
-    
+
     .PARAMETER ApplicationId
     The Application Id of the Data Transfer Application you would like to return info for specifically. Exclude to return the full list
-    
+
     .PARAMETER PageSize
     PageSize of the result set.
 
     Defaults to 500 (although it's typically a much smaller number for most Customers)
-    
+
     .EXAMPLE
     Get-GSDataTransferApplication
 
     Gets the list of available Data Transfer Applications
     #>
+    [OutputType('Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.Application')]
     [cmdletbinding()]
     Param
     (

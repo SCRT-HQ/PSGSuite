@@ -33,6 +33,7 @@ function Get-GSGmailMessageList {
 
     Gets the list of messages sent directly to the user after 2017/12/25 excluding chats
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.Message')]
     [cmdletbinding()]
     Param
     (

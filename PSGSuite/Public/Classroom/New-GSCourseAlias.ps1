@@ -27,6 +27,7 @@ function New-GSCourseAlias {
     .EXAMPLE
     New-GSCourseAlias -Alias "d:abc123" -CourseId 'architecture-101'
     #>
+    [OutputType('Google.Apis.Classroom.v1.Data.CourseAlias')]
     [cmdletbinding()]
     Param
     (

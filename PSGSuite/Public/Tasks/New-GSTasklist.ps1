@@ -2,23 +2,24 @@ function New-GSTasklist {
     <#
     .SYNOPSIS
     Creates a new Tasklist
-    
+
     .DESCRIPTION
     Creates a new Tasklist
-    
+
     .PARAMETER User
     The User to create the Tasklist for.
 
     Defaults to the AdminUser's email.
-    
+
     .PARAMETER Title
     The title of the new Tasklist
-    
+
     .EXAMPLE
     New-GSTasklist -Title 'Chores','Projects'
 
     Creates 2 new Tasklists titled 'Chores' and 'Projects' for the AdminEmail user
     #>
+    [OutputType('Google.Apis.Tasks.v1.Data.TaskList')]
     [cmdletbinding()]
     Param
     (

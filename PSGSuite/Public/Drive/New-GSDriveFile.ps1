@@ -57,6 +57,7 @@ function New-GSDriveFile {
 
     Creates a new folder in Drive named "Training Docs" in the root OrgUnit for the AdminEmail user
     #>
+    [OutputType('Google.Apis.Drive.v3.Data.File')]
     [cmdletbinding(DefaultParameterSetName = "BuiltIn")]
     Param
     (

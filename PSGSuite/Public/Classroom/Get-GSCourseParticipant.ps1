@@ -36,9 +36,13 @@ function Get-GSCourseParticipant {
     .PARAMETER User
     The user to authenticate the request as
 
+    .PARAMETER Fields
+    The specific fields to fetch
+
     .EXAMPLE
     Get-GSCourseParticipant -Teacher aristotle@athens.edu
     #>
+    [OutputType('Google.Apis.Classroom.v1.Data.Student')]
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (
@@ -58,7 +62,10 @@ function Get-GSCourseParticipant {
         $Student,
         [parameter(Mandatory = $false)]
         [String]
-        $User = $Script:PSGSuite.AdminEmail
+        $User = $Script:PSGSuite.AdminEmail,
+        [parameter(Mandatory = $false)]
+        [String[]]
+        $Fields = '*'
     )
     Begin {
         if ($User -ceq 'me') {
@@ -68,7 +75,11 @@ function Get-GSCourseParticipant {
             $User = "$($User)@$($Script:PSGSuite.Domain)"
         }
         $serviceParams = @{
-            Scope       = 'https://www.googleapis.com/auth/classroom.rosters'
+            Scope       = @(
+                'https://www.googleapis.com/auth/classroom.rosters'
+                'https://www.googleapis.com/auth/classroom.profile.emails'
+                'https://www.googleapis.com/auth/classroom.profile.photos'
+            )
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
             User        = $User
         }
@@ -89,7 +100,7 @@ function Get-GSCourseParticipant {
                         }
                         Write-Verbose "Getting Student '$part' for Course '$CourseId'"
                         $request = $service.Courses.Students.Get($CourseId,$part)
-                        $request.Fields = "*"
+                        $request.Fields = "$($Fields -join ",")"
                         $request.Execute()
                     }
                     catch {
@@ -116,7 +127,7 @@ function Get-GSCourseParticipant {
                         }
                         Write-Verbose "Getting Teacher '$part' for Course '$CourseId'"
                         $request = $service.Courses.Teachers.Get($CourseId,$part)
-                        $request.Fields = "*"
+                        $request.Fields = "$($Fields -join ",")"
                         $request.Execute()
                     }
                     catch {
@@ -141,7 +152,7 @@ function Get-GSCourseParticipant {
                                 $service.Courses.Students.List($CourseId)
                             }
                         }
-                        $request.Fields = "*"
+                        $request.Fields = "$($Fields -join ",")"
                         [int]$retrieved = 0
                         [int]$i = 1
                         do {

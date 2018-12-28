@@ -29,6 +29,7 @@ function Get-GSUserPhoto {
 
     Saves the Google user photo of the AdminEmail in the current working directory as a .png image
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.UserPhoto')]
     [cmdletbinding()]
     Param
     (

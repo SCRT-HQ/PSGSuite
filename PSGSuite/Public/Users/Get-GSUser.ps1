@@ -94,6 +94,7 @@ function Get-GSUser {
 
     Gets the list of users not currently enrolled in 2-Step Verification from the Contractors OrgUnit or any OrgUnits underneath it
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.User')]
     [cmdletbinding(DefaultParameterSetName = "Get")]
     Param
     (

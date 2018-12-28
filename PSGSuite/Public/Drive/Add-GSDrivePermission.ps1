@@ -73,6 +73,7 @@ function Add-GSDrivePermission {
 
     Adds user joe@domain.com as the new owner of the file Id and sets the AdminEmail user as a Writer on the file
     #>
+    [OutputType('Google.Apis.Drive.v3.Data.Permission')]
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High",DefaultParameterSetName = "Email")]
     Param
     (

@@ -2,16 +2,16 @@ function Get-GSActivityReport {
     <#
     .SYNOPSIS
     Retrieves a list of activities
-    
+
     .DESCRIPTION
     Retrieves a list of activities
-    
+
     .PARAMETER UserKey
     Represents the profile id or the user email for which the data should be filtered. When 'all' is specified as the userKey, it returns usageReports for all users
-    
+
     .PARAMETER ApplicationName
-    Application name for which the events are to be retrieved. 
-    
+    Application name for which the events are to be retrieved.
+
     Available values are:
     * "Admin": The Admin console application's activity reports return account information about different types of administrator activity events.
     * "Calendar": The G Suite Calendar application's activity reports return information about various Calendar activity events.
@@ -24,27 +24,28 @@ function Get-GSActivityReport {
     * "Token": The G Suite Token application's activity reports return account information about different types of Token activity events.
 
     Defaults to "Admin"
-    
+
     .PARAMETER EventName
     The name of the event being queried
-    
+
     .PARAMETER ActorIpAddress
     IP Address of host where the event was performed. Supports both IPv4 and IPv6 addresses
-    
+
     .PARAMETER EndTime
     Return events which occurred at or before this time
-    
+
     .PARAMETER Filters
     Event parameters in the form [parameter1 name][operator][parameter1 value]
-    
+
     .PARAMETER PageSize
     Number of activity records to be shown in each page
-    
+
     .EXAMPLE
     Get-GSActivityReport -StartTime (Get-Date).AddDays(-30)
 
     Gets the admin activity report for the last 30 days
     #>
+    [OutputType('Google.Apis.Admin.Reports.reports_v1.Data.Activity')]
     [cmdletbinding()]
     Param
     (

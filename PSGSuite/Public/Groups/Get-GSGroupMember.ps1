@@ -23,6 +23,7 @@ function Get-GSGroupMember {
 
     Returns the list of owners and managers of the group "admins@domain.com"
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Member')]
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
@@ -44,13 +45,11 @@ function Get-GSGroupMember {
         $PageSize="200"
     )
     Begin {
-        if ($PSCmdlet.ParameterSetName -eq 'Get') {
-            $serviceParams = @{
-                Scope       = 'https://www.googleapis.com/auth/admin.directory.group'
-                ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
-            }
-            $service = New-GoogleService @serviceParams
+        $serviceParams = @{
+            Scope       = 'https://www.googleapis.com/auth/admin.directory.group'
+            ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
+        $service = New-GoogleService @serviceParams
     }
     Process {
         switch ($PSCmdlet.ParameterSetName) {
@@ -80,7 +79,44 @@ function Get-GSGroupMember {
                 }
             }
             List {
-                Get-GSGroupMemberListPrivate @PSBoundParameters
+                foreach ($Id in $Identity) {
+                    try {
+                        if ($Id -notlike "*@*.*") {
+                            $Id = "$($Id)@$($Script:PSGSuite.Domain)"
+                        }
+                        $request = $service.Members.List($Id)
+                        if ($PageSize) {
+                            $request.MaxResults = $PageSize
+                        }
+                        if ($Roles) {
+                            Write-Verbose "Getting all members of group '$Id' in the following role(s): $($Roles -join ',')"
+                            $request.Roles = "$($Roles -join ',')"
+                        }
+                        else {
+                            Write-Verbose "Getting all members of group '$Id'"
+                        }
+                        [int]$i = 1
+                        do {
+                            $result = $request.Execute()
+                            if ($null -ne $result.MembersValue) {
+                                $result.MembersValue | Add-Member -MemberType NoteProperty -Name 'Group' -Value $Id -PassThru  | Add-Member -MemberType ScriptMethod -Name ToString -Value {$this.Email} -PassThru -Force
+                            }
+                            $request.PageToken = $result.NextPageToken
+                            [int]$retrieved = ($i + $result.MembersValue.Count) - 1
+                            Write-Verbose "Retrieved $retrieved members..."
+                            [int]$i = $i + $result.MembersValue.Count
+                        }
+                        until (!$result.NextPageToken)
+                    }
+                    catch {
+                        if ($ErrorActionPreference -eq 'Stop') {
+                            $PSCmdlet.ThrowTerminatingError($_)
+                        }
+                        else {
+                            Write-Error $_
+                        }
+                    }
+                }
             }
         }
     }

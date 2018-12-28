@@ -6,13 +6,13 @@ function Remove-GSGmailLabel {
     .DESCRIPTION
     Removes a Gmail label
 
+    .PARAMETER LabelId
+    The unique Id of the label to remove
+
     .PARAMETER User
     The primary email of the user to remove the label from
 
     Defaults to the AdminEmail user
-
-    .PARAMETER LabelId
-    The unique Id of the label to remove
 
     .EXAMPLE
     Remove-GSGmailLabel -LabelId ANe1Bmj5l3089jd3k1eQbY90g9rXswjS03LVOw

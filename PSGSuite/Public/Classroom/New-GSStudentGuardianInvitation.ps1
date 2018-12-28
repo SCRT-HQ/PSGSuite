@@ -31,6 +31,7 @@ function New-GSStudentGuardianInvitation {
     | aristotle@athens.edu | zeus@olympus.io |
     | plato@athens.edu     | hera@olympus.io |
     #>
+    [OutputType('Google.Apis.Classroom.v1.Data.GuardianInvitation')]
     [cmdletbinding()]
     Param
     (

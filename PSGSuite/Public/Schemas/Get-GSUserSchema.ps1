@@ -2,18 +2,19 @@ function Get-GSUserSchema {
     <#
     .SYNOPSIS
     Gets custom user schema info
-    
+
     .DESCRIPTION
     Gets custom user schema info
-    
+
     .PARAMETER SchemaId
     The Id or Name of the user schema you would like to return info for. If excluded, gets the full list of user schemas
-    
+
     .EXAMPLE
     Get-GSUserSchema
 
     Gets the list of custom user schemas
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Schema')]
     [cmdletbinding()]
     Param
     (

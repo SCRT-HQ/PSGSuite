@@ -2,27 +2,28 @@ function Get-GSTeamDrive {
     <#
     .SYNOPSIS
     Gets information about a Team Drive
-    
+
     .DESCRIPTION
     Gets information about a Team Drive
-    
+
     .PARAMETER TeamDriveId
     The unique Id of the Team Drive. If excluded, the list of Team Drives will be returned
-    
+
     .PARAMETER User
     The email or unique Id of the user with access to the Team Drive
-    
+
     .PARAMETER Filter
     Query string for searching Team Drives. See the "Search for Files and Team Drives" guide for the supported syntax: https://developers.google.com/drive/v3/web/search-parameters
 
     PowerShell filter syntax here is supported as "best effort". Please use Google's filter operators and syntax to ensure best results
-    
+
     .PARAMETER PageSize
     The page size of the result set
-    
+
     .EXAMPLE
-    
+
     #>
+    [OutputType('Google.Apis.Drive.v3.Data.TeamDrive')]
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (

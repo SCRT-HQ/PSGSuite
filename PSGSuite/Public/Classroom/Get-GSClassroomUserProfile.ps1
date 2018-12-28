@@ -13,9 +13,13 @@ function Get-GSClassroomUserProfile {
     * the email address of the user
     * the string literal "me", indicating the requesting user
 
+    .PARAMETER Fields
+    The specific fields to fetch
+
     .EXAMPLE
     Get-GSClassroomUserProfile -UserId aristotle@athens.edu
     #>
+    [OutputType('Google.Apis.Classroom.v1.Data.UserProfile')]
     [cmdletbinding()]
     Param
     (
@@ -23,11 +27,18 @@ function Get-GSClassroomUserProfile {
         [Alias('Id','PrimaryEmail','Mail','UserKey')]
         [ValidateNotNullOrEmpty()]
         [String[]]
-        $UserId
+        $UserId,
+        [parameter(Mandatory = $false)]
+        [String[]]
+        $Fields = '*'
     )
     Begin {
         $serviceParams = @{
-            Scope       = 'https://www.googleapis.com/auth/classroom.rosters'
+            Scope       = @(
+                'https://www.googleapis.com/auth/classroom.rosters'
+                'https://www.googleapis.com/auth/classroom.profile.emails'
+                'https://www.googleapis.com/auth/classroom.profile.photos'
+            )
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
         }
         $service = New-GoogleService @serviceParams
@@ -45,7 +56,7 @@ function Get-GSClassroomUserProfile {
                 }
                 Write-Verbose "Getting Classroom User Profile for '$part'"
                 $request = $service.UserProfiles.Get($part)
-                $request.Fields = "*"
+                $request.Fields = "$($Fields -join ",")"
                 $request.Execute()
             }
             catch {

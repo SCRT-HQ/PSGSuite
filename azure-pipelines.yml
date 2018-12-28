@@ -19,7 +19,7 @@ phases:
     name: Hosted VS2017
 
   steps:
-  - powershell: . ./build.ps1 -Task Init,Clean,Compile
+  - powershell: . ./build.ps1
     displayName: Compile Module
 
   - task: PublishBuildArtifacts@1
@@ -38,7 +38,7 @@ phases:
     name: Hosted VS2017
 
   steps:
-  - powershell: . ./build.ps1
+  - powershell: . ./build.ps1 -Task Test
     displayName: Test Module
 
   - task: PublishTestResults@2
@@ -58,7 +58,7 @@ phases:
     name: Hosted Ubuntu 1604
 
   steps:
-  - powershell: . ./build.ps1
+  - powershell: . ./build.ps1 -Task Test
     displayName: Test Module
 
   - task: PublishTestResults@2
@@ -78,7 +78,7 @@ phases:
     name: Hosted macOS
 
   steps:
-  - powershell: . ./build.ps1
+  - powershell: . ./build.ps1 -Task Test
     displayName: Test Module
 
   - task: PublishTestResults@2
@@ -103,9 +103,8 @@ phases:
 
   - powershell: |
       $Env:Path = [Environment]::GetEnvironmentVariable('Path',[EnvironmentVariableTarget]::Machine)
-      pwsh -command ". ./build.ps1"
+      pwsh -command ". ./build.ps1 -Task Test"
     displayName: Test Module
-
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/Test*.xml'
     inputs:
@@ -121,13 +120,17 @@ phases:
   - Phase_3
   - Phase_4
   - Phase_5
-  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceVersionMessage'], '!deploy'))
+  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   queue:
     name: Hosted VS2017
 
   steps:
   - powershell: |
-      $env:SourceBranch = '$(Build.SourceBranch)'
+      $Env:GitHubPAT = '$(GitHub.PAT)'
       $Env:NuGetApiKey = '$(NuGetApiKey)'
+      $Env:TwitterAccessSecret = '$(Twitter.AccessSecret)'
+      $Env:TwitterAccessToken = '$(Twitter.AccessToken)'
+      $Env:TwitterConsumerKey = '$(Twitter.ConsumerKey)'
+      $Env:TwitterConsumerSecret = '$(Twitter.ConsumerSecret)'
       . ./build.ps1 -Task Deploy
     displayName: Deploy to PowerShell Gallery
