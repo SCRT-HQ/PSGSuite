@@ -25,12 +25,12 @@ function Remove-GSGmailLabel {
         [parameter(Mandatory = $true, Position = 0, ValueFromPipelineByPropertyName = $true)]
         [Alias("Id")]
         [string[]]
-        $LabelId
+        $LabelId,
         [parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail", "UserKey", "Mail")]
         [ValidateNotNullOrEmpty()]
         [string]
-        $User = $Script:PSGSuite.AdminEmail,
+        $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
         if ($User -ceq 'me') {
