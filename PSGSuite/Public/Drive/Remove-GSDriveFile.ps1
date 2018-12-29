@@ -45,21 +45,23 @@ function Remove-GSDriveFile {
         $service = New-GoogleService @serviceParams
     }
     Process {
-        try {
-            if ($PSCmdlet.ShouldProcess("Deleting File Id(s) '$FileId' from user '$User'")) {
-                foreach ($file in $FileId) {
+        foreach ($file in $FileId) {
+            try {
+                if ($PSCmdlet.ShouldProcess("Deleting File Id '$file' from user '$User'")) {
+                    Write-Verbose "Deleting File Id '$file' from user '$User'"
                     $request = $service.Files.Delete($file)
-                    #$request.SupportsTeamDrives = $true
+                    $request.SupportsTeamDrives = $true
                     $request.Execute()
+                    Write-Verbose "File Id '$file' successfully deleted from user '$User'"
                 }
             }
-        }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
-            }
-            else {
-                Write-Error $_
+            catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                else {
+                    Write-Error $_
+                }
             }
         }
     }

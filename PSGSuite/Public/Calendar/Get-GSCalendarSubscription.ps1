@@ -37,12 +37,12 @@ function Get-GSCalendarSubscription {
         [parameter(Mandatory = $false,Position = 1)]
         [String[]]
         $CalendarId,
-        [Parameter(Mandatory = $false, Position = 2)]
-        [bool]
-        $ShowDeleted = $false,
-        [Parameter(Mandatory = $false, Position = 3)]
-        [bool]
-        $ShowHidden = $false
+        [Parameter(Mandatory = $false)]
+        [Switch]
+        $ShowDeleted,
+        [Parameter(Mandatory = $false)]
+        [Switch]
+        $ShowHidden
     )
     Begin {
         if ($User -ceq 'me') {
@@ -80,20 +80,19 @@ function Get-GSCalendarSubscription {
             try {
                 Write-Verbose "Getting subscribed calendar list for user '$User'"
                 $request = $service.CalendarList.List()
-                If ($ShowDeleted -eq $true){
-                    $request.$ShowDeleted = $true
+                foreach ($key in $PSBoundParameters.Keys | Where-Object {$request.PSObject.Properties.Name -contains $_}) {
+                    $request.$key = $PSBoundParameters[$key]
                 }
-                If ($ShowHidden -eq $true){
-                    $request.$ShowHidden = $true
+                [int]$i = 1
+                do {
+                    $result = $request.Execute()
+                    $result.Items | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
+                    $request.PageToken = $result.NextPageToken
+                    [int]$retrieved = ($i + $result.Items.Count) - 1
+                    Write-Verbose "Retrieved $retrieved Calendar Subscriptions..."
+                    [int]$i = $i + $result.Items.Count
                 }
-                $raw = $request.Execute()
-                $ItemList = [object[]]($raw | Select-Object -ExpandProperty Items)
-                While ($Null -ne $raw.NextPageToken){
-                    $request.SetPageToken($raw.NextPageToken)
-                    $raw = $request.Execute()
-                    $ItemList += $raw | Select-Object -ExpandProperty Items
-                }
-                $ItemList
+                until (-not $result.NextPageToken)
             }
             catch {
                 if ($ErrorActionPreference -eq 'Stop') {
