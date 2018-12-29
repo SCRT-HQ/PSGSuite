@@ -38,7 +38,15 @@ phases:
     name: Hosted VS2017
 
   steps:
-  - powershell: . ./build.ps1 -Task Test
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download Build Artifacts'
+    inputs:
+      artifactName: BuildOutput
+      downloadPath: '$(Build.SourcesDirectory)'
+
+  - powershell: |
+      $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
+      . ./build.ps1 -Task TestOnly
     displayName: Test Module
 
   - task: PublishTestResults@2
@@ -58,7 +66,15 @@ phases:
     name: Hosted Ubuntu 1604
 
   steps:
-  - powershell: . ./build.ps1 -Task Test
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download Build Artifacts'
+    inputs:
+      artifactName: BuildOutput
+      downloadPath: '$(Build.SourcesDirectory)'
+
+  - powershell: |
+      $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
+      . ./build.ps1 -Task TestOnly
     displayName: Test Module
 
   - task: PublishTestResults@2
@@ -78,7 +94,15 @@ phases:
     name: Hosted macOS
 
   steps:
-  - powershell: . ./build.ps1 -Task Test
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download Build Artifacts'
+    inputs:
+      artifactName: BuildOutput
+      downloadPath: '$(Build.SourcesDirectory)'
+
+  - powershell: |
+      $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
+      . ./build.ps1 -Task TestOnly
     displayName: Test Module
 
   - task: PublishTestResults@2
@@ -98,12 +122,19 @@ phases:
     name: Hosted VS2017
 
   steps:
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download Build Artifacts'
+    inputs:
+      artifactName: BuildOutput
+      downloadPath: '$(Build.SourcesDirectory)'
+
   - script: 'choco install powershell-core --yes'
     displayName: 'Install Powershell v6'
 
   - powershell: |
+      $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
       $Env:Path = [Environment]::GetEnvironmentVariable('Path',[EnvironmentVariableTarget]::Machine)
-      pwsh -command ". ./build.ps1 -Task Test"
+      pwsh -command ". ./build.ps1 -Task TestOnly"
     displayName: Test Module
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/Test*.xml'
@@ -125,7 +156,14 @@ phases:
     name: Hosted VS2017
 
   steps:
+  - task: DownloadBuildArtifacts@0
+    displayName: 'Download Build Artifacts'
+    inputs:
+      artifactName: BuildOutput
+      downloadPath: '$(Build.SourcesDirectory)'
+
   - powershell: |
+      $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
       $Env:GitHubPAT = '$(GitHub.PAT)'
       $Env:NuGetApiKey = '$(NuGetApiKey)'
       $Env:TwitterAccessSecret = '$(Twitter.AccessSecret)'
