@@ -136,10 +136,11 @@ Update-GSSheetValue               Export-GSSheet
 
 ### Most recent changes
 
-## 2.22.1
+#### 2.22.1
 
-* Added Remove-GSDriveFile
-* Get-GSCalendarSubscription: Added support for more than 100 results, ShowHidden & ShowDeleted parameters.
+* [PR #141](https://github.com/scrthq/PSGSuite/pull/141) - _Thanks, [@dwrusse](https://github.com/dwrusse)!_
+* Added: `Remove-GSDriveFile`
+* Updated: `Get-GSCalendarSubscription` to add support for `List()` requests and added the `ShowHidden` & `ShowDeleted` parameters.
 
 #### 2.22.0
 

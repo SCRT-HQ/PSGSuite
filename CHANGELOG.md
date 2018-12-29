@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.22.1](#2221)
   * [2.22.0](#2220)
   * [2.21.3](#2213)
   * [2.21.2](#2212)
@@ -68,10 +69,12 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
 ## 2.22.1
 
-* Added Remove-GSDriveFile
-* Get-GSCalendarSubscription: Added support for more than 100 results, ShowHidden & ShowDeleted parameters.
+* [PR #141](https://github.com/scrthq/PSGSuite/pull/141) - _Thanks, [@dwrusse](https://github.com/dwrusse)!_
+* Added: `Remove-GSDriveFile`
+* Updated: `Get-GSCalendarSubscription` to add support for `List()` requests and added the `ShowHidden` & `ShowDeleted` parameters.
 
 ## 2.22.0
 
