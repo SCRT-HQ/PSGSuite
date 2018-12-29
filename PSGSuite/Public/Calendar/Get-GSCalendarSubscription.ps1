@@ -14,6 +14,12 @@ function Get-GSCalendarSubscription {
     .PARAMETER CalendarID
     The calendar ID of the calendar you would like to get info for. If left blank, returns the list of calendars the user is subscribed to.
 
+    .PARAMETER ShowDeleted
+    Whether to include deleted calendar list entries in the result. Optional. The default is False.
+
+    .PARAMETER ShowHidden
+    Whether to show hidden entries. Optional. The default is False.
+
     .EXAMPLE
     Get-GSCalendarSubscription
 
@@ -30,7 +36,13 @@ function Get-GSCalendarSubscription {
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false,Position = 1)]
         [String[]]
-        $CalendarId
+        $CalendarId,
+        [Parameter(Mandatory = $false)]
+        [Switch]
+        $ShowDeleted,
+        [Parameter(Mandatory = $false)]
+        [Switch]
+        $ShowHidden
     )
     Begin {
         if ($User -ceq 'me') {
@@ -68,7 +80,19 @@ function Get-GSCalendarSubscription {
             try {
                 Write-Verbose "Getting subscribed calendar list for user '$User'"
                 $request = $service.CalendarList.List()
-                $request.Execute() | Select-Object -ExpandProperty Items
+                foreach ($key in $PSBoundParameters.Keys | Where-Object {$request.PSObject.Properties.Name -contains $_}) {
+                    $request.$key = $PSBoundParameters[$key]
+                }
+                [int]$i = 1
+                do {
+                    $result = $request.Execute()
+                    $result.Items | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
+                    $request.PageToken = $result.NextPageToken
+                    [int]$retrieved = ($i + $result.Items.Count) - 1
+                    Write-Verbose "Retrieved $retrieved Calendar Subscriptions..."
+                    [int]$i = $i + $result.Items.Count
+                }
+                until (-not $result.NextPageToken)
             }
             catch {
                 if ($ErrorActionPreference -eq 'Stop') {
