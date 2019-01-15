@@ -23,7 +23,6 @@ function Stop-GSDriveFileUpload {
                 Write-Verbose "[$($progress.Status)] Stopping stream of Task Id [$($task.Id)] | File [$($task.File.FullName)]"
                 $task.Stream.Dispose()
                 $task.StreamDisposed = $true
-                $task.Upload.Dispose()
             }
             catch {
                 if ($ErrorActionPreference -eq 'Stop') {

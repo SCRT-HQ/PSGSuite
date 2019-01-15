@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.22.2](#2222)
   * [2.22.1](#2221)
   * [2.22.0](#2220)
   * [2.21.3](#2213)
@@ -69,6 +70,13 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.22.2
+
+* [Issue #144](https://github.com/scrthq/PSGSuite/issues/144)
+  * Updated: `Start-GSDriveFileUpload` to `Dispose()` open streams once uploads are completed.
+  * Added: `Stop-GSDriveFileUpload` to enable cleanup of any remaining open streams.
+  * Updated: `Get-GSDriveFileUpload` to `Dispose()` any completed streams that are still open.
 
 ## 2.22.1
 

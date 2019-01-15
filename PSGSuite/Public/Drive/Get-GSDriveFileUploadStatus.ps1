@@ -40,7 +40,6 @@ function Get-GSDriveFileUploadStatus {
                         Write-Verbose "[$($progress.Status)] Disposing stream of Task Id [$($task.Id)] | File [$($task.File.FullName)]"
                         $task.Stream.Dispose()
                         $task.StreamDisposed = $true
-                        $task.Upload.Dispose()
                     }
                     catch {
                         Write-Error $_
