@@ -221,7 +221,9 @@ function Start-GSDriveFileUpload {
             }
         }
         finally {
-            [Console]::CursorVisible = $true
+            if ($Host.Name -and $Host.Name -notlike "Windows*PowerShell*ISE*") {
+                [System.Console]::CursorVisible = $true
+            }
         }
     }
     End {
@@ -326,7 +328,9 @@ function Start-GSDriveFileUpload {
                 }
             }
             finally {
-                [Console]::CursorVisible = $true
+                if ($Host.Name -and $Host.Name -notlike "Windows*PowerShell*ISE*") {
+                    [System.Console]::CursorVisible = $true
+                }
                 Stop-GSDriveFileUpload
             }
         }

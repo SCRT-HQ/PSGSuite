@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.22.3](#2223)
   * [2.22.2](#2222)
   * [2.22.1](#2221)
   * [2.22.0](#2220)
@@ -70,6 +71,11 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.22.3
+
+* [Issue #144](https://github.com/scrthq/PSGSuite/issues/144)
+  * Updated: `Start-GSDriveFileUpload` to not call `[System.Console]::CursorVisible` when `$Host` is PowerShell ISE
 
 ## 2.22.2
 
