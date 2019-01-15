@@ -133,6 +133,7 @@ function Start-GSDriveFileUpload {
                                 }
                                 $id = New-GSDriveFile @newFolPerms | Select-Object -ExpandProperty Id
                                 $folIdHash[$_.FullName] = $id
+                                Write-Verbose "    + Created: [ID $id] $($_.FullName -replace "^$([RegEx]::Escape($details.FullName))",$details.Name)"
                             }
                         }
                         $details = $recurseList | Where-Object {!$_.PSIsContainer} | Sort-Object FullName
