@@ -138,9 +138,7 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-#### 2.22.2
+#### 2.22.3
 
 * [Issue #144](https://github.com/scrthq/PSGSuite/issues/144)
-  * Updated: `Start-GSDriveFileUpload` to `Dispose()` open streams once uploads are completed.
-  * Added: `Stop-GSDriveFileUpload` to enable cleanup of any remaining open streams.
-  * Updated: `Get-GSDriveFileUpload` to `Dispose()` any completed streams that are still open.
+  * Updated: `Start-GSDriveFileUpload` to not call `[System.Console]::CursorVisible` when `$Host` is PowerShell ISE
