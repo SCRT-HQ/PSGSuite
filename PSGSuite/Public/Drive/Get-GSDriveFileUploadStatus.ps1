@@ -2,16 +2,16 @@ function Get-GSDriveFileUploadStatus {
     <#
     .SYNOPSIS
     Gets the current Drive file upload status
-    
+
     .DESCRIPTION
     Gets the current Drive file upload status
-    
+
     .PARAMETER Id
     The upload Id for the task you'd like to retrieve the status of
-    
+
     .PARAMETER InProgress
     If passed, only returns upload statuses that are not 'Failed' or 'Completed'. If nothing is returned when passing this parameter, all tracked uploads have stopped
-    
+
     .EXAMPLE
     Get-GSDriveFileUploadStatus -InProgress
 
@@ -51,19 +51,19 @@ function Get-GSDriveFileUploadStatus {
                 if ($Id) {
                     if ($Id -contains $task.Id) {
                         $obj = [PSCustomObject]@{
-                            Id = $task.Id
-                            Status = $progress.Status
+                            Id              = $task.Id
+                            Status          = $progress.Status
                             PercentComplete = $percentComplete
-                            Remaining = $remaining
-                            StartTime = $task.StartTime
-                            Elapsed = $elapsed
-                            File = $task.File.FullName
-                            Length = $task.Length
-                            Parents = $task.Parents
-                            BytesSent = $bytesSent
-                            FileLocked = $(Test-FileLock -Path $task.File)
-                            User = $task.User
-                            Exception = $progress.Exception
+                            Remaining       = $remaining
+                            StartTime       = $task.StartTime
+                            Elapsed         = $elapsed
+                            File            = $task.File.FullName
+                            Length          = $task.Length
+                            Parents         = $task.Parents
+                            BytesSent       = $bytesSent
+                            FileLocked      = $(Test-FileLock -Path $task.File)
+                            User            = $task.User
+                            Exception       = $progress.Exception
                         }
                         if (!$InProgress -or $obj.Status -notin @('Failed','Completed')) {
                             $obj
@@ -72,19 +72,19 @@ function Get-GSDriveFileUploadStatus {
                 }
                 else {
                     $obj = [PSCustomObject]@{
-                        Id = $task.Id
-                        Status = $progress.Status
+                        Id              = $task.Id
+                        Status          = $progress.Status
                         PercentComplete = $percentComplete
-                        Remaining = $remaining
-                        StartTime = $task.StartTime
-                        Elapsed = $elapsed
-                        File = $task.File.FullName
-                        Length = $task.Length
-                        Parents = $task.Parents
-                        BytesSent = $bytesSent
-                        FileLocked = $(Test-FileLock -Path $task.File)
-                        User = $task.User
-                        Exception = $progress.Exception
+                        Remaining       = $remaining
+                        StartTime       = $task.StartTime
+                        Elapsed         = $elapsed
+                        File            = $task.File.FullName
+                        Length          = $task.Length
+                        Parents         = $task.Parents
+                        BytesSent       = $bytesSent
+                        FileLocked      = $(Test-FileLock -Path $task.File)
+                        User            = $task.User
+                        Exception       = $progress.Exception
                     }
                     if (!$InProgress -or $obj.Status -notin @('Failed','Completed')) {
                         $obj

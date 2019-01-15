@@ -162,27 +162,31 @@ function Start-GSDriveFileUpload {
                     if ($Description) {
                         $body.Description = $Description
                     }
-                    $stream = New-Object 'System.IO.FileStream' $detPart.FullName,'Open','Read'
+                    $stream = New-Object 'System.IO.FileStream' $detPart.FullName,([System.IO.FileMode]::Open),([System.IO.FileAccess]::Read),([System.IO.FileShare]::Delete + [System.IO.FileShare]::ReadWrite)
                     $request = $service.Files.Create($body,$stream,$contentType)
                     $request.QuotaUser = $User
                     $request.SupportsTeamDrives = $true
                     $request.ChunkSize = 512KB
                     $upload = $request.UploadAsync()
-                    $task = $upload.ContinueWith([System.Action[System.Threading.Tasks.Task]] {$stream.Dispose()})
+                    $task = $upload.ContinueWith([System.Action[System.Threading.Tasks.Task]] {if ($stream) {
+                                $stream.Dispose()
+                            }})
                     Write-Verbose "[$($detPart.Name)] Upload Id $($upload.Id) has started"
                     if (!$Script:DriveUploadTasks) {
                         $Script:DriveUploadTasks = [System.Collections.ArrayList]@()
                     }
                     $script:DriveUploadTasks += [PSCustomObject]@{
-                        Id        = $upload.Id
-                        File      = $detPart
-                        Length    = $detPart.Length
-                        SizeInMB  = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
-                        StartTime = $(Get-Date)
-                        Parents   = $body.Parents
-                        User      = $User
-                        Upload    = $upload
-                        Request   = $request
+                        Id             = $upload.Id
+                        File           = $detPart
+                        Length         = $detPart.Length
+                        SizeInMB       = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
+                        StartTime      = $(Get-Date)
+                        Parents        = $body.Parents
+                        User           = $User
+                        Upload         = $upload
+                        Request        = $request
+                        Stream         = $stream
+                        StreamDisposed = $false
                     }
                     $taskList += [PSCustomObject]@{
                         Id       = $upload.Id
@@ -217,7 +221,7 @@ function Start-GSDriveFileUpload {
         }
     }
     End {
-        if (!$Wait) {
+        if (-not $Wait) {
             $fullTaskList
         }
         else {
@@ -250,7 +254,7 @@ function Start-GSDriveFileUpload {
                         if ($Description) {
                             $body.Description = $Description
                         }
-                        $stream = New-Object 'System.IO.FileStream' $detPart.FullName,'Open','Read'
+                        $stream = New-Object 'System.IO.FileStream' $detPart.FullName,([System.IO.FileMode]::Open),([System.IO.FileAccess]::Read),([System.IO.FileShare]::Delete + [System.IO.FileShare]::ReadWrite)
                         $request = $service.Files.Create($body,$stream,$contentType)
                         $request.QuotaUser = $User
                         $request.SupportsTeamDrives = $true
@@ -262,15 +266,17 @@ function Start-GSDriveFileUpload {
                             $Script:DriveUploadTasks = [System.Collections.ArrayList]@()
                         }
                         $script:DriveUploadTasks += [PSCustomObject]@{
-                            Id        = $upload.Id
-                            File      = $detPart
-                            Length    = $detPart.Length
-                            SizeInMB  = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
-                            StartTime = $(Get-Date)
-                            Parents   = $body.Parents
-                            User      = $User
-                            Upload    = $upload
-                            Request   = $request
+                            Id             = $upload.Id
+                            File           = $detPart
+                            Length         = $detPart.Length
+                            SizeInMB       = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
+                            StartTime      = $(Get-Date)
+                            Parents        = $body.Parents
+                            User           = $User
+                            Upload         = $upload
+                            Request        = $request
+                            Stream         = $stream
+                            StreamDisposed = $false
                         }
                         $taskList += [PSCustomObject]@{
                             Id       = $upload.Id

@@ -2,22 +2,22 @@ function Watch-GSDriveUpload {
     <#
     .SYNOPSIS
     Shows progress in the console of current Drive file uploads
-    
+
     .DESCRIPTION
     Shows progress in the console of current Drive file uploads
-    
+
     .PARAMETER Id
     The upload Id(s) that you would like to watch
-    
+
     .PARAMETER Action
     Whether the action is uploading or retrying. This is mainly for use in Start-GSDriveFileUpload and defaults to 'Uploading'
-    
+
     .PARAMETER CountUploaded
     Current file count being uploaded
-    
+
     .PARAMETER TotalUploading
     Total file count being uploaded
-    
+
     .EXAMPLE
     Watch-GSDriveUpload
 
@@ -47,10 +47,10 @@ function Watch-GSDriveUpload {
         do {
             $i = 1
             if ($PSBoundParameters.Keys -contains 'Id') {
-                $statusList = Get-GSDriveFileUploadStatus -Verbose:$false
+                $statusList = Get-GSDriveFileUploadStatus -Id @($Id) -Verbose:$false
             }
             else {
-                $statusList = Get-GSDriveFileUploadStatus -Id @($Id) -Verbose:$false
+                $statusList = Get-GSDriveFileUploadStatus -Verbose:$false
             }
             if ($statusList) {
                 $totalPercent = 0
@@ -76,7 +76,7 @@ function Watch-GSDriveUpload {
                 $totalPercent = $totalPercent / $totalCount
                 $totalSecondsRemaining = $totalSecondsRemaining / $totalCount
                 $parentParams = @{
-                    Activity = "[$([Math]::Round($totalPercent,4))%] $Action [$curCount / $totalCount] files to Google Drive"
+                    Activity         = "[$([Math]::Round($totalPercent,4))%] $Action [$curCount / $totalCount] files to Google Drive"
                     SecondsRemaining = $($statusList.Remaining.TotalSeconds | Sort-Object | Select-Object -Last 1)
                 }
                 if (!($statusList | Where-Object {$_.Status -ne "Completed"})) {
@@ -102,10 +102,10 @@ function Watch-GSDriveUpload {
                             $status.Status
                         }
                         $progParams = @{
-                            Activity = "[$($status.PercentComplete)%] [ID: $($status.Id)] $($statusFmt) file '$($status.File)' to Google Drive$(if($status.Parents){" (Parents: '$($status.Parents -join "', '")')"})"
+                            Activity         = "[$($status.PercentComplete)%] [ID: $($status.Id)] $($statusFmt) file '$($status.File)' to Google Drive$(if($status.Parents){" (Parents: '$($status.Parents -join "', '")')"})"
                             SecondsRemaining = $status.Remaining.TotalSeconds
-                            Id = $i
-                            ParentId = 1
+                            Id               = $i
+                            ParentId         = 1
                         }
                         if ($_.Status -eq "Completed") {
                             $progParams['Completed'] = $true

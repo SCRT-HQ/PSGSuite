@@ -132,7 +132,11 @@ else {
             "    + NuGet API key is not null        : $($null -ne $env:NugetApiKey)`n" +
             "    + Commit message matches '!deploy' : $($env:BUILD_SOURCEVERSIONMESSAGE -match '!deploy') [$env:BUILD_SOURCEVERSIONMESSAGE]"| Write-Host -ForegroundColor Green
         }
-        'BuildHelpers','psake' | Resolve-Module @update -Verbose
+        Write-Verbose "Installing BuildHelpers v2.0.1" -Verbose
+        Install-Module 'BuildHelpers' -RequiredVersion 2.0.1 -Scope CurrentUser -Repository PSGallery -AllowClobber -SkipPublisherCheck -Force
+        Write-Verbose "Importing BuildHelpers v2.0.1" -Verbose
+        Import-Module 'BuildHelpers' -RequiredVersion 2.0.1
+        'psake' | Resolve-Module @update -Verbose
         Set-BuildEnvironment -Force
         Write-Host -ForegroundColor Green "Modules successfully resolved..."
         Write-Host -ForegroundColor Green "Invoking psake with task list: [ $($Task -join ', ') ]`n"
