@@ -47,10 +47,10 @@ function Watch-GSDriveUpload {
         do {
             $i = 1
             if ($PSBoundParameters.Keys -contains 'Id') {
-                $statusList = Get-GSDriveFileUploadStatus -Id @($Id) -Verbose:$false
+                $statusList = Get-GSDriveFileUploadStatus -Id @($Id)
             }
             else {
-                $statusList = Get-GSDriveFileUploadStatus -Verbose:$false
+                $statusList = Get-GSDriveFileUploadStatus
             }
             if ($statusList) {
                 $totalPercent = 0

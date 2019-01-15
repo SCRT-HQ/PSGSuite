@@ -35,6 +35,17 @@ function Get-GSDriveFileUploadStatus {
             foreach ($task in $script:DriveUploadTasks) {
                 $elapsed = ((Get-Date) - $task.StartTime)
                 $progress = {$task.Request.GetProgress()}.InvokeReturnAsIs()
+                if (-not $task.StreamDisposed -and $progress.Status -eq 'Completed') {
+                    try {
+                        Write-Verbose "[$($progress.Status)] Disposing stream of Task Id [$($task.Id)] | File [$($task.File.FullName)]"
+                        $task.Stream.Dispose()
+                        $task.StreamDisposed = $true
+                        $task.Upload.Dispose()
+                    }
+                    catch {
+                        Write-Error $_
+                    }
+                }
                 $bytesSent = $progress.BytesSent
                 $remaining = try {
                     New-TimeSpan -Seconds $(($elapsed.TotalSeconds / ($bytesSent / ($task.Length))) - $elapsed.TotalSeconds) -ErrorAction Stop
@@ -48,9 +59,28 @@ function Get-GSDriveFileUploadStatus {
                 else {
                     0
                 }
-                if ($Id) {
-                    if ($Id -contains $task.Id) {
-                        $obj = [PSCustomObject]@{
+                if (-not $InProgress -or $progress.Status -notin @('Failed','Completed')) {
+                    if ($Id) {
+                        if ($Id -contains $task.Id) {
+                            [PSCustomObject]@{
+                                Id              = $task.Id
+                                Status          = $progress.Status
+                                PercentComplete = $percentComplete
+                                Remaining       = $remaining
+                                StartTime       = $task.StartTime
+                                Elapsed         = $elapsed
+                                File            = $task.File.FullName
+                                Length          = $task.Length
+                                Parents         = $task.Parents
+                                BytesSent       = $bytesSent
+                                FileLocked      = $(Test-FileLock -Path $task.File)
+                                User            = $task.User
+                                Exception       = $progress.Exception
+                            }
+                        }
+                    }
+                    else {
+                        [PSCustomObject]@{
                             Id              = $task.Id
                             Status          = $progress.Status
                             PercentComplete = $percentComplete
@@ -65,29 +95,6 @@ function Get-GSDriveFileUploadStatus {
                             User            = $task.User
                             Exception       = $progress.Exception
                         }
-                        if (!$InProgress -or $obj.Status -notin @('Failed','Completed')) {
-                            $obj
-                        }
-                    }
-                }
-                else {
-                    $obj = [PSCustomObject]@{
-                        Id              = $task.Id
-                        Status          = $progress.Status
-                        PercentComplete = $percentComplete
-                        Remaining       = $remaining
-                        StartTime       = $task.StartTime
-                        Elapsed         = $elapsed
-                        File            = $task.File.FullName
-                        Length          = $task.Length
-                        Parents         = $task.Parents
-                        BytesSent       = $bytesSent
-                        FileLocked      = $(Test-FileLock -Path $task.File)
-                        User            = $task.User
-                        Exception       = $progress.Exception
-                    }
-                    if (!$InProgress -or $obj.Status -notin @('Failed','Completed')) {
-                        $obj
                     }
                 }
             }

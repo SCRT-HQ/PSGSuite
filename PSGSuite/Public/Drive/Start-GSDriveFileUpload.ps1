@@ -219,99 +219,116 @@ function Start-GSDriveFileUpload {
                 Write-Error $_
             }
         }
+        finally {
+            [Console]::CursorVisible = $true
+            Stop-GSDriveFileUpload
+        }
     }
     End {
         if (-not $Wait) {
             $fullTaskList
         }
         else {
-            Watch-GSDriveUpload -Id $fullTaskList.Id -CountUploaded $totalFiles -TotalUploading $totalFiles
-            $fullStatusList = Get-GSDriveFileUploadStatus -Id $fullTaskList.Id
-            $failedFiles = $fullStatusList | Where-Object {$_.Status -eq "Failed"}
-            if (!$failedFiles) {
-                Write-Verbose "All files uploaded to Google Drive successfully! Total time: $("{0:c}" -f ((Get-Date) - $start) -replace "\..*")"
-            }
-            elseif ($RetryCount) {
-                $totalRetries = 0
-                do {
-                    $throttleCount = 0
-                    $totalThrottleCount = 0
-                    $taskList = [System.Collections.ArrayList]@()
-                    $fullTaskList = [System.Collections.ArrayList]@()
-                    $details = Get-Item $failedFiles.File
-                    $totalFiles = [int]$totalFiles + $details.Count
-                    $totalRetries++
-                    Write-Verbose "~ ~ ~ RETRYING [$totalFiles] FAILED FILES [Retry # $totalRetries / $RetryCount] ~ ~ ~"
-                    $details = Get-Item $failedFiles.File
-                    foreach ($detPart in $details) {
-                        $throttleCount++
-                        $contentType = Get-MimeType $detPart
-                        $body = New-Object 'Google.Apis.Drive.v3.Data.File' -Property @{
-                            Name = [String]$detPart.Name
-                        }
-                        $parPath = "$(Split-Path $detPart.FullName -Parent)"
-                        $body.Parents = [String[]]$folIdHash[$parPath]
-                        if ($Description) {
-                            $body.Description = $Description
-                        }
-                        $stream = New-Object 'System.IO.FileStream' $detPart.FullName,([System.IO.FileMode]::Open),([System.IO.FileAccess]::Read),([System.IO.FileShare]::Delete + [System.IO.FileShare]::ReadWrite)
-                        $request = $service.Files.Create($body,$stream,$contentType)
-                        $request.QuotaUser = $User
-                        $request.SupportsTeamDrives = $true
-                        $request.ChunkSize = 512KB
-                        $upload = $request.UploadAsync()
-                        $task = $upload.ContinueWith([System.Action[System.Threading.Tasks.Task]] {$stream.Dispose()})
-                        Write-Verbose "[$($detPart.Name)] Upload Id $($upload.Id) has started"
-                        if (!$Script:DriveUploadTasks) {
-                            $Script:DriveUploadTasks = [System.Collections.ArrayList]@()
-                        }
-                        $script:DriveUploadTasks += [PSCustomObject]@{
-                            Id             = $upload.Id
-                            File           = $detPart
-                            Length         = $detPart.Length
-                            SizeInMB       = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
-                            StartTime      = $(Get-Date)
-                            Parents        = $body.Parents
-                            User           = $User
-                            Upload         = $upload
-                            Request        = $request
-                            Stream         = $stream
-                            StreamDisposed = $false
-                        }
-                        $taskList += [PSCustomObject]@{
-                            Id       = $upload.Id
-                            File     = $detPart
-                            SizeInMB = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
-                            User     = $User
-                        }
-                        $fullTaskList += [PSCustomObject]@{
-                            Id       = $upload.Id
-                            File     = $detPart
-                            SizeInMB = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
-                            User     = $User
-                        }
-                        if ($throttleCount -ge $ThrottleLimit) {
-                            $totalThrottleCount += $throttleCount
-                            if ($Wait) {
-                                Watch-GSDriveUpload -Id $taskList.Id -CountUploaded $totalThrottleCount -TotalUploading $totalFiles -Action Retrying
-                                $throttleCount = 0
-                                $taskList = [System.Collections.ArrayList]@()
-                            }
-                        }
-                    }
-                    Watch-GSDriveUpload -Id $fullTaskList.Id -Action Retrying -CountUploaded $totalFiles -TotalUploading $totalFiles
-                    $fullStatusList = Get-GSDriveFileUploadStatus -Id $fullTaskList.Id
-                    $failedFiles = $fullStatusList | Where-Object {$_.Status -eq "Failed"}
-                }
-                until (!$failedFiles -or ($totalRetries -ge $RetryCount))
-                if ($failedFiles) {
-                    Write-Warning "The following files failed to upload:`n`n$($failedFiles | Select-Object Id,Status,Exception,File | Format-List | Out-String)"
-                }
-                elseif (!$failedFiles) {
+            try {
+                Watch-GSDriveUpload -Id $fullTaskList.Id -CountUploaded $totalFiles -TotalUploading $totalFiles
+                $fullStatusList = Get-GSDriveFileUploadStatus -Id $fullTaskList.Id
+                $failedFiles = $fullStatusList | Where-Object {$_.Status -eq "Failed"}
+                if (!$failedFiles) {
                     Write-Verbose "All files uploaded to Google Drive successfully! Total time: $("{0:c}" -f ((Get-Date) - $start) -replace "\..*")"
                 }
+                elseif ($RetryCount) {
+                    $totalRetries = 0
+                    do {
+                        $throttleCount = 0
+                        $totalThrottleCount = 0
+                        $taskList = [System.Collections.ArrayList]@()
+                        $fullTaskList = [System.Collections.ArrayList]@()
+                        $details = Get-Item $failedFiles.File
+                        $totalFiles = [int]$totalFiles + $details.Count
+                        $totalRetries++
+                        Write-Verbose "~ ~ ~ RETRYING [$totalFiles] FAILED FILES [Retry # $totalRetries / $RetryCount] ~ ~ ~"
+                        $details = Get-Item $failedFiles.File
+                        foreach ($detPart in $details) {
+                            $throttleCount++
+                            $contentType = Get-MimeType $detPart
+                            $body = New-Object 'Google.Apis.Drive.v3.Data.File' -Property @{
+                                Name = [String]$detPart.Name
+                            }
+                            $parPath = "$(Split-Path $detPart.FullName -Parent)"
+                            $body.Parents = [String[]]$folIdHash[$parPath]
+                            if ($Description) {
+                                $body.Description = $Description
+                            }
+                            $stream = New-Object 'System.IO.FileStream' $detPart.FullName,([System.IO.FileMode]::Open),([System.IO.FileAccess]::Read),([System.IO.FileShare]::Delete + [System.IO.FileShare]::ReadWrite)
+                            $request = $service.Files.Create($body,$stream,$contentType)
+                            $request.QuotaUser = $User
+                            $request.SupportsTeamDrives = $true
+                            $request.ChunkSize = 512KB
+                            $upload = $request.UploadAsync()
+                            $task = $upload.ContinueWith([System.Action[System.Threading.Tasks.Task]] {$stream.Dispose()})
+                            Write-Verbose "[$($detPart.Name)] Upload Id $($upload.Id) has started"
+                            if (!$Script:DriveUploadTasks) {
+                                $Script:DriveUploadTasks = [System.Collections.ArrayList]@()
+                            }
+                            $script:DriveUploadTasks += [PSCustomObject]@{
+                                Id             = $upload.Id
+                                File           = $detPart
+                                Length         = $detPart.Length
+                                SizeInMB       = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
+                                StartTime      = $(Get-Date)
+                                Parents        = $body.Parents
+                                User           = $User
+                                Upload         = $upload
+                                Request        = $request
+                                Stream         = $stream
+                                StreamDisposed = $false
+                            }
+                            $taskList += [PSCustomObject]@{
+                                Id       = $upload.Id
+                                File     = $detPart
+                                SizeInMB = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
+                                User     = $User
+                            }
+                            $fullTaskList += [PSCustomObject]@{
+                                Id       = $upload.Id
+                                File     = $detPart
+                                SizeInMB = [Math]::Round(($detPart.Length / 1MB),2,[MidPointRounding]::AwayFromZero)
+                                User     = $User
+                            }
+                            if ($throttleCount -ge $ThrottleLimit) {
+                                $totalThrottleCount += $throttleCount
+                                if ($Wait) {
+                                    Watch-GSDriveUpload -Id $taskList.Id -CountUploaded $totalThrottleCount -TotalUploading $totalFiles -Action Retrying
+                                    $throttleCount = 0
+                                    $taskList = [System.Collections.ArrayList]@()
+                                }
+                            }
+                        }
+                        Watch-GSDriveUpload -Id $fullTaskList.Id -Action Retrying -CountUploaded $totalFiles -TotalUploading $totalFiles
+                        $fullStatusList = Get-GSDriveFileUploadStatus -Id $fullTaskList.Id
+                        $failedFiles = $fullStatusList | Where-Object {$_.Status -eq "Failed"}
+                    }
+                    until (!$failedFiles -or ($totalRetries -ge $RetryCount))
+                    if ($failedFiles) {
+                        Write-Warning "The following files failed to upload:`n`n$($failedFiles | Select-Object Id,Status,Exception,File | Format-List | Out-String)"
+                    }
+                    elseif (!$failedFiles) {
+                        Write-Verbose "All files uploaded to Google Drive successfully! Total time: $("{0:c}" -f ((Get-Date) - $start) -replace "\..*")"
+                    }
+                }
             }
-            [Console]::CursorVisible = $true
+            catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                else {
+                    Write-Error $_
+                }
+            }
+            finally {
+                [Console]::CursorVisible = $true
+                Stop-GSDriveFileUpload
+            }
         }
     }
 }
