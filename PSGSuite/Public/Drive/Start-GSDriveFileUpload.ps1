@@ -221,7 +221,6 @@ function Start-GSDriveFileUpload {
         }
         finally {
             [Console]::CursorVisible = $true
-            Stop-GSDriveFileUpload
         }
     }
     End {
