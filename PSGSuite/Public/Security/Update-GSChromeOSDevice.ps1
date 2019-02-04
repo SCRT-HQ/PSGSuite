@@ -19,10 +19,23 @@ function Update-GSChromeOSDevice {
     "reenable": Re-enable a disabled device when a misplaced device is found or a lost device is returned. You can also use this feature if you accidentally mark a Chrome device as disabled.
         Note: The re-enable action can only be performed on devices marked as disabled.
 
-    .EXAMPLE
-    Update-GSChromeOSDevice -ResourceId 'AFiQxQ8Qgd-rouSmcd2UnuvhYV__WXdacTgJhPEA1QoQJrK1hYbKJXm-8JFlhZOjBF4aVbhleS2FVQk5lI069K2GULpteTlLVpKLJFSLSL' -Action approve
+    .PARAMETER DeprovisionReason
+    Only used when the action is deprovision. With the deprovision action, this field is required.
 
-    Approves the ChromeOS device with the specified Id
+    Note: The deprovision reason is audited because it might have implications on licenses for perpetual subscription customers.
+
+    Acceptable values are:
+    * "different_model_replacement": Use if you're upgrading or replacing your device with a newer model of the same device.
+    * "retiring_device": Use if you're reselling, donating, or permanently removing the device from use.
+    * "same_model_replacement": Use if a hardware issue was encountered on a device and it is being replaced with the same model or a like-model replacement from a repair vendor / manufacturer.
+
+    .PARAMETER OrgUnitPath
+    Full path of the target organizational unit or its ID that you would like to move the device to.
+
+    .EXAMPLE
+    Update-GSChromeOSDevice -ResourceId 'AFiQxQ8Qgd-rouSmcd2UnuvhYV__WXdacTgJhPEA1QoQJrK1hYbKJXm-8JFlhZOjBF4aVbhleS2FVQk5lI069K2GULpteTlLVpKLJFSLSL' -Action deprovision -DeprovisionReason retiring_device
+
+    Deprovisions the retired ChromeOS device
     #>
     [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.ChromeOSDevice')]
     [cmdletbinding()]
@@ -33,15 +46,16 @@ function Update-GSChromeOSDevice {
         [String[]]
         $ResourceId,
         [parameter(Mandatory = $false)]
-        [String]
-        $OrgUnitPath,
-        [parameter(Mandatory = $false)]
         [ValidateSet('deprovision','disable','reenable')]
         [String]
         $Action,
         [parameter(Mandatory = $false)]
+        [ValidateSet('different_model_replacement','retiring_device','same_model_replacement')]
         [String]
-        $DeprovisionReason
+        $DeprovisionReason,
+        [parameter(Mandatory = $false)]
+        [String]
+        $OrgUnitPath
 
     )
     Begin {
@@ -111,9 +125,8 @@ function Update-GSChromeOSDevice {
             foreach ($dev in $ResourceId) {
                 try {
                     Write-Verbose "Updating Chrome OS Device '$dev'"
-                    $request = $service.Chromeosdevices. ($actionBody,$customerId,$dev)
+                    $request = $service.Chromeosdevices.Patch($actionBody,$customerId,$dev)
                     $request.Execute()
-                    Write-Verbose "Chrome OS Device was successfully updated"
                 }
                 catch {
                     if ($ErrorActionPreference -eq 'Stop') {

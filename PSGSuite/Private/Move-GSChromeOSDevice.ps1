@@ -34,7 +34,7 @@ function Move-GSChromeOSDevice {
             Scope       = 'https://www.googleapis.com/auth/admin.directory.device.chromeos'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
-        $service = New-GoogleService @serviceParams
+        $service = New-GoogleService @serviceParams -Verbose:$false
         $customerId = if ($Script:PSGSuite.CustomerID) {
             $Script:PSGSuite.CustomerID
         }
