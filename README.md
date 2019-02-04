@@ -138,7 +138,8 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-#### 2.22.3
+#### 2.22.4
 
-* [Issue #144](https://github.com/scrthq/PSGSuite/issues/144)
-  * Updated: `Start-GSDriveFileUpload` to not call `[System.Console]::CursorVisible` when `$Host` is PowerShell ISE
+* [Issue #147](https://github.com/scrthq/PSGSuite/issues/147)
+  * Added: `Get-GSChromeOSDevice` - Handles Get or List requests, depending on if you specify a ResourceId or not.
+  * Added: `Update-GSChromeOSDevice` - Handles Action, Move and/or Patch requests depending on the parameters passed.

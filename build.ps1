@@ -160,7 +160,7 @@ else {
             $global:ForceDeploy = $false
         }
         Invoke-psake @psakeParams @verbose
-        if ($Task -contains 'Import' -and $psake.build_success) {
+        if (($Task -contains 'Import' -or $Task -contains 'Test') -and $psake.build_success) {
             Import-Module ([System.IO.Path]::Combine($env:BHBuildOutput,$env:BHProjectName)) -Verbose:$false
         }
         exit ( [int]( -not $psake.build_success ) )

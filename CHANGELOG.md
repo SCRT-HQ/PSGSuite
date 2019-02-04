@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.22.4](#2224)
   * [2.22.3](#2223)
   * [2.22.2](#2222)
   * [2.22.1](#2221)
@@ -71,6 +72,12 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.22.4
+
+* [Issue #147](https://github.com/scrthq/PSGSuite/issues/147)
+  * Added: `Get-GSChromeOSDevice` - Handles Get or List requests, depending on if you specify a ResourceId or not.
+  * Added: `Update-GSChromeOSDevice` - Handles Action, Move and/or Patch requests depending on the parameters passed.
 
 ## 2.22.3
 
