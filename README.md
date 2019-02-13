@@ -18,15 +18,20 @@
     <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat"
       alt="PowerShell Gallery" title="PowerShell Gallery" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <!-- Gitter -->
-  <a href="https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
-    <img src="https://badges.gitter.im/PSGSuite/Lobby.svg"
-      alt="Gitter - Chat" title="Gitter - Chat" />
+  <!-- Discord -->
+  <a href="https://discord.gg/G66zVG7">
+    <img src="https://img.shields.io/discord/235574673155293194.svg?label=Discord&logo=discord"
+      alt="Discord - Chat" title="Discord - Chat" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Slack -->
   <a href="https://scrthq-slack-invite.herokuapp.com/">
     <img src="https://img.shields.io/badge/chat-on%20slack-orange.svg?style=flat&logo=slack"
       alt="Slack - Chat" title="Slack - Chat" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- Gitter -->
+  <a href="https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
+    <img src="https://badges.gitter.im/PSGSuite/Lobby.svg"
+      alt="Gitter - Chat" title="Gitter - Chat" />
   </a>
 </div>
 <br />
