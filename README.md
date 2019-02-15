@@ -15,12 +15,12 @@
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- PS Gallery -->
   <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
-    <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat"
+    <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat&logo=powershell"
       alt="PowerShell Gallery" title="PowerShell Gallery" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Discord -->
   <a href="https://discord.gg/G66zVG7">
-    <img src="https://img.shields.io/discord/235574673155293194.svg?label=Discord&logo=discord"
+    <img src="https://img.shields.io/discord/235574673155293194.svg?style=flat&label=Discord&logo=discord"
       alt="Discord - Chat" title="Discord - Chat" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Slack -->
@@ -30,7 +30,7 @@
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Gitter -->
   <a href="https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
-    <img src="https://badges.gitter.im/PSGSuite/Lobby.svg"
+    <img src="https://img.shields.io/gitter/room/scrthq/PSGSuite.svg?logo=gitter&style=flat"
       alt="Gitter - Chat" title="Gitter - Chat" />
   </a>
 </div>
