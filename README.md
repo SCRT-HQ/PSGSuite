@@ -143,8 +143,16 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-#### 2.22.4
+#### 2.23.0
 
-* [Issue #147](https://github.com/scrthq/PSGSuite/issues/147)
-  * Added: `Get-GSChromeOSDevice` - Handles Get or List requests, depending on if you specify a ResourceId or not.
-  * Added: `Update-GSChromeOSDevice` - Handles Action, Move and/or Patch requests depending on the parameters passed.
+* [Issue #152](https://github.com/scrthq/PSGSuite/issues/152)
+  * Added full coverage of `Gmail.Settings.SendAs` resource (where signatures are managed with the newer Gmail API):
+    * Added: `Get-GSGmailSendAsAlias`
+    * Added: `Update-GSGmailSendAsAlias`
+    * Added: `Get-GSGmailSignature` (aliased to `Get-GSGmailSendAsAlias`)
+    * Added: `Update-GSGmailSignature` (aliased to `Update-GSGmailSendAsAlias` with some additional convenience parameters)
+    * Added: `Get-GSGmailSendAsSettings` (aliased to `Get-GSGmailSendAsAlias`)
+    * Added: `Update-GSGmailSendAsSettings` (aliased to `Update-GSGmailSendAsAlias`)
+    * Added: `Remove-GSGmailSendAsAlias`
+    * Added: `New-GSGmailSendAsAlias`
+    * Added: `Send-GSGmailSendAsConfirmation`
