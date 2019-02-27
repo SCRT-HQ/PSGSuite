@@ -44,7 +44,7 @@ function Update-GSGmailSignature {
         $Signature,
         [parameter(Mandatory = $true,ParameterSetName = "SignatureFile")]
         [ValidateScript({
-            try{
+            try {
                 Test-Path $_ -ErrorAction Stop
                 $true
             }

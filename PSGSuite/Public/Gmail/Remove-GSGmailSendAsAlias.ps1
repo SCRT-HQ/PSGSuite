@@ -13,9 +13,9 @@ function Remove-GSGmailSendAsAlias {
     The email of the user you are removing the SendAs alias from.
 
     .EXAMPLE
-    Get-GSGmailSendAsSettings -User joe@domain.com
+    Remove-GSGmailSendAsAlias -SendAsEmail partyfuntime@domain.com -User joe@domain.com
 
-    Gets the list of SendAs Settings for Joe
+    Remove Joe's fun custom Sendas alias that he had created in the early days of the company :-(
     #>
     [OutputType()]
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
