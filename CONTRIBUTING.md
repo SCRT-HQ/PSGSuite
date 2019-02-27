@@ -3,16 +3,16 @@
 <!-- TOC -->
 
 * [Contributing to PSGSuite](#contributing-to-psgsuite)
-    * [Git and Pull requests](#git-and-pull-requests)
-    * [Overview](#overview)
-        * [Step by Step (High-Level)](#step-by-step-high-level)
-        * [Contributing Guidelines](#contributing-guidelines)
-        * [Updating the Wiki](#updating-the-wiki)
-    * [Getting Started](#getting-started)
-        * [Enabling Debug Mode](#enabling-debug-mode)
-        * [Google .NET SDK Documentation](#google-net-sdk-documentation)
-            * [.NET/API Documentation Links](#netapi-documentation-links)
-    * [Keeping in Touch](#keeping-in-touch)
+  * [Git and Pull requests](#git-and-pull-requests)
+  * [Overview](#overview)
+    * [Step by Step (High-Level)](#step-by-step-high-level)
+    * [Contributing Guidelines](#contributing-guidelines)
+    * [Updating the Wiki](#updating-the-wiki)
+  * [Getting Started](#getting-started)
+    * [Enabling Debug Mode](#enabling-debug-mode)
+    * [Google .NET SDK Documentation](#google-net-sdk-documentation)
+      * [.NET/API Documentation Links](#netapi-documentation-links)
+  * [Keeping in Touch](#keeping-in-touch)
 
 <!-- /TOC -->
 
@@ -123,19 +123,57 @@ Here are some links to the most commonly used SDK's and API's in PSGSuite:
 * **Admin SDK: Directory API**
     * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/admin/directory_v1/csharp/latest/index.html)
     * [API Documentation](https://developers.google.com/admin-sdk/directory/v1/reference/)
-* **Drive SDK**
-    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/drive/v3/csharp/latest/)
-    * [API Documentation](https://developers.google.com/drive/api/v3/reference/)
-* **Sheets API**
-    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/sheets/v4/csharp/latest/)
-    * [API Documentation](https://developers.google.com/sheets/api/reference/rest/)
+* **Apps Activity API - Updating to Drive Activity API v2 (new name) - Sunset scheduled December 2019**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/appsactivity/v1/csharp/latest/)
+    * [API Documentation](https://developers.google.com/drive/activity/v1/reference/)
+* **Contacts API - To be replaced soon with People API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/contacts/v1/csharp/latest/)
+    * [API Documentation](https://developers.google.com/contacts/v3/reference)
+* **Drive Activity API v2**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/driveactivity/v2/csharp/latest/)
+    * [API Documentation](https://developers.google.com/drive/activity/v2/reference/rest/)
+* **Enterprise License Manager API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/licensing/v1/csharp/latest/)
+    * [API Documentation](https://developers.google.com/admin-sdk/licensing/v1/reference/)
 * **Gmail API**
     * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/gmail/v1/csharp/latest/)
     * [API Documentation](https://developers.google.com/gmail/api/v1/reference/)
-* **Calendar API**
+* **Google Calendar API**
     * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/calendar/v3/csharp/latest/)
     * [API Documentation](https://developers.google.com/calendar/v3/reference/)
+* **Google Classroom API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/classroom/v1/csharp/latest/)
+    * [API Documentation](https://developers.google.com/classroom/reference/rest/)
+* **Google Docs API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/docs/v1/csharp/latest/)
+    * [API Documentation](https://developers.google.com/docs/api/reference/rest/)
+* **Google Drive API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/drive/v3/csharp/latest/)
+    * [API Documentation](https://developers.google.com/drive/api/v3/reference/)
+* **Google Sheets API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/sheets/v4/csharp/latest/)
+    * [API Documentation](https://developers.google.com/sheets/api/reference/rest/)
+* **Google Slides API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/slides/v1/csharp/latest/)
+    * [API Documentation](https://developers.google.com/slides/reference/rest/)
+* **Groups Settings API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/groupssettings/v1/csharp/latest/)
+    * [API Documentation](https://developers.google.com/admin-sdk/groups-settings/v1/reference/groups)
+* **Hangouts Chat API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/chat/v1/csharp/latest/)
+    * [API Documentation](https://developers.google.com/hangouts/chat/reference/)
+* **People API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/people/v1/csharp/latest/)
+    * [API Documentation](https://developers.google.com/people/api/rest/)
+* **Tasks API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/tasks/v1/csharp/latest/)
+    * [API Documentation](https://developers.google.com/tasks/v1/reference/)
+
 
 ## Keeping in Touch
 
-For any questions, comments or concerns outside of opening an issue, please join us in the `#psgsuite` channel on the SCRT HQ Slack; Team: `scrthq.slack.com`. [Click here](https://scrthq-slack-invite.herokuapp.com/) to get an invite!
+For any questions, comments or concerns outside of opening an issue, please reach out:
+* on the SCRT HQ Slack: `scrthq.slack.com`. [Click here](https://scrthq-slack-invite.herokuapp.com/) to get an invite!
+* on the SCRT HQ Discord: [Click here](https://discord.gg/G66zVG7) to get an invite!
+* `@scrthq` on the [PowerShell Slack](http://slack.poshcode.org/) if you're on there as well!
+* [`@scrthq`](https://twitter.com/scrthq) on Twitter

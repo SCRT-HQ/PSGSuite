@@ -35,4 +35,7 @@
     'Switch-PSGSuiteDomain'             = 'Switch-PSGSuiteConfig'
     'Update-GSCalendarResource'         = 'Update-GSResource'
     'Update-GSSheetValue'               = 'Export-GSSheet'
+    'Get-GSGmailSignature'              = 'Get-GSGmailSendAsAlias'
+    'Get-GSGmailSendAsSettings'         = 'Get-GSGmailSendAsAlias'
+    'Update-GSGmailSendAsSettings'      = 'Update-GSGmailSendAsAlias'
 }
