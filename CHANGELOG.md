@@ -77,10 +77,16 @@
 ## 2.23.0
 
 * [Issue #152](https://github.com/scrthq/PSGSuite/issues/152)
-  * Added: `Get-GSGmailSendAsSettings`
-  * Added: `Update-GSGmailSendAsSettings`
-  * Added: `Get-GSGmailSignature` (aliased to `Get-GSGmailSendAsSettings`)
-  * Added: `Update-GSGmailSignature` (aliased to `Update-GSGmailSendAsSettings` with some additional convenience parameters)
+  * Added full coverage of `Gmail.Settings.SendAs` resource (where signatures are managed with the newer Gmail API):
+    * Added: `Get-GSGmailSendAsAlias`
+    * Added: `Update-GSGmailSendAsAlias`
+    * Added: `Get-GSGmailSignature` (aliased to `Get-GSGmailSendAsAlias`)
+    * Added: `Update-GSGmailSignature` (aliased to `Update-GSGmailSendAsAlias` with some additional convenience parameters)
+    * Added: `Get-GSGmailSendAsSettings` (aliased to `Get-GSGmailSendAsAlias`)
+    * Added: `Update-GSGmailSendAsSettings` (aliased to `Update-GSGmailSendAsAlias`)
+    * Added: `Remove-GSGmailSendAsAlias`
+    * Added: `New-GSGmailSendAsAlias`
+    * Added: `Send-GSGmailSendAsConfirmation`
 
 ## 2.22.4
 

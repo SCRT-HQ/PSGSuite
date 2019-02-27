@@ -1,10 +1,10 @@
-function Get-GSGmailSendAsSettings {
+function Get-GSGmailSendAsAlias {
     <#
     .SYNOPSIS
-    Gets Gmail SendAs Settings.
+    Gets SendAs alias settings for a user.
 
     .DESCRIPTION
-    Gets Gmail SendAs Settings.
+    Gets SendAs alias settings for a user.
 
     .PARAMETER SendAsEmail
     The SendAs alias to be retrieved.
@@ -52,7 +52,7 @@ function Get-GSGmailSendAsSettings {
                         $sendAs = "$($sendAs)@$($Script:PSGSuite.Domain)"
                     }
                     $request = $service.Users.Settings.SendAs.Get($User,$sendAs)
-                    Write-Verbose "Getting SendAs settings for alias '$sendAs', user '$User'"
+                    Write-Verbose "Getting SendAs settings of alias '$sendAs' for user '$User'"
                     $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
                 }
                 catch {

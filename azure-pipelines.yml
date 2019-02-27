@@ -13,7 +13,6 @@ trigger:
 phases:
 - phase: Phase_1
   displayName: Compile Module
-
   condition: succeeded()
   queue:
     name: Hosted VS2017
@@ -31,7 +30,6 @@ phases:
 
 - phase: Phase_2
   displayName: Test Module on Windows (PSv5)
-
   dependsOn: Phase_1
   condition: succeeded()
   queue:
@@ -59,7 +57,6 @@ phases:
 
 - phase: Phase_3
   displayName: Test Module on Ubuntu
-
   dependsOn: Phase_1
   condition: succeeded()
   queue:
@@ -87,7 +84,6 @@ phases:
 
 - phase: Phase_4
   displayName: Test Module on macOS
-
   dependsOn: Phase_1
   condition: succeeded()
   queue:
@@ -115,7 +111,6 @@ phases:
 
 - phase: Phase_5
   displayName: Test Module on Windows (PSv6)
-
   dependsOn: Phase_1
   condition: succeeded()
   queue:
@@ -128,14 +123,12 @@ phases:
       artifactName: BuildOutput
       downloadPath: '$(Build.SourcesDirectory)'
 
-  #- script: 'choco install powershell-core --yes'
-  #  displayName: 'Install Powershell v6'
-
   - powershell: |
       $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
       $Env:Path = [Environment]::GetEnvironmentVariable('Path',[EnvironmentVariableTarget]::Machine)
       pwsh -command ". ./build.ps1 -Task TestOnly"
     displayName: Test Module
+
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/Test*.xml'
     inputs:
@@ -145,7 +138,6 @@ phases:
 
 - phase: Phase_6
   displayName: Deploy Module
-
   dependsOn:
   - Phase_2
   - Phase_3

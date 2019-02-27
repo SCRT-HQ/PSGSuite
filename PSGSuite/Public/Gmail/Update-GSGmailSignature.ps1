@@ -99,8 +99,8 @@ function Update-GSGmailSignature {
             $SendAsEmail = "$($SendAsEmail)@$($Script:PSGSuite.Domain)"
         }
         try {
-            Write-Verbose "Signature to be set on SendAs address '$SendAsEmail' for user '$User':`n$finalSignature"
-            Update-GSGmailSendAsSettings -SendAsEmail $SendAsEmail -User $User -Signature $finalSignature
+            Write-Verbose "Setting the following signature on SendAs alias '$SendAsEmail' for user '$User':`n`n$finalSignature`n"
+            Update-GSGmailSendAsAlias -SendAsEmail $SendAsEmail -User $User -Signature $finalSignature
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

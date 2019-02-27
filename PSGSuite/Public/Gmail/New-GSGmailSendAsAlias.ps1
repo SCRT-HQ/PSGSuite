@@ -1,16 +1,16 @@
-function Update-GSGmailSendAsSettings {
+function New-GSGmailSendAsAlias {
     <#
     .SYNOPSIS
-    Updates SendAs settings.
+    Creates a new SendAs alias for a user.
 
     .DESCRIPTION
-    Updates SendAs settings.
+    Creates a new SendAs alias for a user.
 
     .PARAMETER User
-    The user to update the SendAs settings for.
+    The user to create the SendAs alias for.
 
     .PARAMETER SendAsEmail
-    The SendAs alias to be updated.
+    The email address that appears in the "From:" header for mail sent using this alias.
 
     .PARAMETER DisplayName
     A name that appears in the "From:" header for mail sent using this alias.
@@ -48,9 +48,9 @@ function Update-GSGmailSendAsSettings {
 
     .EXAMPLE
     $smtpMsa = Add-GSGmailSmtpMsa -Host 10.0.30.18 -Port 3770 -SecurityMode none -Username mailadmin -Password $(ConvertTo-SecureString $password -AsPlainText -Force)
-    Update-GSGmailSendAsSettings -SendAsEmail joseph.wiggum@business.com -User joe@domain.com -Signature "<div>Thank you for your time,</br>Joseph Wiggum</div>" -SmtpMsa $smtpMsa
+    New-GSGmailSendAsAlias -SendAsEmail joseph.wiggum@business.com -User joe@domain.com -Signature "<div>Thank you for your time,</br>Joseph Wiggum</div>" -SmtpMsa $smtpMsa
 
-    Updates Joe's SendAs settings for his formal alias, including signature and SmtpMsa settings.
+    Creates a new SendAs alias for Joe's formal/work address including signature and SmtpMsa settings.
     #>
     [OutputType('Google.Apis.Gmail.v1.Data.SendAs')]
     [cmdletbinding()]
@@ -60,7 +60,7 @@ function Update-GSGmailSendAsSettings {
         [ValidateNotNullOrEmpty()]
         [string]
         $User,
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $true)]
         [string]
         $SendAsEmail,
         [parameter(Mandatory = $false)]
@@ -97,8 +97,7 @@ function Update-GSGmailSendAsSettings {
         }
         $serviceParams = @{
             Scope       = @(
-                'https://www.googleapis.com/auth/gmail.settings.sharing',
-                'https://www.googleapis.com/auth/gmail.settings.basic'
+                'https://www.googleapis.com/auth/gmail.settings.sharing'
             )
             ServiceType = 'Google.Apis.Gmail.v1.GmailService'
             User        = $User
@@ -109,8 +108,8 @@ function Update-GSGmailSendAsSettings {
             foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {
                 $body.$prop = $PSBoundParameters[$prop]
             }
-            $request = $service.Users.Settings.SendAs.Patch($body,$User,$SendAsEmail)
-            Write-Verbose "Updating SendAs settings of alias '$SendAsEmail' for user '$User'"
+            $request = $service.Users.Settings.SendAs.Create($body,$User)
+            Write-Verbose "Creating new SendAs alias '$SendAsEmail' for user '$User'"
             $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
         catch {
