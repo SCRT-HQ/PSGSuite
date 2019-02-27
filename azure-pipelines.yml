@@ -128,8 +128,8 @@ phases:
       artifactName: BuildOutput
       downloadPath: '$(Build.SourcesDirectory)'
 
-  - script: 'choco install powershell-core --yes'
-    displayName: 'Install Powershell v6'
+  #- script: 'choco install powershell-core --yes'
+  #  displayName: 'Install Powershell v6'
 
   - powershell: |
       $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'

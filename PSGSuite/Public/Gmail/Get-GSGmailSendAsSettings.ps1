@@ -21,8 +21,7 @@ function Get-GSGmailSendAsSettings {
     #>
     [OutputType('Google.Apis.Gmail.v1.Data.SendAs')]
     [cmdletbinding()]
-    Param
-    (
+    Param (
         [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
         [Alias("SendAs")]
         [string[]]
