@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.23.0](#2230)
   * [2.22.4](#2224)
   * [2.22.3](#2223)
   * [2.22.2](#2222)
@@ -72,6 +73,14 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.23.0
+
+* [Issue #152](https://github.com/scrthq/PSGSuite/issues/152)
+  * Added: `Get-GSGmailSendAsSettings`
+  * Added: `Update-GSGmailSendAsSettings`
+  * Added: `Get-GSGmailSignature` (aliased to `Get-GSGmailSendAsSettings`)
+  * Added: `Update-GSGmailSignature` (aliased to `Update-GSGmailSendAsSettings` with some additional convenience parameters)
 
 ## 2.22.4
 
