@@ -1,32 +1,41 @@
 function Get-GSUsageReport {
     <#
     .SYNOPSIS
-    Retrieves a list of activities
-    
+    Retrieves the usage report for the specified type.
+
+    Defaults to Customer Usage Report type.
+
     .DESCRIPTION
-    Retrieves a list of activities
-    
+    Retrieves the usage report for the specified type.
+
+    Defaults to Customer Usage Report type.
+
     .PARAMETER Date
-    Represents the date for which the data is to be fetched
-    
+    Represents the date for which the data is to be fetched. Defaults to 3 days before the current date.
+
     .PARAMETER UserKey
-    Represents the profile id or the user email for which the data should be filtered
-    
+    [User Usage Report] Represents the profile id or the user email for which the data should be filtered.
+
+    Use 'all' to retrieve the report for all users.
+
     .PARAMETER EntityType
-    Type of object. Should be one of - gplus_communities
-    
+    [Entity Usage Report] Type of object. Should be one of:
+    * gplus_communities
+
     .PARAMETER EntityKey
-    Represents the key of object for which the data should be filtered
-    
+    [Entity Usage Report] Represents the key of object for which the data should be filtered.
+
+    Use 'all' to retrieve the report for all users.
+
     .PARAMETER Filters
     Represents the set of filters including parameter operator value
-    
+
     .PARAMETER Parameters
     Represents the application name, parameter name pairs to fetch in csv as app_name1:param_name1
-    
+
     .PARAMETER PageSize
     Maximum number of results to return. Maximum allowed is 1000
-    
+
     .EXAMPLE
     Get-GSUsageReport -Date (Get-Date).AddDays(-30)
 
@@ -35,23 +44,23 @@ function Get-GSUsageReport {
     [cmdletbinding(DefaultParameterSetName = "Customer")]
     Param
     (
-        [parameter(Mandatory = $true,ParameterSetName = "Customer")]
-        [parameter(Mandatory = $true,ParameterSetName = "Entity")]
-        [parameter(Mandatory = $true,ParameterSetName = "User")]
+        [parameter(Mandatory = $false,ParameterSetName = "Customer")]
+        [parameter(Mandatory = $false,ParameterSetName = "Entity")]
+        [parameter(Mandatory = $false,ParameterSetName = "User")]
         [DateTime]
-        $Date,
+        $Date = (Get-Date).AddDays(-3),
         [parameter(Mandatory = $true,ParameterSetName = "User")]
         [ValidateNotNullOrEmpty()]
         [String]
         $UserKey,
         [parameter(Mandatory = $true,ParameterSetName = "Entity")]
-        [ValidateNotNullOrEmpty()]
+        [ValidateSet('gplus_communities')]
         [String]
         $EntityType,
-        [parameter(Mandatory = $true,ParameterSetName = "Entity")]
+        [parameter(Mandatory = $false,ParameterSetName = "Entity")]
         [ValidateNotNullOrEmpty()]
         [String]
-        $EntityKey,
+        $EntityKey = 'all',
         [parameter(Mandatory = $false,ParameterSetName = "Entity")]
         [parameter(Mandatory = $false,ParameterSetName = "User")]
         [String[]]
@@ -64,7 +73,13 @@ function Get-GSUsageReport {
         [ValidateRange(1,1000)]
         [Alias("MaxResults")]
         [Int]
-        $PageSize = "1000"
+        $PageSize = "1000",
+        [parameter(Mandatory = $false)]
+        [switch]
+        $Flat,
+        [parameter(Mandatory = $false)]
+        [switch]
+        $Raw
     )
     Begin {
         $serviceParams = @{
@@ -72,8 +87,6 @@ function Get-GSUsageReport {
             ServiceType = 'Google.Apis.Admin.Reports.reports_v1.ReportsService'
         }
         $service = New-GoogleService @serviceParams
-        $props = @()
-        $props += (@{N = "Date";E = {$Date.ToString('yyyy-MM-dd')}})
     }
     Process {
         try {
@@ -85,22 +98,18 @@ function Get-GSUsageReport {
                 Entity {
                     $request = $service.EntityUsageReports.Get($EntityType,$EntityKey,($Date.ToString('yyyy-MM-dd')))
                     $request.MaxResults = $PageSize
-                    $props += (@{N = "EntityType";E = {$EntityType}})
-                    $props += (@{N = "EntityKey";E = {$EntityKey}})
                 }
                 User {
                     if ($UserKey -ceq 'me') {
                         $UserKey = $Script:PSGSuite.AdminEmail
                     }
-                    elseif ($UserKey -notlike "*@*.*") {
+                    elseif ($UserKey -notlike "*@*.*" -and $UserKey -ne 'all') {
                         $UserKey = "$($UserKey)@$($Script:PSGSuite.Domain)"
                     }
                     $request = $service.UserUsageReport.Get($UserKey,($Date.ToString('yyyy-MM-dd')))
                     $request.MaxResults = $PageSize
-                    $props += (@{N = "UserKey";E = {$UserKey}})
                 }
             }
-            $props += '*'
             foreach ($key in $PSBoundParameters.Keys | Where-Object {$_ -notin @('Date','UserKey','EntityKey','EntityType')}) {
                 switch ($key) {
                     Filters {
@@ -116,25 +125,73 @@ function Get-GSUsageReport {
                     }
                 }
             }
-            $response = @()
             $warnings = @()
             [int]$i = 1
             do {
                 $result = $request.Execute()
-                $response += $result.UsageReportsValue.Parameters | Select-Object $props
+                if ($Raw) {
+                    $result.UsageReportsValue
+                }
+                else {
+                    $result.UsageReportsValue | ForEach-Object {
+                        $orig = $_
+                        $orig | Add-Member -MemberType NoteProperty -Name CustomerId -Value $orig.Entity.CustomerId -Force -PassThru | Add-Member -MemberType NoteProperty -Name EntityType -Value $orig.Entity.Type -Force
+                        switch ($PSCmdlet.ParameterSetName) {
+                            Entity {
+                                $orig | Add-Member -MemberType NoteProperty -Name EntityKey -Value $orig.Entity.EntityKey -Force
+                                $orig | Add-Member -MemberType NoteProperty -Name CommunityName -Value $orig.Parameters[$orig.Parameters.Name.IndexOf('gplus:community_name')].StringValue -Force
+                            }
+                            User {
+                                $orig | Add-Member -MemberType NoteProperty -Name Email -Value $orig.Entity.UserEmail -Force -PassThru | Add-Member -MemberType NoteProperty -Name UserEmail -Value $orig.Entity.UserEmail -Force -PassThru | Add-Member -MemberType NoteProperty -Name ProfileId -Value $orig.Entity.ProfileId -Force
+                            }
+                        }
+                        foreach ($param in $orig.Parameters | Sort-Object Name) {
+                            if ($null -ne $param.Name) {
+                                $paramValue = if ($null -ne $param.StringValue) {
+                                    $param.StringValue
+                                }
+                                elseif ($null -ne $param.IntValue) {
+                                    $param.IntValue
+                                }
+                                elseif ($null -ne $param.DatetimeValue) {
+                                    $param.DatetimeValue
+                                }
+                                elseif ($null -ne $param.BoolValue) {
+                                    $param.BoolValue
+                                }
+                                elseif ($null -ne $param.MsgValue) {
+                                    $param.MsgValue
+                                }
+                                else {
+                                    $null
+                                }
+                                if ($Flat) {
+                                    $orig | Add-Member -MemberType NoteProperty -Name $param.Name -Value $paramValue -Force
+                                }
+                                else {
+                                    $pName = $param.Name -split ":"
+                                    if ($orig.PSObject.Properties.Name -notcontains $pName[0]) {
+                                        $orig | Add-Member -MemberType NoteProperty -Name $pName[0] -Value $([Ordered]@{}) -Force
+                                    }
+                                    $orig.$($pName[0])[$pName[1]] = $paramValue
+                                }
+                            }
+                        }
+                        $orig
+                    }
+                }
                 $warnings += $result.Warnings
                 $request.PageToken = $result.NextPageToken
-                [int]$retrieved = ($i + $result.UsageReportsValue.Parameters.Count) - 1
-                Write-Verbose "Retrieved $retrieved report parameters..."
-                [int]$i = $i + $result.UsageReportsValue.Parameters.Count
+                [int]$retrieved = ($i + $result.UsageReportsValue.Count) - 1
+                Write-Verbose "Retrieved $retrieved entities for this report..."
+                [int]$i = $i + $result.UsageReportsValue.Count
             }
             until (!$result.NextPageToken)
-            if ($warnings) {
+            if ($warnings | Where-Object {$_.Code}) {
                 $warnings | ForEach-Object {
                     Write-Warning "[$($_.Code)] $($_.Message)"
                 }
             }
-            return $response
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

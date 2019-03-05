@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.23.1](#2231)
   * [2.23.0](#2230)
   * [2.22.4](#2224)
   * [2.22.3](#2223)
@@ -73,6 +74,14 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.23.1
+
+**This update changes the output of `Get-GSUsageReport` -- please review the output changes before updating if you have scripts that use that function!!**
+
+* Fixed: `Get-GSUsageReport` wasn't displaying critical report information (such as the Entity info) due to Select-Object being hardcoded. Function has been updated to parse the resulting Parameters and Entity info out to the top-level object.
+  * Added: `Flat` switch to specify that the parsed properties match what GAM returns, i.e. `'gmail:num_outbound_unencrypted_emails' = 6`. Normal behavior would be to parse that into an ordered dictionary, i.e. `gmail['num_outbound_unencrypted_emails'] = 6`, so that only `gmail` is seen from the top level object and all relevant report data is captured in the underlying dictionary.
+  * Added: `Raw` switch to allow the raw UsageReportsValue to be returned instead of parsing it out.
 
 ## 2.23.0
 

@@ -143,16 +143,10 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-#### 2.23.0
+#### 2.23.1
 
-* [Issue #152](https://github.com/scrthq/PSGSuite/issues/152)
-  * Added full coverage of `Gmail.Settings.SendAs` resource (where signatures are managed with the newer Gmail API):
-    * Added: `Get-GSGmailSendAsAlias`
-    * Added: `Update-GSGmailSendAsAlias`
-    * Added: `Get-GSGmailSignature` (aliased to `Get-GSGmailSendAsAlias`)
-    * Added: `Update-GSGmailSignature` (aliased to `Update-GSGmailSendAsAlias` with some additional convenience parameters)
-    * Added: `Get-GSGmailSendAsSettings` (aliased to `Get-GSGmailSendAsAlias`)
-    * Added: `Update-GSGmailSendAsSettings` (aliased to `Update-GSGmailSendAsAlias`)
-    * Added: `Remove-GSGmailSendAsAlias`
-    * Added: `New-GSGmailSendAsAlias`
-    * Added: `Send-GSGmailSendAsConfirmation`
+**This update changes the output of `Get-GSUsageReport` -- please review the output changes before updating if you have scripts that use that function!!**
+
+* Fixed: `Get-GSUsageReport` wasn't displaying critical report information (such as the Entity info) due to Select-Object being hardcoded. Function has been updated to parse the resulting Parameters and Entity info out to the top-level object.
+  * Added: `Flat` switch to specify that the parsed properties match what GAM returns, i.e. `'gmail:num_outbound_unencrypted_emails' = 6`. Normal behavior would be to parse that into an ordered dictionary, i.e. `gmail['num_outbound_unencrypted_emails'] = 6`, so that only `gmail` is seen from the top level object and all relevant report data is captured in the underlying dictionary.
+  * Added: `Raw` switch to allow the raw UsageReportsValue to be returned instead of parsing it out.
