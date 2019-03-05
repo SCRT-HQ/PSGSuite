@@ -1,22 +1,22 @@
-function New-GSSheet {
+function Update-GSSheet {
     <#
     .SYNOPSIS
-    Creates a new SpreadSheet
+    Updates a SpreadSheet
 
     .DESCRIPTION
-    Creates a new SpreadSheet
+    Updates a SpreadSheet
 
     .PARAMETER Title
-    The name of the new SpreadSheet
+    The name of the SpreadSheet
 
     .PARAMETER User
-    The user to create the Sheet for
+    The user to update the Sheet for
 
     .PARAMETER Launch
-    If $true, opens the new SpreadSheet Url in your default browser
+    If $true, opens the SpreadSheet Url in your default browser
 
     .EXAMPLE
-    New-GSSheet -Title "Finance Workbook" -Launch
+    Update-GSSheet -Title "Finance Workbook" -Launch
 
     Creates a new SpreadSheet titled "Finance Workbook" and opens it in the browser on creation
     #>
@@ -24,6 +24,10 @@ function New-GSSheet {
     [cmdletbinding()]
     Param
     (
+        [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
+        [Alias('SheetId')]
+        [String]
+        $Id,
         [parameter(Mandatory = $false)]
         [Alias('SheetTitle')]
         [String]
@@ -37,7 +41,7 @@ function New-GSSheet {
         [Switch]
         $Launch
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -50,14 +54,12 @@ function New-GSSheet {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $body = New-Object 'Google.Apis.Sheets.v4.Data.Spreadsheet'
             $body.Properties = New-Object 'Google.Apis.Sheets.v4.Data.SpreadsheetProperties' -Property @{
                 Title = $Title
             }
-            if (-not $Title) {
+            if (!$Title) {
                 $Title = "Untitled spreadsheet"
             }
             Write-Verbose "Creating Spreadsheet '$Title' for user '$User'"
