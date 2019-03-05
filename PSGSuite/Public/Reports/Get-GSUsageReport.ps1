@@ -134,50 +134,52 @@ function Get-GSUsageReport {
                 }
                 else {
                     $result.UsageReportsValue | ForEach-Object {
-                        $orig = $_
-                        $orig | Add-Member -MemberType NoteProperty -Name CustomerId -Value $orig.Entity.CustomerId -Force -PassThru | Add-Member -MemberType NoteProperty -Name EntityType -Value $orig.Entity.Type -Force
-                        switch ($PSCmdlet.ParameterSetName) {
-                            Entity {
-                                $orig | Add-Member -MemberType NoteProperty -Name EntityKey -Value $orig.Entity.EntityKey -Force
-                                $orig | Add-Member -MemberType NoteProperty -Name CommunityName -Value $orig.Parameters[$orig.Parameters.Name.IndexOf('gplus:community_name')].StringValue -Force
+                        if ($null -ne $_) {
+                            $orig = $_
+                            $orig | Add-Member -MemberType NoteProperty -Name CustomerId -Value $orig.Entity.CustomerId -Force -PassThru | Add-Member -MemberType NoteProperty -Name EntityType -Value $orig.Entity.Type -Force
+                            switch ($PSCmdlet.ParameterSetName) {
+                                Entity {
+                                    $orig | Add-Member -MemberType NoteProperty -Name EntityKey -Value $orig.Entity.EntityKey -Force
+                                    $orig | Add-Member -MemberType NoteProperty -Name CommunityName -Value $orig.Parameters[$orig.Parameters.Name.IndexOf('gplus:community_name')].StringValue -Force
+                                }
+                                User {
+                                    $orig | Add-Member -MemberType NoteProperty -Name Email -Value $orig.Entity.UserEmail -Force -PassThru | Add-Member -MemberType NoteProperty -Name UserEmail -Value $orig.Entity.UserEmail -Force -PassThru | Add-Member -MemberType NoteProperty -Name ProfileId -Value $orig.Entity.ProfileId -Force
+                                }
                             }
-                            User {
-                                $orig | Add-Member -MemberType NoteProperty -Name Email -Value $orig.Entity.UserEmail -Force -PassThru | Add-Member -MemberType NoteProperty -Name UserEmail -Value $orig.Entity.UserEmail -Force -PassThru | Add-Member -MemberType NoteProperty -Name ProfileId -Value $orig.Entity.ProfileId -Force
-                            }
-                        }
-                        foreach ($param in $orig.Parameters | Sort-Object Name) {
-                            if ($null -ne $param.Name) {
-                                $paramValue = if ($null -ne $param.StringValue) {
-                                    $param.StringValue
-                                }
-                                elseif ($null -ne $param.IntValue) {
-                                    $param.IntValue
-                                }
-                                elseif ($null -ne $param.DatetimeValue) {
-                                    $param.DatetimeValue
-                                }
-                                elseif ($null -ne $param.BoolValue) {
-                                    $param.BoolValue
-                                }
-                                elseif ($null -ne $param.MsgValue) {
-                                    $param.MsgValue
-                                }
-                                else {
-                                    $null
-                                }
-                                if ($Flat) {
-                                    $orig | Add-Member -MemberType NoteProperty -Name $param.Name -Value $paramValue -Force
-                                }
-                                else {
-                                    $pName = $param.Name -split ":"
-                                    if ($orig.PSObject.Properties.Name -notcontains $pName[0]) {
-                                        $orig | Add-Member -MemberType NoteProperty -Name $pName[0] -Value $([Ordered]@{}) -Force
+                            foreach ($param in $orig.Parameters | Sort-Object Name) {
+                                if ($null -ne $param.Name) {
+                                    $paramValue = if ($null -ne $param.StringValue) {
+                                        $param.StringValue
                                     }
-                                    $orig.$($pName[0])[$pName[1]] = $paramValue
+                                    elseif ($null -ne $param.IntValue) {
+                                        $param.IntValue
+                                    }
+                                    elseif ($null -ne $param.DatetimeValue) {
+                                        $param.DatetimeValue
+                                    }
+                                    elseif ($null -ne $param.BoolValue) {
+                                        $param.BoolValue
+                                    }
+                                    elseif ($null -ne $param.MsgValue) {
+                                        $param.MsgValue
+                                    }
+                                    else {
+                                        $null
+                                    }
+                                    if ($Flat) {
+                                        $orig | Add-Member -MemberType NoteProperty -Name $param.Name -Value $paramValue -Force
+                                    }
+                                    else {
+                                        $pName = $param.Name -split ":"
+                                        if ($orig.PSObject.Properties.Name -notcontains $pName[0]) {
+                                            $orig | Add-Member -MemberType NoteProperty -Name $pName[0] -Value $([Ordered]@{}) -Force
+                                        }
+                                        $orig.$($pName[0])[$pName[1]] = $paramValue
+                                    }
                                 }
                             }
+                            $orig
                         }
-                        $orig
                     }
                 }
                 $warnings += $result.Warnings

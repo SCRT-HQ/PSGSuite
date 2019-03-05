@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.23.2](#2232)
   * [2.23.1](#2231)
   * [2.23.0](#2230)
   * [2.22.4](#2224)
@@ -74,6 +75,10 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.23.2
+
+* Fixed logic issue with Get-GSUsageReport for reports returning no entities where errors would be thrown. Resolved by guarding against acting on `$null` values in the loop.
 
 ## 2.23.1
 

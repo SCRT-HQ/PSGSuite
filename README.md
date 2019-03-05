@@ -143,6 +143,10 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.23.2
+
+* Fixed logic issue with Get-GSUsageReport for reports returning no entities where errors would be thrown. Resolved by guarding against acting on `$null` values in the loop.
+
 #### 2.23.1
 
 **This update changes the output of `Get-GSUsageReport` -- please review the output changes before updating if you have scripts that use that function!!**
