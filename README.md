@@ -143,14 +143,7 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-#### 2.23.2
+#### 2.24.0
 
-* Fixed logic issue with Get-GSUsageReport for reports returning no entities where errors would be thrown. Resolved by guarding against acting on `$null` values in the loop.
-
-#### 2.23.1
-
-**This update changes the output of `Get-GSUsageReport` -- please review the output changes before updating if you have scripts that use that function!!**
-
-* Fixed: `Get-GSUsageReport` wasn't displaying critical report information (such as the Entity info) due to Select-Object being hardcoded. Function has been updated to parse the resulting Parameters and Entity info out to the top-level object.
-  * Added: `Flat` switch to specify that the parsed properties match what GAM returns, i.e. `'gmail:num_outbound_unencrypted_emails' = 6`. Normal behavior would be to parse that into an ordered dictionary, i.e. `gmail['num_outbound_unencrypted_emails'] = 6`, so that only `gmail` is seen from the top level object and all relevant report data is captured in the underlying dictionary.
-  * Added: `Raw` switch to allow the raw UsageReportsValue to be returned instead of parsing it out.
+* [Issue #159](https://github.com/scrthq/PSGSuite/issues/159)
+  * Added: `Revoke-GSStudentGuardianInvitation` to revoke student guardian invitations (Classroom API)

@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.24.0](#2240)
   * [2.23.2](#2232)
   * [2.23.1](#2231)
   * [2.23.0](#2230)
@@ -75,6 +76,11 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.24.0
+
+* [Issue #159](https://github.com/scrthq/PSGSuite/issues/159)
+  * Added: `Revoke-GSStudentGuardianInvitation` to revoke student guardian invitations (Classroom API)
 
 ## 2.23.2
 
