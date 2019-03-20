@@ -1,10 +1,10 @@
-function New-GSCalendarACL {
+function New-GSCalendarAcl {
     <#
     .SYNOPSIS
-    Adds Google User to Calendar
+    Adds a new Access Control Rule to a calendar.
 
     .DESCRIPTION
-    Adds Google User to Calendar
+    Adds a new Access Control Rule to a calendar.
 
     .PARAMETER User
     The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.

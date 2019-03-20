@@ -12,7 +12,7 @@ function Remove-GSCalendarEvent {
     Defaults to the AdminEmail in the config.
 
     .PARAMETER CalendarID
-    The calendar ID of the calendar you would like to list events from.
+    The calendar ID of the calendar you would like to remove events from.
 
     Defaults to the user's primary calendar.
 

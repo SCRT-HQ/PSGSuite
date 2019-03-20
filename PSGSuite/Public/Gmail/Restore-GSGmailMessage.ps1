@@ -2,18 +2,18 @@ function Restore-GSGmailMessage {
     <#
     .SYNOPSIS
     Restores a trashed message to the inbox
-    
+
     .DESCRIPTION
     Restores a trashed message to the inbox
-    
+
     .PARAMETER User
     The primary email of the user to restore the message for
 
     Defaults to the AdminEmail user
-    
+
     .PARAMETER Id
     The Id of the message to restore
-    
+
     .EXAMPLE
     Restore-GSGmailMessage -User joe -Id 161622d7b76b7e1e,1616227c34d435f2
 
@@ -31,7 +31,7 @@ function Restore-GSGmailMessage {
         [String[]]
         $Id
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -44,8 +44,6 @@ function Restore-GSGmailMessage {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             foreach ($mId in $Id) {
                 $request = $service.Users.Messages.Untrash($User,$mId)

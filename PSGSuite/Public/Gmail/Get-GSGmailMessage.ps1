@@ -61,7 +61,7 @@ function Get-GSGmailMessage {
         [string]
         $Format = "Full"
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -77,8 +77,6 @@ function Get-GSGmailMessage {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             foreach ($mId in $Id) {
                 $request = $service.Users.Messages.Get($User,$mId)
