@@ -143,7 +143,18 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-#### 2.24.0
+#### 2.25.0
 
-* [Issue #159](https://github.com/scrthq/PSGSuite/issues/159)
-  * Added: `Revoke-GSStudentGuardianInvitation` to revoke student guardian invitations (Classroom API)
+* [Issue #162](https://github.com/scrthq/PSGSuite/issues/162)
+  * Updated: `New-GoogleService` now caches Service objects created during the current session. This means that repeated calls will attempt to use an existing Service object from the cache if present, otherwise it will create the Service as usual.
+  * Updated: `New-GoogleService` Verbose output. To cut down on verbose noisiness, the following verbose output is set:
+    * New Service created = `Building ServiceAccountCredential from....`
+    * First use of existing Service = `Using matching cached service for user....`
+    * Re-use of existing Service = No verbose output (helps cut down on pipeline verbosity where service re-use is expected)
+  * Added: `Get-PSGSuiteServiceCache` to get the current Service Cache for inspection.
+* [Issue #163](https://github.com/scrthq/PSGSuite/issues/163)
+  * Added: `Get-GSCalendar` to get the CalendarList of a user.
+  * Added: `Remove-GSCalendarAcl` to remove Access Control List rules from Google Calendars.
+* Miscellaneous
+  * Improved pipeline support for Gmail `*Message` functions and Calendar functions.
+  * Added tab completion to `Switch-PSGSuiteConfig` for the ConfigName parameter.
