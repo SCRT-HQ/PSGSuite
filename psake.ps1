@@ -61,6 +61,9 @@ task Clean -depends Init {
         New-Item -Path $outputDir -ItemType Directory > $null
     }
     "    Cleaned previous output directory [$outputDir]"
+    $ciGeneratedPath = [System.IO.Path]::Combine($PSScriptRoot,'PSGSuite','Public','Helpers','CIGenerated')
+    Get-ChildItem $ciGeneratedPath -Filter "*.ps1" -Recurse | Remove-Item -Force -Confirm:$false
+    "    Cleaned CI Generated directory [$ciGeneratedPath]"
 } -description 'Cleans module output directory'
 
 task Update -depends Clean {

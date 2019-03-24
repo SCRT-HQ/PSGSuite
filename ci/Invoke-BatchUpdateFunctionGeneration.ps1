@@ -5,7 +5,7 @@ function Invoke-BatchUpdateFunctionGeneration {
         [String]
         $BaseType
     )
-    $OutputPath = [System.IO.Path]::Combine($PSScriptRoot,'..','PSGSuite','Public',$BaseType.Split('.')[2],'Requests')
+    $OutputPath = [System.IO.Path]::Combine($PSScriptRoot,'..','PSGSuite','Public','Helpers','CIGenerated')
     $TargetApi = $BaseType.Split('.')[2].TrimEnd('s')
     $req = New-Object $BaseType
     ($req | Get-Member -MemberType Property | Where-Object {$_.Name -ne 'ETag'}).Definition | ForEach-Object {
@@ -20,9 +20,17 @@ function Invoke-BatchUpdateFunctionGeneration {
             $paramName = $_.Name
             $paramType = $_.Definition.Split(' ',2)[0]
             $paramBlock += "        [parameter()]`n        [$paramType]`n        `$$paramName,"
-            $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: $paramType`n"
+            if ($paramType -match '^Google\.') {
+                $helperFunctionName = "Add-GS" + $TargetApi + $paramType.Split('.')[-1]
+                $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: $paramType.`n`n    To create this type, use the function $helperFunctionName or instantiate the type directly via New-Object '$paramType'.`n"
+                Invoke-HelperFunctionGeneration -BaseType $paramType
+            }
+            else {
+                $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: $paramType.`n"
+            }
             $exampleParamString += " -$paramName `$$($paramName.Substring(0,1).ToLower())$($paramName.Substring(1))"
         }
+        $paramHelpBlock += ".PARAMETER Requests`n    Enables pipeline input of other requests of the same type.`n"
         $fnValue = @"
 function $fnName {
     <#
@@ -55,14 +63,24 @@ $($paramBlock -join "`n")
         foreach (`$prop in `$PSBoundParameters.Keys | Where-Object {`$newRequest.PSObject.Properties.Name -contains `$_}) {
             `$newRequest.`$prop = `$PSBoundParameters[`$prop]
         }
-        New-Object '$BaseType' -Property @{
-            $($requestType.TrimEnd('Request')) = `$newRequest
+        try {
+            New-Object '$BaseType' -Property @{
+                $($requestType.TrimEnd('Request')) = `$newRequest
+            }
+        }
+        catch {
+            if (`$ErrorActionPreference -eq 'Stop') {
+                `$PSCmdlet.ThrowTerminatingError(`$_)
+            }
+            else {
+                Write-Error `$_
+            }
         }
     }
 }
 "@
         $outPath = Join-Path $OutputPath "$($fnName).ps1"
-        Write-Verbose "Generating function: $outPath"
+        Write-Verbose "Generating BatchUpdate function: $outPath"
         Set-Content -Path $outPath -Value $fnValue -Force
     }
 }
