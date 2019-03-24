@@ -1,19 +1,14 @@
 function Invoke-BatchUpdateFunctionGeneration {
     [CmdletBinding()]
     Param (
-        [parameter(Mandatory = $false,Position = 0)]
+        [parameter(Mandatory = $true,Position = 0)]
         [String]
-        $BaseType = 'Google.Apis.Sheets.v4.Data.Request',
-        [parameter(Mandatory = $false)]
-        [ValidateScript({Test-Path $_})]
-        [String]
-        $OutputPath = 'C:\GDrive\PSModules\PSGSuite\PSGSuite\Public\Sheets\Requests',
-        [parameter(Mandatory = $false)]
-        [String]
-        $TargetApi = 'Sheet'
+        $BaseType
     )
+    $OutputPath = [System.IO.Path]::Combine($PSScriptRoot,'..','PSGSuite','Public',$BaseType.Split('.')[2],'Requests')
+    $TargetApi = $BaseType.Split('.')[2].TrimEnd('s')
     $req = New-Object $BaseType
-    ($req | Get-Member -MemberType Property | Where-Object {$_.Definition -match '^Google'}).Definition | ForEach-Object {
+    ($req | Get-Member -MemberType Property | Where-Object {$_.Name -ne 'ETag'}).Definition | ForEach-Object {
         $fullType = $_.Split(' ',2)[0]
         $requestType = $fullType.Split('.')[-1]
         $fnName = "Add-GS" + $TargetApi + $requestType

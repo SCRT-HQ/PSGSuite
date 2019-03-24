@@ -74,29 +74,27 @@ task Update -depends Clean {
     else {
         "$lib\netstandard1.3"
     }
-    $genTargets = @(
-        @{
-            BaseType = 'Google.Apis.Sheets.v4.Data.Request'
-            OutputPath = [System.IO.Path]::Combine($sut,'Public','Sheets','Requests')
-            TargetApi = 'Sheet'
+    Get-ChildItem $sdkPath | Where-Object {$_.Name -match 'Sheets|Docs|Slides'} | ForEach-Object {
+        $sdk = $_.Name
+        try {
+            Add-Type -Path $_.FullName -ErrorAction Stop
         }
+        catch [System.Reflection.ReflectionTypeLoadException] {
+            Write-Host "Message: $($_.Exception.Message)"
+            Write-Host "StackTrace: $($_.Exception.StackTrace)"
+            Write-Host "LoaderExceptions: $($_.Exception.LoaderExceptions)"
+        }
+        catch {
+            Write-Error "$($sdk): $($_.Exception.Message)"
+        }
+    }
+    $genTargets = @(
+        'Google.Apis.Sheets.v4.Data.Request'
+        'Google.Apis.Docs.v1.Data.Request'
+        'Google.Apis.Slides.v1.Data.Request'
     )
     foreach ($target in $genTargets) {
-        Get-ChildItem $sdkPath -Filter "*$($target['TargetApi'])*.dll" | ForEach-Object {
-            $sdk = $_.Name
-            try {
-                Add-Type -Path $_.FullName -ErrorAction Stop
-            }
-            catch [System.Reflection.ReflectionTypeLoadException] {
-                Write-Host "Message: $($_.Exception.Message)"
-                Write-Host "StackTrace: $($_.Exception.StackTrace)"
-                Write-Host "LoaderExceptions: $($_.Exception.LoaderExceptions)"
-            }
-            catch {
-                Write-Error "$($sdk): $($_.Exception.Message)"
-            }
-        }
-        Invoke-BatchUpdateFunctionGeneration @target -Verbose
+        Invoke-BatchUpdateFunctionGeneration -BaseType $target -Verbose
     }
 }
 
