@@ -63,7 +63,44 @@ task Clean -depends Init {
     "    Cleaned previous output directory [$outputDir]"
 } -description 'Cleans module output directory'
 
-task Compile -depends Clean {
+task Update -depends Clean {
+    Get-ChildItem (Join-Path $PSScriptRoot 'ci') -Recurse -Filter "*.ps1" | ForEach-Object {
+        . $_.FullName
+    }
+    $lib = [System.IO.Path]::Combine($sut,'lib')
+    $sdkPath = if ($PSVersionTable.PSVersion.Major -lt 6) {
+        "$lib\net45"
+    }
+    else {
+        "$lib\netstandard1.3"
+    }
+    $genTargets = @(
+        @{
+            BaseType = 'Google.Apis.Sheets.v4.Data.Request'
+            OutputPath = [System.IO.Path]::Combine($sut,'Public','Sheets','Requests')
+            TargetApi = 'Sheet'
+        }
+    )
+    foreach ($target in $genTargets) {
+        Get-ChildItem $sdkPath -Filter "*$($target['TargetApi'])*.dll" | ForEach-Object {
+            $sdk = $_.Name
+            try {
+                Add-Type -Path $_.FullName -ErrorAction Stop
+            }
+            catch [System.Reflection.ReflectionTypeLoadException] {
+                Write-Host "Message: $($_.Exception.Message)"
+                Write-Host "StackTrace: $($_.Exception.StackTrace)"
+                Write-Host "LoaderExceptions: $($_.Exception.LoaderExceptions)"
+            }
+            catch {
+                Write-Error "$($sdk): $($_.Exception.Message)"
+            }
+        }
+        Invoke-BatchUpdateFunctionGeneration @target -Verbose
+    }
+}
+
+task Compile -depends Update {
     # Create module output directory
     $functionsToExport = @()
     $aliasesToExport = (. $sut\Aliases\PSGSuite.Aliases.ps1).Keys

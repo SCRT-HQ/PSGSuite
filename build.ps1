@@ -2,9 +2,9 @@
 [cmdletbinding(DefaultParameterSetName = 'task')]
 param(
     [parameter(ParameterSetName = 'task', Position = 0)]
-    [ValidateSet('Init','Clean','Compile','Import','Test','TestOnly','Deploy','Skip')]
+    [ValidateSet('Init','Clean','Update','Compile','Import','Test','TestOnly','Deploy','Skip')]
     [string[]]
-    $Task = @('Init','Clean','Compile','Import'),
+    $Task = @('Compile','Import'),
 
     [parameter(ParameterSetName = 'help')]
     [switch]$Help,

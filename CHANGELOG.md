@@ -78,6 +78,67 @@
 
 ***
 
+## 2.26.0
+
+* [Issue #125](https://github.com/scrthq/PSGSuite/issues/125)
+  * Added: `Submit-GSSheetBatchUpdate` to submit batch updates to a Google Sheet. Includes the following additional functions to create each request:
+  * `Add-GSSheetAddBandingRequest`
+  * `Add-GSSheetAddChartRequest`
+  * `Add-GSSheetAddConditionalFormatRuleRequest`
+  * `Add-GSSheetAddDimensionGroupRequest`
+  * `Add-GSSheetAddFilterViewRequest`
+  * `Add-GSSheetAddNamedRangeRequest`
+  * `Add-GSSheetAddProtectedRangeRequest`
+  * `Add-GSSheetAddSheetRequest`
+  * `Add-GSSheetAppendCellsRequest`
+  * `Add-GSSheetAppendDimensionRequest`
+  * `Add-GSSheetAutoFillRequest`
+  * `Add-GSSheetAutoResizeDimensionsRequest`
+  * `Add-GSSheetClearBasicFilterRequest`
+  * `Add-GSSheetCopyPasteRequest`
+  * `Add-GSSheetCreateDeveloperMetadataRequest`
+  * `Add-GSSheetCutPasteRequest`
+  * `Add-GSSheetDeleteBandingRequest`
+  * `Add-GSSheetDeleteConditionalFormatRuleRequest`
+  * `Add-GSSheetDeleteDeveloperMetadataRequest`
+  * `Add-GSSheetDeleteDimensionRequest`
+  * `Add-GSSheetDeleteDimensionGroupRequest`
+  * `Add-GSSheetDeleteEmbeddedObjectRequest`
+  * `Add-GSSheetDeleteFilterViewRequest`
+  * `Add-GSSheetDeleteNamedRangeRequest`
+  * `Add-GSSheetDeleteProtectedRangeRequest`
+  * `Add-GSSheetDeleteRangeRequest`
+  * `Add-GSSheetDeleteSheetRequest`
+  * `Add-GSSheetDuplicateFilterViewRequest`
+  * `Add-GSSheetDuplicateSheetRequest`
+  * `Add-GSSheetFindReplaceRequest`
+  * `Add-GSSheetInsertDimensionRequest`
+  * `Add-GSSheetInsertRangeRequest`
+  * `Add-GSSheetMergeCellsRequest`
+  * `Add-GSSheetMoveDimensionRequest`
+  * `Add-GSSheetPasteDataRequest`
+  * `Add-GSSheetRandomizeRangeRequest`
+  * `Add-GSSheetRepeatCellRequest`
+  * `Add-GSSheetSetBasicFilterRequest`
+  * `Add-GSSheetSetDataValidationRequest`
+  * `Add-GSSheetSortRangeRequest`
+  * `Add-GSSheetTextToColumnsRequest`
+  * `Add-GSSheetUnmergeCellsRequest`
+  * `Add-GSSheetUpdateBandingRequest`
+  * `Add-GSSheetUpdateBordersRequest`
+  * `Add-GSSheetUpdateCellsRequest`
+  * `Add-GSSheetUpdateChartSpecRequest`
+  * `Add-GSSheetUpdateConditionalFormatRuleRequest`
+  * `Add-GSSheetUpdateDeveloperMetadataRequest`
+  * `Add-GSSheetUpdateDimensionGroupRequest`
+  * `Add-GSSheetUpdateDimensionPropertiesRequest`
+  * `Add-GSSheetUpdateEmbeddedObjectPositionRequest`
+  * `Add-GSSheetUpdateFilterViewRequest`
+  * `Add-GSSheetUpdateNamedRangeRequest`
+  * `Add-GSSheetUpdateProtectedRangeRequest`
+  * `Add-GSSheetUpdateSheetPropertiesRequest`
+  * `Add-GSSheetUpdateSpreadsheetPropertiesRequest`
+
 ## 2.25.0
 
 * [Issue #162](https://github.com/scrthq/PSGSuite/issues/162)
