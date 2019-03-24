@@ -7,28 +7,38 @@ function Add-GSSlideLineProperties {
     Creates a Google.Apis.Slides.v1.Data.LineProperties object.
 
     .PARAMETER DashStyle
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER EndArrow
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER EndConnection
-    Accepts the following type: Google.Apis.Slides.v1.Data.LineConnection
+    Accepts the following type: [Google.Apis.Slides.v1.Data.LineConnection].
+
+    To create this type, use the function Add-GSSlideLineConnection or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.LineConnection'.
 
     .PARAMETER LineFill
-    Accepts the following type: Google.Apis.Slides.v1.Data.LineFill
+    Accepts the following type: [Google.Apis.Slides.v1.Data.LineFill].
+
+    To create this type, use the function Add-GSSlideLineFill or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.LineFill'.
 
     .PARAMETER Link
-    Accepts the following type: Google.Apis.Slides.v1.Data.Link
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Link].
+
+    To create this type, use the function Add-GSSlideLink or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Link'.
 
     .PARAMETER StartArrow
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER StartConnection
-    Accepts the following type: Google.Apis.Slides.v1.Data.LineConnection
+    Accepts the following type: [Google.Apis.Slides.v1.Data.LineConnection].
+
+    To create this type, use the function Add-GSSlideLineConnection or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.LineConnection'.
 
     .PARAMETER Weight
-    Accepts the following type: Google.Apis.Slides.v1.Data.Dimension
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Dimension].
+
+    To create this type, use the function Add-GSSlideDimension or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Dimension'.
 
     .EXAMPLE
     Add-GSSlideLineProperties -DashStyle $dashStyle -EndArrow $endArrow -EndConnection $endConnection -LineFill $lineFill -Link $link -StartArrow $startArrow -StartConnection $startConnection -Weight $weight

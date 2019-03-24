@@ -7,28 +7,32 @@ function Add-GSSheetSheetProperties {
     Creates a Google.Apis.Sheets.v4.Data.SheetProperties object.
 
     .PARAMETER GridProperties
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridProperties
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridProperties].
+
+    To create this type, use the function Add-GSSheetGridProperties or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridProperties'.
 
     .PARAMETER Hidden
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER Index
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER RightToLeft
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER SheetId
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER SheetType
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER TabColor
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Color
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Color].
+
+    To create this type, use the function Add-GSSheetColor or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Color'.
 
     .PARAMETER Title
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSheetSheetProperties -GridProperties $gridProperties -Hidden $hidden -Index $index -RightToLeft $rightToLeft -SheetId $sheetId -SheetType $sheetType -TabColor $tabColor -Title $title
@@ -40,13 +44,13 @@ function Add-GSSheetSheetProperties {
         [Google.Apis.Sheets.v4.Data.GridProperties]
         $GridProperties,
         [parameter()]
-        [bool]
+        [switch]
         $Hidden,
         [parameter()]
         [int]
         $Index,
         [parameter()]
-        [bool]
+        [switch]
         $RightToLeft,
         [parameter()]
         [int]

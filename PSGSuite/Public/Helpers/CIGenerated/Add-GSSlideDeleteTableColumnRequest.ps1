@@ -7,12 +7,12 @@ function Add-GSSlideDeleteTableColumnRequest {
     Creates a DeleteTableColumnRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER CellLocation
-    Accepts the following type: Google.Apis.Slides.v1.Data.TableCellLocation.
+    Accepts the following type: [Google.Apis.Slides.v1.Data.TableCellLocation].
 
     To create this type, use the function Add-GSSlideTableCellLocation or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.TableCellLocation'.
 
     .PARAMETER TableObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

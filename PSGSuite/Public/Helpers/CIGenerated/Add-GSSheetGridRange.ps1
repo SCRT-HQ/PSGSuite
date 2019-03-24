@@ -7,19 +7,19 @@ function Add-GSSheetGridRange {
     Creates a Google.Apis.Sheets.v4.Data.GridRange object.
 
     .PARAMETER EndColumnIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER EndRowIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER SheetId
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER StartColumnIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER StartRowIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .EXAMPLE
     Add-GSSheetGridRange -EndColumnIndex $endColumnIndex -EndRowIndex $endRowIndex -SheetId $sheetId -StartColumnIndex $startColumnIndex -StartRowIndex $startRowIndex

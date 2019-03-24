@@ -7,7 +7,7 @@ function Add-GSDocEndOfSegmentLocation {
     Creates a Google.Apis.Docs.v1.Data.EndOfSegmentLocation object.
 
     .PARAMETER SegmentId
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSDocEndOfSegmentLocation -SegmentId $segmentId

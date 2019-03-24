@@ -7,10 +7,10 @@ function Add-GSSlideLineConnection {
     Creates a Google.Apis.Slides.v1.Data.LineConnection object.
 
     .PARAMETER ConnectedObjectId
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER ConnectionSiteIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .EXAMPLE
     Add-GSSlideLineConnection -ConnectedObjectId $connectedObjectId -ConnectionSiteIndex $connectionSiteIndex

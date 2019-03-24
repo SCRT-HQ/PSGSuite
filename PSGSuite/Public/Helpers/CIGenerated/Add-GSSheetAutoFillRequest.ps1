@@ -7,17 +7,17 @@ function Add-GSSheetAutoFillRequest {
     Creates a AutoFillRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridRange.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange].
 
     To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 
     .PARAMETER SourceAndDestination
-    Accepts the following type: Google.Apis.Sheets.v4.Data.SourceAndDestination.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.SourceAndDestination].
 
     To create this type, use the function Add-GSSheetSourceAndDestination or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.SourceAndDestination'.
 
     .PARAMETER UseAlternateSeries
-    Accepts the following type: System.Nullable[bool].
+    Accepts the following type: [System.Nullable[bool]].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

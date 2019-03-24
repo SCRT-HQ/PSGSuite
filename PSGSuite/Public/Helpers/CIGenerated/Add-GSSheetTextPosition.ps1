@@ -7,7 +7,7 @@ function Add-GSSheetTextPosition {
     Creates a Google.Apis.Sheets.v4.Data.TextPosition object.
 
     .PARAMETER HorizontalAlignment
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSheetTextPosition -HorizontalAlignment $horizontalAlignment

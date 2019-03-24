@@ -7,13 +7,13 @@ function Add-GSDocRange {
     Creates a Google.Apis.Docs.v1.Data.Range object.
 
     .PARAMETER EndIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER SegmentId
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER StartIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .EXAMPLE
     Add-GSDocRange -EndIndex $endIndex -SegmentId $segmentId -StartIndex $startIndex

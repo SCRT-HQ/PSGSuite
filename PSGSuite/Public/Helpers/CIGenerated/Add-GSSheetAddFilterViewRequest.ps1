@@ -7,7 +7,7 @@ function Add-GSSheetAddFilterViewRequest {
     Creates a AddFilterViewRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Filter
-    Accepts the following type: Google.Apis.Sheets.v4.Data.FilterView.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.FilterView].
 
     To create this type, use the function Add-GSSheetFilterView or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.FilterView'.
 

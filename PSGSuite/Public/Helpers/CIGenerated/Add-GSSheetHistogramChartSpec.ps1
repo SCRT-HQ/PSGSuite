@@ -7,19 +7,21 @@ function Add-GSSheetHistogramChartSpec {
     Creates a Google.Apis.Sheets.v4.Data.HistogramChartSpec object.
 
     .PARAMETER BucketSize
-    Accepts the following type: double
+    Accepts the following type: [double].
 
     .PARAMETER LegendPosition
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER OutlierPercentile
-    Accepts the following type: double
+    Accepts the following type: [double].
 
     .PARAMETER Series
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.HistogramSeries][]
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.HistogramSeries[]].
+
+    To create this type, use the function Add-GSSheetHistogramSeries or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.HistogramSeries'.
 
     .PARAMETER ShowItemDividers
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .EXAMPLE
     Add-GSSheetHistogramChartSpec -BucketSize $bucketSize -LegendPosition $legendPosition -OutlierPercentile $outlierPercentile -Series $series -ShowItemDividers $showItemDividers
@@ -37,10 +39,10 @@ function Add-GSSheetHistogramChartSpec {
         [double]
         $OutlierPercentile,
         [parameter()]
-        [System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.HistogramSeries][]]
+        [Google.Apis.Sheets.v4.Data.HistogramSeries[]]
         $Series,
         [parameter()]
-        [bool]
+        [switch]
         $ShowItemDividers,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ParameterSetName = "InputObject")]
         [Google.Apis.Sheets.v4.Data.HistogramChartSpec[]]
@@ -54,7 +56,7 @@ function Add-GSSheetHistogramChartSpec {
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
                         switch ($prop) {
                             Series {
-                                $list = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.HistogramSeries]]'
+                                $list = New-Object 'System.Collections.Generic.List[Google.Apis.Sheets.v4.Data.HistogramSeries]'
                                 foreach ($item in $Series) {
                                     $list.Add($item)
                                 }

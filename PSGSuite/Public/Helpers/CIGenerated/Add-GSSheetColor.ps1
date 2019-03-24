@@ -7,16 +7,16 @@ function Add-GSSheetColor {
     Creates a Google.Apis.Sheets.v4.Data.Color object.
 
     .PARAMETER Alpha
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER Blue
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER Green
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER Red
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .EXAMPLE
     Add-GSSheetColor -Alpha $alpha -Blue $blue -Green $green -Red $red

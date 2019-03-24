@@ -7,15 +7,15 @@ function Add-GSSheetRepeatCellRequest {
     Creates a RepeatCellRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Cell
-    Accepts the following type: Google.Apis.Sheets.v4.Data.CellData.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.CellData].
 
     To create this type, use the function Add-GSSheetCellData or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.CellData'.
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridRange.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange].
 
     To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 

@@ -7,13 +7,19 @@ function Add-GSSheetGradientRule {
     Creates a Google.Apis.Sheets.v4.Data.GradientRule object.
 
     .PARAMETER Maxpoint
-    Accepts the following type: Google.Apis.Sheets.v4.Data.InterpolationPoint
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.InterpolationPoint].
+
+    To create this type, use the function Add-GSSheetInterpolationPoint or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.InterpolationPoint'.
 
     .PARAMETER Midpoint
-    Accepts the following type: Google.Apis.Sheets.v4.Data.InterpolationPoint
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.InterpolationPoint].
+
+    To create this type, use the function Add-GSSheetInterpolationPoint or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.InterpolationPoint'.
 
     .PARAMETER Minpoint
-    Accepts the following type: Google.Apis.Sheets.v4.Data.InterpolationPoint
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.InterpolationPoint].
+
+    To create this type, use the function Add-GSSheetInterpolationPoint or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.InterpolationPoint'.
 
     .EXAMPLE
     Add-GSSheetGradientRule -Maxpoint $maxpoint -Midpoint $midpoint -Minpoint $minpoint

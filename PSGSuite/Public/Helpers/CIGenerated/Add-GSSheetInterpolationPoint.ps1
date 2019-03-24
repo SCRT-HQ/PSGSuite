@@ -7,13 +7,15 @@ function Add-GSSheetInterpolationPoint {
     Creates a Google.Apis.Sheets.v4.Data.InterpolationPoint object.
 
     .PARAMETER Color
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Color
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Color].
+
+    To create this type, use the function Add-GSSheetColor or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Color'.
 
     .PARAMETER Type
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Value
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSheetInterpolationPoint -Color $color -Type $type -Value $value

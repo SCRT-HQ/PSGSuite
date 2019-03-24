@@ -7,25 +7,25 @@ function Add-GSSheetGridProperties {
     Creates a Google.Apis.Sheets.v4.Data.GridProperties object.
 
     .PARAMETER ColumnCount
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER ColumnGroupControlAfter
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER FrozenColumnCount
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER FrozenRowCount
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER HideGridlines
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER RowCount
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER RowGroupControlAfter
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .EXAMPLE
     Add-GSSheetGridProperties -ColumnCount $columnCount -ColumnGroupControlAfter $columnGroupControlAfter -FrozenColumnCount $frozenColumnCount -FrozenRowCount $frozenRowCount -HideGridlines $hideGridlines -RowCount $rowCount -RowGroupControlAfter $rowGroupControlAfter
@@ -37,7 +37,7 @@ function Add-GSSheetGridProperties {
         [int]
         $ColumnCount,
         [parameter()]
-        [bool]
+        [switch]
         $ColumnGroupControlAfter,
         [parameter()]
         [int]
@@ -46,13 +46,13 @@ function Add-GSSheetGridProperties {
         [int]
         $FrozenRowCount,
         [parameter()]
-        [bool]
+        [switch]
         $HideGridlines,
         [parameter()]
         [int]
         $RowCount,
         [parameter()]
-        [bool]
+        [switch]
         $RowGroupControlAfter,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ParameterSetName = "InputObject")]
         [Google.Apis.Sheets.v4.Data.GridProperties[]]

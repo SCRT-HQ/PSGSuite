@@ -7,16 +7,16 @@ function Add-GSSheetDimensionRange {
     Creates a Google.Apis.Sheets.v4.Data.DimensionRange object.
 
     .PARAMETER Dimension
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER EndIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER SheetId
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER StartIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .EXAMPLE
     Add-GSSheetDimensionRange -Dimension $dimension -EndIndex $endIndex -SheetId $sheetId -StartIndex $startIndex

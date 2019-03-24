@@ -7,21 +7,21 @@ function Add-GSSlideReplaceAllShapesWithImageRequest {
     Creates a ReplaceAllShapesWithImageRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER ContainsText
-    Accepts the following type: Google.Apis.Slides.v1.Data.SubstringMatchCriteria.
+    Accepts the following type: [Google.Apis.Slides.v1.Data.SubstringMatchCriteria].
 
     To create this type, use the function Add-GSSlideSubstringMatchCriteria or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.SubstringMatchCriteria'.
 
     .PARAMETER ImageReplaceMethod
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER ImageUrl
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER PageObjectIds
-    Accepts the following type: System.Collections.Generic.IList[string].
+    Accepts the following type: [System.Collections.Generic.IList[string]].
 
     .PARAMETER ReplaceMethod
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

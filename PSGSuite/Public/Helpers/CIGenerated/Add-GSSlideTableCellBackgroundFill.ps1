@@ -7,10 +7,12 @@ function Add-GSSlideTableCellBackgroundFill {
     Creates a Google.Apis.Slides.v1.Data.TableCellBackgroundFill object.
 
     .PARAMETER PropertyState
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER SolidFill
-    Accepts the following type: Google.Apis.Slides.v1.Data.SolidFill
+    Accepts the following type: [Google.Apis.Slides.v1.Data.SolidFill].
+
+    To create this type, use the function Add-GSSlideSolidFill or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.SolidFill'.
 
     .EXAMPLE
     Add-GSSlideTableCellBackgroundFill -PropertyState $propertyState -SolidFill $solidFill

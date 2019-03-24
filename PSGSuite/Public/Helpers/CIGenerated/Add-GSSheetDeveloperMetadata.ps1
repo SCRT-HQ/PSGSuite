@@ -7,19 +7,21 @@ function Add-GSSheetDeveloperMetadata {
     Creates a Google.Apis.Sheets.v4.Data.DeveloperMetadata object.
 
     .PARAMETER Location
-    Accepts the following type: Google.Apis.Sheets.v4.Data.DeveloperMetadataLocation
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.DeveloperMetadataLocation].
+
+    To create this type, use the function Add-GSSheetDeveloperMetadataLocation or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.DeveloperMetadataLocation'.
 
     .PARAMETER MetadataId
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER MetadataKey
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER MetadataValue
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Visibility
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSheetDeveloperMetadata -Location $location -MetadataId $metadataId -MetadataKey $metadataKey -MetadataValue $metadataValue -Visibility $visibility

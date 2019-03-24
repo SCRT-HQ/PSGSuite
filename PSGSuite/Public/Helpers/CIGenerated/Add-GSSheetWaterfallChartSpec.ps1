@@ -7,22 +7,28 @@ function Add-GSSheetWaterfallChartSpec {
     Creates a Google.Apis.Sheets.v4.Data.WaterfallChartSpec object.
 
     .PARAMETER ConnectorLineStyle
-    Accepts the following type: Google.Apis.Sheets.v4.Data.LineStyle
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.LineStyle].
+
+    To create this type, use the function Add-GSSheetLineStyle or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.LineStyle'.
 
     .PARAMETER Domain
-    Accepts the following type: Google.Apis.Sheets.v4.Data.WaterfallChartDomain
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.WaterfallChartDomain].
+
+    To create this type, use the function Add-GSSheetWaterfallChartDomain or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.WaterfallChartDomain'.
 
     .PARAMETER FirstValueIsTotal
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER HideConnectorLines
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER Series
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.WaterfallChartSeries][]
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.WaterfallChartSeries[]].
+
+    To create this type, use the function Add-GSSheetWaterfallChartSeries or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.WaterfallChartSeries'.
 
     .PARAMETER StackedType
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSheetWaterfallChartSpec -ConnectorLineStyle $connectorLineStyle -Domain $domain -FirstValueIsTotal $firstValueIsTotal -HideConnectorLines $hideConnectorLines -Series $series -StackedType $stackedType
@@ -37,13 +43,13 @@ function Add-GSSheetWaterfallChartSpec {
         [Google.Apis.Sheets.v4.Data.WaterfallChartDomain]
         $Domain,
         [parameter()]
-        [bool]
+        [switch]
         $FirstValueIsTotal,
         [parameter()]
-        [bool]
+        [switch]
         $HideConnectorLines,
         [parameter()]
-        [System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.WaterfallChartSeries][]]
+        [Google.Apis.Sheets.v4.Data.WaterfallChartSeries[]]
         $Series,
         [parameter()]
         [string]
@@ -60,7 +66,7 @@ function Add-GSSheetWaterfallChartSpec {
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
                         switch ($prop) {
                             Series {
-                                $list = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.WaterfallChartSeries]]'
+                                $list = New-Object 'System.Collections.Generic.List[Google.Apis.Sheets.v4.Data.WaterfallChartSeries]'
                                 foreach ($item in $Series) {
                                     $list.Add($item)
                                 }

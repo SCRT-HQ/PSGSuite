@@ -7,7 +7,7 @@ function Add-GSSlideDeleteObjectRequest {
     Creates a DeleteObjectRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER ObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

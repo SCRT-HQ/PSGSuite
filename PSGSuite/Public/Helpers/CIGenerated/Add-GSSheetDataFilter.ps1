@@ -7,13 +7,17 @@ function Add-GSSheetDataFilter {
     Creates a Google.Apis.Sheets.v4.Data.DataFilter object.
 
     .PARAMETER A1Range
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER DeveloperMetadataLookup
-    Accepts the following type: Google.Apis.Sheets.v4.Data.DeveloperMetadataLookup
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.DeveloperMetadataLookup].
+
+    To create this type, use the function Add-GSSheetDeveloperMetadataLookup or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.DeveloperMetadataLookup'.
 
     .PARAMETER GridRange
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridRange
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange].
+
+    To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 
     .EXAMPLE
     Add-GSSheetDataFilter -A1Range $a1Range -DeveloperMetadataLookup $developerMetadataLookup -GridRange $gridRange

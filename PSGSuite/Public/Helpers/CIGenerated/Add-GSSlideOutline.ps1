@@ -7,16 +7,20 @@ function Add-GSSlideOutline {
     Creates a Google.Apis.Slides.v1.Data.Outline object.
 
     .PARAMETER DashStyle
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER OutlineFill
-    Accepts the following type: Google.Apis.Slides.v1.Data.OutlineFill
+    Accepts the following type: [Google.Apis.Slides.v1.Data.OutlineFill].
+
+    To create this type, use the function Add-GSSlideOutlineFill or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.OutlineFill'.
 
     .PARAMETER PropertyState
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Weight
-    Accepts the following type: Google.Apis.Slides.v1.Data.Dimension
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Dimension].
+
+    To create this type, use the function Add-GSSlideDimension or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Dimension'.
 
     .EXAMPLE
     Add-GSSlideOutline -DashStyle $dashStyle -OutlineFill $outlineFill -PropertyState $propertyState -Weight $weight

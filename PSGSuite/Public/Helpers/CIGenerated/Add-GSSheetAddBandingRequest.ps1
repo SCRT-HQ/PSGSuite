@@ -7,7 +7,7 @@ function Add-GSSheetAddBandingRequest {
     Creates a AddBandingRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER BandedRange
-    Accepts the following type: Google.Apis.Sheets.v4.Data.BandedRange.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.BandedRange].
 
     To create this type, use the function Add-GSSheetBandedRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.BandedRange'.
 

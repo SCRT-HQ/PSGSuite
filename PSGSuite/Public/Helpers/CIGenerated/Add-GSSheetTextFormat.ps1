@@ -7,25 +7,27 @@ function Add-GSSheetTextFormat {
     Creates a Google.Apis.Sheets.v4.Data.TextFormat object.
 
     .PARAMETER Bold
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER FontFamily
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER FontSize
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER ForegroundColor
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Color
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Color].
+
+    To create this type, use the function Add-GSSheetColor or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Color'.
 
     .PARAMETER Italic
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER Strikethrough
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER Underline
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .EXAMPLE
     Add-GSSheetTextFormat -Bold $bold -FontFamily $fontFamily -FontSize $fontSize -ForegroundColor $foregroundColor -Italic $italic -Strikethrough $strikethrough -Underline $underline
@@ -34,7 +36,7 @@ function Add-GSSheetTextFormat {
     [CmdletBinding()]
     Param(
         [parameter()]
-        [bool]
+        [switch]
         $Bold,
         [parameter()]
         [string]
@@ -46,13 +48,13 @@ function Add-GSSheetTextFormat {
         [Google.Apis.Sheets.v4.Data.Color]
         $ForegroundColor,
         [parameter()]
-        [bool]
+        [switch]
         $Italic,
         [parameter()]
-        [bool]
+        [switch]
         $Strikethrough,
         [parameter()]
-        [bool]
+        [switch]
         $Underline,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ParameterSetName = "InputObject")]
         [Google.Apis.Sheets.v4.Data.TextFormat[]]

@@ -7,12 +7,12 @@ function Add-GSSheetUpdateDimensionGroupRequest {
     Creates a UpdateDimensionGroupRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER DimensionGroup
-    Accepts the following type: Google.Apis.Sheets.v4.Data.DimensionGroup.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.DimensionGroup].
 
     To create this type, use the function Add-GSSheetDimensionGroup or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.DimensionGroup'.
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

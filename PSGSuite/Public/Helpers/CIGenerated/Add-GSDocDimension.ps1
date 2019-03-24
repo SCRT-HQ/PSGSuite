@@ -7,10 +7,10 @@ function Add-GSDocDimension {
     Creates a Google.Apis.Docs.v1.Data.Dimension object.
 
     .PARAMETER Magnitude
-    Accepts the following type: double
+    Accepts the following type: [double].
 
     .PARAMETER Unit
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSDocDimension -Magnitude $magnitude -Unit $unit

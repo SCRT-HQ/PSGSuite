@@ -7,10 +7,10 @@ function Add-GSSheetNumberFormat {
     Creates a Google.Apis.Sheets.v4.Data.NumberFormat object.
 
     .PARAMETER Pattern
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Type
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSheetNumberFormat -Pattern $pattern -Type $type

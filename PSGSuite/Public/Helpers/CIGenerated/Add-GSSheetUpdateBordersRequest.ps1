@@ -7,37 +7,37 @@ function Add-GSSheetUpdateBordersRequest {
     Creates a UpdateBordersRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Bottom
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Border.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Border].
 
     To create this type, use the function Add-GSSheetBorder or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Border'.
 
     .PARAMETER InnerHorizontal
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Border.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Border].
 
     To create this type, use the function Add-GSSheetBorder or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Border'.
 
     .PARAMETER InnerVertical
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Border.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Border].
 
     To create this type, use the function Add-GSSheetBorder or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Border'.
 
     .PARAMETER Left
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Border.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Border].
 
     To create this type, use the function Add-GSSheetBorder or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Border'.
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridRange.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange].
 
     To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 
     .PARAMETER Right
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Border.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Border].
 
     To create this type, use the function Add-GSSheetBorder or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Border'.
 
     .PARAMETER Top
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Border.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Border].
 
     To create this type, use the function Add-GSSheetBorder or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Border'.
 

@@ -7,10 +7,10 @@ function Add-GSSlideLayoutReference {
     Creates a Google.Apis.Slides.v1.Data.LayoutReference object.
 
     .PARAMETER LayoutId
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER PredefinedLayout
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSlideLayoutReference -LayoutId $layoutId -PredefinedLayout $predefinedLayout

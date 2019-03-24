@@ -7,16 +7,22 @@ function Add-GSDocParagraphBorder {
     Creates a Google.Apis.Docs.v1.Data.ParagraphBorder object.
 
     .PARAMETER Color
-    Accepts the following type: Google.Apis.Docs.v1.Data.OptionalColor
+    Accepts the following type: [Google.Apis.Docs.v1.Data.OptionalColor].
+
+    To create this type, use the function Add-GSDocOptionalColor or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.OptionalColor'.
 
     .PARAMETER DashStyle
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Padding
-    Accepts the following type: Google.Apis.Docs.v1.Data.Dimension
+    Accepts the following type: [Google.Apis.Docs.v1.Data.Dimension].
+
+    To create this type, use the function Add-GSDocDimension or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.Dimension'.
 
     .PARAMETER Width
-    Accepts the following type: Google.Apis.Docs.v1.Data.Dimension
+    Accepts the following type: [Google.Apis.Docs.v1.Data.Dimension].
+
+    To create this type, use the function Add-GSDocDimension or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.Dimension'.
 
     .EXAMPLE
     Add-GSDocParagraphBorder -Color $color -DashStyle $dashStyle -Padding $padding -Width $width

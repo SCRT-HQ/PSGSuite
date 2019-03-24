@@ -7,13 +7,13 @@ function Add-GSSlideUpdatePagePropertiesRequest {
     Creates a UpdatePagePropertiesRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER ObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER PageProperties
-    Accepts the following type: Google.Apis.Slides.v1.Data.PageProperties.
+    Accepts the following type: [Google.Apis.Slides.v1.Data.PageProperties].
 
     To create this type, use the function Add-GSSlidePageProperties or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.PageProperties'.
 

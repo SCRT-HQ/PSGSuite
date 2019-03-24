@@ -7,15 +7,15 @@ function Add-GSSheetUpdateDeveloperMetadataRequest {
     Creates a UpdateDeveloperMetadataRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER DataFilters
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.DataFilter].
+    Accepts the following type: [System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.DataFilter]].
 
     .PARAMETER DeveloperMetadata
-    Accepts the following type: Google.Apis.Sheets.v4.Data.DeveloperMetadata.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.DeveloperMetadata].
 
     To create this type, use the function Add-GSSheetDeveloperMetadata or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.DeveloperMetadata'.
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

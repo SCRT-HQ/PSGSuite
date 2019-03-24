@@ -7,10 +7,12 @@ function Add-GSSheetBooleanCondition {
     Creates a Google.Apis.Sheets.v4.Data.BooleanCondition object.
 
     .PARAMETER Type
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Values
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.ConditionValue][]
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ConditionValue[]].
+
+    To create this type, use the function Add-GSSheetConditionValue or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ConditionValue'.
 
     .EXAMPLE
     Add-GSSheetBooleanCondition -Type $type -Values $values
@@ -22,7 +24,7 @@ function Add-GSSheetBooleanCondition {
         [string]
         $Type,
         [parameter()]
-        [System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.ConditionValue][]]
+        [Google.Apis.Sheets.v4.Data.ConditionValue[]]
         $Values,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ParameterSetName = "InputObject")]
         [Google.Apis.Sheets.v4.Data.BooleanCondition[]]
@@ -36,7 +38,7 @@ function Add-GSSheetBooleanCondition {
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
                         switch ($prop) {
                             Values {
-                                $list = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.ConditionValue]]'
+                                $list = New-Object 'System.Collections.Generic.List[Google.Apis.Sheets.v4.Data.ConditionValue]'
                                 foreach ($item in $Values) {
                                     $list.Add($item)
                                 }

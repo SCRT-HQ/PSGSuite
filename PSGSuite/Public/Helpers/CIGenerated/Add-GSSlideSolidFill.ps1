@@ -7,10 +7,12 @@ function Add-GSSlideSolidFill {
     Creates a Google.Apis.Slides.v1.Data.SolidFill object.
 
     .PARAMETER Alpha
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER Color
-    Accepts the following type: Google.Apis.Slides.v1.Data.OpaqueColor
+    Accepts the following type: [Google.Apis.Slides.v1.Data.OpaqueColor].
+
+    To create this type, use the function Add-GSSlideOpaqueColor or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.OpaqueColor'.
 
     .EXAMPLE
     Add-GSSlideSolidFill -Alpha $alpha -Color $color

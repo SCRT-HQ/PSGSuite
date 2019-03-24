@@ -7,12 +7,12 @@ function Add-GSSheetSortRangeRequest {
     Creates a SortRangeRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridRange.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange].
 
     To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 
     .PARAMETER SortSpecs
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.SortSpec].
+    Accepts the following type: [System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.SortSpec]].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

@@ -7,7 +7,7 @@ function Add-GSDocDeleteParagraphBulletsRequest {
     Creates a DeleteParagraphBulletsRequest to pass to Submit-GSDocBatchUpdate.
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Docs.v1.Data.Range.
+    Accepts the following type: [Google.Apis.Docs.v1.Data.Range].
 
     To create this type, use the function Add-GSDocRange or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.Range'.
 

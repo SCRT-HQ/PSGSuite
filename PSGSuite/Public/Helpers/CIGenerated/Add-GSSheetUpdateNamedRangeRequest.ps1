@@ -7,10 +7,10 @@ function Add-GSSheetUpdateNamedRangeRequest {
     Creates a UpdateNamedRangeRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER NamedRange
-    Accepts the following type: Google.Apis.Sheets.v4.Data.NamedRange.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.NamedRange].
 
     To create this type, use the function Add-GSSheetNamedRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.NamedRange'.
 

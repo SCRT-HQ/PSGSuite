@@ -7,13 +7,15 @@ function Add-GSSheetEmbeddedObjectPosition {
     Creates a Google.Apis.Sheets.v4.Data.EmbeddedObjectPosition object.
 
     .PARAMETER NewSheet
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER OverlayPosition
-    Accepts the following type: Google.Apis.Sheets.v4.Data.OverlayPosition
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.OverlayPosition].
+
+    To create this type, use the function Add-GSSheetOverlayPosition or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.OverlayPosition'.
 
     .PARAMETER SheetId
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .EXAMPLE
     Add-GSSheetEmbeddedObjectPosition -NewSheet $newSheet -OverlayPosition $overlayPosition -SheetId $sheetId
@@ -22,7 +24,7 @@ function Add-GSSheetEmbeddedObjectPosition {
     [CmdletBinding()]
     Param(
         [parameter()]
-        [bool]
+        [switch]
         $NewSheet,
         [parameter()]
         [Google.Apis.Sheets.v4.Data.OverlayPosition]

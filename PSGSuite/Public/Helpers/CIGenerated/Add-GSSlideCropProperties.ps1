@@ -7,19 +7,19 @@ function Add-GSSlideCropProperties {
     Creates a Google.Apis.Slides.v1.Data.CropProperties object.
 
     .PARAMETER Angle
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER BottomOffset
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER LeftOffset
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER RightOffset
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER TopOffset
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .EXAMPLE
     Add-GSSlideCropProperties -Angle $angle -BottomOffset $bottomOffset -LeftOffset $leftOffset -RightOffset $rightOffset -TopOffset $topOffset

@@ -7,7 +7,9 @@ function Add-GSSlideOptionalColor {
     Creates a Google.Apis.Slides.v1.Data.OptionalColor object.
 
     .PARAMETER OpaqueColor
-    Accepts the following type: Google.Apis.Slides.v1.Data.OpaqueColor
+    Accepts the following type: [Google.Apis.Slides.v1.Data.OpaqueColor].
+
+    To create this type, use the function Add-GSSlideOpaqueColor or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.OpaqueColor'.
 
     .EXAMPLE
     Add-GSSlideOptionalColor -OpaqueColor $opaqueColor

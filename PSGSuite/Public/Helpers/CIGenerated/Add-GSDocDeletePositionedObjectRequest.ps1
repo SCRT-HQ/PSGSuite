@@ -7,7 +7,7 @@ function Add-GSDocDeletePositionedObjectRequest {
     Creates a DeletePositionedObjectRequest to pass to Submit-GSDocBatchUpdate.
 
     .PARAMETER ObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

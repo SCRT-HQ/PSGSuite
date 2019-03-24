@@ -7,16 +7,18 @@ function Add-GSSheetDeveloperMetadataLocation {
     Creates a Google.Apis.Sheets.v4.Data.DeveloperMetadataLocation object.
 
     .PARAMETER DimensionRange
-    Accepts the following type: Google.Apis.Sheets.v4.Data.DimensionRange
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.DimensionRange].
+
+    To create this type, use the function Add-GSSheetDimensionRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.DimensionRange'.
 
     .PARAMETER LocationType
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER SheetId
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER Spreadsheet
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .EXAMPLE
     Add-GSSheetDeveloperMetadataLocation -DimensionRange $dimensionRange -LocationType $locationType -SheetId $sheetId -Spreadsheet $spreadsheet
@@ -34,7 +36,7 @@ function Add-GSSheetDeveloperMetadataLocation {
         [int]
         $SheetId,
         [parameter()]
-        [bool]
+        [switch]
         $Spreadsheet,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ParameterSetName = "InputObject")]
         [Google.Apis.Sheets.v4.Data.DeveloperMetadataLocation[]]

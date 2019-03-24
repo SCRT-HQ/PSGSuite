@@ -7,13 +7,13 @@ function Add-GSSheetAppendDimensionRequest {
     Creates a AppendDimensionRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Dimension
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Length
-    Accepts the following type: System.Nullable[int].
+    Accepts the following type: [System.Nullable[int]].
 
     .PARAMETER SheetId
-    Accepts the following type: System.Nullable[int].
+    Accepts the following type: [System.Nullable[int]].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

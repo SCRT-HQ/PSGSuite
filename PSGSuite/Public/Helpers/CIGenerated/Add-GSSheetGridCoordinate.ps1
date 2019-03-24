@@ -7,13 +7,13 @@ function Add-GSSheetGridCoordinate {
     Creates a Google.Apis.Sheets.v4.Data.GridCoordinate object.
 
     .PARAMETER ColumnIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER RowIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER SheetId
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .EXAMPLE
     Add-GSSheetGridCoordinate -ColumnIndex $columnIndex -RowIndex $rowIndex -SheetId $sheetId

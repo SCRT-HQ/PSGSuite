@@ -7,10 +7,10 @@ function Add-GSDocCreateNamedRangeRequest {
     Creates a CreateNamedRangeRequest to pass to Submit-GSDocBatchUpdate.
 
     .PARAMETER Name
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Docs.v1.Data.Range.
+    Accepts the following type: [Google.Apis.Docs.v1.Data.Range].
 
     To create this type, use the function Add-GSDocRange or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.Range'.
 

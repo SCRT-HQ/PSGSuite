@@ -7,10 +7,10 @@ function Add-GSSlideUpdateLineCategoryRequest {
     Creates a UpdateLineCategoryRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER LineCategory
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER ObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

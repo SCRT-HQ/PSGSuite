@@ -7,7 +7,9 @@ function Add-GSSheetChartData {
     Creates a Google.Apis.Sheets.v4.Data.ChartData object.
 
     .PARAMETER SourceRange
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ChartSourceRange
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ChartSourceRange].
+
+    To create this type, use the function Add-GSSheetChartSourceRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ChartSourceRange'.
 
     .EXAMPLE
     Add-GSSheetChartData -SourceRange $sourceRange

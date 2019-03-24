@@ -7,40 +7,50 @@ function Add-GSSlideTextStyle {
     Creates a Google.Apis.Slides.v1.Data.TextStyle object.
 
     .PARAMETER BackgroundColor
-    Accepts the following type: Google.Apis.Slides.v1.Data.OptionalColor
+    Accepts the following type: [Google.Apis.Slides.v1.Data.OptionalColor].
+
+    To create this type, use the function Add-GSSlideOptionalColor or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.OptionalColor'.
 
     .PARAMETER BaselineOffset
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Bold
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER FontFamily
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER FontSize
-    Accepts the following type: Google.Apis.Slides.v1.Data.Dimension
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Dimension].
+
+    To create this type, use the function Add-GSSlideDimension or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Dimension'.
 
     .PARAMETER ForegroundColor
-    Accepts the following type: Google.Apis.Slides.v1.Data.OptionalColor
+    Accepts the following type: [Google.Apis.Slides.v1.Data.OptionalColor].
+
+    To create this type, use the function Add-GSSlideOptionalColor or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.OptionalColor'.
 
     .PARAMETER Italic
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER Link
-    Accepts the following type: Google.Apis.Slides.v1.Data.Link
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Link].
+
+    To create this type, use the function Add-GSSlideLink or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Link'.
 
     .PARAMETER SmallCaps
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER Strikethrough
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER Underline
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER WeightedFontFamily
-    Accepts the following type: Google.Apis.Slides.v1.Data.WeightedFontFamily
+    Accepts the following type: [Google.Apis.Slides.v1.Data.WeightedFontFamily].
+
+    To create this type, use the function Add-GSSlideWeightedFontFamily or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.WeightedFontFamily'.
 
     .EXAMPLE
     Add-GSSlideTextStyle -BackgroundColor $backgroundColor -BaselineOffset $baselineOffset -Bold $bold -FontFamily $fontFamily -FontSize $fontSize -ForegroundColor $foregroundColor -Italic $italic -Link $link -SmallCaps $smallCaps -Strikethrough $strikethrough -Underline $underline -WeightedFontFamily $weightedFontFamily
@@ -55,7 +65,7 @@ function Add-GSSlideTextStyle {
         [string]
         $BaselineOffset,
         [parameter()]
-        [bool]
+        [switch]
         $Bold,
         [parameter()]
         [string]
@@ -67,19 +77,19 @@ function Add-GSSlideTextStyle {
         [Google.Apis.Slides.v1.Data.OptionalColor]
         $ForegroundColor,
         [parameter()]
-        [bool]
+        [switch]
         $Italic,
         [parameter()]
         [Google.Apis.Slides.v1.Data.Link]
         $Link,
         [parameter()]
-        [bool]
+        [switch]
         $SmallCaps,
         [parameter()]
-        [bool]
+        [switch]
         $Strikethrough,
         [parameter()]
-        [bool]
+        [switch]
         $Underline,
         [parameter()]
         [Google.Apis.Slides.v1.Data.WeightedFontFamily]

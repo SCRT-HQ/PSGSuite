@@ -7,10 +7,10 @@ function Add-GSSheetAddConditionalFormatRuleRequest {
     Creates a AddConditionalFormatRuleRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Index
-    Accepts the following type: System.Nullable[int].
+    Accepts the following type: [System.Nullable[int]].
 
     .PARAMETER Rule
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ConditionalFormatRule.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ConditionalFormatRule].
 
     To create this type, use the function Add-GSSheetConditionalFormatRule or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ConditionalFormatRule'.
 

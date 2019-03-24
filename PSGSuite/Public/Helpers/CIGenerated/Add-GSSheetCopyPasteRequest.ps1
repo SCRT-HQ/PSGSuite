@@ -7,18 +7,18 @@ function Add-GSSheetCopyPasteRequest {
     Creates a CopyPasteRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Destination
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridRange.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange].
 
     To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 
     .PARAMETER PasteOrientation
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER PasteType
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Source
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridRange.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange].
 
     To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 

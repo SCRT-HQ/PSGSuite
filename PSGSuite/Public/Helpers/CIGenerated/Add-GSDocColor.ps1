@@ -7,7 +7,9 @@ function Add-GSDocColor {
     Creates a Google.Apis.Docs.v1.Data.Color object.
 
     .PARAMETER RgbColor
-    Accepts the following type: Google.Apis.Docs.v1.Data.RgbColor
+    Accepts the following type: [Google.Apis.Docs.v1.Data.RgbColor].
+
+    To create this type, use the function Add-GSDocRgbColor or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.RgbColor'.
 
     .EXAMPLE
     Add-GSDocColor -RgbColor $rgbColor

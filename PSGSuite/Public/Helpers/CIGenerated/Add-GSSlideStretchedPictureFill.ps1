@@ -7,10 +7,12 @@ function Add-GSSlideStretchedPictureFill {
     Creates a Google.Apis.Slides.v1.Data.StretchedPictureFill object.
 
     .PARAMETER ContentUrl
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Size
-    Accepts the following type: Google.Apis.Slides.v1.Data.Size
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Size].
+
+    To create this type, use the function Add-GSSlideSize or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Size'.
 
     .EXAMPLE
     Add-GSSlideStretchedPictureFill -ContentUrl $contentUrl -Size $size

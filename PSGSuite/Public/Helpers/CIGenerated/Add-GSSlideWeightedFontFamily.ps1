@@ -7,10 +7,10 @@ function Add-GSSlideWeightedFontFamily {
     Creates a Google.Apis.Slides.v1.Data.WeightedFontFamily object.
 
     .PARAMETER FontFamily
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Weight
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .EXAMPLE
     Add-GSSlideWeightedFontFamily -FontFamily $fontFamily -Weight $weight

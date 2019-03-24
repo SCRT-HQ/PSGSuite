@@ -7,10 +7,10 @@ function Add-GSSlideUnmergeTableCellsRequest {
     Creates a UnmergeTableCellsRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER ObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER TableRange
-    Accepts the following type: Google.Apis.Slides.v1.Data.TableRange.
+    Accepts the following type: [Google.Apis.Slides.v1.Data.TableRange].
 
     To create this type, use the function Add-GSSlideTableRange or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.TableRange'.
 

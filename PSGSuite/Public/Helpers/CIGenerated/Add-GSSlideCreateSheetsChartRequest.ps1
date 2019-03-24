@@ -7,21 +7,21 @@ function Add-GSSlideCreateSheetsChartRequest {
     Creates a CreateSheetsChartRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER ChartId
-    Accepts the following type: System.Nullable[int].
+    Accepts the following type: [System.Nullable[int]].
 
     .PARAMETER ElementProperties
-    Accepts the following type: Google.Apis.Slides.v1.Data.PageElementProperties.
+    Accepts the following type: [Google.Apis.Slides.v1.Data.PageElementProperties].
 
     To create this type, use the function Add-GSSlidePageElementProperties or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.PageElementProperties'.
 
     .PARAMETER LinkingMode
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER ObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER SpreadsheetId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

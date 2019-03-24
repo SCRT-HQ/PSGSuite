@@ -7,13 +7,13 @@ function Add-GSSlideUpdatePageElementAltTextRequest {
     Creates a UpdatePageElementAltTextRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER Description
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER ObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Title
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

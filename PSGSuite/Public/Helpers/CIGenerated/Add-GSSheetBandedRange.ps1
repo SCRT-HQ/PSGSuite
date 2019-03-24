@@ -7,16 +7,22 @@ function Add-GSSheetBandedRange {
     Creates a Google.Apis.Sheets.v4.Data.BandedRange object.
 
     .PARAMETER BandedRangeId
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER ColumnProperties
-    Accepts the following type: Google.Apis.Sheets.v4.Data.BandingProperties
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.BandingProperties].
+
+    To create this type, use the function Add-GSSheetBandingProperties or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.BandingProperties'.
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridRange
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange].
+
+    To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 
     .PARAMETER RowProperties
-    Accepts the following type: Google.Apis.Sheets.v4.Data.BandingProperties
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.BandingProperties].
+
+    To create this type, use the function Add-GSSheetBandingProperties or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.BandingProperties'.
 
     .EXAMPLE
     Add-GSSheetBandedRange -BandedRangeId $bandedRangeId -ColumnProperties $columnProperties -Range $range -RowProperties $rowProperties

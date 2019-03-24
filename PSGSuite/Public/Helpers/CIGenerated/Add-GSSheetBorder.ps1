@@ -7,13 +7,15 @@ function Add-GSSheetBorder {
     Creates a Google.Apis.Sheets.v4.Data.Border object.
 
     .PARAMETER Color
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Color
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Color].
+
+    To create this type, use the function Add-GSSheetColor or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Color'.
 
     .PARAMETER Style
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Width
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .EXAMPLE
     Add-GSSheetBorder -Color $color -Style $style -Width $width

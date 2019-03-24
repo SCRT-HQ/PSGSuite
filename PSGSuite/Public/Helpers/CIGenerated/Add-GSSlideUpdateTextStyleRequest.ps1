@@ -7,23 +7,23 @@ function Add-GSSlideUpdateTextStyleRequest {
     Creates a UpdateTextStyleRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER CellLocation
-    Accepts the following type: Google.Apis.Slides.v1.Data.TableCellLocation.
+    Accepts the following type: [Google.Apis.Slides.v1.Data.TableCellLocation].
 
     To create this type, use the function Add-GSSlideTableCellLocation or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.TableCellLocation'.
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER ObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Style
-    Accepts the following type: Google.Apis.Slides.v1.Data.TextStyle.
+    Accepts the following type: [Google.Apis.Slides.v1.Data.TextStyle].
 
     To create this type, use the function Add-GSSlideTextStyle or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.TextStyle'.
 
     .PARAMETER TextRange
-    Accepts the following type: Google.Apis.Slides.v1.Data.Range.
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Range].
 
     To create this type, use the function Add-GSSlideRange or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Range'.
 

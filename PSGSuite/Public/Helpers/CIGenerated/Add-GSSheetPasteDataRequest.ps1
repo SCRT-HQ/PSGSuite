@@ -7,21 +7,21 @@ function Add-GSSheetPasteDataRequest {
     Creates a PasteDataRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Coordinate
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridCoordinate.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridCoordinate].
 
     To create this type, use the function Add-GSSheetGridCoordinate or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridCoordinate'.
 
     .PARAMETER Data
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Delimiter
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Html
-    Accepts the following type: System.Nullable[bool].
+    Accepts the following type: [System.Nullable[bool]].
 
     .PARAMETER Type
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

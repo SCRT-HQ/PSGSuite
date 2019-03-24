@@ -7,37 +7,49 @@ function Add-GSSheetCellFormat {
     Creates a Google.Apis.Sheets.v4.Data.CellFormat object.
 
     .PARAMETER BackgroundColor
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Color
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Color].
+
+    To create this type, use the function Add-GSSheetColor or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Color'.
 
     .PARAMETER Borders
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Borders
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Borders].
+
+    To create this type, use the function Add-GSSheetBorders or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Borders'.
 
     .PARAMETER HorizontalAlignment
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER HyperlinkDisplayType
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER NumberFormat
-    Accepts the following type: Google.Apis.Sheets.v4.Data.NumberFormat
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.NumberFormat].
+
+    To create this type, use the function Add-GSSheetNumberFormat or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.NumberFormat'.
 
     .PARAMETER Padding
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Padding
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Padding].
+
+    To create this type, use the function Add-GSSheetPadding or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Padding'.
 
     .PARAMETER TextDirection
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER TextFormat
-    Accepts the following type: Google.Apis.Sheets.v4.Data.TextFormat
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.TextFormat].
+
+    To create this type, use the function Add-GSSheetTextFormat or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.TextFormat'.
 
     .PARAMETER TextRotation
-    Accepts the following type: Google.Apis.Sheets.v4.Data.TextRotation
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.TextRotation].
+
+    To create this type, use the function Add-GSSheetTextRotation or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.TextRotation'.
 
     .PARAMETER VerticalAlignment
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER WrapStrategy
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSheetCellFormat -BackgroundColor $backgroundColor -Borders $borders -HorizontalAlignment $horizontalAlignment -HyperlinkDisplayType $hyperlinkDisplayType -NumberFormat $numberFormat -Padding $padding -TextDirection $textDirection -TextFormat $textFormat -TextRotation $textRotation -VerticalAlignment $verticalAlignment -WrapStrategy $wrapStrategy

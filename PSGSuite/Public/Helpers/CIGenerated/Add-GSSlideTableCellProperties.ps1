@@ -7,10 +7,12 @@ function Add-GSSlideTableCellProperties {
     Creates a Google.Apis.Slides.v1.Data.TableCellProperties object.
 
     .PARAMETER ContentAlignment
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER TableCellBackgroundFill
-    Accepts the following type: Google.Apis.Slides.v1.Data.TableCellBackgroundFill
+    Accepts the following type: [Google.Apis.Slides.v1.Data.TableCellBackgroundFill].
+
+    To create this type, use the function Add-GSSlideTableCellBackgroundFill or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.TableCellBackgroundFill'.
 
     .EXAMPLE
     Add-GSSlideTableCellProperties -ContentAlignment $contentAlignment -TableCellBackgroundFill $tableCellBackgroundFill

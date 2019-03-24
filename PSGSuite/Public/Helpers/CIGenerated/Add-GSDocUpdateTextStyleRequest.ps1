@@ -7,15 +7,15 @@ function Add-GSDocUpdateTextStyleRequest {
     Creates a UpdateTextStyleRequest to pass to Submit-GSDocBatchUpdate.
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Docs.v1.Data.Range.
+    Accepts the following type: [Google.Apis.Docs.v1.Data.Range].
 
     To create this type, use the function Add-GSDocRange or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.Range'.
 
     .PARAMETER TextStyle
-    Accepts the following type: Google.Apis.Docs.v1.Data.TextStyle.
+    Accepts the following type: [Google.Apis.Docs.v1.Data.TextStyle].
 
     To create this type, use the function Add-GSDocTextStyle or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.TextStyle'.
 

@@ -7,10 +7,14 @@ function Add-GSDocSize {
     Creates a Google.Apis.Docs.v1.Data.Size object.
 
     .PARAMETER Height
-    Accepts the following type: Google.Apis.Docs.v1.Data.Dimension
+    Accepts the following type: [Google.Apis.Docs.v1.Data.Dimension].
+
+    To create this type, use the function Add-GSDocDimension or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.Dimension'.
 
     .PARAMETER Width
-    Accepts the following type: Google.Apis.Docs.v1.Data.Dimension
+    Accepts the following type: [Google.Apis.Docs.v1.Data.Dimension].
+
+    To create this type, use the function Add-GSDocDimension or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.Dimension'.
 
     .EXAMPLE
     Add-GSDocSize -Height $height -Width $width

@@ -7,10 +7,10 @@ function Add-GSSheetUpdateSpreadsheetPropertiesRequest {
     Creates a UpdateSpreadsheetPropertiesRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER Properties
-    Accepts the following type: Google.Apis.Sheets.v4.Data.SpreadsheetProperties.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.SpreadsheetProperties].
 
     To create this type, use the function Add-GSSheetSpreadsheetProperties or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.SpreadsheetProperties'.
 

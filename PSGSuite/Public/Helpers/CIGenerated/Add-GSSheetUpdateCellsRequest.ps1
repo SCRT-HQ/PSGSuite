@@ -7,18 +7,18 @@ function Add-GSSheetUpdateCellsRequest {
     Creates a UpdateCellsRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridRange.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange].
 
     To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 
     .PARAMETER Rows
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.RowData].
+    Accepts the following type: [System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.RowData]].
 
     .PARAMETER Start
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridCoordinate.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridCoordinate].
 
     To create this type, use the function Add-GSSheetGridCoordinate or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridCoordinate'.
 

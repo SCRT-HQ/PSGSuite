@@ -7,13 +7,17 @@ function Add-GSSlidePageElementProperties {
     Creates a Google.Apis.Slides.v1.Data.PageElementProperties object.
 
     .PARAMETER PageObjectId
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Size
-    Accepts the following type: Google.Apis.Slides.v1.Data.Size
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Size].
+
+    To create this type, use the function Add-GSSlideSize or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Size'.
 
     .PARAMETER Transform
-    Accepts the following type: Google.Apis.Slides.v1.Data.AffineTransform
+    Accepts the following type: [Google.Apis.Slides.v1.Data.AffineTransform].
+
+    To create this type, use the function Add-GSSlideAffineTransform or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.AffineTransform'.
 
     .EXAMPLE
     Add-GSSlidePageElementProperties -PageObjectId $pageObjectId -Size $size -Transform $transform

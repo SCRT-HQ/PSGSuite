@@ -7,16 +7,16 @@ function Add-GSSheetPadding {
     Creates a Google.Apis.Sheets.v4.Data.Padding object.
 
     .PARAMETER Bottom
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER Left
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER Right
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER Top
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .EXAMPLE
     Add-GSSheetPadding -Bottom $bottom -Left $left -Right $right -Top $top

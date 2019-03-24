@@ -7,13 +7,15 @@ function Add-GSSlideTableRange {
     Creates a Google.Apis.Slides.v1.Data.TableRange object.
 
     .PARAMETER ColumnSpan
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER Location
-    Accepts the following type: Google.Apis.Slides.v1.Data.TableCellLocation
+    Accepts the following type: [Google.Apis.Slides.v1.Data.TableCellLocation].
+
+    To create this type, use the function Add-GSSlideTableCellLocation or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.TableCellLocation'.
 
     .PARAMETER RowSpan
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .EXAMPLE
     Add-GSSlideTableRange -ColumnSpan $columnSpan -Location $location -RowSpan $rowSpan

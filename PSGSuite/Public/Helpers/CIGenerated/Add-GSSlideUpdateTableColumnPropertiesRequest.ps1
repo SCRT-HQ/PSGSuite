@@ -7,16 +7,16 @@ function Add-GSSlideUpdateTableColumnPropertiesRequest {
     Creates a UpdateTableColumnPropertiesRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER ColumnIndices
-    Accepts the following type: System.Collections.Generic.IList[System.Nullable[int]].
+    Accepts the following type: [System.Collections.Generic.IList[System.Nullable[int]]].
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER ObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER TableColumnProperties
-    Accepts the following type: Google.Apis.Slides.v1.Data.TableColumnProperties.
+    Accepts the following type: [Google.Apis.Slides.v1.Data.TableColumnProperties].
 
     To create this type, use the function Add-GSSlideTableColumnProperties or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.TableColumnProperties'.
 

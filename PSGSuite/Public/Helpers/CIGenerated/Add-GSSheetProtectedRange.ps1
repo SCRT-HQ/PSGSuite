@@ -7,28 +7,34 @@ function Add-GSSheetProtectedRange {
     Creates a Google.Apis.Sheets.v4.Data.ProtectedRange object.
 
     .PARAMETER Description
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Editors
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Editors
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Editors].
+
+    To create this type, use the function Add-GSSheetEditors or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Editors'.
 
     .PARAMETER NamedRangeId
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER ProtectedRangeId
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridRange
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange].
+
+    To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 
     .PARAMETER RequestingUserCanEdit
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER UnprotectedRanges
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.GridRange][]
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange[]].
+
+    To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 
     .PARAMETER WarningOnly
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .EXAMPLE
     Add-GSSheetProtectedRange -Description $description -Editors $editors -NamedRangeId $namedRangeId -ProtectedRangeId $protectedRangeId -Range $range -RequestingUserCanEdit $requestingUserCanEdit -UnprotectedRanges $unprotectedRanges -WarningOnly $warningOnly
@@ -52,13 +58,13 @@ function Add-GSSheetProtectedRange {
         [Google.Apis.Sheets.v4.Data.GridRange]
         $Range,
         [parameter()]
-        [bool]
+        [switch]
         $RequestingUserCanEdit,
         [parameter()]
-        [System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.GridRange][]]
+        [Google.Apis.Sheets.v4.Data.GridRange[]]
         $UnprotectedRanges,
         [parameter()]
-        [bool]
+        [switch]
         $WarningOnly,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ParameterSetName = "InputObject")]
         [Google.Apis.Sheets.v4.Data.ProtectedRange[]]
@@ -72,7 +78,7 @@ function Add-GSSheetProtectedRange {
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
                         switch ($prop) {
                             UnprotectedRanges {
-                                $list = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.GridRange]]'
+                                $list = New-Object 'System.Collections.Generic.List[Google.Apis.Sheets.v4.Data.GridRange]'
                                 foreach ($item in $UnprotectedRanges) {
                                     $list.Add($item)
                                 }

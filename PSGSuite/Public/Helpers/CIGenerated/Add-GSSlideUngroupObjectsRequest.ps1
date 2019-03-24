@@ -7,7 +7,7 @@ function Add-GSSlideUngroupObjectsRequest {
     Creates a UngroupObjectsRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER ObjectIds
-    Accepts the following type: System.Collections.Generic.IList[string].
+    Accepts the following type: [System.Collections.Generic.IList[string]].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

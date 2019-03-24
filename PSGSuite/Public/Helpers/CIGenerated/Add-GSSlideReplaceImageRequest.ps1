@@ -7,13 +7,13 @@ function Add-GSSlideReplaceImageRequest {
     Creates a ReplaceImageRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER ImageObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER ImageReplaceMethod
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Url
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

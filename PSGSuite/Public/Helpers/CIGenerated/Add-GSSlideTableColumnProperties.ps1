@@ -7,7 +7,9 @@ function Add-GSSlideTableColumnProperties {
     Creates a Google.Apis.Slides.v1.Data.TableColumnProperties object.
 
     .PARAMETER ColumnWidth
-    Accepts the following type: Google.Apis.Slides.v1.Data.Dimension
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Dimension].
+
+    To create this type, use the function Add-GSSlideDimension or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Dimension'.
 
     .EXAMPLE
     Add-GSSlideTableColumnProperties -ColumnWidth $columnWidth

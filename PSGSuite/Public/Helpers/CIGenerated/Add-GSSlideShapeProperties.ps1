@@ -7,19 +7,27 @@ function Add-GSSlideShapeProperties {
     Creates a Google.Apis.Slides.v1.Data.ShapeProperties object.
 
     .PARAMETER ContentAlignment
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Link
-    Accepts the following type: Google.Apis.Slides.v1.Data.Link
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Link].
+
+    To create this type, use the function Add-GSSlideLink or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Link'.
 
     .PARAMETER Outline
-    Accepts the following type: Google.Apis.Slides.v1.Data.Outline
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Outline].
+
+    To create this type, use the function Add-GSSlideOutline or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Outline'.
 
     .PARAMETER Shadow
-    Accepts the following type: Google.Apis.Slides.v1.Data.Shadow
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Shadow].
+
+    To create this type, use the function Add-GSSlideShadow or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Shadow'.
 
     .PARAMETER ShapeBackgroundFill
-    Accepts the following type: Google.Apis.Slides.v1.Data.ShapeBackgroundFill
+    Accepts the following type: [Google.Apis.Slides.v1.Data.ShapeBackgroundFill].
+
+    To create this type, use the function Add-GSSlideShapeBackgroundFill or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.ShapeBackgroundFill'.
 
     .EXAMPLE
     Add-GSSlideShapeProperties -ContentAlignment $contentAlignment -Link $link -Outline $outline -Shadow $shadow -ShapeBackgroundFill $shapeBackgroundFill

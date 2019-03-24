@@ -7,13 +7,15 @@ function Add-GSDocTableCellLocation {
     Creates a Google.Apis.Docs.v1.Data.TableCellLocation object.
 
     .PARAMETER ColumnIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER RowIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER TableStartLocation
-    Accepts the following type: Google.Apis.Docs.v1.Data.Location
+    Accepts the following type: [Google.Apis.Docs.v1.Data.Location].
+
+    To create this type, use the function Add-GSDocLocation or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.Location'.
 
     .EXAMPLE
     Add-GSDocTableCellLocation -ColumnIndex $columnIndex -RowIndex $rowIndex -TableStartLocation $tableStartLocation

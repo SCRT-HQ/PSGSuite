@@ -7,7 +7,9 @@ function Add-GSSheetChartSourceRange {
     Creates a Google.Apis.Sheets.v4.Data.ChartSourceRange object.
 
     .PARAMETER Sources
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.GridRange][]
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange[]].
+
+    To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 
     .EXAMPLE
     Add-GSSheetChartSourceRange -Sources $sources
@@ -16,7 +18,7 @@ function Add-GSSheetChartSourceRange {
     [CmdletBinding()]
     Param(
         [parameter()]
-        [System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.GridRange][]]
+        [Google.Apis.Sheets.v4.Data.GridRange[]]
         $Sources,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ParameterSetName = "InputObject")]
         [Google.Apis.Sheets.v4.Data.ChartSourceRange[]]
@@ -30,7 +32,7 @@ function Add-GSSheetChartSourceRange {
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
                         switch ($prop) {
                             Sources {
-                                $list = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.GridRange]]'
+                                $list = New-Object 'System.Collections.Generic.List[Google.Apis.Sheets.v4.Data.GridRange]'
                                 foreach ($item in $Sources) {
                                     $list.Add($item)
                                 }

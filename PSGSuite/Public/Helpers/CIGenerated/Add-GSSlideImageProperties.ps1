@@ -7,28 +7,38 @@ function Add-GSSlideImageProperties {
     Creates a Google.Apis.Slides.v1.Data.ImageProperties object.
 
     .PARAMETER Brightness
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER Contrast
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER CropProperties
-    Accepts the following type: Google.Apis.Slides.v1.Data.CropProperties
+    Accepts the following type: [Google.Apis.Slides.v1.Data.CropProperties].
+
+    To create this type, use the function Add-GSSlideCropProperties or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.CropProperties'.
 
     .PARAMETER Link
-    Accepts the following type: Google.Apis.Slides.v1.Data.Link
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Link].
+
+    To create this type, use the function Add-GSSlideLink or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Link'.
 
     .PARAMETER Outline
-    Accepts the following type: Google.Apis.Slides.v1.Data.Outline
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Outline].
+
+    To create this type, use the function Add-GSSlideOutline or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Outline'.
 
     .PARAMETER Recolor
-    Accepts the following type: Google.Apis.Slides.v1.Data.Recolor
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Recolor].
+
+    To create this type, use the function Add-GSSlideRecolor or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Recolor'.
 
     .PARAMETER Shadow
-    Accepts the following type: Google.Apis.Slides.v1.Data.Shadow
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Shadow].
+
+    To create this type, use the function Add-GSSlideShadow or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Shadow'.
 
     .PARAMETER Transparency
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .EXAMPLE
     Add-GSSlideImageProperties -Brightness $brightness -Contrast $contrast -CropProperties $cropProperties -Link $link -Outline $outline -Recolor $recolor -Shadow $shadow -Transparency $transparency

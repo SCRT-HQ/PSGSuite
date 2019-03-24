@@ -7,10 +7,10 @@ function Add-GSSlideUpdatePageElementsZOrderRequest {
     Creates a UpdatePageElementsZOrderRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER Operation
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER PageElementObjectIds
-    Accepts the following type: System.Collections.Generic.IList[string].
+    Accepts the following type: [System.Collections.Generic.IList[string]].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

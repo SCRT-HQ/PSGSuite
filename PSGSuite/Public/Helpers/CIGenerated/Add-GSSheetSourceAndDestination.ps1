@@ -7,13 +7,15 @@ function Add-GSSheetSourceAndDestination {
     Creates a Google.Apis.Sheets.v4.Data.SourceAndDestination object.
 
     .PARAMETER Dimension
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER FillLength
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER Source
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridRange
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange].
+
+    To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 
     .EXAMPLE
     Add-GSSheetSourceAndDestination -Dimension $dimension -FillLength $fillLength -Source $source

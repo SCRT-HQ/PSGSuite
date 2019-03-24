@@ -7,10 +7,10 @@ function Add-GSSlideUpdateSlidesPositionRequest {
     Creates a UpdateSlidesPositionRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER InsertionIndex
-    Accepts the following type: System.Nullable[int].
+    Accepts the following type: [System.Nullable[int]].
 
     .PARAMETER SlideObjectIds
-    Accepts the following type: System.Collections.Generic.IList[string].
+    Accepts the following type: [System.Collections.Generic.IList[string]].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

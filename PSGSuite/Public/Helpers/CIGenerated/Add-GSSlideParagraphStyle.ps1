@@ -7,31 +7,41 @@ function Add-GSSlideParagraphStyle {
     Creates a Google.Apis.Slides.v1.Data.ParagraphStyle object.
 
     .PARAMETER Alignment
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Direction
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER IndentEnd
-    Accepts the following type: Google.Apis.Slides.v1.Data.Dimension
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Dimension].
+
+    To create this type, use the function Add-GSSlideDimension or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Dimension'.
 
     .PARAMETER IndentFirstLine
-    Accepts the following type: Google.Apis.Slides.v1.Data.Dimension
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Dimension].
+
+    To create this type, use the function Add-GSSlideDimension or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Dimension'.
 
     .PARAMETER IndentStart
-    Accepts the following type: Google.Apis.Slides.v1.Data.Dimension
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Dimension].
+
+    To create this type, use the function Add-GSSlideDimension or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Dimension'.
 
     .PARAMETER LineSpacing
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER SpaceAbove
-    Accepts the following type: Google.Apis.Slides.v1.Data.Dimension
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Dimension].
+
+    To create this type, use the function Add-GSSlideDimension or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Dimension'.
 
     .PARAMETER SpaceBelow
-    Accepts the following type: Google.Apis.Slides.v1.Data.Dimension
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Dimension].
+
+    To create this type, use the function Add-GSSlideDimension or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Dimension'.
 
     .PARAMETER SpacingMode
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSlideParagraphStyle -Alignment $alignment -Direction $direction -IndentEnd $indentEnd -IndentFirstLine $indentFirstLine -IndentStart $indentStart -LineSpacing $lineSpacing -SpaceAbove $spaceAbove -SpaceBelow $spaceBelow -SpacingMode $spacingMode

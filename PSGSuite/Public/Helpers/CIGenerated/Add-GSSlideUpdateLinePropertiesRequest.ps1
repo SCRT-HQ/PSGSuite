@@ -7,15 +7,15 @@ function Add-GSSlideUpdateLinePropertiesRequest {
     Creates a UpdateLinePropertiesRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER LineProperties
-    Accepts the following type: Google.Apis.Slides.v1.Data.LineProperties.
+    Accepts the following type: [Google.Apis.Slides.v1.Data.LineProperties].
 
     To create this type, use the function Add-GSSlideLineProperties or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.LineProperties'.
 
     .PARAMETER ObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

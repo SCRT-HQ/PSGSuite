@@ -7,12 +7,12 @@ function Add-GSSheetSetDataValidationRequest {
     Creates a SetDataValidationRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridRange.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange].
 
     To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 
     .PARAMETER Rule
-    Accepts the following type: Google.Apis.Sheets.v4.Data.DataValidationRule.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.DataValidationRule].
 
     To create this type, use the function Add-GSSheetDataValidationRule or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.DataValidationRule'.
 

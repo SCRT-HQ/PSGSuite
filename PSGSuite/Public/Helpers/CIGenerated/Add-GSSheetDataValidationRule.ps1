@@ -7,16 +7,18 @@ function Add-GSSheetDataValidationRule {
     Creates a Google.Apis.Sheets.v4.Data.DataValidationRule object.
 
     .PARAMETER Condition
-    Accepts the following type: Google.Apis.Sheets.v4.Data.BooleanCondition
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.BooleanCondition].
+
+    To create this type, use the function Add-GSSheetBooleanCondition or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.BooleanCondition'.
 
     .PARAMETER InputMessage
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER ShowCustomUi
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER Strict
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .EXAMPLE
     Add-GSSheetDataValidationRule -Condition $condition -InputMessage $inputMessage -ShowCustomUi $showCustomUi -Strict $strict
@@ -31,10 +33,10 @@ function Add-GSSheetDataValidationRule {
         [string]
         $InputMessage,
         [parameter()]
-        [bool]
+        [switch]
         $ShowCustomUi,
         [parameter()]
-        [bool]
+        [switch]
         $Strict,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ParameterSetName = "InputObject")]
         [Google.Apis.Sheets.v4.Data.DataValidationRule[]]

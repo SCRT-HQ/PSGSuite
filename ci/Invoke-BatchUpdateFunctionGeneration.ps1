@@ -22,11 +22,11 @@ function Invoke-BatchUpdateFunctionGeneration {
             $paramBlock += "        [parameter()]`n        [$paramType]`n        `$$paramName,"
             if ($paramType -match '^Google\.') {
                 $helperFunctionName = "Add-GS" + $TargetApi + $paramType.Split('.')[-1]
-                $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: $paramType.`n`n    To create this type, use the function $helperFunctionName or instantiate the type directly via New-Object '$paramType'.`n"
+                $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: [$paramType].`n`n    To create this type, use the function $helperFunctionName or instantiate the type directly via New-Object '$paramType'.`n"
                 Invoke-HelperFunctionGeneration -BaseType $paramType
             }
             else {
-                $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: $paramType.`n"
+                $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: [$paramType].`n"
             }
             $exampleParamString += " -$paramName `$$($paramName.Substring(0,1).ToLower())$($paramName.Substring(1))"
         }

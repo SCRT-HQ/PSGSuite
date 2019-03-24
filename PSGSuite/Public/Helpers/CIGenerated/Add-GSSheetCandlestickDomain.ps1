@@ -7,10 +7,12 @@ function Add-GSSheetCandlestickDomain {
     Creates a Google.Apis.Sheets.v4.Data.CandlestickDomain object.
 
     .PARAMETER Data
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ChartData
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ChartData].
+
+    To create this type, use the function Add-GSSheetChartData or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ChartData'.
 
     .PARAMETER Reversed
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .EXAMPLE
     Add-GSSheetCandlestickDomain -Data $data -Reversed $reversed
@@ -22,7 +24,7 @@ function Add-GSSheetCandlestickDomain {
         [Google.Apis.Sheets.v4.Data.ChartData]
         $Data,
         [parameter()]
-        [bool]
+        [switch]
         $Reversed,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ParameterSetName = "InputObject")]
         [Google.Apis.Sheets.v4.Data.CandlestickDomain[]]

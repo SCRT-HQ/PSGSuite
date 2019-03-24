@@ -7,13 +7,17 @@ function Add-GSSlideTableBorderProperties {
     Creates a Google.Apis.Slides.v1.Data.TableBorderProperties object.
 
     .PARAMETER DashStyle
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER TableBorderFill
-    Accepts the following type: Google.Apis.Slides.v1.Data.TableBorderFill
+    Accepts the following type: [Google.Apis.Slides.v1.Data.TableBorderFill].
+
+    To create this type, use the function Add-GSSlideTableBorderFill or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.TableBorderFill'.
 
     .PARAMETER Weight
-    Accepts the following type: Google.Apis.Slides.v1.Data.Dimension
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Dimension].
+
+    To create this type, use the function Add-GSSlideDimension or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Dimension'.
 
     .EXAMPLE
     Add-GSSlideTableBorderProperties -DashStyle $dashStyle -TableBorderFill $tableBorderFill -Weight $weight

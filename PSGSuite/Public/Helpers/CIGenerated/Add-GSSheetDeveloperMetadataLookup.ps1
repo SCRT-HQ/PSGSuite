@@ -7,25 +7,27 @@ function Add-GSSheetDeveloperMetadataLookup {
     Creates a Google.Apis.Sheets.v4.Data.DeveloperMetadataLookup object.
 
     .PARAMETER LocationMatchingStrategy
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER LocationType
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER MetadataId
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER MetadataKey
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER MetadataLocation
-    Accepts the following type: Google.Apis.Sheets.v4.Data.DeveloperMetadataLocation
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.DeveloperMetadataLocation].
+
+    To create this type, use the function Add-GSSheetDeveloperMetadataLocation or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.DeveloperMetadataLocation'.
 
     .PARAMETER MetadataValue
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Visibility
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSheetDeveloperMetadataLookup -LocationMatchingStrategy $locationMatchingStrategy -LocationType $locationType -MetadataId $metadataId -MetadataKey $metadataKey -MetadataLocation $metadataLocation -MetadataValue $metadataValue -Visibility $visibility

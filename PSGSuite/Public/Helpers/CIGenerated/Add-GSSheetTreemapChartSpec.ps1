@@ -7,40 +7,54 @@ function Add-GSSheetTreemapChartSpec {
     Creates a Google.Apis.Sheets.v4.Data.TreemapChartSpec object.
 
     .PARAMETER ColorData
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ChartData
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ChartData].
+
+    To create this type, use the function Add-GSSheetChartData or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ChartData'.
 
     .PARAMETER ColorScale
-    Accepts the following type: Google.Apis.Sheets.v4.Data.TreemapChartColorScale
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.TreemapChartColorScale].
+
+    To create this type, use the function Add-GSSheetTreemapChartColorScale or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.TreemapChartColorScale'.
 
     .PARAMETER HeaderColor
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Color
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Color].
+
+    To create this type, use the function Add-GSSheetColor or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Color'.
 
     .PARAMETER HideTooltips
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER HintedLevels
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER Labels
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ChartData
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ChartData].
+
+    To create this type, use the function Add-GSSheetChartData or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ChartData'.
 
     .PARAMETER Levels
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER MaxValue
-    Accepts the following type: double
+    Accepts the following type: [double].
 
     .PARAMETER MinValue
-    Accepts the following type: double
+    Accepts the following type: [double].
 
     .PARAMETER ParentLabels
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ChartData
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ChartData].
+
+    To create this type, use the function Add-GSSheetChartData or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ChartData'.
 
     .PARAMETER SizeData
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ChartData
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ChartData].
+
+    To create this type, use the function Add-GSSheetChartData or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ChartData'.
 
     .PARAMETER TextFormat
-    Accepts the following type: Google.Apis.Sheets.v4.Data.TextFormat
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.TextFormat].
+
+    To create this type, use the function Add-GSSheetTextFormat or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.TextFormat'.
 
     .EXAMPLE
     Add-GSSheetTreemapChartSpec -ColorData $colorData -ColorScale $colorScale -HeaderColor $headerColor -HideTooltips $hideTooltips -HintedLevels $hintedLevels -Labels $labels -Levels $levels -MaxValue $maxValue -MinValue $minValue -ParentLabels $parentLabels -SizeData $sizeData -TextFormat $textFormat
@@ -58,7 +72,7 @@ function Add-GSSheetTreemapChartSpec {
         [Google.Apis.Sheets.v4.Data.Color]
         $HeaderColor,
         [parameter()]
-        [bool]
+        [switch]
         $HideTooltips,
         [parameter()]
         [int]

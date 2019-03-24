@@ -7,17 +7,17 @@ function Add-GSDocInsertTextRequest {
     Creates a InsertTextRequest to pass to Submit-GSDocBatchUpdate.
 
     .PARAMETER EndOfSegmentLocation
-    Accepts the following type: Google.Apis.Docs.v1.Data.EndOfSegmentLocation.
+    Accepts the following type: [Google.Apis.Docs.v1.Data.EndOfSegmentLocation].
 
     To create this type, use the function Add-GSDocEndOfSegmentLocation or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.EndOfSegmentLocation'.
 
     .PARAMETER Location
-    Accepts the following type: Google.Apis.Docs.v1.Data.Location.
+    Accepts the following type: [Google.Apis.Docs.v1.Data.Location].
 
     To create this type, use the function Add-GSDocLocation or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.Location'.
 
     .PARAMETER Text
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

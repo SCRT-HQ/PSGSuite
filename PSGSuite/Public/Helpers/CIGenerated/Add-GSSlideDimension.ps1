@@ -7,10 +7,10 @@ function Add-GSSlideDimension {
     Creates a Google.Apis.Slides.v1.Data.Dimension object.
 
     .PARAMETER Magnitude
-    Accepts the following type: double
+    Accepts the following type: [double].
 
     .PARAMETER Unit
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSlideDimension -Magnitude $magnitude -Unit $unit

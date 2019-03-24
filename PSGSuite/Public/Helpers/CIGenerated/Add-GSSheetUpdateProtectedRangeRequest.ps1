@@ -7,10 +7,10 @@ function Add-GSSheetUpdateProtectedRangeRequest {
     Creates a UpdateProtectedRangeRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER ProtectedRange
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ProtectedRange.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ProtectedRange].
 
     To create this type, use the function Add-GSSheetProtectedRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ProtectedRange'.
 

@@ -7,10 +7,12 @@ function Add-GSSlideRecolor {
     Creates a Google.Apis.Slides.v1.Data.Recolor object.
 
     .PARAMETER Name
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER RecolorStops
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Slides.v1.Data.ColorStop][]
+    Accepts the following type: [Google.Apis.Slides.v1.Data.ColorStop[]].
+
+    To create this type, use the function Add-GSSlideColorStop or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.ColorStop'.
 
     .EXAMPLE
     Add-GSSlideRecolor -Name $name -RecolorStops $recolorStops
@@ -22,7 +24,7 @@ function Add-GSSlideRecolor {
         [string]
         $Name,
         [parameter()]
-        [System.Collections.Generic.IList[Google.Apis.Slides.v1.Data.ColorStop][]]
+        [Google.Apis.Slides.v1.Data.ColorStop[]]
         $RecolorStops,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ParameterSetName = "InputObject")]
         [Google.Apis.Slides.v1.Data.Recolor[]]
@@ -36,7 +38,7 @@ function Add-GSSlideRecolor {
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
                         switch ($prop) {
                             RecolorStops {
-                                $list = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Google.Apis.Slides.v1.Data.ColorStop]]'
+                                $list = New-Object 'System.Collections.Generic.List[Google.Apis.Slides.v1.Data.ColorStop]'
                                 foreach ($item in $RecolorStops) {
                                     $list.Add($item)
                                 }

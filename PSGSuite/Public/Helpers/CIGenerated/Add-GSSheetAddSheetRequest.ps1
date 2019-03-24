@@ -7,7 +7,7 @@ function Add-GSSheetAddSheetRequest {
     Creates a AddSheetRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Properties
-    Accepts the following type: Google.Apis.Sheets.v4.Data.SheetProperties.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.SheetProperties].
 
     To create this type, use the function Add-GSSheetSheetProperties or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.SheetProperties'.
 

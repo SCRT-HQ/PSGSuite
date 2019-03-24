@@ -7,10 +7,10 @@ function Add-GSSheetTextRotation {
     Creates a Google.Apis.Sheets.v4.Data.TextRotation object.
 
     .PARAMETER Angle
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER Vertical
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .EXAMPLE
     Add-GSSheetTextRotation -Angle $angle -Vertical $vertical
@@ -22,7 +22,7 @@ function Add-GSSheetTextRotation {
         [int]
         $Angle,
         [parameter()]
-        [bool]
+        [switch]
         $Vertical,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ParameterSetName = "InputObject")]
         [Google.Apis.Sheets.v4.Data.TextRotation[]]

@@ -7,10 +7,10 @@ function Add-GSSheetInsertDimensionRequest {
     Creates a InsertDimensionRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER InheritFromBefore
-    Accepts the following type: System.Nullable[bool].
+    Accepts the following type: [System.Nullable[bool]].
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Sheets.v4.Data.DimensionRange.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.DimensionRange].
 
     To create this type, use the function Add-GSSheetDimensionRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.DimensionRange'.
 

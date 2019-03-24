@@ -7,19 +7,21 @@ function Add-GSSheetOverlayPosition {
     Creates a Google.Apis.Sheets.v4.Data.OverlayPosition object.
 
     .PARAMETER AnchorCell
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridCoordinate
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridCoordinate].
+
+    To create this type, use the function Add-GSSheetGridCoordinate or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridCoordinate'.
 
     .PARAMETER HeightPixels
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER OffsetXPixels
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER OffsetYPixels
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER WidthPixels
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .EXAMPLE
     Add-GSSheetOverlayPosition -AnchorCell $anchorCell -HeightPixels $heightPixels -OffsetXPixels $offsetXPixels -OffsetYPixels $offsetYPixels -WidthPixels $widthPixels

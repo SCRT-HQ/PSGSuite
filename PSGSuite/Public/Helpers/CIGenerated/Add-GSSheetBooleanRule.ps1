@@ -7,10 +7,14 @@ function Add-GSSheetBooleanRule {
     Creates a Google.Apis.Sheets.v4.Data.BooleanRule object.
 
     .PARAMETER Condition
-    Accepts the following type: Google.Apis.Sheets.v4.Data.BooleanCondition
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.BooleanCondition].
+
+    To create this type, use the function Add-GSSheetBooleanCondition or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.BooleanCondition'.
 
     .PARAMETER Format
-    Accepts the following type: Google.Apis.Sheets.v4.Data.CellFormat
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.CellFormat].
+
+    To create this type, use the function Add-GSSheetCellFormat or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.CellFormat'.
 
     .EXAMPLE
     Add-GSSheetBooleanRule -Condition $condition -Format $format

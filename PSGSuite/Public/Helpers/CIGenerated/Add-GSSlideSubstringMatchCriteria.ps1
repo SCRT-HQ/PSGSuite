@@ -7,10 +7,10 @@ function Add-GSSlideSubstringMatchCriteria {
     Creates a Google.Apis.Slides.v1.Data.SubstringMatchCriteria object.
 
     .PARAMETER MatchCase
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER Text
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSlideSubstringMatchCriteria -MatchCase $matchCase -Text $text
@@ -19,7 +19,7 @@ function Add-GSSlideSubstringMatchCriteria {
     [CmdletBinding()]
     Param(
         [parameter()]
-        [bool]
+        [switch]
         $MatchCase,
         [parameter()]
         [string]

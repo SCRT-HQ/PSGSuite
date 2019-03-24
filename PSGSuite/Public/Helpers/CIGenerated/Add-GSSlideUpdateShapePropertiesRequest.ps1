@@ -7,13 +7,13 @@ function Add-GSSlideUpdateShapePropertiesRequest {
     Creates a UpdateShapePropertiesRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER ObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER ShapeProperties
-    Accepts the following type: Google.Apis.Slides.v1.Data.ShapeProperties.
+    Accepts the following type: [Google.Apis.Slides.v1.Data.ShapeProperties].
 
     To create this type, use the function Add-GSSlideShapeProperties or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.ShapeProperties'.
 

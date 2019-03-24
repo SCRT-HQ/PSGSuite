@@ -7,10 +7,10 @@ function Add-GSSheetIterativeCalculationSettings {
     Creates a Google.Apis.Sheets.v4.Data.IterativeCalculationSettings object.
 
     .PARAMETER ConvergenceThreshold
-    Accepts the following type: double
+    Accepts the following type: [double].
 
     .PARAMETER MaxIterations
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .EXAMPLE
     Add-GSSheetIterativeCalculationSettings -ConvergenceThreshold $convergenceThreshold -MaxIterations $maxIterations

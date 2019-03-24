@@ -7,10 +7,10 @@ function Add-GSSheetLineStyle {
     Creates a Google.Apis.Sheets.v4.Data.LineStyle object.
 
     .PARAMETER Type
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Width
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .EXAMPLE
     Add-GSSheetLineStyle -Type $type -Width $width

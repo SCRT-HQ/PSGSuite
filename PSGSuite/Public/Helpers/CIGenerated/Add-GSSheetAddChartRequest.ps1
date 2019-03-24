@@ -7,7 +7,7 @@ function Add-GSSheetAddChartRequest {
     Creates a AddChartRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Chart
-    Accepts the following type: Google.Apis.Sheets.v4.Data.EmbeddedChart.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.EmbeddedChart].
 
     To create this type, use the function Add-GSSheetEmbeddedChart or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.EmbeddedChart'.
 

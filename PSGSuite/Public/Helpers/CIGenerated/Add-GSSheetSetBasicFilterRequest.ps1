@@ -7,7 +7,7 @@ function Add-GSSheetSetBasicFilterRequest {
     Creates a SetBasicFilterRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Filter
-    Accepts the following type: Google.Apis.Sheets.v4.Data.BasicFilter.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.BasicFilter].
 
     To create this type, use the function Add-GSSheetBasicFilter or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.BasicFilter'.
 

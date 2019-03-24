@@ -7,7 +7,7 @@ function Add-GSSheetDeleteSheetRequest {
     Creates a DeleteSheetRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER SheetId
-    Accepts the following type: System.Nullable[int].
+    Accepts the following type: [System.Nullable[int]].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

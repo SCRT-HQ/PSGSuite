@@ -7,28 +7,34 @@ function Add-GSSlideShadow {
     Creates a Google.Apis.Slides.v1.Data.Shadow object.
 
     .PARAMETER Alignment
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Alpha
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER BlurRadius
-    Accepts the following type: Google.Apis.Slides.v1.Data.Dimension
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Dimension].
+
+    To create this type, use the function Add-GSSlideDimension or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Dimension'.
 
     .PARAMETER Color
-    Accepts the following type: Google.Apis.Slides.v1.Data.OpaqueColor
+    Accepts the following type: [Google.Apis.Slides.v1.Data.OpaqueColor].
+
+    To create this type, use the function Add-GSSlideOpaqueColor or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.OpaqueColor'.
 
     .PARAMETER PropertyState
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER RotateWithShape
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER Transform
-    Accepts the following type: Google.Apis.Slides.v1.Data.AffineTransform
+    Accepts the following type: [Google.Apis.Slides.v1.Data.AffineTransform].
+
+    To create this type, use the function Add-GSSlideAffineTransform or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.AffineTransform'.
 
     .PARAMETER Type
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSlideShadow -Alignment $alignment -Alpha $alpha -BlurRadius $blurRadius -Color $color -PropertyState $propertyState -RotateWithShape $rotateWithShape -Transform $transform -Type $type
@@ -52,7 +58,7 @@ function Add-GSSlideShadow {
         [string]
         $PropertyState,
         [parameter()]
-        [bool]
+        [switch]
         $RotateWithShape,
         [parameter()]
         [Google.Apis.Slides.v1.Data.AffineTransform]

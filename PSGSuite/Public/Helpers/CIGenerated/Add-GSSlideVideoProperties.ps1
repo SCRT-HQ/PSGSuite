@@ -7,19 +7,21 @@ function Add-GSSlideVideoProperties {
     Creates a Google.Apis.Slides.v1.Data.VideoProperties object.
 
     .PARAMETER AutoPlay
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER End
-    Accepts the following type: long
+    Accepts the following type: [long].
 
     .PARAMETER Mute
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER Outline
-    Accepts the following type: Google.Apis.Slides.v1.Data.Outline
+    Accepts the following type: [Google.Apis.Slides.v1.Data.Outline].
+
+    To create this type, use the function Add-GSSlideOutline or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.Outline'.
 
     .PARAMETER Start
-    Accepts the following type: long
+    Accepts the following type: [long].
 
     .EXAMPLE
     Add-GSSlideVideoProperties -AutoPlay $autoPlay -End $end -Mute $mute -Outline $outline -Start $start
@@ -28,13 +30,13 @@ function Add-GSSlideVideoProperties {
     [CmdletBinding()]
     Param(
         [parameter()]
-        [bool]
+        [switch]
         $AutoPlay,
         [parameter()]
         [long]
         $End,
         [parameter()]
-        [bool]
+        [switch]
         $Mute,
         [parameter()]
         [Google.Apis.Slides.v1.Data.Outline]

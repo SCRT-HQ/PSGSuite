@@ -7,25 +7,25 @@ function Add-GSSlideAffineTransform {
     Creates a Google.Apis.Slides.v1.Data.AffineTransform object.
 
     .PARAMETER ScaleX
-    Accepts the following type: double
+    Accepts the following type: [double].
 
     .PARAMETER ScaleY
-    Accepts the following type: double
+    Accepts the following type: [double].
 
     .PARAMETER ShearX
-    Accepts the following type: double
+    Accepts the following type: [double].
 
     .PARAMETER ShearY
-    Accepts the following type: double
+    Accepts the following type: [double].
 
     .PARAMETER TranslateX
-    Accepts the following type: double
+    Accepts the following type: [double].
 
     .PARAMETER TranslateY
-    Accepts the following type: double
+    Accepts the following type: [double].
 
     .PARAMETER Unit
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSlideAffineTransform -ScaleX $scaleX -ScaleY $scaleY -ShearX $shearX -ShearY $shearY -TranslateX $translateX -TranslateY $translateY -Unit $unit

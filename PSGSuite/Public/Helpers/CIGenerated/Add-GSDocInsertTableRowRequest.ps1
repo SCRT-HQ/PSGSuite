@@ -7,10 +7,10 @@ function Add-GSDocInsertTableRowRequest {
     Creates a InsertTableRowRequest to pass to Submit-GSDocBatchUpdate.
 
     .PARAMETER InsertBelow
-    Accepts the following type: System.Nullable[bool].
+    Accepts the following type: [System.Nullable[bool]].
 
     .PARAMETER TableCellLocation
-    Accepts the following type: Google.Apis.Docs.v1.Data.TableCellLocation.
+    Accepts the following type: [Google.Apis.Docs.v1.Data.TableCellLocation].
 
     To create this type, use the function Add-GSDocTableCellLocation or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.TableCellLocation'.
 

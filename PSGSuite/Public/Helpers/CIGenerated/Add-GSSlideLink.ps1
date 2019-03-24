@@ -7,16 +7,16 @@ function Add-GSSlideLink {
     Creates a Google.Apis.Slides.v1.Data.Link object.
 
     .PARAMETER PageObjectId
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER RelativeLink
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER SlideIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER Url
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSlideLink -PageObjectId $pageObjectId -RelativeLink $relativeLink -SlideIndex $slideIndex -Url $url

@@ -7,7 +7,9 @@ function Add-GSDocShading {
     Creates a Google.Apis.Docs.v1.Data.Shading object.
 
     .PARAMETER BackgroundColor
-    Accepts the following type: Google.Apis.Docs.v1.Data.OptionalColor
+    Accepts the following type: [Google.Apis.Docs.v1.Data.OptionalColor].
+
+    To create this type, use the function Add-GSDocOptionalColor or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.OptionalColor'.
 
     .EXAMPLE
     Add-GSDocShading -BackgroundColor $backgroundColor

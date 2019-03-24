@@ -7,7 +7,7 @@ function Add-GSSheetCreateDeveloperMetadataRequest {
     Creates a CreateDeveloperMetadataRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER DeveloperMetadata
-    Accepts the following type: Google.Apis.Sheets.v4.Data.DeveloperMetadata.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.DeveloperMetadata].
 
     To create this type, use the function Add-GSSheetDeveloperMetadata or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.DeveloperMetadata'.
 

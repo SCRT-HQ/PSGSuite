@@ -7,16 +7,16 @@ function Add-GSSlideUpdateTableRowPropertiesRequest {
     Creates a UpdateTableRowPropertiesRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER ObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER RowIndices
-    Accepts the following type: System.Collections.Generic.IList[System.Nullable[int]].
+    Accepts the following type: [System.Collections.Generic.IList[System.Nullable[int]]].
 
     .PARAMETER TableRowProperties
-    Accepts the following type: Google.Apis.Slides.v1.Data.TableRowProperties.
+    Accepts the following type: [Google.Apis.Slides.v1.Data.TableRowProperties].
 
     To create this type, use the function Add-GSSlideTableRowProperties or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.TableRowProperties'.
 

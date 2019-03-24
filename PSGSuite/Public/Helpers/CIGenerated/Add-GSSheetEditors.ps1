@@ -7,13 +7,13 @@ function Add-GSSheetEditors {
     Creates a Google.Apis.Sheets.v4.Data.Editors object.
 
     .PARAMETER DomainUsersCanEdit
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER Groups
-    Accepts the following type: string[]
+    Accepts the following type: [string[]].
 
     .PARAMETER Users
-    Accepts the following type: string[]
+    Accepts the following type: [string[]].
 
     .EXAMPLE
     Add-GSSheetEditors -DomainUsersCanEdit $domainUsersCanEdit -Groups $groups -Users $users
@@ -22,7 +22,7 @@ function Add-GSSheetEditors {
     [CmdletBinding()]
     Param(
         [parameter()]
-        [bool]
+        [switch]
         $DomainUsersCanEdit,
         [parameter()]
         [string[]]

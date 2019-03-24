@@ -7,7 +7,7 @@ function Add-GSSheetDeleteProtectedRangeRequest {
     Creates a DeleteProtectedRangeRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER ProtectedRangeId
-    Accepts the following type: System.Nullable[int].
+    Accepts the following type: [System.Nullable[int]].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

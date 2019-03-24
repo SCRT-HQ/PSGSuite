@@ -7,13 +7,13 @@ function Add-GSSlideRgbColor {
     Creates a Google.Apis.Slides.v1.Data.RgbColor object.
 
     .PARAMETER Blue
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER Green
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER Red
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .EXAMPLE
     Add-GSSlideRgbColor -Blue $blue -Green $green -Red $red

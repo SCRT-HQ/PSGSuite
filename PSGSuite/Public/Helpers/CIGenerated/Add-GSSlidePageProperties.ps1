@@ -7,10 +7,14 @@ function Add-GSSlidePageProperties {
     Creates a Google.Apis.Slides.v1.Data.PageProperties object.
 
     .PARAMETER ColorScheme
-    Accepts the following type: Google.Apis.Slides.v1.Data.ColorScheme
+    Accepts the following type: [Google.Apis.Slides.v1.Data.ColorScheme].
+
+    To create this type, use the function Add-GSSlideColorScheme or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.ColorScheme'.
 
     .PARAMETER PageBackgroundFill
-    Accepts the following type: Google.Apis.Slides.v1.Data.PageBackgroundFill
+    Accepts the following type: [Google.Apis.Slides.v1.Data.PageBackgroundFill].
+
+    To create this type, use the function Add-GSSlidePageBackgroundFill or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.PageBackgroundFill'.
 
     .EXAMPLE
     Add-GSSlidePageProperties -ColorScheme $colorScheme -PageBackgroundFill $pageBackgroundFill

@@ -7,22 +7,26 @@ function Add-GSSheetFilterView {
     Creates a Google.Apis.Sheets.v4.Data.FilterView object.
 
     .PARAMETER Criteria
-    Accepts the following type: System.Collections.Generic.IDictionary[string,Google.Apis.Sheets.v4.Data.FilterCriteria]
+    Accepts the following type: [string,Google.Apis.Sheets.v4.Data.FilterCriteria].
 
     .PARAMETER FilterViewId
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER NamedRangeId
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridRange
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange].
+
+    To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 
     .PARAMETER SortSpecs
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.SortSpec][]
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.SortSpec[]].
+
+    To create this type, use the function Add-GSSheetSortSpec or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.SortSpec'.
 
     .PARAMETER Title
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSheetFilterView -Criteria $criteria -FilterViewId $filterViewId -NamedRangeId $namedRangeId -Range $range -SortSpecs $sortSpecs -Title $title
@@ -31,7 +35,7 @@ function Add-GSSheetFilterView {
     [CmdletBinding()]
     Param(
         [parameter()]
-        [System.Collections.Generic.IDictionary[string,Google.Apis.Sheets.v4.Data.FilterCriteria]]
+        [string,Google.Apis.Sheets.v4.Data.FilterCriteria]
         $Criteria,
         [parameter()]
         [int]
@@ -43,7 +47,7 @@ function Add-GSSheetFilterView {
         [Google.Apis.Sheets.v4.Data.GridRange]
         $Range,
         [parameter()]
-        [System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.SortSpec][]]
+        [Google.Apis.Sheets.v4.Data.SortSpec[]]
         $SortSpecs,
         [parameter()]
         [string]
@@ -60,7 +64,7 @@ function Add-GSSheetFilterView {
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
                         switch ($prop) {
                             SortSpecs {
-                                $list = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.SortSpec]]'
+                                $list = New-Object 'System.Collections.Generic.List[Google.Apis.Sheets.v4.Data.SortSpec]'
                                 foreach ($item in $SortSpecs) {
                                     $list.Add($item)
                                 }

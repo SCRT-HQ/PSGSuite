@@ -7,7 +7,7 @@ function Add-GSSheetDeleteDimensionGroupRequest {
     Creates a DeleteDimensionGroupRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Sheets.v4.Data.DimensionRange.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.DimensionRange].
 
     To create this type, use the function Add-GSSheetDimensionRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.DimensionRange'.
 

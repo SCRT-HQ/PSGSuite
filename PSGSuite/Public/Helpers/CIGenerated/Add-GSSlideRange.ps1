@@ -7,13 +7,13 @@ function Add-GSSlideRange {
     Creates a Google.Apis.Slides.v1.Data.Range object.
 
     .PARAMETER EndIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER StartIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER Type
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSlideRange -EndIndex $endIndex -StartIndex $startIndex -Type $type

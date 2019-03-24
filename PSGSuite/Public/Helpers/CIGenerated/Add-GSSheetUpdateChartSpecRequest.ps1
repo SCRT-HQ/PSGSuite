@@ -7,10 +7,10 @@ function Add-GSSheetUpdateChartSpecRequest {
     Creates a UpdateChartSpecRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER ChartId
-    Accepts the following type: System.Nullable[int].
+    Accepts the following type: [System.Nullable[int]].
 
     .PARAMETER Spec
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ChartSpec.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ChartSpec].
 
     To create this type, use the function Add-GSSheetChartSpec or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ChartSpec'.
 

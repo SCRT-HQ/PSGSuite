@@ -7,7 +7,9 @@ function Add-GSSlideOutlineFill {
     Creates a Google.Apis.Slides.v1.Data.OutlineFill object.
 
     .PARAMETER SolidFill
-    Accepts the following type: Google.Apis.Slides.v1.Data.SolidFill
+    Accepts the following type: [Google.Apis.Slides.v1.Data.SolidFill].
+
+    To create this type, use the function Add-GSSlideSolidFill or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.SolidFill'.
 
     .EXAMPLE
     Add-GSSlideOutlineFill -SolidFill $solidFill

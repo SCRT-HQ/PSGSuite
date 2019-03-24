@@ -7,7 +7,7 @@ function Add-GSSheetDeleteDeveloperMetadataRequest {
     Creates a DeleteDeveloperMetadataRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER DataFilter
-    Accepts the following type: Google.Apis.Sheets.v4.Data.DataFilter.
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.DataFilter].
 
     To create this type, use the function Add-GSSheetDataFilter or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.DataFilter'.
 

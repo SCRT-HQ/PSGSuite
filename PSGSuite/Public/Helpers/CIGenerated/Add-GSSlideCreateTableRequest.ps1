@@ -7,18 +7,18 @@ function Add-GSSlideCreateTableRequest {
     Creates a CreateTableRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER Columns
-    Accepts the following type: System.Nullable[int].
+    Accepts the following type: [System.Nullable[int]].
 
     .PARAMETER ElementProperties
-    Accepts the following type: Google.Apis.Slides.v1.Data.PageElementProperties.
+    Accepts the following type: [Google.Apis.Slides.v1.Data.PageElementProperties].
 
     To create this type, use the function Add-GSSlidePageElementProperties or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.PageElementProperties'.
 
     .PARAMETER ObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Rows
-    Accepts the following type: System.Nullable[int].
+    Accepts the following type: [System.Nullable[int]].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

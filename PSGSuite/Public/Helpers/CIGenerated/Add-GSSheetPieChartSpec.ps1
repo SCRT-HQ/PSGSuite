@@ -7,19 +7,23 @@ function Add-GSSheetPieChartSpec {
     Creates a Google.Apis.Sheets.v4.Data.PieChartSpec object.
 
     .PARAMETER Domain
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ChartData
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ChartData].
+
+    To create this type, use the function Add-GSSheetChartData or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ChartData'.
 
     .PARAMETER LegendPosition
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER PieHole
-    Accepts the following type: double
+    Accepts the following type: [double].
 
     .PARAMETER Series
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ChartData
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ChartData].
+
+    To create this type, use the function Add-GSSheetChartData or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ChartData'.
 
     .PARAMETER ThreeDimensional
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .EXAMPLE
     Add-GSSheetPieChartSpec -Domain $domain -LegendPosition $legendPosition -PieHole $pieHole -Series $series -ThreeDimensional $threeDimensional
@@ -40,7 +44,7 @@ function Add-GSSheetPieChartSpec {
         [Google.Apis.Sheets.v4.Data.ChartData]
         $Series,
         [parameter()]
-        [bool]
+        [switch]
         $ThreeDimensional,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ParameterSetName = "InputObject")]
         [Google.Apis.Sheets.v4.Data.PieChartSpec[]]

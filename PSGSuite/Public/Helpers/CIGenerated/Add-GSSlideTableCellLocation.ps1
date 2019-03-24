@@ -7,10 +7,10 @@ function Add-GSSlideTableCellLocation {
     Creates a Google.Apis.Slides.v1.Data.TableCellLocation object.
 
     .PARAMETER ColumnIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER RowIndex
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .EXAMPLE
     Add-GSSlideTableCellLocation -ColumnIndex $columnIndex -RowIndex $rowIndex

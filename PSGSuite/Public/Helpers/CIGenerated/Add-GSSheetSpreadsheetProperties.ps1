@@ -7,22 +7,26 @@ function Add-GSSheetSpreadsheetProperties {
     Creates a Google.Apis.Sheets.v4.Data.SpreadsheetProperties object.
 
     .PARAMETER AutoRecalc
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER DefaultFormat
-    Accepts the following type: Google.Apis.Sheets.v4.Data.CellFormat
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.CellFormat].
+
+    To create this type, use the function Add-GSSheetCellFormat or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.CellFormat'.
 
     .PARAMETER IterativeCalculationSettings
-    Accepts the following type: Google.Apis.Sheets.v4.Data.IterativeCalculationSettings
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.IterativeCalculationSettings].
+
+    To create this type, use the function Add-GSSheetIterativeCalculationSettings or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.IterativeCalculationSettings'.
 
     .PARAMETER Locale
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER TimeZone
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Title
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSheetSpreadsheetProperties -AutoRecalc $autoRecalc -DefaultFormat $defaultFormat -IterativeCalculationSettings $iterativeCalculationSettings -Locale $locale -TimeZone $timeZone -Title $title

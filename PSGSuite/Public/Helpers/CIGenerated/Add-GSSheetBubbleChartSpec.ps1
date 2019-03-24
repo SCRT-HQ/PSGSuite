@@ -7,37 +7,51 @@ function Add-GSSheetBubbleChartSpec {
     Creates a Google.Apis.Sheets.v4.Data.BubbleChartSpec object.
 
     .PARAMETER BubbleBorderColor
-    Accepts the following type: Google.Apis.Sheets.v4.Data.Color
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.Color].
+
+    To create this type, use the function Add-GSSheetColor or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.Color'.
 
     .PARAMETER BubbleLabels
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ChartData
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ChartData].
+
+    To create this type, use the function Add-GSSheetChartData or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ChartData'.
 
     .PARAMETER BubbleMaxRadiusSize
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER BubbleMinRadiusSize
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER BubbleOpacity
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER BubbleSizes
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ChartData
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ChartData].
+
+    To create this type, use the function Add-GSSheetChartData or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ChartData'.
 
     .PARAMETER BubbleTextStyle
-    Accepts the following type: Google.Apis.Sheets.v4.Data.TextFormat
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.TextFormat].
+
+    To create this type, use the function Add-GSSheetTextFormat or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.TextFormat'.
 
     .PARAMETER Domain
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ChartData
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ChartData].
+
+    To create this type, use the function Add-GSSheetChartData or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ChartData'.
 
     .PARAMETER GroupIds
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ChartData
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ChartData].
+
+    To create this type, use the function Add-GSSheetChartData or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ChartData'.
 
     .PARAMETER LegendPosition
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Series
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ChartData
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ChartData].
+
+    To create this type, use the function Add-GSSheetChartData or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ChartData'.
 
     .EXAMPLE
     Add-GSSheetBubbleChartSpec -BubbleBorderColor $bubbleBorderColor -BubbleLabels $bubbleLabels -BubbleMaxRadiusSize $bubbleMaxRadiusSize -BubbleMinRadiusSize $bubbleMinRadiusSize -BubbleOpacity $bubbleOpacity -BubbleSizes $bubbleSizes -BubbleTextStyle $bubbleTextStyle -Domain $domain -GroupIds $groupIds -LegendPosition $legendPosition -Series $series

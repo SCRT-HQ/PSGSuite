@@ -7,7 +7,7 @@ function Add-GSSheetDeleteNamedRangeRequest {
     Creates a DeleteNamedRangeRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER NamedRangeId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

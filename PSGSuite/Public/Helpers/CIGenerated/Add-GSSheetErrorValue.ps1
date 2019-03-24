@@ -7,10 +7,10 @@ function Add-GSSheetErrorValue {
     Creates a Google.Apis.Sheets.v4.Data.ErrorValue object.
 
     .PARAMETER Message
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Type
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSheetErrorValue -Message $message -Type $type

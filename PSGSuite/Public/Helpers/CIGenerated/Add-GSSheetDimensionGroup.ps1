@@ -7,13 +7,15 @@ function Add-GSSheetDimensionGroup {
     Creates a Google.Apis.Sheets.v4.Data.DimensionGroup object.
 
     .PARAMETER Collapsed
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER Depth
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Sheets.v4.Data.DimensionRange
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.DimensionRange].
+
+    To create this type, use the function Add-GSSheetDimensionRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.DimensionRange'.
 
     .EXAMPLE
     Add-GSSheetDimensionGroup -Collapsed $collapsed -Depth $depth -Range $range
@@ -22,7 +24,7 @@ function Add-GSSheetDimensionGroup {
     [CmdletBinding()]
     Param(
         [parameter()]
-        [bool]
+        [switch]
         $Collapsed,
         [parameter()]
         [int]

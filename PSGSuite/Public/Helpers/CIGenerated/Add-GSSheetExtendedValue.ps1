@@ -7,19 +7,21 @@ function Add-GSSheetExtendedValue {
     Creates a Google.Apis.Sheets.v4.Data.ExtendedValue object.
 
     .PARAMETER BoolValue
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER ErrorValue
-    Accepts the following type: Google.Apis.Sheets.v4.Data.ErrorValue
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.ErrorValue].
+
+    To create this type, use the function Add-GSSheetErrorValue or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.ErrorValue'.
 
     .PARAMETER FormulaValue
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER NumberValue
-    Accepts the following type: double
+    Accepts the following type: [double].
 
     .PARAMETER StringValue
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSSheetExtendedValue -BoolValue $boolValue -ErrorValue $errorValue -FormulaValue $formulaValue -NumberValue $numberValue -StringValue $stringValue
@@ -28,7 +30,7 @@ function Add-GSSheetExtendedValue {
     [CmdletBinding()]
     Param(
         [parameter()]
-        [bool]
+        [switch]
         $BoolValue,
         [parameter()]
         [Google.Apis.Sheets.v4.Data.ErrorValue]

@@ -7,7 +7,9 @@ function Add-GSSlideColorScheme {
     Creates a Google.Apis.Slides.v1.Data.ColorScheme object.
 
     .PARAMETER Colors
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Slides.v1.Data.ThemeColorPair][]
+    Accepts the following type: [Google.Apis.Slides.v1.Data.ThemeColorPair[]].
+
+    To create this type, use the function Add-GSSlideThemeColorPair or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.ThemeColorPair'.
 
     .EXAMPLE
     Add-GSSlideColorScheme -Colors $colors
@@ -16,7 +18,7 @@ function Add-GSSlideColorScheme {
     [CmdletBinding()]
     Param(
         [parameter()]
-        [System.Collections.Generic.IList[Google.Apis.Slides.v1.Data.ThemeColorPair][]]
+        [Google.Apis.Slides.v1.Data.ThemeColorPair[]]
         $Colors,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ParameterSetName = "InputObject")]
         [Google.Apis.Slides.v1.Data.ColorScheme[]]
@@ -30,7 +32,7 @@ function Add-GSSlideColorScheme {
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
                         switch ($prop) {
                             Colors {
-                                $list = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Google.Apis.Slides.v1.Data.ThemeColorPair]]'
+                                $list = New-Object 'System.Collections.Generic.List[Google.Apis.Slides.v1.Data.ThemeColorPair]'
                                 foreach ($item in $Colors) {
                                     $list.Add($item)
                                 }

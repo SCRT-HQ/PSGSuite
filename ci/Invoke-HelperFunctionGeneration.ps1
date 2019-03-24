@@ -18,8 +18,8 @@ function Invoke-HelperFunctionGeneration {
     $req | Get-Member -MemberType Property | Where-Object {$_.Name -ne 'ETag'} | ForEach-Object {
         $paramName = $_.Name
         $fullType = $_.Definition.Split(' ',2)[0]
-        if ($fullType -match '\[\w+\]') {
-            $typeSplit = ($fullType | Select-String -Pattern '([\w|\.]+)\[(\w+)\]' -AllMatches).Matches.Groups[1..2].Value
+        if ($fullType -match '\[.*\]') {
+            $typeSplit = ($fullType | Select-String -Pattern '([\w|\.]+)\[(.*)\]' -AllMatches).Matches.Groups[1..2].Value
             $isList = $typeSplit[0] -match 'IList'
             $fullType = $typeSplit[1]
         }
@@ -27,18 +27,25 @@ function Invoke-HelperFunctionGeneration {
             $isList = $fullType -match 'IList'
             $fullType = $fullType
         }
+        if ($fullType -eq 'bool') {
+            $fullType = 'switch'
+        }
         $paramType = if ($isList) {
             "$fullType[]"
         }
         else {
             $fullType
         }
-        if ($fullType -match '^Google\.') {
-            Invoke-HelperFunctionGeneration -BaseType $fullType
-        }
         $paramName = $_.Name
         $paramBlock += "        [parameter()]`n        [$paramType]`n        `$$paramName,"
-        $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: $paramType`n"
+        if ($paramType -match '^Google\.') {
+            $helperFunctionName = "Add-GS" + $TargetApi + $(if ($fullType -match '\.'){$fullType.Split('.')[-1]}else{$fullType})
+            $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: [$paramType].`n`n    To create this type, use the function $helperFunctionName or instantiate the type directly via New-Object '$fullType'.`n"
+            Invoke-HelperFunctionGeneration -BaseType $fullType
+        }
+        else {
+            $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: [$paramType].`n"
+        }
         $exampleParamString += " -$paramName `$$($paramName.Substring(0,1).ToLower())$($paramName.Substring(1))"
         if ($isList) {
             $listParamBlock += @"

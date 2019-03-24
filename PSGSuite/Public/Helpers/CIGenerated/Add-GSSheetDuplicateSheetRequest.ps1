@@ -7,16 +7,16 @@ function Add-GSSheetDuplicateSheetRequest {
     Creates a DuplicateSheetRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER InsertSheetIndex
-    Accepts the following type: System.Nullable[int].
+    Accepts the following type: [System.Nullable[int]].
 
     .PARAMETER NewSheetId
-    Accepts the following type: System.Nullable[int].
+    Accepts the following type: [System.Nullable[int]].
 
     .PARAMETER NewSheetName
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER SourceSheetId
-    Accepts the following type: System.Nullable[int].
+    Accepts the following type: [System.Nullable[int]].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

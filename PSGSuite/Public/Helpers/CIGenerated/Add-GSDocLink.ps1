@@ -7,13 +7,13 @@ function Add-GSDocLink {
     Creates a Google.Apis.Docs.v1.Data.Link object.
 
     .PARAMETER BookmarkId
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER HeadingId
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Url
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSDocLink -BookmarkId $bookmarkId -HeadingId $headingId -Url $url

@@ -7,13 +7,13 @@ function Add-GSDocRgbColor {
     Creates a Google.Apis.Docs.v1.Data.RgbColor object.
 
     .PARAMETER Blue
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER Green
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .PARAMETER Red
-    Accepts the following type: float
+    Accepts the following type: [float].
 
     .EXAMPLE
     Add-GSDocRgbColor -Blue $blue -Green $green -Red $red

@@ -7,13 +7,17 @@ function Add-GSSlidePageBackgroundFill {
     Creates a Google.Apis.Slides.v1.Data.PageBackgroundFill object.
 
     .PARAMETER PropertyState
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER SolidFill
-    Accepts the following type: Google.Apis.Slides.v1.Data.SolidFill
+    Accepts the following type: [Google.Apis.Slides.v1.Data.SolidFill].
+
+    To create this type, use the function Add-GSSlideSolidFill or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.SolidFill'.
 
     .PARAMETER StretchedPictureFill
-    Accepts the following type: Google.Apis.Slides.v1.Data.StretchedPictureFill
+    Accepts the following type: [Google.Apis.Slides.v1.Data.StretchedPictureFill].
+
+    To create this type, use the function Add-GSSlideStretchedPictureFill or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.StretchedPictureFill'.
 
     .EXAMPLE
     Add-GSSlidePageBackgroundFill -PropertyState $propertyState -SolidFill $solidFill -StretchedPictureFill $stretchedPictureFill

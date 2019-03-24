@@ -7,37 +7,43 @@ function Add-GSSheetBasicChartSpec {
     Creates a Google.Apis.Sheets.v4.Data.BasicChartSpec object.
 
     .PARAMETER Axis
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.BasicChartAxis][]
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.BasicChartAxis[]].
+
+    To create this type, use the function Add-GSSheetBasicChartAxis or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.BasicChartAxis'.
 
     .PARAMETER ChartType
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER CompareMode
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER Domains
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.BasicChartDomain][]
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.BasicChartDomain[]].
+
+    To create this type, use the function Add-GSSheetBasicChartDomain or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.BasicChartDomain'.
 
     .PARAMETER HeaderCount
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER InterpolateNulls
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER LegendPosition
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER LineSmoothing
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER Series
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.BasicChartSeries][]
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.BasicChartSeries[]].
+
+    To create this type, use the function Add-GSSheetBasicChartSeries or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.BasicChartSeries'.
 
     .PARAMETER StackedType
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .PARAMETER ThreeDimensional
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .EXAMPLE
     Add-GSSheetBasicChartSpec -Axis $axis -ChartType $chartType -CompareMode $compareMode -Domains $domains -HeaderCount $headerCount -InterpolateNulls $interpolateNulls -LegendPosition $legendPosition -LineSmoothing $lineSmoothing -Series $series -StackedType $stackedType -ThreeDimensional $threeDimensional
@@ -46,7 +52,7 @@ function Add-GSSheetBasicChartSpec {
     [CmdletBinding()]
     Param(
         [parameter()]
-        [System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.BasicChartAxis][]]
+        [Google.Apis.Sheets.v4.Data.BasicChartAxis[]]
         $Axis,
         [parameter()]
         [string]
@@ -55,28 +61,28 @@ function Add-GSSheetBasicChartSpec {
         [string]
         $CompareMode,
         [parameter()]
-        [System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.BasicChartDomain][]]
+        [Google.Apis.Sheets.v4.Data.BasicChartDomain[]]
         $Domains,
         [parameter()]
         [int]
         $HeaderCount,
         [parameter()]
-        [bool]
+        [switch]
         $InterpolateNulls,
         [parameter()]
         [string]
         $LegendPosition,
         [parameter()]
-        [bool]
+        [switch]
         $LineSmoothing,
         [parameter()]
-        [System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.BasicChartSeries][]]
+        [Google.Apis.Sheets.v4.Data.BasicChartSeries[]]
         $Series,
         [parameter()]
         [string]
         $StackedType,
         [parameter()]
-        [bool]
+        [switch]
         $ThreeDimensional,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ParameterSetName = "InputObject")]
         [Google.Apis.Sheets.v4.Data.BasicChartSpec[]]
@@ -90,21 +96,21 @@ function Add-GSSheetBasicChartSpec {
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
                         switch ($prop) {
                             Axis {
-                                $list = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.BasicChartAxis]]'
+                                $list = New-Object 'System.Collections.Generic.List[Google.Apis.Sheets.v4.Data.BasicChartAxis]'
                                 foreach ($item in $Axis) {
                                     $list.Add($item)
                                 }
                                 $obj.Axis = $list
                             }
                             Domains {
-                                $list = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.BasicChartDomain]]'
+                                $list = New-Object 'System.Collections.Generic.List[Google.Apis.Sheets.v4.Data.BasicChartDomain]'
                                 foreach ($item in $Domains) {
                                     $list.Add($item)
                                 }
                                 $obj.Domains = $list
                             }
                             Series {
-                                $list = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.BasicChartSeries]]'
+                                $list = New-Object 'System.Collections.Generic.List[Google.Apis.Sheets.v4.Data.BasicChartSeries]'
                                 foreach ($item in $Series) {
                                     $list.Add($item)
                                 }

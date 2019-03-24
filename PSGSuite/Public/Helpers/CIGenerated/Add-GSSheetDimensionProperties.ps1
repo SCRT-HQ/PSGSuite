@@ -7,16 +7,18 @@ function Add-GSSheetDimensionProperties {
     Creates a Google.Apis.Sheets.v4.Data.DimensionProperties object.
 
     .PARAMETER DeveloperMetadata
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.DeveloperMetadata][]
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.DeveloperMetadata[]].
+
+    To create this type, use the function Add-GSSheetDeveloperMetadata or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.DeveloperMetadata'.
 
     .PARAMETER HiddenByFilter
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER HiddenByUser
-    Accepts the following type: bool
+    Accepts the following type: [switch].
 
     .PARAMETER PixelSize
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .EXAMPLE
     Add-GSSheetDimensionProperties -DeveloperMetadata $developerMetadata -HiddenByFilter $hiddenByFilter -HiddenByUser $hiddenByUser -PixelSize $pixelSize
@@ -25,13 +27,13 @@ function Add-GSSheetDimensionProperties {
     [CmdletBinding()]
     Param(
         [parameter()]
-        [System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.DeveloperMetadata][]]
+        [Google.Apis.Sheets.v4.Data.DeveloperMetadata[]]
         $DeveloperMetadata,
         [parameter()]
-        [bool]
+        [switch]
         $HiddenByFilter,
         [parameter()]
-        [bool]
+        [switch]
         $HiddenByUser,
         [parameter()]
         [int]
@@ -48,7 +50,7 @@ function Add-GSSheetDimensionProperties {
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
                         switch ($prop) {
                             DeveloperMetadata {
-                                $list = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.DeveloperMetadata]]'
+                                $list = New-Object 'System.Collections.Generic.List[Google.Apis.Sheets.v4.Data.DeveloperMetadata]'
                                 foreach ($item in $DeveloperMetadata) {
                                     $list.Add($item)
                                 }

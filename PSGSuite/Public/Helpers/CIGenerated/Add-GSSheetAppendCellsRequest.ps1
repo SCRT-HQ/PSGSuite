@@ -7,13 +7,13 @@ function Add-GSSheetAppendCellsRequest {
     Creates a AppendCellsRequest to pass to Submit-GSSheetBatchUpdate.
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER Rows
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.RowData].
+    Accepts the following type: [System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.RowData]].
 
     .PARAMETER SheetId
-    Accepts the following type: System.Nullable[int].
+    Accepts the following type: [System.Nullable[int]].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

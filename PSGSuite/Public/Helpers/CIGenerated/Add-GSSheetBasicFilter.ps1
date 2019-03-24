@@ -7,13 +7,17 @@ function Add-GSSheetBasicFilter {
     Creates a Google.Apis.Sheets.v4.Data.BasicFilter object.
 
     .PARAMETER Criteria
-    Accepts the following type: System.Collections.Generic.IDictionary[string,Google.Apis.Sheets.v4.Data.FilterCriteria]
+    Accepts the following type: [string,Google.Apis.Sheets.v4.Data.FilterCriteria].
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Sheets.v4.Data.GridRange
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.GridRange].
+
+    To create this type, use the function Add-GSSheetGridRange or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.GridRange'.
 
     .PARAMETER SortSpecs
-    Accepts the following type: System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.SortSpec][]
+    Accepts the following type: [Google.Apis.Sheets.v4.Data.SortSpec[]].
+
+    To create this type, use the function Add-GSSheetSortSpec or instantiate the type directly via New-Object 'Google.Apis.Sheets.v4.Data.SortSpec'.
 
     .EXAMPLE
     Add-GSSheetBasicFilter -Criteria $criteria -Range $range -SortSpecs $sortSpecs
@@ -22,13 +26,13 @@ function Add-GSSheetBasicFilter {
     [CmdletBinding()]
     Param(
         [parameter()]
-        [System.Collections.Generic.IDictionary[string,Google.Apis.Sheets.v4.Data.FilterCriteria]]
+        [string,Google.Apis.Sheets.v4.Data.FilterCriteria]
         $Criteria,
         [parameter()]
         [Google.Apis.Sheets.v4.Data.GridRange]
         $Range,
         [parameter()]
-        [System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.SortSpec][]]
+        [Google.Apis.Sheets.v4.Data.SortSpec[]]
         $SortSpecs,
         [parameter(Mandatory = $false,ValueFromPipeline = $true,ParameterSetName = "InputObject")]
         [Google.Apis.Sheets.v4.Data.BasicFilter[]]
@@ -42,7 +46,7 @@ function Add-GSSheetBasicFilter {
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
                         switch ($prop) {
                             SortSpecs {
-                                $list = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Google.Apis.Sheets.v4.Data.SortSpec]]'
+                                $list = New-Object 'System.Collections.Generic.List[Google.Apis.Sheets.v4.Data.SortSpec]'
                                 foreach ($item in $SortSpecs) {
                                     $list.Add($item)
                                 }

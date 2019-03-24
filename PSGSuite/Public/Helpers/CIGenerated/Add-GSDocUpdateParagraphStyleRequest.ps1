@@ -7,15 +7,15 @@ function Add-GSDocUpdateParagraphStyleRequest {
     Creates a UpdateParagraphStyleRequest to pass to Submit-GSDocBatchUpdate.
 
     .PARAMETER Fields
-    Accepts the following type: System.Object.
+    Accepts the following type: [System.Object].
 
     .PARAMETER ParagraphStyle
-    Accepts the following type: Google.Apis.Docs.v1.Data.ParagraphStyle.
+    Accepts the following type: [Google.Apis.Docs.v1.Data.ParagraphStyle].
 
     To create this type, use the function Add-GSDocParagraphStyle or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.ParagraphStyle'.
 
     .PARAMETER Range
-    Accepts the following type: Google.Apis.Docs.v1.Data.Range.
+    Accepts the following type: [Google.Apis.Docs.v1.Data.Range].
 
     To create this type, use the function Add-GSDocRange or instantiate the type directly via New-Object 'Google.Apis.Docs.v1.Data.Range'.
 

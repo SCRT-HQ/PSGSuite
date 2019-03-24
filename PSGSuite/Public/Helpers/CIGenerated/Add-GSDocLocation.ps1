@@ -7,10 +7,10 @@ function Add-GSDocLocation {
     Creates a Google.Apis.Docs.v1.Data.Location object.
 
     .PARAMETER Index
-    Accepts the following type: int
+    Accepts the following type: [int].
 
     .PARAMETER SegmentId
-    Accepts the following type: string
+    Accepts the following type: [string].
 
     .EXAMPLE
     Add-GSDocLocation -Index $index -SegmentId $segmentId

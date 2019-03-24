@@ -7,15 +7,15 @@ function Add-GSSlideCreateImageRequest {
     Creates a CreateImageRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER ElementProperties
-    Accepts the following type: Google.Apis.Slides.v1.Data.PageElementProperties.
+    Accepts the following type: [Google.Apis.Slides.v1.Data.PageElementProperties].
 
     To create this type, use the function Add-GSSlidePageElementProperties or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.PageElementProperties'.
 
     .PARAMETER ObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Url
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Requests
     Enables pipeline input of other requests of the same type.

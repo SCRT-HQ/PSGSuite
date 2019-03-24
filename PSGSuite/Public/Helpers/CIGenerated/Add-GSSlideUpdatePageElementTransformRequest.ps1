@@ -7,13 +7,13 @@ function Add-GSSlideUpdatePageElementTransformRequest {
     Creates a UpdatePageElementTransformRequest to pass to Submit-GSSlideBatchUpdate.
 
     .PARAMETER ApplyMode
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER ObjectId
-    Accepts the following type: string.
+    Accepts the following type: [string].
 
     .PARAMETER Transform
-    Accepts the following type: Google.Apis.Slides.v1.Data.AffineTransform.
+    Accepts the following type: [Google.Apis.Slides.v1.Data.AffineTransform].
 
     To create this type, use the function Add-GSSlideAffineTransform or instantiate the type directly via New-Object 'Google.Apis.Slides.v1.Data.AffineTransform'.
 
