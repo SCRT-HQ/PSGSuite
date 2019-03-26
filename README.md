@@ -152,5 +152,5 @@ Update-GSSheetValue               Export-GSSheet
 
 * [PR #165](https://github.com/scrthq/PSGSuite/pull/165) - _Thanks, [@scv-m](https://github.com/scv-m)!_
   * Updated: `Get-GSCourseParticipant` now supports pipeline input for CourseId to enable piping `Get-GSCourse` into it.
-* [Issue #166](https://github.com/scrthq/PSGSuite/issues/162)
+* [Issue #166](https://github.com/scrthq/PSGSuite/issues/166)
   * Fixed: `Update-GSUser` would fail to update user phones due to incorrect variable name in the Process block, effectively skipping it.
