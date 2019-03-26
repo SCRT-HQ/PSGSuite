@@ -292,7 +292,7 @@ function Update-GSUser {
                             }
                         }
                         Phones {
-                            if ($null -ne $Relations) {
+                            if ($null -ne $Phones) {
                                 $phoneList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserPhone]'
                                 foreach ($phone in $Phones) {
                                     $phoneList.Add($phone)

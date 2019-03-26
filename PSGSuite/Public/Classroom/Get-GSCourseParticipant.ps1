@@ -46,8 +46,9 @@ function Get-GSCourseParticipant {
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (
-        [parameter(Mandatory = $true,Position = 0)]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
+        [alias('Id')]
         [String]
         $CourseId,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
