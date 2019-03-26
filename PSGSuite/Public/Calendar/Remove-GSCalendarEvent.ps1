@@ -40,7 +40,7 @@ function Remove-GSCalendarEvent {
         [String[]]
         $EventID
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -53,8 +53,6 @@ function Remove-GSCalendarEvent {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($E in $EventId) {
             try {
                 if ($PSCmdlet.ShouldProcess("Deleting Event Id '$E' from user '$User'")) {

@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.25.3](#2253)
   * [2.25.2](#2252)
   * [2.25.1](#2251)
   * [2.25.0](#2250)
@@ -79,6 +80,11 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.25.3
+
+* Miscellaneous
+  * Added: Pipeline support for `Remove-GSCalendarEvent`
 
 ## 2.25.2
 
