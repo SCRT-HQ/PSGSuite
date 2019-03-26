@@ -143,6 +143,11 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+## 2.25.2
+
+* [Issue #167](https://github.com/scrthq/PSGSuite/issues/167)
+  * Fixed: `Switch-PSGSuiteConfig -SetToDefault` failing with invalid scope errors
+
 ## 2.25.1
 
 * [PR #165](https://github.com/scrthq/PSGSuite/pull/165) - _Thanks, [@scv-m](https://github.com/scv-m)!_
