@@ -80,6 +80,15 @@ function Start-GSDriveFileUpload {
         $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
+        $taskList = [System.Collections.ArrayList]@()
+        $fullTaskList = [System.Collections.ArrayList]@()
+        $start = Get-Date
+        $folIdHash = @{}
+        $throttleCount = 0
+        $totalThrottleCount = 0
+        $totalFiles = 0
+    }
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -92,15 +101,6 @@ function Start-GSDriveFileUpload {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-        $taskList = [System.Collections.ArrayList]@()
-        $fullTaskList = [System.Collections.ArrayList]@()
-        $start = Get-Date
-        $folIdHash = @{}
-        $throttleCount = 0
-        $totalThrottleCount = 0
-        $totalFiles = 0
-    }
-    Process {
         try {
             foreach ($file in $Path) {
                 $details = Get-Item $file

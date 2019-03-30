@@ -2,18 +2,18 @@ function Clear-GSTasklist {
     <#
     .SYNOPSIS
     Clears all completed tasks from the specified task list. The affected tasks will be marked as 'hidden' and no longer be returned by default when retrieving all tasks for a task list
-    
+
     .DESCRIPTION
     Clears all completed tasks from the specified task list. The affected tasks will be marked as 'hidden' and no longer be returned by default when retrieving all tasks for a task list
-    
+
     .PARAMETER Tasklist
     The unique Id of the Tasklist to clear
-    
+
     .PARAMETER User
     The User who owns the Tasklist.
 
     Defaults to the AdminUser's email.
-    
+
     .EXAMPLE
     Clear-GSTasklist -Tasklist 'MTA3NjIwMjA1NTEzOTk0MjQ0OTk6NTMyNDY5NDk1NDM5MzMxO' -Confirm:$false
 
@@ -26,13 +26,13 @@ function Clear-GSTasklist {
         [Alias('Id')]
         [String[]]
         $Tasklist,
-        [parameter(Mandatory = $false,Position = 1)]
+        [parameter(Mandatory = $false,Position = 1,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail","Email")]
         [ValidateNotNullOrEmpty()]
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -45,8 +45,6 @@ function Clear-GSTasklist {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($list in $Tasklist) {
             try {
                 if ($PSCmdlet.ShouldProcess("Clearing Tasklist '$list' for user '$User'")) {

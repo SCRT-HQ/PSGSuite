@@ -43,7 +43,7 @@ function Get-GSTask {
         [parameter(Mandatory = $true,Position = 1)]
         [String]
         $Tasklist,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail","Email")]
         [ValidateNotNullOrEmpty()]
         [String]
@@ -78,7 +78,7 @@ function Get-GSTask {
         [Int]
         $PageSize
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -91,8 +91,6 @@ function Get-GSTask {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         switch ($PSCmdlet.ParameterSetName) {
             Get {
                 foreach ($T in $Task) {

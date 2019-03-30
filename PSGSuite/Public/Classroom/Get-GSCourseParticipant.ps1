@@ -46,7 +46,7 @@ function Get-GSCourseParticipant {
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (
-        [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName)]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [alias('Id')]
         [String]
@@ -61,14 +61,14 @@ function Get-GSCourseParticipant {
         [parameter(Mandatory = $false,ParameterSetName = "Get")]
         [String[]]
         $Student,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String]
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false)]
         [String[]]
         $Fields = '*'
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -85,8 +85,6 @@ function Get-GSCourseParticipant {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         switch ($PSCmdlet.ParameterSetName) {
             Get {
                 foreach ($part in $Student) {

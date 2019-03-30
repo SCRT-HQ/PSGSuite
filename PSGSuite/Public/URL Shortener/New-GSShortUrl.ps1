@@ -32,7 +32,7 @@ function New-GSShortUrl {
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -45,8 +45,6 @@ function New-GSShortUrl {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             foreach ($L in $LongUrl) {
                 Write-Verbose "Creating short Url for '$L'"

@@ -122,6 +122,8 @@ function Export-GSDriveFile {
             SVG                    = "image/svg+xml"
             TSV                    = "text/tab-separated-values"
         }
+    }
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -134,8 +136,6 @@ function Export-GSDriveFile {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $request = $service.Files.Export($FileID,($mimeHash[$Type]))
             if ($fs) {

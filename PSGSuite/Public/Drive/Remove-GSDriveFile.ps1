@@ -30,7 +30,7 @@ function Remove-GSDriveFile {
         [string]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -43,8 +43,6 @@ function Remove-GSDriveFile {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($file in $FileId) {
             try {
                 if ($PSCmdlet.ShouldProcess("Deleting File Id '$file' from user '$User'")) {

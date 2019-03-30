@@ -22,11 +22,11 @@ function Remove-GSCourse {
         [Alias('Alias')]
         [String]
         $Id,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -39,8 +39,6 @@ function Remove-GSCourse {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             if ($PSCmdlet.ShouldProcess("Removing Course '$Id'")) {
                 Write-Verbose "Removing Course '$Id'"

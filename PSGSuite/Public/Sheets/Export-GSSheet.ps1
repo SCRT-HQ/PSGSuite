@@ -111,6 +111,9 @@ function Export-GSSheet {
         $Launch
     )
     Begin {
+        $values = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Object]]'
+    }
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -123,9 +126,6 @@ function Export-GSSheet {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-        $values = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Object]]'
-    }
-    Process {
         try {
             if ($Value) {
                 $finalArray = $([pscustomobject]@{Value = "$Value"})

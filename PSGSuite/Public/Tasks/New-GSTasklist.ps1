@@ -26,13 +26,13 @@ function New-GSTasklist {
         [parameter(Mandatory = $true,Position = 0)]
         [String[]]
         $Title,
-        [parameter(Mandatory = $false,Position = 1)]
+        [parameter(Mandatory = $false,Position = 1,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail","Email")]
         [ValidateNotNullOrEmpty()]
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -45,8 +45,6 @@ function New-GSTasklist {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($list in $Title) {
             try {
                 Write-Verbose "Creating Tasklist '$list' for user '$User'"

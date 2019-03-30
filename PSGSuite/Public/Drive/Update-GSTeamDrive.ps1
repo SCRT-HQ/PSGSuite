@@ -119,7 +119,7 @@ function Update-GSTeamDrive {
         [Switch]
         $CanShare
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -132,8 +132,6 @@ function Update-GSTeamDrive {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $body = New-Object 'Google.Apis.Drive.v3.Data.TeamDrive'
             $capabilities = New-Object 'Google.Apis.Drive.v3.Data.TeamDrive+CapabilitiesData'

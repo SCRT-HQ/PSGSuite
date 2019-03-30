@@ -45,13 +45,13 @@ function Move-GSTask {
         [parameter(Mandatory = $false)]
         [String]
         $Previous,
-        [parameter(Mandatory = $false,Position = 1)]
+        [parameter(Mandatory = $false,Position = 1,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail","Email")]
         [ValidateNotNullOrEmpty()]
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -64,8 +64,6 @@ function Move-GSTask {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($T in $Task) {
             try {
                 Write-Verbose "Moving Task '$T' for user '$User'"

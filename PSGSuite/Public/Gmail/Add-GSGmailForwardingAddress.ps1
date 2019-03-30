@@ -33,7 +33,7 @@ function Add-GSGmailForwardingAddress {
         [string]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -46,8 +46,6 @@ function Add-GSGmailForwardingAddress {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             foreach ($fwd in $ForwardingAddress) {
                 $body = New-Object 'Google.Apis.Gmail.v1.Data.ForwardingAddress' -Property @{

@@ -32,13 +32,13 @@ function Update-GSTasklist {
         [parameter(Mandatory = $true,Position = 1)]
         [String]
         $Title,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail","Email")]
         [ValidateNotNullOrEmpty()]
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -51,8 +51,6 @@ function Update-GSTasklist {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             Write-Verbose "Updating Tasklist '$list' to Title '$Title' for user '$User'"
             $body = New-Object 'Google.Apis.Tasks.v1.Data.TaskList' -Property @{

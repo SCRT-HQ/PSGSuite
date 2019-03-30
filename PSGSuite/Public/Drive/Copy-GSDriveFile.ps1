@@ -87,6 +87,8 @@ function Copy-GSDriveFile {
         elseif ($Fields) {
             $fs = $Fields
         }
+    }
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -99,8 +101,6 @@ function Copy-GSDriveFile {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $body = New-Object 'Google.Apis.Drive.v3.Data.File'
             if ($Name) {
