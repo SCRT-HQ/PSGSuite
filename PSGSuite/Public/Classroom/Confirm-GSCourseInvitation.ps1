@@ -18,14 +18,14 @@ function Confirm-GSCourseInvitation {
     [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $true)]
+        [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
         [String]
         $Id,
-        [parameter(Mandatory = $true)]
+        [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
         [String]
         $User
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -38,8 +38,6 @@ function Confirm-GSCourseInvitation {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             Write-Verbose "Accepting Invitation '$Id' for user '$User'"
             $request = $service.Invitations.Accept($Id)

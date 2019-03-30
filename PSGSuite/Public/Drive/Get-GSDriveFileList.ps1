@@ -96,6 +96,8 @@ function Get-GSDriveFileList {
                 $PSBoundParameters['Filter'] = "'$ParentFolderId' in parents"
             }
         }
+    }
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -108,8 +110,6 @@ function Get-GSDriveFileList {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $request = $service.Files.List()
             $request.SupportsTeamDrives = $true

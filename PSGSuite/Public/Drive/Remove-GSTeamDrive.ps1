@@ -2,18 +2,18 @@ function Remove-GSTeamDrive {
     <#
     .SYNOPSIS
     Removes a Team Drive
-    
+
     .DESCRIPTION
     Removes a Team Drive
-    
+
     .PARAMETER TeamDriveId
     The Id of the Team Drive to remove
-    
+
     .PARAMETER User
     The email or unique Id of the user with permission to delete the Team Drive
 
     Defaults to the AdminEmail user
-    
+
     .EXAMPLE
     Remove-TeamDrive -TeamDriveId "0AJ8Xjq3FcdCKUk9PVA" -Confirm:$false
 
@@ -31,7 +31,7 @@ function Remove-GSTeamDrive {
         [string]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -44,8 +44,6 @@ function Remove-GSTeamDrive {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             foreach ($id in $TeamDriveId) {
                 if ($PSCmdlet.ShouldProcess("Deleting Team Drive '$id' from user '$User'")) {

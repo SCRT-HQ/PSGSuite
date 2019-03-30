@@ -32,7 +32,7 @@ function Remove-GSGmailLabel {
         [string]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -45,8 +45,6 @@ function Remove-GSGmailLabel {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($label in $LabelId) {
             try {
                 if ($PSCmdlet.ShouldProcess("Deleting Label Id '$label' from user '$User'")) {

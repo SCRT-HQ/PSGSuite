@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.26.0](#2260)
   * [2.25.3](#2253)
   * [2.25.2](#2252)
   * [2.25.1](#2251)
@@ -80,6 +81,16 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.26.0
+
+* [Issue #169](https://github.com/scrthq/PSGSuite/issues/169)
+  * Fixed: `Get-GSGmailMessage` fails to download attachments containing invalid characters (e.g. `:`)
+* [Issue #168](https://github.com/scrthq/PSGSuite/issues/168)
+  * Added: `Add-GSUserLocation`
+  * Updated: `New-GSUser` and `Update-GSUser` to add in Location support
+* Miscellaneous
+  * Improved pipeline support for the `User` parameter across all pertinent functions, i.e. Drive, Calendar, Gmail, Sheets & Tasks APIs.
 
 ## 2.25.3
 

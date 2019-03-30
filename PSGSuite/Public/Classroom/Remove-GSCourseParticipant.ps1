@@ -46,11 +46,11 @@ function Remove-GSCourseParticipant {
         [parameter(Mandatory = $false)]
         [String[]]
         $Teacher,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -63,8 +63,6 @@ function Remove-GSCourseParticipant {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($part in $Student) {
             try {
                 if ( -not ($part -as [decimal])) {

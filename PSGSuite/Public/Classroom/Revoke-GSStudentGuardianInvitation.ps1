@@ -50,11 +50,11 @@ function Revoke-GSStudentGuardianInvitation {
         [Alias('Invitation','InviteId','Invite')]
         [String[]]
         $InvitationId,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -67,8 +67,6 @@ function Revoke-GSStudentGuardianInvitation {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         if ( -not ($StudentId -as [decimal])) {
             if ($StudentId -ceq 'me') {
                 $StudentId = $Script:PSGSuite.AdminEmail

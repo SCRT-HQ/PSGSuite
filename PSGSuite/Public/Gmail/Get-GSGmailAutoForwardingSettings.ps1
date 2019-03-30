@@ -26,7 +26,7 @@ function Get-GSGmailAutoForwardingSettings {
         [string]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -39,8 +39,6 @@ function Get-GSGmailAutoForwardingSettings {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $request = $service.Users.Settings.GetAutoForwarding($User)
             Write-Verbose "Getting AutoForwarding settings for user '$User'"

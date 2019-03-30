@@ -37,7 +37,7 @@ function New-GSSheet {
         [Switch]
         $Launch
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -50,8 +50,6 @@ function New-GSSheet {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $body = New-Object 'Google.Apis.Sheets.v4.Data.Spreadsheet'
             $body.Properties = New-Object 'Google.Apis.Sheets.v4.Data.SpreadsheetProperties' -Property @{
