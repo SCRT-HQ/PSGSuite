@@ -98,7 +98,8 @@ function Get-GSGmailMessage {
                         $resPath = Resolve-Path $SaveAttachmentsTo
                         $attachments = $parsed.Attachments
                         foreach ($att in $attachments) {
-                            $fileName = Join-Path $resPath $att.FileName
+                            $cleanedName = $att.FileName -replace "[$(([System.IO.Path]::GetInvalidFileNameChars() + [System.IO.Path]::GetInvalidPathChars()) -join '')]","_"
+                            $fileName = Join-Path $resPath $cleanedName
                             Write-Verbose "Saving attachment to path '$fileName'"
                             $stream = [System.IO.File]::Create($fileName)
                             $att.ContentObject.DecodeTo($stream)

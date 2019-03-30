@@ -139,9 +139,17 @@ Update-GSCalendarResource         Update-GSResource
 Update-GSSheetValue               Export-GSSheet
 ```
 
-### Most recent change
+### Most recent changes
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
+
+#### 2.25.4
+
+* [Issue #169](https://github.com/scrthq/PSGSuite/issues/169)
+  * Fixed: `Get-GSGmailMessage` fails to download attachments containing invalid characters (e.g. `:`)
+* [Issue #168](https://github.com/scrthq/PSGSuite/issues/168)
+  * Added: `Add-GSUserLocation`
+  * Updated: `New-GSUser` and `Update-GSUser` to add in Location support
 
 #### 2.25.3
 
