@@ -88,8 +88,8 @@ function Get-GSDriveFileList {
         }
         if ($ParentFolderId) {
             if ($Filter) {
-                $Filter += "'$ParentFolderId' in parents"
-                $PSBoundParameters['Filter'] += "'$ParentFolderId' in parents"
+                $Filter = "($Filter) and '$ParentFolderId' in parents"
+                $PSBoundParameters['Filter'] = "($Filter) and '$ParentFolderId' in parents"
             }
             else {
                 $Filter = "'$ParentFolderId' in parents"
