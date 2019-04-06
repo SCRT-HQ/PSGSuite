@@ -90,10 +90,9 @@ function Get-GSDriveFileList {
             if ($Filter) {
                 $Filter += "'$ParentFolderId' in parents"
                 $PSBoundParameters['Filter'] += "'$ParentFolderId' in parents"
-            }
             else {
-                $Filter = "'$ParentFolderId' in parents"
-                $PSBoundParameters['Filter'] = "'$ParentFolderId' in parents"
+                $Filter = @("'$ParentFolderId' in parents")
+                $PSBoundParameters['Filter'] = @("'$ParentFolderId' in parents")
             }
         }
     }
@@ -121,7 +120,7 @@ function Get-GSDriveFileList {
                 switch ($key) {
                     Filter {
                         $FilterFmt = $PSBoundParameters[$key] -replace " -eq ","=" -replace " -like ",":" -replace " -match ",":" -replace " -contains ",":" -creplace "'True'","True" -creplace "'False'","False" -replace " -in "," in " -replace " -le ",'<=' -replace " -ge ",">=" -replace " -gt ",'>' -replace " -lt ",'<' -replace " -ne ","!=" -replace " -and "," and " -replace " -or "," or " -replace " -not "," not "
-                        $request.Q = $($FilterFmt -join " ")
+                        $request.Q = $($FilterFmt -join " and ")
                     }
                     Spaces {
                         $request.$key = $($PSBoundParameters[$key] -join ",")
