@@ -143,6 +143,15 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.26.1
+
+* [Issue #172](https://github.com/scrthq/PSGSuite/issues/172)
+  * Fixed: `New-GoogleService` now using `New-Object` to prevent `[Google.Apis.Util.Store.FileDataStore]::new()` constructor issues in PowerShell 4.
+* [Issue #173](https://github.com/scrthq/PSGSuite/issues/173)
+  * Added: `FolderColorRgb` parameter to `New-GSDriveFile` and `Update-GSDriveFile` to enable setting the color of a folder in Drive - _Thanks, [@WJurecki](https://github.com/WJurecki)!_
+* [PR #174](https://github.com/scrthq/PSGSuite/pull/174) - _Thanks, [@WJurecki](https://github.com/WJurecki)!_
+  * Fixed: `Get-GSDriveFileList` filter concatenation so it joins multiple filters with ` and ` instead of just a space ` `.
+
 #### 2.26.0
 
 * [Issue #169](https://github.com/scrthq/PSGSuite/issues/169)
@@ -152,20 +161,3 @@ Update-GSSheetValue               Export-GSSheet
   * Updated: `New-GSUser` and `Update-GSUser` to add in Location support
 * Miscellaneous
   * Improved pipeline support for the `User` parameter across all pertinent functions, i.e. Drive, Calendar, Gmail, Sheets & Tasks APIs.
-
-#### 2.25.3
-
-* Miscellaneous
-  * Added: Pipeline support for `Remove-GSCalendarEvent`
-
-#### 2.25.2
-
-* [Issue #167](https://github.com/scrthq/PSGSuite/issues/167)
-  * Fixed: `Switch-PSGSuiteConfig -SetToDefault` failing with invalid scope errors
-
-#### 2.25.1
-
-* [PR #165](https://github.com/scrthq/PSGSuite/pull/165) - _Thanks, [@scv-m](https://github.com/scv-m)!_
-  * Updated: `Get-GSCourseParticipant` now supports pipeline input for CourseId to enable piping `Get-GSCourse` into it.
-* [Issue #166](https://github.com/scrthq/PSGSuite/issues/166)
-  * Fixed: `Update-GSUser` would fail to update user phones due to incorrect variable name in the Process block, effectively skipping it.
