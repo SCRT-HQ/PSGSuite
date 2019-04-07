@@ -102,6 +102,9 @@ function Get-GSDriveFileList {
                 $PSBoundParameters['Filter'] = @("'$ParentFolderId' in parents")
             }
         }
+        if ($Fields -notcontains '*' -and $Fields -notcontains 'nextPageToken') {
+            $Fields += 'nextPageToken'
+        }
     }
     Process {
         if ($User -ceq 'me') {
