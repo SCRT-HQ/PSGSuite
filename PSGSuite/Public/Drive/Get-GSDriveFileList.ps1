@@ -28,6 +28,9 @@ function Get-GSDriveFileList {
     .PARAMETER Corpora
     Comma-separated list of bodies of items (files/documents) to which the query applies. Supported bodies are 'User', 'Domain', 'TeamDrive' and 'AllTeamDrives'. 'AllTeamDrives' must be combined with 'User'; all other values must be used in isolation. Prefer 'User' or 'TeamDrive' to 'AllTeamDrives' for efficiency.
 
+    .PARAMETER Fields
+    The specific fields to fetch for the listed files.
+
     .PARAMETER Spaces
     A comma-separated list of spaces to query within the corpus. Supported values are 'Drive', 'AppDataFolder' and 'Photos'.
 
@@ -63,6 +66,9 @@ function Get-GSDriveFileList {
         [parameter(Mandatory = $false)]
         [Switch]
         $IncludeTeamDriveItems,
+        [parameter(Mandatory = $false)]
+        [String[]]
+        $Fields = @('files','kind','nextPageToken'),
         [parameter(Mandatory = $false)]
         [ValidateSet('user','domain','teamDrive')]
         [String]
@@ -113,7 +119,6 @@ function Get-GSDriveFileList {
         try {
             $request = $service.Files.List()
             $request.SupportsTeamDrives = $true
-            $request.Fields = 'files,kind,nextPageToken'
             if ($PageSize) {
                 $request.PageSize = $PageSize
             }
@@ -122,6 +127,9 @@ function Get-GSDriveFileList {
                     Filter {
                         $FilterFmt = ($PSBoundParameters[$key] -join " and ") -replace " -eq ","=" -replace " -like ",":" -replace " -match ",":" -replace " -contains ",":" -creplace "'True'","True" -creplace "'False'","False" -replace " -in "," in " -replace " -le ",'<=' -replace " -ge ",">=" -replace " -gt ",'>' -replace " -lt ",'<' -replace " -ne ","!=" -replace " -and "," and " -replace " -or "," or " -replace " -not "," not "
                         $request.Q = $FilterFmt
+                    }
+                    Fields {
+                        $request.Fields = "$($Fields -join ",")"
                     }
                     Spaces {
                         $request.$key = $($PSBoundParameters[$key] -join ",")
@@ -133,12 +141,15 @@ function Get-GSDriveFileList {
                     }
                 }
             }
+            $baseVerbose = "Getting"
+            if ($Fields) {
+                $baseVerbose += " Fields [$($Fields -join ",")] of"
+            }
+            $baseVerbose += " all Drive Files for User '$User'"
             if ($FilterFmt) {
-                Write-Verbose "Getting all Drive Files for User '$User' matching Filter: $FilterFmt"
+                $baseVerbose += " matching Filter: $FilterFmt"
             }
-            else {
-                Write-Verbose "Getting all Drive Files for User '$User'"
-            }
+            Write-Verbose $baseVerbose
             [int]$i = 1
             do {
                 $result = $request.Execute()
