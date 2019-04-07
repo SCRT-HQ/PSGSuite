@@ -90,6 +90,7 @@ function Get-GSDriveFileList {
             if ($Filter) {
                 $Filter += "'$ParentFolderId' in parents"
                 $PSBoundParameters['Filter'] += "'$ParentFolderId' in parents"
+            }
             else {
                 $Filter = @("'$ParentFolderId' in parents")
                 $PSBoundParameters['Filter'] = @("'$ParentFolderId' in parents")
@@ -119,8 +120,8 @@ function Get-GSDriveFileList {
             foreach ($key in $PSBoundParameters.Keys) {
                 switch ($key) {
                     Filter {
-                        $FilterFmt = $PSBoundParameters[$key] -replace " -eq ","=" -replace " -like ",":" -replace " -match ",":" -replace " -contains ",":" -creplace "'True'","True" -creplace "'False'","False" -replace " -in "," in " -replace " -le ",'<=' -replace " -ge ",">=" -replace " -gt ",'>' -replace " -lt ",'<' -replace " -ne ","!=" -replace " -and "," and " -replace " -or "," or " -replace " -not "," not "
-                        $request.Q = $($FilterFmt -join " and ")
+                        $FilterFmt = ($PSBoundParameters[$key] -join " and ") -replace " -eq ","=" -replace " -like ",":" -replace " -match ",":" -replace " -contains ",":" -creplace "'True'","True" -creplace "'False'","False" -replace " -in "," in " -replace " -le ",'<=' -replace " -ge ",">=" -replace " -gt ",'>' -replace " -lt ",'<' -replace " -ne ","!=" -replace " -and "," and " -replace " -or "," or " -replace " -not "," not "
+                        $request.Q = $FilterFmt
                     }
                     Spaces {
                         $request.$key = $($PSBoundParameters[$key] -join ",")
@@ -132,11 +133,11 @@ function Get-GSDriveFileList {
                     }
                 }
             }
-            if ($Filter) {
-                Write-Verbose "Getting all Drive Files matching filter '$Filter' for user '$User'"
+            if ($FilterFmt) {
+                Write-Verbose "Getting all Drive Files for User '$User' matching Filter: $FilterFmt"
             }
             else {
-                Write-Verbose "Getting all Drive Files for user '$User'"
+                Write-Verbose "Getting all Drive Files for User '$User'"
             }
             [int]$i = 1
             do {

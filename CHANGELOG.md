@@ -88,7 +88,7 @@
 * [Issue #172](https://github.com/scrthq/PSGSuite/issues/172)
   * Fixed: `New-GoogleService` now using `New-Object` to prevent `[Google.Apis.Util.Store.FileDataStore]::new()` constructor issues in PowerShell 4.
 * [Issue #173](https://github.com/scrthq/PSGSuite/issues/173)
-  * Added: `FolderColorRgb` parameter to `New-GSDriveFile` and `Update-GSDriveFile` - _Thanks, [@WJurecki](https://github.com/WJurecki)!_
+  * Added: `FolderColorRgb` parameter to `New-GSDriveFile` and `Update-GSDriveFile` to enable setting the color of a folder in Drive - _Thanks, [@WJurecki](https://github.com/WJurecki)!_
 * [PR #174](https://github.com/scrthq/PSGSuite/pull/174) - _Thanks, [@WJurecki](https://github.com/WJurecki)!_
   * Fixed: `Get-GSDriveFileList` filter concatenation so it joins multiple filters with ` and ` instead of just a space ` `.
 
