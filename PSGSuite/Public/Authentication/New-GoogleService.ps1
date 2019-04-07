@@ -70,7 +70,7 @@ function New-GoogleService {
                         [string[]]$ClientSecretsScopes,
                         $User,
                         [System.Threading.CancellationToken]::None,
-                        [Google.Apis.Util.Store.FileDataStore]::new($credPath,$true),
+                        $(New-Object 'Google.Apis.Util.Store.FileDataStore' -ArgumentList $credPath,$true),
                         $(if ($PSVersionTable.PSVersion.Major -gt 5) {
                                 New-Object 'Google.Apis.Auth.OAuth2.PromptCodeReceiver'
                             }
