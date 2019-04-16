@@ -53,13 +53,13 @@ function New-GSGmailSMIMEInfo {
         [parameter(Mandatory = $false)]
         [Switch]
         $IsDefault,
-        [parameter(Mandatory = $true)]
+        [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [string]
         $User
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -72,8 +72,6 @@ function New-GSGmailSMIMEInfo {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $body = New-Object 'Google.Apis.Gmail.v1.Data.SmimeInfo'
             foreach ($key in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {

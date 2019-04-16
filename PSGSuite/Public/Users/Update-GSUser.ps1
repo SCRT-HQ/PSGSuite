@@ -50,6 +50,13 @@ function Update-GSUser {
 
     To CLEAR all values for a user, pass `$null` as the value for this parameter.
 
+    .PARAMETER Locations
+    The Location objects of the user
+
+    This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserLocation[]' object type. You can create objects of this type easily by using the function 'Add-GSUserLocation'
+
+    To CLEAR all values for a user, pass `$null` as the value for this parameter.
+
     .PARAMETER Organizations
     The organization objects of the user
 
@@ -156,6 +163,9 @@ function Update-GSUser {
         [parameter(Mandatory = $false)]
         [Google.Apis.Admin.Directory.directory_v1.Data.UserExternalId[]]
         $ExternalIds,
+        [parameter(Mandatory = $false)]
+        [Google.Apis.Admin.Directory.directory_v1.Data.UserLocation[]]
+        $Locations,
         [parameter(Mandatory = $false)]
         [Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization[]]
         $Organizations,
@@ -267,6 +277,18 @@ function Update-GSUser {
                                 $toClear['externalIds'] = $null
                             }
                         }
+                        Locations {
+                            if ($null -ne $Locations) {
+                                $locationList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserLocation]'
+                                foreach ($loc in $Locations) {
+                                    $locationList.Add($loc)
+                                }
+                                $body.Locations = $locationList
+                            }
+                            else {
+                                $toClear['locations'] = $null
+                            }
+                        }
                         Organizations {
                             if ($null -ne $Organizations) {
                                 $orgList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization]'
@@ -292,7 +314,7 @@ function Update-GSUser {
                             }
                         }
                         Phones {
-                            if ($null -ne $Relations) {
+                            if ($null -ne $Phones) {
                                 $phoneList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserPhone]'
                                 foreach ($phone in $Phones) {
                                     $phoneList.Add($phone)

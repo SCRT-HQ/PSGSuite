@@ -44,7 +44,7 @@ function Get-GSShortUrl {
         [string]
         $Projection = "Full"
     )
-    Begin {
+    Process {
         if ($ShortUrl) {
             if ($User -ceq 'me') {
                 $User = $Script:PSGSuite.AdminEmail
@@ -59,8 +59,6 @@ function Get-GSShortUrl {
             }
             $service = New-GoogleService @serviceParams
         }
-    }
-    Process {
         try {
             if ($ShortUrl) {
                 foreach ($S in $ShortUrl) {

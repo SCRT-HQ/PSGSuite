@@ -13,10 +13,39 @@ function Update-GSDriveFile {
     The path to the local file whose content you would like to upload to Drive.
 
     .PARAMETER Name
-    The new name of the Drive file
+    The name of the Drive file
 
     .PARAMETER Description
-    The new description of the Drive file
+    The description of the Drive file
+
+    .PARAMETER FolderColorRgb
+    The color for a folder as an RGB hex string.
+
+    Available values are:
+    * "ChocolateIceCream"
+    * "OldBrickRed"
+    * "Cardinal"
+    * "WildStrawberries"
+    * "MarsOrange"
+    * "YellowCab"
+    * "Spearmint"
+    * "VernFern"
+    * "Asparagus"
+    * "SlimeGreen"
+    * "DesertSand"
+    * "Macaroni"
+    * "SeaFoam"
+    * "Pool"
+    * "Denim"
+    * "RainySky"
+    * "BlueVelvet"
+    * "PurpleDino"
+    * "Mouse"
+    * "MountainGrey"
+    * "Earthworm"
+    * "BubbleGum"
+    * "PurpleRain"
+    * "ToyEggplant"
 
     .PARAMETER AddParents
     The parent Ids to add
@@ -58,7 +87,7 @@ function Update-GSDriveFile {
         [String]
         $FileId,
         [parameter(Mandatory = $false,Position = 1)]
-        [ValidateScript({Test-Path $_})]
+        [ValidateScript( { Test-Path $_ })]
         [String]
         $Path,
         [parameter(Mandatory = $false)]
@@ -67,6 +96,10 @@ function Update-GSDriveFile {
         [parameter(Mandatory = $false)]
         [String]
         $Description,
+        [parameter(Mandatory = $false)]
+        [ValidateSet('ChocolateIceCream','OldBrickRed','Cardinal','WildStrawberries','MarsOrange','YellowCab','Spearmint','VernFern','Asparagus','SlimeGreen','DesertSand','Macaroni','SeaFoam','Pool','Denim','RainySky','BlueVelvet','PurpleDino','Mouse','MountainGrey','Earthworm','BubbleGum','PurpleRain','ToyEggplant')]
+        [string]
+        $FolderColorRgb,
         [parameter(Mandatory = $false)]
         [String[]]
         $AddParents,
@@ -88,6 +121,32 @@ function Update-GSDriveFile {
         $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
+        $colorDictionary = @{
+            ChocolateIceCream = '#ac725e'
+            OldBrickRed       = '#d06b64'
+            Cardinal          = '#f83a22'
+            WildStrawberries  = '#fa573c'
+            MarsOrange        = '#ff7537'
+            YellowCab         = '#ffad46'
+            Spearmint         = '#42d692'
+            VernFern          = '#16a765'
+            Asparagus         = '#7bd148'
+            SlimeGreen        = '#b3dc6c'
+            DesertSand        = '#fbe983'
+            Macaroni          = '#fad165'
+            SeaFoam           = '#92e1c0'
+            Pool              = '#9fe1e7'
+            Denim             = '#9fc6e7'
+            RainySky          = '#4986e7'
+            BlueVelvet        = '#9a9cff'
+            PurpleDino        = '#b99aff'
+            Mouse             = '#8f8f8f'
+            MountainGrey      = '#cabdbf'
+            Earthworm         = '#cca6ac'
+            BubbleGum         = '#f691b2'
+            PurpleRain        = '#cd74e6'
+            ToyEggplant       = '#a47ae2'
+        }
         if ($Projection) {
             $fs = switch ($Projection) {
                 Standard {
@@ -104,6 +163,8 @@ function Update-GSDriveFile {
         elseif ($Fields) {
             $fs = $Fields
         }
+    }
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -116,8 +177,6 @@ function Update-GSDriveFile {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $body = New-Object 'Google.Apis.Drive.v3.Data.File'
             if ($Name) {
@@ -125,6 +184,9 @@ function Update-GSDriveFile {
             }
             if ($Description) {
                 $body.Description = $Description
+            }
+            if ($FolderColorRgb) {
+                $body.FolderColorRgb = $ColorDictionary[$FolderColorRgb]
             }
             if ($PSBoundParameters.Keys -contains 'Path') {
                 $ioFile = Get-Item $Path

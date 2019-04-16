@@ -44,11 +44,11 @@ function New-GSCourseInvitation {
         [ValidateSet('STUDENT','TEACHER','OWNER')]
         [String]
         $Role = 'STUDENT',
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -61,8 +61,6 @@ function New-GSCourseInvitation {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($U in $UserId) {
             try {
                 if ( -not ($U -as [decimal])) {

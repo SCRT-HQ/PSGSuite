@@ -82,6 +82,8 @@ function Get-GSDriveFile {
         elseif ($Fields) {
             $fs = $Fields
         }
+    }
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -94,8 +96,6 @@ function Get-GSDriveFile {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             foreach ($file in $FileId) {
                 $request = $service.Files.Get($file)

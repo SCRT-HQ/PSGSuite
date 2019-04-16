@@ -49,7 +49,7 @@ function Clear-GSSheet {
         [switch]
         $Raw
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -62,8 +62,6 @@ function Clear-GSSheet {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             if ($SheetName) {
                 if ($Range -like "'*'!*") {

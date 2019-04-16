@@ -1,7 +1,6 @@
 $projectRoot = Resolve-Path "$PSScriptRoot\..\.."
 $ModulePath = Resolve-Path "$projectRoot\BuildOutput\$($env:BHProjectName)"
 $decompiledModulePath = Resolve-Path "$projectRoot\$($env:BHProjectName)"
-$env:EnablePSGSuiteDebug = $true
 
 # Verbose output for non-master builds on appveyor
 # Handy for troubleshooting.

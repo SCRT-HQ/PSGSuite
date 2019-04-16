@@ -118,7 +118,7 @@ function Add-GSDrivePermission {
         [switch]
         $UseDomainAdminAccess
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -131,8 +131,6 @@ function Add-GSDrivePermission {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             if ($Role -eq "Owner" -and !$TransferOwnership) {
                 if ($PSCmdlet.ShouldProcess("Confirm transfer of ownership of FileId '$FileID' from user '$User' to user '$EmailAddress'")) {

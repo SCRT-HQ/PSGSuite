@@ -37,6 +37,13 @@ function Add-GSDocContent {
         $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
+        $service = New-GoogleService @serviceParams
+        $stream = New-Object 'System.IO.MemoryStream'
+        $writer = New-Object 'System.IO.StreamWriter' $stream
+        $currentContent = Get-GSDocContent -FileID $FileID -User $User -Verbose:$false
+        $concatStrings = @($currentContent)
+    }
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -48,13 +55,6 @@ function Add-GSDocContent {
             ServiceType = 'Google.Apis.Drive.v3.DriveService'
             User        = $User
         }
-        $service = New-GoogleService @serviceParams
-        $stream = New-Object 'System.IO.MemoryStream'
-        $writer = New-Object 'System.IO.StreamWriter' $stream
-        $currentContent = Get-GSDocContent -FileID $FileID -User $User -Verbose:$false
-        $concatStrings = @($currentContent)
-    }
-    Process {
         foreach ($string in $Value) {
             $concatStrings += $string
         }

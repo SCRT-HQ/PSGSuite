@@ -1,10 +1,10 @@
-function Get-GSCalendarACL {
+function Get-GSCalendarAcl {
     <#
     .SYNOPSIS
-    Gets the ACL calendar for a calendar
+    Gets the Access Control List for a calendar
 
     .DESCRIPTION
-    Gets the ACL for a calendar
+    Gets the Access Control List for a calendar
 
     .PARAMETER User
     The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
@@ -36,8 +36,9 @@ function Get-GSCalendarACL {
         [ValidateNotNullOrEmpty()]
         [String[]]
         $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $false)]
-        [String]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [Alias('Id')]
+        [String[]]
         $CalendarId = "primary",
         [parameter(Mandatory = $false, ParameterSetName = 'Get')]
         [String]
@@ -61,49 +62,51 @@ function Get-GSCalendarACL {
                 User        = $U
             }
             $service = New-GoogleService @serviceParams
-            try {
-                switch ($PSCmdlet.ParameterSetName) {
-                    Get {
-                        Write-Verbose "Getting ACL Id '$RuleId' of calendar '$CalendarId' for user '$U'"
-                        $request = $service.Acl.Get($CalendarId,$RuleId)
-                        $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $CalendarId -PassThru
-                    }
-                    List {
-                        $request = $service.Acl.List($CalendarId)
-                        foreach ($key in $PSBoundParameters.Keys | Where-Object {$_ -ne 'CalendarId'}) {
-                            switch ($key) {
-                                Default {
-                                    if ($request.PSObject.Properties.Name -contains $key) {
-                                        $request.$key = $PSBoundParameters[$key]
+            foreach ($calId in $CalendarId) {
+                try {
+                    switch ($PSCmdlet.ParameterSetName) {
+                        Get {
+                            Write-Verbose "Getting ACL Id '$RuleId' of calendar '$calId' for user '$U'"
+                            $request = $service.Acl.Get($calId,$RuleId)
+                            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $calId -PassThru
+                        }
+                        List {
+                            $request = $service.Acl.List($calId)
+                            foreach ($key in $PSBoundParameters.Keys | Where-Object {$_ -ne 'CalendarId'}) {
+                                switch ($key) {
+                                    Default {
+                                        if ($request.PSObject.Properties.Name -contains $key) {
+                                            $request.$key = $PSBoundParameters[$key]
+                                        }
                                     }
                                 }
                             }
-                        }
-                        if ($PageSize) {
-                            $request.MaxResults = $PageSize
-                        }
-                        Write-Verbose "Getting ACL List of calendar '$CalendarId' for user '$U'"
-                        [int]$i = 1
-                        do {
-                            $result = $request.Execute()
-                            $result.Items | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $CalendarId -PassThru
-                            if ($result.NextPageToken) {
-                                $request.PageToken = $result.NextPageToken
+                            if ($PageSize) {
+                                $request.MaxResults = $PageSize
                             }
-                            [int]$retrieved = ($i + $result.Items.Count) - 1
-                            Write-Verbose "Retrieved $retrieved Calendar Events..."
-                            [int]$i = $i + $result.Items.Count
+                            Write-Verbose "Getting ACL List of calendar '$calId' for user '$U'"
+                            [int]$i = 1
+                            do {
+                                $result = $request.Execute()
+                                $result.Items | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $calId -PassThru
+                                if ($result.NextPageToken) {
+                                    $request.PageToken = $result.NextPageToken
+                                }
+                                [int]$retrieved = ($i + $result.Items.Count) - 1
+                                Write-Verbose "Retrieved $retrieved Calendar ACLs..."
+                                [int]$i = $i + $result.Items.Count
+                            }
+                            until (!$result.NextPageToken)
                         }
-                        until (!$result.NextPageToken)
                     }
                 }
-            }
-            catch {
-                if ($ErrorActionPreference -eq 'Stop') {
-                    $PSCmdlet.ThrowTerminatingError($_)
-                }
-                else {
-                    Write-Error $_
+                catch {
+                    if ($ErrorActionPreference -eq 'Stop') {
+                        $PSCmdlet.ThrowTerminatingError($_)
+                    }
+                    else {
+                        Write-Error $_
+                    }
                 }
             }
         }

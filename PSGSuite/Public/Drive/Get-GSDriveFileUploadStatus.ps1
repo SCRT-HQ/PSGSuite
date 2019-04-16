@@ -2,16 +2,16 @@ function Get-GSDriveFileUploadStatus {
     <#
     .SYNOPSIS
     Gets the current Drive file upload status
-    
+
     .DESCRIPTION
     Gets the current Drive file upload status
-    
+
     .PARAMETER Id
     The upload Id for the task you'd like to retrieve the status of
-    
+
     .PARAMETER InProgress
     If passed, only returns upload statuses that are not 'Failed' or 'Completed'. If nothing is returned when passing this parameter, all tracked uploads have stopped
-    
+
     .EXAMPLE
     Get-GSDriveFileUploadStatus -InProgress
 
@@ -35,6 +35,16 @@ function Get-GSDriveFileUploadStatus {
             foreach ($task in $script:DriveUploadTasks) {
                 $elapsed = ((Get-Date) - $task.StartTime)
                 $progress = {$task.Request.GetProgress()}.InvokeReturnAsIs()
+                if (-not $task.StreamDisposed -and $progress.Status -eq 'Completed') {
+                    try {
+                        Write-Verbose "[$($progress.Status)] Disposing stream of Task Id [$($task.Id)] | File [$($task.File.FullName)]"
+                        $task.Stream.Dispose()
+                        $task.StreamDisposed = $true
+                    }
+                    catch {
+                        Write-Error $_
+                    }
+                }
                 $bytesSent = $progress.BytesSent
                 $remaining = try {
                     New-TimeSpan -Seconds $(($elapsed.TotalSeconds / ($bytesSent / ($task.Length))) - $elapsed.TotalSeconds) -ErrorAction Stop
@@ -48,46 +58,42 @@ function Get-GSDriveFileUploadStatus {
                 else {
                     0
                 }
-                if ($Id) {
-                    if ($Id -contains $task.Id) {
-                        $obj = [PSCustomObject]@{
-                            Id = $task.Id
-                            Status = $progress.Status
+                if (-not $InProgress -or $progress.Status -notin @('Failed','Completed')) {
+                    if ($Id) {
+                        if ($Id -contains $task.Id) {
+                            [PSCustomObject]@{
+                                Id              = $task.Id
+                                Status          = $progress.Status
+                                PercentComplete = $percentComplete
+                                Remaining       = $remaining
+                                StartTime       = $task.StartTime
+                                Elapsed         = $elapsed
+                                File            = $task.File.FullName
+                                Length          = $task.Length
+                                Parents         = $task.Parents
+                                BytesSent       = $bytesSent
+                                FileLocked      = $(Test-FileLock -Path $task.File)
+                                User            = $task.User
+                                Exception       = $progress.Exception
+                            }
+                        }
+                    }
+                    else {
+                        [PSCustomObject]@{
+                            Id              = $task.Id
+                            Status          = $progress.Status
                             PercentComplete = $percentComplete
-                            Remaining = $remaining
-                            StartTime = $task.StartTime
-                            Elapsed = $elapsed
-                            File = $task.File.FullName
-                            Length = $task.Length
-                            Parents = $task.Parents
-                            BytesSent = $bytesSent
-                            FileLocked = $(Test-FileLock -Path $task.File)
-                            User = $task.User
-                            Exception = $progress.Exception
+                            Remaining       = $remaining
+                            StartTime       = $task.StartTime
+                            Elapsed         = $elapsed
+                            File            = $task.File.FullName
+                            Length          = $task.Length
+                            Parents         = $task.Parents
+                            BytesSent       = $bytesSent
+                            FileLocked      = $(Test-FileLock -Path $task.File)
+                            User            = $task.User
+                            Exception       = $progress.Exception
                         }
-                        if (!$InProgress -or $obj.Status -notin @('Failed','Completed')) {
-                            $obj
-                        }
-                    }
-                }
-                else {
-                    $obj = [PSCustomObject]@{
-                        Id = $task.Id
-                        Status = $progress.Status
-                        PercentComplete = $percentComplete
-                        Remaining = $remaining
-                        StartTime = $task.StartTime
-                        Elapsed = $elapsed
-                        File = $task.File.FullName
-                        Length = $task.Length
-                        Parents = $task.Parents
-                        BytesSent = $bytesSent
-                        FileLocked = $(Test-FileLock -Path $task.File)
-                        User = $task.User
-                        Exception = $progress.Exception
-                    }
-                    if (!$InProgress -or $obj.Status -notin @('Failed','Completed')) {
-                        $obj
                     }
                 }
             }

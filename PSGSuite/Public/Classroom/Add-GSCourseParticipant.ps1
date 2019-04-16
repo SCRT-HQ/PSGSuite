@@ -51,7 +51,7 @@ function Add-GSCourseParticipant {
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -64,8 +64,6 @@ function Add-GSCourseParticipant {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($part in $Student | Where-Object {-not [String]::IsNullOrEmpty($_)}) {
             try {
                 $body = New-Object 'Google.Apis.Classroom.v1.Data.Student'

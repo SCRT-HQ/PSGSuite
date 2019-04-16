@@ -2,18 +2,18 @@ function Remove-GSTasklist {
     <#
     .SYNOPSIS
     Deletes the authenticated user's specified task list
-    
+
     .DESCRIPTION
     Deletes the authenticated user's specified task list
-    
+
     .PARAMETER Tasklist
     The unique Id of the Tasklist to remove
-    
+
     .PARAMETER User
     The User who owns the Tasklist.
 
     Defaults to the AdminUser's email.
-    
+
     .EXAMPLE
     Remove-GSTasklist -Tasklist 'MTA3NjIwMjA1NTEzOTk0MjQ0OTk6NTMyNDY5NDk1NDM5MzMxO' -Confirm:$false
 
@@ -26,13 +26,13 @@ function Remove-GSTasklist {
         [Alias('Id')]
         [String[]]
         $Tasklist,
-        [parameter(Mandatory = $false,Position = 1)]
+        [parameter(Mandatory = $false,Position = 1,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail","Email")]
         [ValidateNotNullOrEmpty()]
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -45,8 +45,6 @@ function Remove-GSTasklist {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($list in $Tasklist) {
             try {
                 if ($PSCmdlet.ShouldProcess("Removing Tasklist '$list' for user '$User'")) {

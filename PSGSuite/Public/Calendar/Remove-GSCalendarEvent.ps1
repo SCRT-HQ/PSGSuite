@@ -12,7 +12,7 @@ function Remove-GSCalendarEvent {
     Defaults to the AdminEmail in the config.
 
     .PARAMETER CalendarID
-    The calendar ID of the calendar you would like to list events from.
+    The calendar ID of the calendar you would like to remove events from.
 
     Defaults to the user's primary calendar.
 
@@ -40,7 +40,7 @@ function Remove-GSCalendarEvent {
         [String[]]
         $EventID
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -53,8 +53,6 @@ function Remove-GSCalendarEvent {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($E in $EventId) {
             try {
                 if ($PSCmdlet.ShouldProcess("Deleting Event Id '$E' from user '$User'")) {

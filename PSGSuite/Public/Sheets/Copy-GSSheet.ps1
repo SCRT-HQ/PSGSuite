@@ -53,7 +53,7 @@ function Copy-GSSheet {
         [switch]
         $Raw
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -66,8 +66,6 @@ function Copy-GSSheet {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             if ($PSCmdlet.ParameterSetName -eq "CreateNewSheet") {
                 if ($NewSheetTitle) {

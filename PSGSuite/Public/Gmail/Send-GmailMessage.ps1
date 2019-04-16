@@ -2,36 +2,36 @@
     <#
     .SYNOPSIS
     Sends a Gmail message
-    
+
     .DESCRIPTION
     Sends a Gmail message. Designed for parity with Send-GmailMessage
-    
+
     .PARAMETER From
     The primary email of the user that is sending the message. This MUST be a user account owned by the customer, as the Gmail Service must be built under this user's context and will fail if a group or alias is passed instead
 
     Defaults to the AdminEmail user
-    
+
     .PARAMETER Subject
     The subject of the email
-    
+
     .PARAMETER Body
     The email body. Supports HTML when used in conjunction with the -BodyAsHtml parameter
-    
+
     .PARAMETER To
     The To recipient(s) of the email
-    
+
     .PARAMETER CC
     The Cc recipient(s) of the email
-    
+
     .PARAMETER BCC
     The Bcc recipient(s) of the email
-    
+
     .PARAMETER Attachments
     The attachment(s) of the email
-    
+
     .PARAMETER BodyAsHtml
     If passed, renders the HTML content of the body on send
-    
+
     .EXAMPLE
     Send-GmailMessage -From Joe -To john.doe@domain.com -Subject "New Pricing Models" -Body $body -BodyAsHtml -Attachments 'C:\Reports\PricingModel_2018.xlsx'
 
@@ -41,7 +41,7 @@
     Param
     (
         [parameter(Mandatory = $false)]
-        [Alias("PrimaryEmail","UserKey","Mail")]
+        [Alias("PrimaryEmail","UserKey","Mail","User")]
         [ValidateNotNullOrEmpty()]
         [String]
         $From = $Script:PSGSuite.AdminEmail,
@@ -102,7 +102,7 @@
             $messageParams.Add("BCC",@($BCC))
         }
         if ($Attachments) {
-            $messageParams.Add("Attachment",@($Attachments)) 
+            $messageParams.Add("Attachment",@($Attachments))
         }
         if ($BodyAsHtml) {
             $messageParams.Add("BodyAsHtml",$true)

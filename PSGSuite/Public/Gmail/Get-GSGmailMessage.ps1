@@ -61,7 +61,7 @@ function Get-GSGmailMessage {
         [string]
         $Format = "Full"
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -77,8 +77,6 @@ function Get-GSGmailMessage {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             foreach ($mId in $Id) {
                 $request = $service.Users.Messages.Get($User,$mId)
@@ -100,7 +98,8 @@ function Get-GSGmailMessage {
                         $resPath = Resolve-Path $SaveAttachmentsTo
                         $attachments = $parsed.Attachments
                         foreach ($att in $attachments) {
-                            $fileName = Join-Path $resPath $att.FileName
+                            $cleanedName = $att.FileName -replace "[$(([System.IO.Path]::GetInvalidFileNameChars() + [System.IO.Path]::GetInvalidPathChars()) -join '')]","_"
+                            $fileName = Join-Path $resPath $cleanedName
                             Write-Verbose "Saving attachment to path '$fileName'"
                             $stream = [System.IO.File]::Create($fileName)
                             $att.ContentObject.DecodeTo($stream)

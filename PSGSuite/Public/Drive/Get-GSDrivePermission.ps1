@@ -45,7 +45,7 @@ function Get-GSDrivePermission {
         [Int]
         $PageSize = "100"
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -58,8 +58,6 @@ function Get-GSDrivePermission {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             if ($PermissionId) {
                 foreach ($per in $PermissionId) {

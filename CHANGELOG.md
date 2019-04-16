@@ -1,6 +1,19 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.26.1](#2261)
+  * [2.26.0](#2260)
+  * [2.25.3](#2253)
+  * [2.25.2](#2252)
+  * [2.25.1](#2251)
+  * [2.25.0](#2250)
+  * [2.24.0](#2240)
+  * [2.23.2](#2232)
+  * [2.23.1](#2231)
+  * [2.23.0](#2230)
+  * [2.22.4](#2224)
+  * [2.22.3](#2223)
+  * [2.22.2](#2222)
   * [2.22.1](#2221)
   * [2.22.0](#2220)
   * [2.21.3](#2213)
@@ -69,6 +82,107 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.26.1
+
+* [Issue #172](https://github.com/scrthq/PSGSuite/issues/172)
+  * Fixed: `New-GoogleService` now using `New-Object` to prevent `[Google.Apis.Util.Store.FileDataStore]::new()` constructor issues in PowerShell 4.
+* [Issue #173](https://github.com/scrthq/PSGSuite/issues/173)
+  * Added: `FolderColorRgb` parameter to `New-GSDriveFile` and `Update-GSDriveFile` to enable setting the color of a folder in Drive - _Thanks, [@WJurecki](https://github.com/WJurecki)!_
+* [PR #174](https://github.com/scrthq/PSGSuite/pull/174) - _Thanks, [@WJurecki](https://github.com/WJurecki)!_
+  * Fixed: `Get-GSDriveFileList` filter concatenation so it joins multiple filters with ` and ` instead of just a space ` `.
+
+## 2.26.0
+
+* [Issue #169](https://github.com/scrthq/PSGSuite/issues/169)
+  * Fixed: `Get-GSGmailMessage` fails to download attachments containing invalid characters (e.g. `:`)
+* [Issue #168](https://github.com/scrthq/PSGSuite/issues/168)
+  * Added: `Add-GSUserLocation`
+  * Updated: `New-GSUser` and `Update-GSUser` to add in Location support
+* Miscellaneous
+  * Improved pipeline support for the `User` parameter across all pertinent functions, i.e. Drive, Calendar, Gmail, Sheets & Tasks APIs.
+
+## 2.25.3
+
+* Miscellaneous
+  * Added: Pipeline support for `Remove-GSCalendarEvent`
+
+## 2.25.2
+
+* [Issue #167](https://github.com/scrthq/PSGSuite/issues/167)
+  * Fixed: `Switch-PSGSuiteConfig -SetToDefault` failing with invalid scope errors
+
+## 2.25.1
+
+* [PR #165](https://github.com/scrthq/PSGSuite/pull/165) - _Thanks, [@scv-m](https://github.com/scv-m)!_
+  * Updated: `Get-GSCourseParticipant` now supports pipeline input for CourseId to enable piping `Get-GSCourse` into it.
+* [Issue #166](https://github.com/scrthq/PSGSuite/issues/166)
+  * Fixed: `Update-GSUser` would fail to update user phones due to incorrect variable name in the Process block, effectively skipping it.
+
+## 2.25.0
+
+* [Issue #162](https://github.com/scrthq/PSGSuite/issues/162)
+  * Updated: `New-GoogleService` now caches Service objects created during the current session. This means that repeated calls will attempt to use an existing Service object from the cache if present, otherwise it will create the Service as usual.
+  * Updated: `New-GoogleService` Verbose output. To cut down on verbose noisiness, the following verbose output is set:
+    * New Service created = `Building ServiceAccountCredential from....`
+    * First use of existing Service = `Using matching cached service for user....`
+    * Re-use of existing Service = No verbose output (helps cut down on pipeline verbosity where service re-use is expected)
+  * Added: `Get-PSGSuiteServiceCache` to get the current Service Cache for inspection.
+* [Issue #163](https://github.com/scrthq/PSGSuite/issues/163)
+  * Added: `Get-GSCalendar` to get the CalendarList of a user.
+  * Added: `Remove-GSCalendarAcl` to remove Access Control List rules from Google Calendars.
+* Miscellaneous
+  * Improved pipeline support for Gmail `*Message` functions and Calendar functions.
+  * Added tab completion to `Switch-PSGSuiteConfig` for the ConfigName parameter.
+
+## 2.24.0
+
+* [Issue #159](https://github.com/scrthq/PSGSuite/issues/159)
+  * Added: `Revoke-GSStudentGuardianInvitation` to revoke student guardian invitations (Classroom API)
+
+## 2.23.2
+
+* Fixed logic issue with Get-GSUsageReport for reports returning no entities where errors would be thrown. Resolved by guarding against acting on `$null` values in the loop.
+
+## 2.23.1
+
+**This update changes the output of `Get-GSUsageReport` -- please review the output changes before updating if you have scripts that use that function!!**
+
+* Fixed: `Get-GSUsageReport` wasn't displaying critical report information (such as the Entity info) due to Select-Object being hardcoded. Function has been updated to parse the resulting Parameters and Entity info out to the top-level object.
+  * Added: `Flat` switch to specify that the parsed properties match what GAM returns, i.e. `'gmail:num_outbound_unencrypted_emails' = 6`. Normal behavior would be to parse that into an ordered dictionary, i.e. `gmail['num_outbound_unencrypted_emails'] = 6`, so that only `gmail` is seen from the top level object and all relevant report data is captured in the underlying dictionary.
+  * Added: `Raw` switch to allow the raw UsageReportsValue to be returned instead of parsing it out.
+
+## 2.23.0
+
+* [Issue #152](https://github.com/scrthq/PSGSuite/issues/152)
+  * Added full coverage of `Gmail.Settings.SendAs` resource (where signatures are managed with the newer Gmail API):
+    * Added: `Get-GSGmailSendAsAlias`
+    * Added: `Update-GSGmailSendAsAlias`
+    * Added: `Get-GSGmailSignature` (aliased to `Get-GSGmailSendAsAlias`)
+    * Added: `Update-GSGmailSignature` (aliased to `Update-GSGmailSendAsAlias` with some additional convenience parameters)
+    * Added: `Get-GSGmailSendAsSettings` (aliased to `Get-GSGmailSendAsAlias`)
+    * Added: `Update-GSGmailSendAsSettings` (aliased to `Update-GSGmailSendAsAlias`)
+    * Added: `Remove-GSGmailSendAsAlias`
+    * Added: `New-GSGmailSendAsAlias`
+    * Added: `Send-GSGmailSendAsConfirmation`
+
+## 2.22.4
+
+* [Issue #147](https://github.com/scrthq/PSGSuite/issues/147)
+  * Added: `Get-GSChromeOSDevice` - Handles Get or List requests, depending on if you specify a ResourceId or not.
+  * Added: `Update-GSChromeOSDevice` - Handles Action, Move and/or Patch requests depending on the parameters passed.
+
+## 2.22.3
+
+* [Issue #144](https://github.com/scrthq/PSGSuite/issues/144)
+  * Updated: `Start-GSDriveFileUpload` to not call `[System.Console]::CursorVisible` when `$Host` is PowerShell ISE
+
+## 2.22.2
+
+* [Issue #144](https://github.com/scrthq/PSGSuite/issues/144)
+  * Updated: `Start-GSDriveFileUpload` to `Dispose()` open streams once uploads are completed.
+  * Added: `Stop-GSDriveFileUpload` to enable cleanup of any remaining open streams.
+  * Updated: `Get-GSDriveFileUpload` to `Dispose()` any completed streams that are still open.
 
 ## 2.22.1
 

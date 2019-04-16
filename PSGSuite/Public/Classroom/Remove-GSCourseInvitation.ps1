@@ -21,11 +21,11 @@ function Remove-GSCourseInvitation {
         [parameter(Mandatory = $true,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
         [String[]]
         $Id,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -38,8 +38,6 @@ function Remove-GSCourseInvitation {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($I in $Id) {
             try {
                 if ($PSCmdlet.ShouldProcess("Removing Invitation '$I'")) {
