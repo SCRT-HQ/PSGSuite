@@ -95,7 +95,7 @@
             # Prerelease = '-alpha'
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags       = 'GSuite', 'Google', 'Apps', 'API', 'Drive', 'Gmail', 'Admin', 'Automation', 'PSEdition_Core', 'PSEdition_Desktop'
+            Tags       = 'GSuite', 'Google', 'Apps', 'API', 'Drive', 'Gmail', 'Admin', 'Automation', 'PSEdition_Core', 'PSEdition_Desktop', 'Windows', 'Linux', 'Mac'
 
             # A URL to the license for this module.
             LicenseUri = 'https://github.com/scrthq/PSGSuite/blob/master/LICENSE'

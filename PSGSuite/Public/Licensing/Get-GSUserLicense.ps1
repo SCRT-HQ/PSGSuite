@@ -34,13 +34,13 @@ function Get-GSUserLicense {
         $User,
         [parameter(Mandatory = $false)]
         [Alias("SkuId")]
-        [ValidateSet("G-Suite-Enterprise","Google-Apps-Unlimited","Google-Apps-For-Business","Google-Apps-For-Postini","Google-Apps-Lite","Google-Drive-storage-20GB","Google-Drive-storage-50GB","Google-Drive-storage-200GB","Google-Drive-storage-400GB","Google-Drive-storage-1TB","Google-Drive-storage-2TB","Google-Drive-storage-4TB","Google-Drive-storage-8TB","Google-Drive-storage-16TB","Google-Vault","Google-Vault-Former-Employee","1010020020")]
+        [ValidateSet("Cloud-Identity","Cloud-Identity-Premium","Drive-Enterprise","G-Suite-Enterprise","Google-Apps-Unlimited","Google-Apps-For-Business","Google-Apps-For-Postini","Google-Apps-Lite","Google-Drive-storage-20GB","Google-Drive-storage-50GB","Google-Drive-storage-200GB","Google-Drive-storage-400GB","Google-Drive-storage-1TB","Google-Drive-storage-2TB","Google-Drive-storage-4TB","Google-Drive-storage-8TB","Google-Drive-storage-16TB","Google-Vault","Google-Vault-Former-Employee","1010020020","1010060001","1010010001","1010050001")]
         [string]
         $License,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
-        [ValidateSet("Google-Apps","Google-Drive-storage","Google-Vault")]
+        [ValidateSet("Google-Apps","Google-Drive-storage","Google-Vault","Cloud-Identity","Cloud-Identity-Premium")]
         [string[]]
-        $ProductID = @("Google-Apps","Google-Drive-storage","Google-Vault"),
+        $ProductID = @("Google-Apps","Google-Drive-storage","Google-Vault","Cloud-Identity","Cloud-Identity-Premium"),
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [Alias("MaxResults")]
         [ValidateRange(1,1000)]
@@ -55,7 +55,12 @@ function Get-GSUserLicense {
             }
             $service = New-GoogleService @serviceParams
             $productHash = @{
-                '1010020020'                   = 'Google-Apps'
+                'Cloud-Identity'               = '101001'       # Cloud-Identity
+                '1010010001'                   = '101001'       # Cloud-Identity
+                'Cloud-Identity-Premium'       = '101005'       # Cloud-Identity-Premium
+                '1010050001'                   = '101005'       # Cloud-Identity-Premium
+                '1010020020'                   = 'Google-Apps'  # G-Suite-Enterprise
+                '1010060001'                   = 'Google-Apps'  # Drive-Enterprise
                 'G-Suite-Enterprise'           = 'Google-Apps'
                 'Google-Apps-Unlimited'        = 'Google-Apps'
                 'Google-Apps-For-Business'     = 'Google-Apps'
@@ -86,19 +91,41 @@ function Get-GSUserLicense {
                         elseif ($U -notlike "*@*.*") {
                             $U = "$($U)@$($Script:PSGSuite.Domain)"
                         }
-                        if ($License) {
+                        if ($PSBoundParameters.ContainsKey('License')) {
                             Write-Verbose "Getting License SKU '$License' for User '$U'"
-                            if ($License -eq "G-Suite-Enterprise") {
-                                $License = "1010020020"
+                            switch ($License) {
+                                "G-Suite-Enterprise" {
+                                    $License = "1010020020"
+                                }
+                                "Drive-Enterprise" {
+                                    $License = "1010060001"
+                                }
+                                "Cloud-Identity" {
+                                    $License = "1010010001"
+                                }
+                                "Cloud-Identity-Premium" {
+                                    $License = "1010050001"
+                                }
                             }
                             $request = $service.LicenseAssignments.Get($productHash[$License],$License,$U)
                             $request.Execute()
                         }
                         else {
-                            foreach ($license in (@("G-Suite-Enterprise","Google-Apps-Unlimited","Google-Apps-For-Business","Google-Apps-For-Postini","Google-Apps-Lite","Google-Drive-storage-20GB","Google-Drive-storage-50GB","Google-Drive-storage-200GB","Google-Drive-storage-400GB","Google-Drive-storage-1TB","Google-Drive-storage-2TB","Google-Drive-storage-4TB","Google-Drive-storage-8TB","Google-Drive-storage-16TB","Google-Vault","Google-Vault-Former-Employee") | Sort-Object)) {
+                            foreach ($license in (@("Cloud-Identity","Cloud-Identity-Premium","Drive-Enterprise","G-Suite-Enterprise","Google-Apps-Unlimited","Google-Apps-For-Business","Google-Apps-For-Postini","Google-Apps-Lite","Google-Drive-storage-20GB","Google-Drive-storage-50GB","Google-Drive-storage-200GB","Google-Drive-storage-400GB","Google-Drive-storage-1TB","Google-Drive-storage-2TB","Google-Drive-storage-4TB","Google-Drive-storage-8TB","Google-Drive-storage-16TB","Google-Vault","Google-Vault-Former-Employee") | Sort-Object)) {
                                 Write-Verbose "Getting License SKU '$License' for User '$U'"
-                                if ($License -eq "G-Suite-Enterprise") {
-                                    $License = "1010020020"
+                                switch ($License) {
+                                    "G-Suite-Enterprise" {
+                                        $License = "1010020020"
+                                    }
+                                    "Drive-Enterprise" {
+                                        $License = "1010060001"
+                                    }
+                                    "Cloud-Identity" {
+                                        $License = "1010010001"
+                                    }
+                                    "Cloud-Identity-Premium" {
+                                        $License = "1010050001"
+                                    }
                                 }
                                 try {
                                     $request = $service.LicenseAssignments.Get($productHash[$License],$License,$U)
