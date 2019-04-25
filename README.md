@@ -143,6 +143,21 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.26.2
+
+* [Issue #177](https://github.com/scrthq/PSGSuite/issues/177)
+  * Added: `Fields` parameter to `Get-GSDriveFileList`
+* [Issue #178](https://github.com/scrthq/PSGSuite/issues/178)
+  * Fixed: `Start-GSDriveFileUpload` failing on PowerShell 4.0
+* [Issue #179](https://github.com/scrthq/PSGSuite/issues/179)
+  * Added: `Ims` parameter to both `New-GSUser` and `Update-GSUser`
+  * Added: `Add-GSUserIm` function to create correct type for new `Ims` parameter.
+* Miscellaneous
+  * Added: `Clear-PSGSuiteServiceCache` to clear the cache and dispose of any remaining open web clients.
+  * Improved overall service caching.
+  * Added: Support for `Cloud-Identity` licenses for `Get-GSUserLicense`
+  * Added: `OutputType` for all applicable Helper functions (i.e. `Add-GSUserIm`)
+
 #### 2.26.1
 
 * [Issue #172](https://github.com/scrthq/PSGSuite/issues/172)

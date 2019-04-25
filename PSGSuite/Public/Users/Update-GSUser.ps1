@@ -50,6 +50,13 @@ function Update-GSUser {
 
     To CLEAR all values for a user, pass `$null` as the value for this parameter.
 
+    .PARAMETER Ims
+    The IM objects of the user
+
+    This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserIm[]' object type. You can create objects of this type easily by using the function 'Add-GSUserIm'
+
+    To CLEAR all values for a user, pass `$null` as the value for this parameter.
+
     .PARAMETER Locations
     The Location objects of the user
 
@@ -164,6 +171,9 @@ function Update-GSUser {
         [Google.Apis.Admin.Directory.directory_v1.Data.UserExternalId[]]
         $ExternalIds,
         [parameter(Mandatory = $false)]
+        [Google.Apis.Admin.Directory.directory_v1.Data.UserIm[]]
+        $Ims,
+        [parameter(Mandatory = $false)]
         [Google.Apis.Admin.Directory.directory_v1.Data.UserLocation[]]
         $Locations,
         [parameter(Mandatory = $false)]
@@ -217,146 +227,160 @@ function Update-GSUser {
                 elseif ($U -notlike "*@*.*") {
                     $U = "$($U)@$($Script:PSGSuite.Domain)"
                 }
-                Write-Verbose "Updating user '$U'"
-                $userObj = Get-GSUser $U -Verbose:$false
-                $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.User'
-                $name = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserName'
-                $nameUpdated = $false
-                $toClear = @{}
-                foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_ -or $name.PSObject.Properties.Name -contains $_}) {
-                    switch ($prop) {
-                        PrimaryEmail {
-                            if ($PSBoundParameters[$prop] -notlike "*@*.*") {
-                                $PSBoundParameters[$prop] = "$($PSBoundParameters[$prop])@$($Script:PSGSuite.Domain)"
-                            }
-                            $body.$prop = $PSBoundParameters[$prop]
-                        }
-                        GivenName {
-                            $name.$prop = $PSBoundParameters[$prop]
-                            $nameUpdated = $true
-                        }
-                        FamilyName {
-                            $name.$prop = $PSBoundParameters[$prop]
-                            $nameUpdated = $true
-                        }
-                        FullName {
-                            $name.$prop = $PSBoundParameters[$prop]
-                            $nameUpdated = $true
-                        }
-                        Password {
-                            $body.Password = (New-Object PSCredential "user", $Password).GetNetworkCredential().Password
-                        }
-                        CustomSchemas {
-                            $schemaDict = New-Object 'System.Collections.Generic.Dictionary`2[[System.String],[System.Collections.Generic.IDictionary`2[[System.String],[System.Object]]]]'
-                            foreach ($schemaName in $CustomSchemas.Keys) {
-                                $fieldDict = New-Object 'System.Collections.Generic.Dictionary`2[[System.String],[System.Object]]'
-                                $schemaFields = $CustomSchemas[$schemaName]
-                                $schemaFields.Keys | ForEach-Object {
-                                    $fieldDict.Add($_, $schemaFields[$_])
+                if ($PSCmdlet.ShouldProcess("Updating user '$U'")) {
+                    Write-Verbose "Updating user '$U'"
+                    $userObj = Get-GSUser $U -Verbose:$false
+                    $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.User'
+                    $name = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserName'
+                    $nameUpdated = $false
+                    $toClear = @{ }
+                    foreach ($prop in $PSBoundParameters.Keys | Where-Object { $body.PSObject.Properties.Name -contains $_ -or $name.PSObject.Properties.Name -contains $_ }) {
+                        switch ($prop) {
+                            PrimaryEmail {
+                                if ($PSBoundParameters[$prop] -notlike "*@*.*") {
+                                    $PSBoundParameters[$prop] = "$($PSBoundParameters[$prop])@$($Script:PSGSuite.Domain)"
                                 }
-                                $schemaDict.Add($schemaName, $fieldDict)
+                                $body.$prop = $PSBoundParameters[$prop]
                             }
-                            $body.CustomSchemas = $schemaDict
-                        }
-                        Emails {
-                            $emailList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserEmail]'
-                            foreach ($email in $Emails) {
-                                $emailList.Add($email)
+                            GivenName {
+                                $name.$prop = $PSBoundParameters[$prop]
+                                $nameUpdated = $true
                             }
-                            $body.Emails = $emailList
-                        }
-                        ExternalIds {
-                            if ($null -ne $ExternalIds) {
-                                $extIdList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserExternalId]'
-                                foreach ($extId in $ExternalIds) {
-                                    $extIdList.Add($extId)
-                                }
-                                $body.ExternalIds = $extIdList
+                            FamilyName {
+                                $name.$prop = $PSBoundParameters[$prop]
+                                $nameUpdated = $true
                             }
-                            else {
-                                $toClear['externalIds'] = $null
+                            FullName {
+                                $name.$prop = $PSBoundParameters[$prop]
+                                $nameUpdated = $true
                             }
-                        }
-                        Locations {
-                            if ($null -ne $Locations) {
-                                $locationList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserLocation]'
-                                foreach ($loc in $Locations) {
-                                    $locationList.Add($loc)
-                                }
-                                $body.Locations = $locationList
+                            Password {
+                                $body.Password = (New-Object PSCredential "user", $Password).GetNetworkCredential().Password
                             }
-                            else {
-                                $toClear['locations'] = $null
-                            }
-                        }
-                        Organizations {
-                            if ($null -ne $Organizations) {
-                                $orgList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization]'
-                                foreach ($organization in $Organizations) {
-                                    $orgList.Add($organization)
-                                }
-                                $body.Organizations = $orgList
-                            }
-                            else {
-                                $toClear['organizations'] = $null
-                            }
-                        }
-                        Relations {
-                            if ($null -ne $Relations) {
-                                $relList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserRelation]'
-                                foreach ($relation in $Relations) {
-                                    $relList.Add($relation)
-                                }
-                                $body.Relations = $relList
-                            }
-                            else {
-                                $toClear['relations'] = $null
-                            }
-                        }
-                        Phones {
-                            if ($null -ne $Phones) {
-                                $phoneList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserPhone]'
-                                foreach ($phone in $Phones) {
-                                    $phoneList.Add($phone)
-                                }
-                                $body.Phones = $phoneList
-                            }
-                            else {
-                                $toClear['phones'] = $null
-                            }
-                        }
-                        IsAdmin {
-                            if ($userObj.IsAdmin -eq $PSBoundParameters[$prop]) {
-                                Write-Verbose "User '$U' already has IsAdmin set to '$($userObj.IsAdmin)'"
-                            }
-                            else {
-                                if ($PSCmdlet.ShouldProcess("Updating user '$U' to IsAdmin '$($PSBoundParameters[$prop])'")) {
-                                    Write-Verbose "Updating user '$U' to IsAdmin '$($PSBoundParameters[$prop])'"
-                                    $adminBody = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserMakeAdmin' -Property @{
-                                        Status = $PSBoundParameters[$prop]
+                            CustomSchemas {
+                                $schemaDict = New-Object 'System.Collections.Generic.Dictionary`2[[System.String],[System.Collections.Generic.IDictionary`2[[System.String],[System.Object]]]]'
+                                foreach ($schemaName in $CustomSchemas.Keys) {
+                                    $fieldDict = New-Object 'System.Collections.Generic.Dictionary`2[[System.String],[System.Object]]'
+                                    $schemaFields = $CustomSchemas[$schemaName]
+                                    $schemaFields.Keys | ForEach-Object {
+                                        $fieldDict.Add($_, $schemaFields[$_])
                                     }
-                                    $request = $service.Users.MakeAdmin($adminBody, $userObj.Id)
-                                    $request.Execute()
+                                    $schemaDict.Add($schemaName, $fieldDict)
+                                }
+                                $body.CustomSchemas = $schemaDict
+                            }
+                            Emails {
+                                $emailList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserEmail]'
+                                foreach ($email in $Emails) {
+                                    $emailList.Add($email)
+                                }
+                                $body.Emails = $emailList
+                            }
+                            ExternalIds {
+                                if ($null -ne $ExternalIds) {
+                                    $extIdList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserExternalId]'
+                                    foreach ($extId in $ExternalIds) {
+                                        $extIdList.Add($extId)
+                                    }
+                                    $body.ExternalIds = $extIdList
+                                }
+                                else {
+                                    $toClear['externalIds'] = $null
                                 }
                             }
-                        }
-                        Default {
-                            $body.$prop = $PSBoundParameters[$prop]
+                            Ims {
+                                if ($null -ne $Ims) {
+                                    $imList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserIm]'
+                                    foreach ($im in $Ims) {
+                                        $imList.Add($im)
+                                    }
+                                    $body.Ims = $imList
+                                }
+                                else {
+                                    $toClear['ims'] = $null
+                                }
+                            }
+                            Locations {
+                                if ($null -ne $Locations) {
+                                    $locationList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserLocation]'
+                                    foreach ($loc in $Locations) {
+                                        $locationList.Add($loc)
+                                    }
+                                    $body.Locations = $locationList
+                                }
+                                else {
+                                    $toClear['locations'] = $null
+                                }
+                            }
+                            Organizations {
+                                if ($null -ne $Organizations) {
+                                    $orgList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization]'
+                                    foreach ($organization in $Organizations) {
+                                        $orgList.Add($organization)
+                                    }
+                                    $body.Organizations = $orgList
+                                }
+                                else {
+                                    $toClear['organizations'] = $null
+                                }
+                            }
+                            Relations {
+                                if ($null -ne $Relations) {
+                                    $relList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserRelation]'
+                                    foreach ($relation in $Relations) {
+                                        $relList.Add($relation)
+                                    }
+                                    $body.Relations = $relList
+                                }
+                                else {
+                                    $toClear['relations'] = $null
+                                }
+                            }
+                            Phones {
+                                if ($null -ne $Phones) {
+                                    $phoneList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserPhone]'
+                                    foreach ($phone in $Phones) {
+                                        $phoneList.Add($phone)
+                                    }
+                                    $body.Phones = $phoneList
+                                }
+                                else {
+                                    $toClear['phones'] = $null
+                                }
+                            }
+                            IsAdmin {
+                                if ($userObj.IsAdmin -eq $PSBoundParameters[$prop]) {
+                                    Write-Verbose "User '$U' already has IsAdmin set to '$($userObj.IsAdmin)'"
+                                }
+                                else {
+                                    if ($PSCmdlet.ShouldProcess("Updating user '$U' to IsAdmin '$($PSBoundParameters[$prop])'")) {
+                                        Write-Verbose "Updating user '$U' to IsAdmin '$($PSBoundParameters[$prop])'"
+                                        $adminBody = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserMakeAdmin' -Property @{
+                                            Status = $PSBoundParameters[$prop]
+                                        }
+                                        $request = $service.Users.MakeAdmin($adminBody, $userObj.Id)
+                                        $request.Execute()
+                                    }
+                                }
+                            }
+                            Default {
+                                $body.$prop = $PSBoundParameters[$prop]
+                            }
                         }
                     }
-                }
-                if ($nameUpdated) {
-                    $body.Name = $name
-                }
-                $request = $service.Users.Update($body, $userObj.Id)
-                $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
-                if ($toClear.Keys.Count) {
-                    $header = @{
-                        Authorization = "Bearer $(Get-GSToken -Scopes "https://www.googleapis.com/auth/admin.directory.user" -Verbose:$false)"
+                    if ($nameUpdated) {
+                        $body.Name = $name
                     }
-                    $uri = [Uri]"https://www.googleapis.com/admin/directory/v1/users/$U"
-                    Write-Verbose "Clearing out all values for User '$U' on the following properties: [ $($toClear.Keys -join ", ") ]"
-                    $null = Invoke-RestMethod -Method Put -Uri $uri -Headers $header -Body $($toClear | ConvertTo-Json -Depth 5 -Compress) -ContentType 'application/json' -Verbose:$false -ErrorAction Stop
+                    $request = $service.Users.Update($body, $userObj.Id)
+                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
+                    if ($toClear.Keys.Count) {
+                        $header = @{
+                            Authorization = "Bearer $(Get-GSToken -Scopes "https://www.googleapis.com/auth/admin.directory.user" -Verbose:$false)"
+                        }
+                        $uri = [Uri]"https://www.googleapis.com/admin/directory/v1/users/$U"
+                        Write-Verbose "Clearing out all values for User '$U' on the following properties: [ $($toClear.Keys -join ", ") ]"
+                        $null = Invoke-RestMethod -Method Put -Uri $uri -Headers $header -Body $($toClear | ConvertTo-Json -Depth 5 -Compress) -ContentType 'application/json' -Verbose:$false -ErrorAction Stop
+                    }
                 }
             }
             catch {
