@@ -163,7 +163,7 @@ function Start-GSDriveFileUpload {
                     if ($Description) {
                         $body.Description = $Description
                     }
-                    $stream = New-Object 'System.IO.FileStream' $detPart.FullName,([System.IO.FileMode]::Open),([System.IO.FileAccess]::Read),([System.IO.FileShare]::Delete + [System.IO.FileShare]::ReadWrite)
+                    $stream = New-Object 'System.IO.FileStream' $detPart.FullName,([System.IO.FileMode]::Open),([System.IO.FileAccess]::Read),([System.IO.FileShare]"Delete, ReadWrite")
                     $request = $service.Files.Create($body,$stream,$contentType)
                     $request.QuotaUser = $User
                     $request.SupportsTeamDrives = $true

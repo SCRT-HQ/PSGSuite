@@ -25,6 +25,7 @@ function New-GoogleService {
                 Write-Verbose "Using matching cached service for user '$User'"
                 $script:_PSGSuiteSessions[$sessionKey].Acknowledged = $true
             }
+            $script:_PSGSuiteSessions[$sessionKey].LastUsed = Get-Date
             $script:_PSGSuiteSessions[$sessionKey] | Select-Object -ExpandProperty Service
         }
         else {
@@ -96,12 +97,12 @@ function New-GoogleService {
                     ApplicationName       = "PSGSuite - $env:USERNAME"
                 }
             )
-            $issued = Get-Date
             $script:_PSGSuiteSessions[$sessionKey] = ([PSCustomObject]@{
                 User         = $User
                 Scope        = $Scope
                 Service      = $svc
-                Issued       = $issued
+                Issued       = Get-Date
+                LastUsed     = Get-Date
                 Acknowledged = $false
             })
             return $svc
