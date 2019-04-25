@@ -40,6 +40,7 @@ function Add-GSUserLocation {
 
     Adds a custom user location.
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.UserLocation')]
     [CmdletBinding()]
     Param
     (

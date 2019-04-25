@@ -80,15 +80,17 @@ function New-GSGmailSMIMEInfo {
                         $body.$key = (New-Object PSCredential "user",$PSBoundParameters[$key]).GetNetworkCredential().Password
                     }
                     Pkcs12 {
-                        $p12String = Convert-Base64 -From NormalString -To WebSafeBase64String -String "$([System.IO.File]::ReadAllText((Resolve-Path $PSBoundParameters[$key]).Path))"
-                        $body.$key = $p12String
+                        ###$p12String = Convert-Base64 -From NormalString -To WebSafeBase64String -String "$([System.IO.File]::ReadAllText((Resolve-Path $PSBoundParameters[$key]).Path))"
+                        ###$body.$key = $p12String
+                        $body.$key = [string]([System.IO.File]::ReadAllBytes((Resolve-Path $PSBoundParameters[$key]).Path))
                     }
                     Default {
-                        $body.$prop = $PSBoundParameters[$prop]
+                        $body.$key = $PSBoundParameters[$key]
                     }
                 }
             }
             Write-Verbose "Adding new S/MIME of SendAsEmail '$SendAsEmail' for user '$User' using Certificate '$Pkcs12'"
+            Write-Verbose "Pkcs12: $($body.Pkcs12)"
             $request = $service.Users.Settings.SendAs.SmimeInfo.Insert($body,$User,$SendAsEmail)
             $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
