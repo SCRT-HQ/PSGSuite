@@ -97,7 +97,7 @@
   * Added: `Clear-PSGSuiteServiceCache` to clear the cache and dispose of any remaining open web clients.
   * Improved overall service caching.
   * Added: Support for `Cloud-Identity` licenses for `Get-GSUserLicense`
-  * Added: `OutputType` for all applicable Helper functions (i.e. `Add-GSUserIm`)
+  * Added: `OutputType` for all applicable Helper functions (i.e. `Add-GSUserIm`).
 
 ## 2.26.1
 
