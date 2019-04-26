@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.26.3](#2263)
   * [2.26.2](#2262)
   * [2.26.1](#2261)
   * [2.26.0](#2260)
@@ -83,6 +84,11 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.26.3
+
+* [Issue #182](https://github.com/scrthq/PSGSuite/issues/182) - _Thanks, [@aitcriver](https://github.com/aitcriver)!_
+  * Added: `FileOrganizer` role to `ValidateSet` for parameter `Role` on function `Add-GSDrivePermission`
 
 ## 2.26.2
 

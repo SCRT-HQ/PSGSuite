@@ -143,6 +143,11 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.26.3
+
+* [Issue #182](https://github.com/scrthq/PSGSuite/issues/182) - _Thanks, [@aitcriver](https://github.com/aitcriver)!_
+  * Added: `FileOrganizer` role to `ValidateSet` for parameter `Role` on function `Add-GSDrivePermission`
+
 #### 2.26.2
 
 * [Issue #177](https://github.com/scrthq/PSGSuite/issues/177)

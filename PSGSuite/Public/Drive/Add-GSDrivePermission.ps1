@@ -23,6 +23,7 @@ function Add-GSDrivePermission {
     * "Commenter"
     * "Reader"
     * "Organizer"
+    * "FileOrganizer"
 
     .PARAMETER Type
     The type of the grantee
@@ -85,7 +86,7 @@ function Add-GSDrivePermission {
         [String]
         $FileId,
         [parameter(Mandatory = $true)]
-        [ValidateSet("Owner","Writer","Commenter","Reader","Organizer")]
+        [ValidateSet("Owner","Writer","Commenter","Reader","Organizer","FileOrganizer")]
         [String]
         $Role,
         [parameter(Mandatory = $true)]
@@ -165,7 +166,7 @@ function Add-GSDrivePermission {
                         $body.EmailAddress = $EmailAddress
                     }
                     Role {
-                        $body.$key = ($PSBoundParameters[$key]).ToLower()
+                        $body.$key = ($PSBoundParameters[$key]).ToLower().Replace("fileorganizer","fileOrganizer")
                     }
                     Type {
                         $body.$key = ($PSBoundParameters[$key]).ToLower()
