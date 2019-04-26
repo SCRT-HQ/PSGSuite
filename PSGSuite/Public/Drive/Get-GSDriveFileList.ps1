@@ -125,14 +125,14 @@ function Get-GSDriveFileList {
             if ($PageSize) {
                 $request.PageSize = $PageSize
             }
-            foreach ($key in $PSBoundParameters.Keys) {
+            if ($Fields) {
+                $request.Fields = "$($Fields -join ",")"
+            }
+            foreach ($key in $PSBoundParameters.Keys | Where-Object {$_ -notin @('Fields','PageSize')}) {
                 switch ($key) {
                     Filter {
                         $FilterFmt = ($PSBoundParameters[$key] -join " and ") -replace " -eq ","=" -replace " -like ",":" -replace " -match ",":" -replace " -contains ",":" -creplace "'True'","True" -creplace "'False'","False" -replace " -in "," in " -replace " -le ",'<=' -replace " -ge ",">=" -replace " -gt ",'>' -replace " -lt ",'<' -replace " -ne ","!=" -replace " -and "," and " -replace " -or "," or " -replace " -not "," not "
                         $request.Q = $FilterFmt
-                    }
-                    Fields {
-                        $request.Fields = "$($Fields -join ",")"
                     }
                     Spaces {
                         $request.$key = $($PSBoundParameters[$key] -join ",")

@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.26.4](#2264)
   * [2.26.3](#2263)
   * [2.26.2](#2262)
   * [2.26.1](#2261)
@@ -84,6 +85,11 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.26.4
+
+* [Issue #177](https://github.com/scrthq/PSGSuite/issues/177) - _Thanks, [@WJurecki](https://github.com/WJurecki)!_
+  * Fixed: `Fields` parameter `Get-GSDriveFileList` would not set correctly with the default fields value, breaking the expected experience. Restored the same functionality
 
 ## 2.26.3
 

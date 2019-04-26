@@ -143,6 +143,11 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.26.4
+
+* [Issue #177](https://github.com/scrthq/PSGSuite/issues/177) - _Thanks, [@WJurecki](https://github.com/WJurecki)!_
+  * Fixed: `Fields` parameter `Get-GSDriveFileList` would not set correctly with the default fields value, breaking the expected experience. Restored the same functionality
+
 #### 2.26.3
 
 * [Issue #182](https://github.com/scrthq/PSGSuite/issues/182) - _Thanks, [@aitcriver](https://github.com/aitcriver)!_
