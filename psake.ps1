@@ -28,9 +28,11 @@ Properties {
 }
 
 # Dot-source all helper scripts/functions in the ci folder
-Get-ChildItem (Join-Path $PSScriptRoot "ci") | ForEach-Object {. $_.FullName}
+Get-ChildItem (Join-Path $PSScriptRoot "ci") -Filter "*.ps1" | ForEach-Object {. $_.FullName}
 
-#Set-BuildVariables
+Set-BuildVariables
+
+FormatTaskName (Get-PsakeTaskSectionFormatter)
 
 #Task Default -Depends Init,Test,Build,Deploy
 task default -depends Test
@@ -85,7 +87,7 @@ task Compile -depends Clean {
     New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 
     # Append items to psm1
-    Write-Verbose -Message 'Creating psm1...'
+    Write-BuildLog 'Creating psm1...'
     $psm1 = Copy-Item -Path (Join-Path -Path $sut -ChildPath 'PSGSuite.psm1') -Destination (Join-Path -Path $outputModVerDir -ChildPath "$($ENV:BHProjectName).psm1") -PassThru
 
     Get-ChildItem -Path (Join-Path -Path $sut -ChildPath 'Private') -Recurse -File | ForEach-Object {
@@ -98,7 +100,8 @@ task Compile -depends Clean {
 
     New-Item -Path "$outputModVerDir\lib" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
     Invoke-CommandWithLog {Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue -Force -Verbose:$false}
-    Invoke-CommandWithLog {Get-GoogleApiPackages -Destination $outputModVerDir,$sut -Verbose}
+    Write-BuildLog "Installing NuGet dependencies..."
+    Invoke-CommandWithLog {Install-NuGetDependencies -Destination $outputModVerDir -BackupPath $sut -Verbose}
 
     $aliasHashContents = (Get-Content "$sut\Aliases\PSGSuite.Aliases.ps1" -Raw).Trim()
 
