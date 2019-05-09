@@ -14,8 +14,9 @@ function Install-NuGetDependencies {
         New-Item $dllStgPath -Force -ItemType Directory | Out-Null
     }
     $nugHash = @{}
-
+    Write-BuildLog "Finding Google NuGet packages..."
     Find-Package "Google.Apis*" -Source nuget.org -AllowPrereleaseVersions:$false -Verbose | Where-Object {$_.Name -in $packagesToInstall.BaseName} | ForEach-Object {
+        Write-BuildLog "Matched Google package: $($_.Name)"
         $nugHash[$_.Name] = $_
     }
     foreach ($inst in $packagesToInstall) {
