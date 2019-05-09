@@ -25,10 +25,17 @@ Set-BuildVariables
 
 Add-Heading "Setting package feeds"
 
-if ($null -eq (Get-Module PowerShellGet -ListAvailable | Where-Object {$_.Version -ge [System.Version]'2.1.2'})) {
-    Write-BuildLog "Updating PowerShellGet module"
-    Invoke-CommandWithLog {Install-Module PowerShellGet -MinimumVersion 2.1.2 -Force -AllowClobber -SkipPublisherCheck -Scope CurrentUser -Verbose:$false}
+$modHash = @{
+    PackageManagement = '1.3.1'
+    PowerShellGet     = '2.1.2'
 }
+foreach ($module in $modHash.Keys) {
+    Write-BuildLog "Updating $module module if needed"
+    if ($null -eq (Get-Module $module -ListAvailable | Where-Object {[System.Version]$_.Version -ge [System.Version]($modHash[$module])})) {
+        Install-Module $module -MinimumVersion ($modHash[$module] -Force -AllowClobber -SkipPublisherCheck -Scope CurrentUser -Verbose:$false
+    }
+}
+
 Invoke-CommandWithLog {Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false}
 Invoke-CommandWithLog {Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false}
 Invoke-CommandWithLog {$PSDefaultParameterValues = @{
