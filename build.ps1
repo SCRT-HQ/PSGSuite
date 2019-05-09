@@ -13,6 +13,33 @@ param(
     [switch]$Force
 )
 
+$env:BuildProjectName = 'PSGSuite'
+$env:_BuildStart = Get-Date -Format 'o'
+$env:BuildScriptPath = $PSScriptRoot
+
+. "$PSScriptRoot\ci\AzurePipelinesHelpers.ps1"
+
+Add-EnvironmentSummary "Build started"
+
+Set-BuildVariables
+
+Add-Heading "Setting package feeds"
+
+Invoke-CommandWithLog {Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false}
+Invoke-CommandWithLog {Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false}
+Invoke-CommandWithLog {$PSDefaultParameterValues = @{
+    '*-Module:Verbose' = $false
+    'Import-Module:ErrorAction' = 'Stop'
+    'Import-Module:Force' = $true
+    'Import-Module:Verbose' = $false
+    'Install-Module:AllowClobber' = $true
+    'Install-Module:ErrorAction' = 'Stop'
+    'Install-Module:Force' = $true
+    'Install-Module:Scope' = 'CurrentUser'
+    'Install-Module:Verbose' = $false
+}}
+
+<#
 # build/init script borrowed from PoshBot x Brandon Olin
 
 function Resolve-Module {
@@ -83,6 +110,7 @@ function Resolve-Module {
         }
     }
 }
+#>
 
 $update = @{}
 $verbose = @{}
@@ -94,12 +122,16 @@ if ($PSBoundParameters.ContainsKey('Verbose')) {
 }
 
 if ($Help) {
+    Add-Heading "Getting help"
+    Write-BuildLog -c '"psake" | Resolve-Module @update -Verbose'
     'psake' | Resolve-Module @update -Verbose
+    Write-BuildLog "psake script tasks:"
     Get-PSakeScriptTasks -buildFile "$PSScriptRoot\psake.ps1" |
         Sort-Object -Property Name |
         Format-Table -Property Name, Description, Alias, DependsOn
 }
 else {
+    Add-Heading "Finalizing build prerequisites"
     if (
         $Task -eq 'Deploy' -and -not $Force -and (
             $ENV:BUILD_BUILDURI -notlike 'vstfs:*' -or
@@ -132,21 +164,17 @@ else {
             "    + NuGet API key is not null        : $($null -ne $env:NugetApiKey)`n" +
             "    + Commit message matches '!deploy' : $($env:BUILD_SOURCEVERSIONMESSAGE -match '!deploy') [$env:BUILD_SOURCEVERSIONMESSAGE]"| Write-Host -ForegroundColor Green
         }
+        <#
         if (-not (Get-Module BuildHelpers -ListAvailable | Where-Object {$_.Version -eq '2.0.1'})) {
             Write-Verbose "Installing BuildHelpers v2.0.1" -Verbose
             Install-Module 'BuildHelpers' -RequiredVersion 2.0.1 -Scope CurrentUser -Repository PSGallery -AllowClobber -SkipPublisherCheck -Force
         }
         Write-Verbose "Importing BuildHelpers v2.0.1" -Verbose
         Import-Module 'BuildHelpers' -RequiredVersion 2.0.1
+        #>
+        Write-BuildLog "Resolving necessary modules"
         'psake' | Resolve-Module @update -Verbose
-        Set-BuildEnvironment -Force
-        Write-Host -ForegroundColor Green "Modules successfully resolved..."
-        Write-Host -ForegroundColor Green "Invoking psake with task list: [ $($Task -join ', ') ]`n"
-        $psakeParams = @{
-            nologo = $true
-            buildFile = "$PSScriptRoot\psake.ps1"
-            taskList = $Task
-        }
+        Write-BuildLog "Modules successfully resolved"
         if ($Task -eq 'TestOnly') {
             $global:ExcludeTag = @('Module')
         }
@@ -159,10 +187,18 @@ else {
         else {
             $global:ForceDeploy = $false
         }
+        Add-Heading "Invoking psake with task list: [ $($Task -join ', ') ]"
+        $psakeParams = @{
+            nologo = $true
+            buildFile = "$PSScriptRoot\psake.ps1"
+            taskList = $Task
+        }
         Invoke-psake @psakeParams @verbose
         if (($Task -contains 'Import' -or $Task -contains 'Test') -and $psake.build_success) {
+            Add-Heading "Importing $env:BuildProjectName to local scope"
             Import-Module ([System.IO.Path]::Combine($env:BHBuildOutput,$env:BHProjectName)) -Verbose:$false
         }
+        Add-EnvironmentSummary "Build finished"
         exit ( [int]( -not $psake.build_success ) )
     }
 }

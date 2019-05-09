@@ -9,6 +9,7 @@ Properties {
         }
         $ProjectRoot = $pwd.Path
     }
+    $moduleName = "PSGSuite"
     $sut = $env:BHModulePath
     $tests = "$projectRoot\Tests"
     $Timestamp = Get-Date -Uformat "%Y%m%d-%H%M%S"
@@ -26,6 +27,11 @@ Properties {
     }
 }
 
+# Dot-source all helper scripts/functions in the ci folder
+Get-ChildItem (Join-Path $PSScriptRoot "ci") | ForEach-Object {. $_.FullName}
+
+#Set-BuildVariables
+
 #Task Default -Depends Init,Test,Build,Deploy
 task default -depends Test
 
@@ -34,12 +40,12 @@ task Skip {
 }
 
 task Init {
-    "`nSTATUS: Testing with PowerShell $psVersion"
-    "Build System Details:"
-    Get-Item ENV:BH*
-    Get-Item ENV:BUILD_*
-    "`n"
     Set-Location $ProjectRoot
+    Write-BuildLog "Build System Details:"
+    Write-BuildLog "$((Get-ChildItem Env: | Where-Object {$_.Name -match "^(BUILD_|SYSTEM_|BH)"} | Sort-Object Name | Format-Table Name,Value -AutoSize | Out-String).Trim())"
+    if ($env:BHProjectName -cne $moduleName) {
+        $env:BHProjectName = $moduleName
+    }
 
     'Configuration', 'Pester' | Foreach-Object {
         Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Confirm:$false -ErrorAction Stop -Force
@@ -55,10 +61,17 @@ task Clean -depends Init {
     Remove-Module -Name $env:BHProjectName -Force -ErrorAction SilentlyContinue
 
     if (Test-Path -Path $outputDir) {
-        Get-ChildItem -Path $outputDir -Recurse -File | Where-Object {$_.BaseName -eq $env:BHProjectName -or $_.Name -like "Test*.xml"} | Remove-Item -Force -Recurse
+        Get-ChildItem -Path $outputDir -Recurse | Sort-Object {$_.FullName.Length} -Descending | ForEach-Object {
+            try {
+                Remove-Item $_.FullName -Force -Recurse
+            }
+            catch {
+                Write-Warning "Unable to delete: '$($_.FullName)'"
+            }
+        }
     }
     else {
-        New-Item -Path $outputDir -ItemType Directory > $null
+        New-Item -Path $outputDir -ItemType Directory | Out-Null
     }
     "    Cleaned previous output directory [$outputDir]"
 } -description 'Cleans module output directory'
@@ -66,9 +79,10 @@ task Clean -depends Init {
 task Compile -depends Clean {
     # Create module output directory
     $functionsToExport = @()
+    $sutLib = [System.IO.Path]::Combine($sut,'lib')
     $aliasesToExport = (. $sut\Aliases\PSGSuite.Aliases.ps1).Keys
     $modDir = New-Item -Path $outputModDir -ItemType Directory -ErrorAction SilentlyContinue
-    New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue > $null
+    New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
 
     # Append items to psm1
     Write-Verbose -Message 'Creating psm1...'
@@ -82,8 +96,10 @@ task Compile -depends Clean {
         $functionsToExport += $_.BaseName
     }
 
-    New-Item -Path "$outputModVerDir\lib" -ItemType Directory -ErrorAction SilentlyContinue > $null
-    Copy-Item -Path "$sut\lib\*" -Destination "$outputModVerDir\lib" -Recurse -ErrorAction SilentlyContinue
+    New-Item -Path "$outputModVerDir\lib" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
+    Invoke-CommandWithLog {Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue -Force -Verbose:$false}
+    Invoke-CommandWithLog {Get-GoogleApiPackages -Destination $outputModVerDir,$sut -Verbose}
+
     $aliasHashContents = (Get-Content "$sut\Aliases\PSGSuite.Aliases.ps1" -Raw).Trim()
 
     # Set remainder of PSM1 contents
