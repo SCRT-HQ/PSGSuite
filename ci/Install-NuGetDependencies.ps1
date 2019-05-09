@@ -6,8 +6,8 @@ function Install-NuGetDependencies {
         $Destination
     )
     try {
-        $dllStgPath = Join-Path $PSScriptRoot "DLLStaging"
-        $packagesToInstall = Import-Csv (Join-Path $PSScriptRoot "GoogleDLLVersions.csv") | Sort-Object BaseName
+        $dllStgPath = Join-Path $PSScriptRoot "NuGetStaging"
+        $packagesToInstall = Import-Csv (Join-Path $PSScriptRoot "NuGetDependencies.csv") | Sort-Object BaseName
         if (-not (Test-Path $dllStgPath)) {
             New-Item $dllStgPath -Force -ItemType Directory | Out-Null
         }
