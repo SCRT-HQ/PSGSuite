@@ -32,7 +32,7 @@ $modHash = @{
 foreach ($module in $modHash.Keys) {
     Write-BuildLog "Updating $module module if needed"
     if ($null -eq (Get-Module $module -ListAvailable | Where-Object {[System.Version]$_.Version -ge [System.Version]($modHash[$module])})) {
-        Install-Module $module -MinimumVersion ($modHash[$module] -Force -AllowClobber -SkipPublisherCheck -Scope CurrentUser -Verbose:$false
+        Install-Module $module -MinimumVersion $modHash[$module] -Force -AllowClobber -SkipPublisherCheck -Scope CurrentUser -Verbose:$false
     }
 }
 
