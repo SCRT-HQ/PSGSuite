@@ -57,27 +57,21 @@ function Install-NuGetDependencies {
             [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath,$extPath)
             foreach ($dest in $Destination) {
                 foreach ($target in @('net45','netstandard1.3')) {
+                    $targetPath = [System.IO.Path]::Combine($dest,'lib',$target)
+                    if (-not (Test-Path $targetPath)) {
+                        New-Item -Path $targetPath -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
+                    }
                     $sourcePath = if ($pkg.Name -eq 'BouncyCastle.Crypto.dll') {
                         [System.IO.Path]::Combine($extPath,'lib')
                     }
                     else {
                         [System.IO.Path]::Combine($extPath,'lib',$target)
                     }
-                    $targetPath = [System.IO.Path]::Combine($dest,'lib',$target)
-                    $backup = [System.IO.Path]::Combine($BackupPath,'lib',$target,$inst.Name)
-                    if (-not (Test-Path $targetPath)) {
-                        New-Item -Path $targetPath -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-                    }
-
                     if (Test-Path $sourcePath) {
                         Get-ChildItem $sourcePath -Filter '*.dll' | Copy-Item -Destination $targetPath -Force -Verbose
                     }
-                    elseif (Test-Path $backup) {
-                        Write-BuildLog "Pulling from backup location"
-                        Get-Item $backup | Copy-Item -Destination $targetPath -Force -Verbose
-                    }
                     else {
-                        Write-Error "$($pkg.Name) was not downloaded successfully or found in backup location [$($backup)]. Exiting"
+                        Write-BuildError "$($pkg.Name) was not downloaded successfully from NuGet!" -ErrorAction Stop
                         exit 1
                     }
                 }
