@@ -3,10 +3,7 @@ function Install-NuGetDependencies {
     Param (
         [parameter()]
         [String[]]
-        $Destination,
-        [parameter()]
-        [String]
-        $BackupPath
+        $Destination
     )
     $dllStgPath = Join-Path $pwd.Path "DLLStaging"
     $packagesToInstall = Import-Csv (Join-Path $PSScriptRoot "GoogleDLLVersions.csv") | Sort-Object BaseName

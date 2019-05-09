@@ -101,7 +101,7 @@ task Compile -depends Clean {
     New-Item -Path "$outputModVerDir\lib" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
     Invoke-CommandWithLog {Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue -Force -Verbose:$false}
     Write-BuildLog "Installing NuGet dependencies..."
-    Invoke-CommandWithLog {Install-NuGetDependencies -Destination $outputModVerDir -BackupPath $sut -Verbose}
+    Invoke-CommandWithLog {Install-NuGetDependencies -Destination $outputModVerDir -Verbose}
 
     $aliasHashContents = (Get-Content "$sut\Aliases\PSGSuite.Aliases.ps1" -Raw).Trim()
 
