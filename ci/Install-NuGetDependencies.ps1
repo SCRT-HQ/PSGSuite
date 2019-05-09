@@ -55,7 +55,12 @@ function Install-NuGetDependencies {
             [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath,$extPath)
             foreach ($dest in $Destination) {
                 foreach ($target in @('net45','netstandard1.3')) {
-                    $sourcePath = [System.IO.Path]::Combine($extPath,'lib',$target)
+                    $sourcePath = if ($pkg.Name -eq 'BouncyCastle.Crypto.dll') {
+                        [System.IO.Path]::Combine($extPath,'lib')
+                    }
+                    else {
+                        [System.IO.Path]::Combine($extPath,'lib',$target)
+                    }
                     $targetPath = [System.IO.Path]::Combine($dest,'lib',$target)
                     $backup = [System.IO.Path]::Combine($BackupPath,'lib',$target,$inst.Name)
                     if (-not (Test-Path $targetPath)) {
