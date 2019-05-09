@@ -25,8 +25,9 @@ Set-BuildVariables
 
 Add-Heading "Setting package feeds"
 
-if ($IsCI) {
-    Invoke-CommandWithLog {Install-Module PowerShellGet -Force -AllowClobber -SkipPublisherCheck -Scope CurrentUser -Verbose:$false}
+if ($null -eq (Get-Module PowerShellGet -ListAvailable | Where-Object {$_.Version -ge [System.Version]'2.1.2'})) {
+    Write-BuildLog "Updating PowerShellGet module"
+    Invoke-CommandWithLog {Install-Module PowerShellGet -MinimumVersion 2.1.2 -Force -AllowClobber -SkipPublisherCheck -Scope CurrentUser -Verbose:$false}
 }
 Invoke-CommandWithLog {Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false}
 Invoke-CommandWithLog {Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false}
