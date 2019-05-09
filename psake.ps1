@@ -21,6 +21,9 @@ Properties {
     $manifest = Import-PowerShellDataFile -Path $env:BHPSModuleManifest
     $outputModVerDir = Join-Path -Path $outputModDir -ChildPath $manifest.ModuleVersion
     $pathSeperator = [IO.Path]::PathSeparator
+    $NuGetSearchStrings = @(
+        "Google.Apis*"
+    )
     $Verbose = @{}
     if ($ENV:BHCommitMessage -match "!verbose") {
         $Verbose = @{Verbose = $True}
@@ -101,7 +104,7 @@ task Compile -depends Clean {
     New-Item -Path "$outputModVerDir\lib" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
     Invoke-CommandWithLog {Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue -Force -Verbose:$false}
     Write-BuildLog "Installing NuGet dependencies..."
-    Invoke-CommandWithLog {Install-NuGetDependencies -Destination $outputModVerDir -Verbose}
+    Invoke-CommandWithLog {Install-NuGetDependencies -Destination $outputModVerDir -AddlSearchString $NuGetSearchStrings -Verbose}
 
     $aliasHashContents = (Get-Content "$sut\Aliases\PSGSuite.Aliases.ps1" -Raw).Trim()
 
