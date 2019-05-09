@@ -15,10 +15,10 @@ function Get-GoogleApiPackages {
     Find-Package "Google.Apis*" -Source nuget.org -AllowPrereleaseVersions:$false -Verbose | ForEach-Object {
         $nugHash[$_.Name] = $_
     }
-    $installed = (Get-ChildItem ([System.IO.Path]::Combine($sutLib,'net45')) -Filter 'Google.Apis*').BaseName | Sort-Object
+    $installed = Import-Csv (Join-Path $PSScriptRoot "GoogleDLLVersions.csv") | Sort-Object BaseName
     foreach ($inst in $installed) {
         try {
-            $pkg = $nugHash[$inst]
+            $pkg = $nugHash[$inst.BaseName]
             Write-BuildLog ("[{0}.{1}] Downloading latest package from NuGet" -f $pkg.Name,$pkg.Version)
             $extPath = [System.IO.Path]::Combine($dllStgPath,"$($pkg.Name.ToLower()).$($pkg.Version)")
             if (Test-Path ($extPath)) {
@@ -46,7 +46,7 @@ function Get-GoogleApiPackages {
             }
         }
         catch {
-            Write-Warning "Error when trying [$inst]: $($_.Exception.Message)"
+            Write-Warning "Error when trying [$($inst.BaseName)]: $($_.Exception.Message)"
         }
         finally {
             if (Test-Path ($zipPath)) {
