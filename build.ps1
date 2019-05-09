@@ -25,7 +25,9 @@ Set-BuildVariables
 
 Add-Heading "Setting package feeds"
 
-Invoke-CommandWithLog {Install-Module PowerShellGet -Force -AllowClobber -SkipPublisherCheck -Scope CurrentUser -Verbose:$false}
+if ($IsCI) {
+    Invoke-CommandWithLog {Install-Module PowerShellGet -Force -AllowClobber -SkipPublisherCheck -Scope CurrentUser -Verbose:$false}
+}
 Invoke-CommandWithLog {Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false}
 Invoke-CommandWithLog {Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false}
 Invoke-CommandWithLog {$PSDefaultParameterValues = @{
