@@ -94,7 +94,7 @@
 * [Issue #186](https://github.com/scrthq/PSGSuite/issues/186)
   * Added: `Test-GSGroupMembership` to map to the [hasMember method](https://developers.google.com/admin-sdk/directory/v1/reference/members/hasMember).
 * Miscellaneous
-  * Improved build process to auto-update NuGet dependencies.
+  * Improved build process to auto-update NuGet dependencies during CI.
   * Added new private function `Resolve-Email` to convert a name-part or the case-sensitive `me` to the full email address accordingly.
 
 ## 2.26.4
