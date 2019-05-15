@@ -143,46 +143,12 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-#### 2.26.4
+#### 2.27.0
 
-* [Issue #177](https://github.com/scrthq/PSGSuite/issues/177) - _Thanks, [@WJurecki](https://github.com/WJurecki)!_
-  * Fixed: `Fields` parameter `Get-GSDriveFileList` would not set correctly with the default fields value, breaking the expected experience. Restored the same functionality
-
-#### 2.26.3
-
-* [Issue #182](https://github.com/scrthq/PSGSuite/issues/182) - _Thanks, [@aitcriver](https://github.com/aitcriver)!_
-  * Added: `FileOrganizer` role to `ValidateSet` for parameter `Role` on function `Add-GSDrivePermission`
-
-#### 2.26.2
-
-* [Issue #177](https://github.com/scrthq/PSGSuite/issues/177)
-  * Added: `Fields` parameter to `Get-GSDriveFileList`
-* [Issue #178](https://github.com/scrthq/PSGSuite/issues/178)
-  * Fixed: `Start-GSDriveFileUpload` failing on PowerShell 4.0
-* [Issue #179](https://github.com/scrthq/PSGSuite/issues/179)
-  * Added: `Ims` parameter to both `New-GSUser` and `Update-GSUser`
-  * Added: `Add-GSUserIm` function to create correct type for new `Ims` parameter.
+* [Issue #185](https://github.com/scrthq/PSGSuite/issues/185)
+  * Fixed: `Get-GSGroup -Where_IsAMember $member` no longer errors.
+* [Issue #186](https://github.com/scrthq/PSGSuite/issues/186)
+  * Added: `Test-GSGroupMembership` to map to the [hasMember method](https://developers.google.com/admin-sdk/directory/v1/reference/members/hasMember).
 * Miscellaneous
-  * Added: `Clear-PSGSuiteServiceCache` to clear the cache and dispose of any remaining open web clients.
-  * Improved overall service caching.
-  * Added: Support for `Cloud-Identity` licenses for `Get-GSUserLicense`
-  * Added: `OutputType` for all applicable Helper functions (i.e. `Add-GSUserIm`)
-
-#### 2.26.1
-
-* [Issue #172](https://github.com/scrthq/PSGSuite/issues/172)
-  * Fixed: `New-GoogleService` now using `New-Object` to prevent `[Google.Apis.Util.Store.FileDataStore]::new()` constructor issues in PowerShell 4.
-* [Issue #173](https://github.com/scrthq/PSGSuite/issues/173)
-  * Added: `FolderColorRgb` parameter to `New-GSDriveFile` and `Update-GSDriveFile` to enable setting the color of a folder in Drive - _Thanks, [@WJurecki](https://github.com/WJurecki)!_
-* [PR #174](https://github.com/scrthq/PSGSuite/pull/174) - _Thanks, [@WJurecki](https://github.com/WJurecki)!_
-  * Fixed: `Get-GSDriveFileList` filter concatenation so it joins multiple filters with ` and ` instead of just a space ` `.
-
-#### 2.26.0
-
-* [Issue #169](https://github.com/scrthq/PSGSuite/issues/169)
-  * Fixed: `Get-GSGmailMessage` fails to download attachments containing invalid characters (e.g. `:`)
-* [Issue #168](https://github.com/scrthq/PSGSuite/issues/168)
-  * Added: `Add-GSUserLocation`
-  * Updated: `New-GSUser` and `Update-GSUser` to add in Location support
-* Miscellaneous
-  * Improved pipeline support for the `User` parameter across all pertinent functions, i.e. Drive, Calendar, Gmail, Sheets & Tasks APIs.
+  * Improved build process to auto-update NuGet dependencies.
+  * Added new private function `Resolve-Email` to convert a name-part or the case-sensitive `me` to the full email address accordingly.

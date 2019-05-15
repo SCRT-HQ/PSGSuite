@@ -44,7 +44,7 @@ function Update-GSGroupMember {
         [String]
         $GroupEmail,
         [parameter(Mandatory = $true,Position = 1,ValueFromPipelineByPropertyName = $true)]
-        [Alias("PrimaryEmail","UserKey","Mail","User","UserEmail","Email")]
+        [Alias("PrimaryEmail","UserKey","Mail","User","UserEmail","Email","Members")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $Member,

@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.27.0](#2270)
   * [2.26.4](#2264)
   * [2.26.3](#2263)
   * [2.26.2](#2262)
@@ -85,6 +86,16 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.27.0
+
+* [Issue #185](https://github.com/scrthq/PSGSuite/issues/185)
+  * Fixed: `Get-GSGroup -Where_IsAMember $member` no longer errors.
+* [Issue #186](https://github.com/scrthq/PSGSuite/issues/186)
+  * Added: `Test-GSGroupMembership` to map to the [hasMember method](https://developers.google.com/admin-sdk/directory/v1/reference/members/hasMember).
+* Miscellaneous
+  * Improved build process to auto-update NuGet dependencies.
+  * Added new private function `Resolve-Email` to convert a name-part or the case-sensitive `me` to the full email address accordingly.
 
 ## 2.26.4
 

@@ -31,7 +31,7 @@ function Add-GSGroupMember {
         [String]
         $Identity,
         [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true,Position = 1)]
-        [Alias("PrimaryEmail","UserKey","Mail","User","UserEmail")]
+        [Alias("PrimaryEmail","UserKey","Mail","User","UserEmail","Members")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $Member,
@@ -53,8 +53,8 @@ function Add-GSGroupMember {
                 $Identity = "$($Identity)@$($Script:PSGSuite.Domain)"
             }
             $groupObj = Get-GSGroup -Group $Identity -Verbose:$false
-            try {
-                foreach ($U in $Member) {
+            foreach ($U in $Member) {
+                try {
                     if ($U -notlike "*@*.*") {
                         $U = "$($U)@$($Script:PSGSuite.Domain)"
                     }
@@ -65,13 +65,13 @@ function Add-GSGroupMember {
                     $request = $service.Members.Insert($body,$groupObj.Id)
                     $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Group' -Value $Identity -PassThru
                 }
-            }
-            catch {
-                if ($ErrorActionPreference -eq 'Stop') {
-                    $PSCmdlet.ThrowTerminatingError($_)
-                }
-                else {
-                    Write-Error $_
+                catch {
+                    if ($ErrorActionPreference -eq 'Stop') {
+                        $PSCmdlet.ThrowTerminatingError($_)
+                    }
+                    else {
+                        Write-Error $_
+                    }
                 }
             }
         }
