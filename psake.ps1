@@ -374,7 +374,9 @@ $deployScriptBlock = {
             $commitVer = $commParsed.Matches.Value.Trim().Replace('v','')
         }
         $curVer = (Get-Module $env:BHProjectName).Version
-        $nextGalVer = Get-NextNugetPackageVersion -Name $env:BHProjectName -PackageSourceUrl 'https://www.powershellgallery.com/api/v2/'
+        $galVer = (Find-Module $env:BHProjectName -Repository PSGallery).Version.ToString()
+        $galVerSplit = $galVer.Split('.')
+        $nextGalVer = [System.Version](($galVerSplit[0..($galVerSplit.Count - 2)] -join '.') + '.' + ([int]$galVerSplit[-1] + 1))
 
         $versionToDeploy = if ($commitVer -and ([System.Version]$commitVer -lt $nextGalVer)) {
             Write-Host -ForegroundColor Yellow "Version in commit message is $commitVer, which is less than the next Gallery version and would result in an error. Possible duplicate deployment build, skipping module bump and negating deployment"
