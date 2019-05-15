@@ -17,7 +17,7 @@ $env:BuildProjectName = 'PSGSuite'
 $env:_BuildStart = Get-Date -Format 'o'
 $env:BuildScriptPath = $PSScriptRoot
 
-Get-ChildItem (Join-Path $PSScriptRoot "ci") -Filter "*.ps1" | ForEach-Object {. $_.FullName}
+. ([System.IO.Path]::Combine($PSScriptRoot,"ci","AzurePipelinesHelpers.ps1"))
 
 Add-EnvironmentSummary "Build started"
 

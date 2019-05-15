@@ -30,8 +30,7 @@ Properties {
     }
 }
 
-# Dot-source all helper scripts/functions in the ci folder
-Get-ChildItem (Join-Path $PSScriptRoot "ci") -Filter "*.ps1" | ForEach-Object {. $_.FullName}
+. ([System.IO.Path]::Combine($PSScriptRoot,"ci","AzurePipelinesHelpers.ps1"))
 
 Set-BuildVariables
 

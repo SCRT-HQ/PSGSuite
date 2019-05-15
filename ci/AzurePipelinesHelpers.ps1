@@ -20,11 +20,11 @@ function Install-NuGetDependencies {
         [parameter()]
         [String[]]
         $AddlSearchString
-
     )
     try {
+        Import-Module PackageManagement -Force
         $dllStgPath = Join-Path $PSScriptRoot "NuGetStaging"
-        $packagesToInstall = Import-Csv (Join-Path $PSScriptRoot "NuGetDependencies.csv") | Sort-Object BaseName
+        $packagesToInstall = Get-Content (Join-Path $PSScriptRoot "NuGetDependencies.json") -Raw | ConvertFrom-Json | Sort-Object BaseName
         if (-not (Test-Path $dllStgPath)) {
             New-Item $dllStgPath -Force -ItemType Directory | Out-Null
         }
@@ -36,6 +36,9 @@ function Install-NuGetDependencies {
                 $nugHash[$_.Name] = $_
             }
         }
+        if ($nugHash.Keys.Count) {
+            . ([System.IO.Path]::Combine($PSScriptRoot,"UpdateNuGetDependenciesJson.ps1"))
+        }
         foreach ($inst in $packagesToInstall) {
             try {
                 $pkg = if ($nugHash.ContainsKey($inst.BaseName)) {
@@ -44,8 +47,8 @@ function Install-NuGetDependencies {
                 else {
                     [PSCustomObject]@{
                         Name = $inst.BaseName
-                        Version = $inst.Version
-                        TagId = $inst.BaseName + '#' + $inst.Version
+                        Version = $inst.LatestVersion
+                        TagId = $inst.BaseName + '#' + $inst.LatestVersion
                     }
                 }
                 Write-BuildLog ("[{0}.{1}] Downloading latest package from NuGet" -f $pkg.Name,$pkg.Version)
