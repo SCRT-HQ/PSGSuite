@@ -2,16 +2,16 @@ function Remove-GSGroupMember {
     <#
     .SYNOPSIS
     Removes members from a group
-    
+
     .DESCRIPTION
     Removes members from a group
-    
+
     .PARAMETER Identity
     The email or unique Id of the group to remove members from
-    
+
     .PARAMETER Member
     The member or array of members to remove from the target group
-    
+
     .EXAMPLE
     Remove-GSGroupMember -Identity admins -Member joe.smith,mark.taylor -Confirm:$false
 
@@ -25,7 +25,7 @@ function Remove-GSGroupMember {
         [String]
         $Identity,
         [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true,Position = 1)]
-        [Alias("PrimaryEmail","UserKey","Mail","User","UserEmail")]
+        [Alias("PrimaryEmail","UserKey","Mail","User","UserEmail","Members")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $Member

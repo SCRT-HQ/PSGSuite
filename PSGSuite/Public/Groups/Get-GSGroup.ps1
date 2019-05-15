@@ -47,7 +47,7 @@
     Gets the IT HelpDesk group by name using PowerShell syntax. PowerShell syntax is supported as a best effort, please refer to the Group Search documentation from Google for exact syntax.
     #>
     [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Group')]
-    [cmdletbinding(DefaultParameterSetName = "List")]
+    [cmdletbinding(DefaultParameterSetName = "ListFilter")]
     Param
     (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true,ParameterSetName = "Get")]
@@ -55,20 +55,22 @@
         [ValidateNotNullOrEmpty()]
         [String[]]
         $Group,
-        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        [parameter(Mandatory = $false,ParameterSetName = "ListFilter")]
         [Alias('Query')]
         [string]
         $Filter,
-        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        [parameter(Mandatory = $false,ParameterSetName = "ListWhereMember")]
+        [Alias('UserKey')]
         [String]
         $Where_IsAMember,
-        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        [parameter(Mandatory = $false,ParameterSetName = "ListFilter")]
         [string]
         $Domain,
         [parameter(Mandatory = $false,ParameterSetName = "Get")]
         [String[]]
         $Fields,
-        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        [parameter(Mandatory = $false,ParameterSetName = "ListFilter")]
+        [parameter(Mandatory = $false,ParameterSetName = "ListWhereMember")]
         [ValidateRange(1,200)]
         [Alias("MaxResults")]
         [Int]
@@ -82,13 +84,11 @@
         $service = New-GoogleService @serviceParams
     }
     Process {
-        switch ($PSCmdlet.ParameterSetName) {
+        switch -Regex ($PSCmdlet.ParameterSetName) {
             Get {
                 foreach ($G in $Group) {
                     try {
-                        if ($G -notlike "*@*.*") {
-                            $G = "$($G)@$($Script:PSGSuite.Domain)"
-                        }
+                        Resolve-Email ([ref]$G)
                         Write-Verbose "Getting group '$G'"
                         $request = $service.Groups.Get($G)
                         if ($Fields) {
@@ -106,21 +106,16 @@
                     }
                 }
             }
-            List {
+            'List.*' {
                 $verbString = "Getting all G Suite Groups"
                 try {
                     $request = $service.Groups.List()
                     if ($PSBoundParameters.Keys -contains 'Where_IsAMember') {
-                        if ($Where_IsAMember -ceq "me") {
-                            $Where_IsAMember = $Script:PSGSuite.AdminEmail
-                        }
-                        elseif ($Where_IsAMember -notlike "*@*.*") {
-                            $Where_IsAMember = "$($Where_IsAMember)@$($Script:PSGSuite.Domain)"
-                        }
+                        Resolve-Email ([ref]$Where_IsAMember)
                         $verbString += " where '$Where_IsAMember' is a member"
                         $request.UserKey = $Where_IsAMember
                     }
-                    if ($PSBoundParameters.Keys -contains 'Filter') {
+                    elseif ($PSBoundParameters.Keys -contains 'Filter') {
                         if ($Filter -eq '*') {
                             $Filter = ""
                         }
@@ -133,17 +128,19 @@
                             $request.Query = $Filter.Trim()
                         }
                     }
-                    if ($PSBoundParameters.Keys -contains 'Domain') {
-                        $verbString += " for domain '$Domain'"
-                        $request.Domain = $Domain
-                    }
-                    elseif ( -not [String]::IsNullOrEmpty($Script:PSGSuite.CustomerID)) {
-                        $verbString += " for customer '$($Script:PSGSuite.CustomerID)'"
-                        $request.Customer = $Script:PSGSuite.CustomerID
-                    }
-                    else {
-                        $verbString += " for customer 'my_customer'"
-                        $request.Customer = "my_customer"
+                    if ($PSBoundParameters.Keys -notcontains 'Where_IsAMember') {
+                        if ($PSBoundParameters.Keys -contains 'Domain') {
+                            $verbString += " for domain '$Domain'"
+                            $request.Domain = $Domain
+                        }
+                        elseif ( -not [String]::IsNullOrEmpty($Script:PSGSuite.CustomerID)) {
+                            $verbString += " for customer '$($Script:PSGSuite.CustomerID)'"
+                            $request.Customer = $Script:PSGSuite.CustomerID
+                        }
+                        else {
+                            $verbString += " for customer 'my_customer'"
+                            $request.Customer = "my_customer"
+                        }
                     }
                     if ($PageSize) {
                         $request.MaxResults = $PageSize

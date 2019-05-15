@@ -31,7 +31,7 @@ function Get-GSGroupMember {
         [String[]]
         $Identity,
         [parameter(Mandatory = $false,Position = 1,ParameterSetName = "Get")]
-        [Alias("PrimaryEmail","UserKey","Mail","User","UserEmail")]
+        [Alias("PrimaryEmail","UserKey","Mail","User","UserEmail","Members")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $Member,

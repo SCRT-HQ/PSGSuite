@@ -160,14 +160,7 @@ function Get-GSUser {
         if ($MyInvocation.InvocationName -ne 'Get-GSUserList' -and $PSCmdlet.ParameterSetName -eq 'Get') {
             foreach ($U in $User) {
                 try {
-                    if ( -not ($U -as [decimal])) {
-                        if ($U -ceq 'me') {
-                            $U = $Script:PSGSuite.AdminEmail
-                        }
-                        elseif ($U -notlike "*@*.*") {
-                            $U = "$($U)@$($Script:PSGSuite.Domain)"
-                        }
-                    }
+                    Resolve-Email ([ref]$U)
                     Write-Verbose "Getting User '$U'"
                     $request = $service.Users.Get($U)
                     $request.Projection = $Projection
