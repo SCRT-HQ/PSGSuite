@@ -52,7 +52,6 @@ function Get-GSDriveFile {
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false)]
         [Alias('SaveFileTo')]
-        [ValidateScript({(Get-Item $_).PSIsContainer})]
         [String]
         $OutFilePath,
         [parameter(Mandatory = $false,ParameterSetName = "Depth")]
@@ -63,7 +62,10 @@ function Get-GSDriveFile {
         [parameter(Mandatory = $false,ParameterSetName = "Fields")]
         [ValidateSet("appProperties","capabilities","contentHints","createdTime","description","explicitlyTrashed","fileExtension","folderColorRgb","fullFileExtension","hasThumbnail","headRevisionId","iconLink","id","imageMediaMetadata","isAppAuthorized","kind","lastModifyingUser","md5Checksum","mimeType","modifiedByMe","modifiedByMeTime","modifiedTime","name","originalFilename","ownedByMe","owners","parents","permissions","properties","quotaBytesUsed","shared","sharedWithMeTime","sharingUser","size","spaces","starred","thumbnailLink","thumbnailVersion","trashed","version","videoMediaMetadata","viewedByMe","viewedByMeTime","viewersCanCopyContent","webContentLink","webViewLink","writersCanShare")]
         [String[]]
-        $Fields
+        $Fields,
+        [parameter(Mandatory = $false)]
+        [Switch]
+        $Force
     )
     Begin {
         if ($Projection) {
@@ -98,29 +100,70 @@ function Get-GSDriveFile {
         $service = New-GoogleService @serviceParams
         try {
             foreach ($file in $FileId) {
+                $backupPath = $null
                 $request = $service.Files.Get($file)
                 $request.SupportsTeamDrives = $true
                 if ($fs) {
                     $request.Fields = $($fs -join ",")
                 }
                 $res = $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
-                if ($OutFilePath -and $res.FileExtension) {
-                    $resPath = Resolve-Path $OutFilePath
-                    $filePath = Join-Path $resPath "$($res.Name).$($res.FileExtension)"
+                if ($OutFilePath) {
+                    if (Test-Path $OutFilePath) {
+                        $outFilePathItem = Get-Item $OutFilePath -ErrorAction SilentlyContinue
+                        if ($outFilePathItem.PSIsContainer) {
+                            $resPath = $outFilePathItem.FullName
+                            $cleanedName = Get-SafeName "$($res.Name).$($res.FileExtension)"
+                            $filePath = Join-Path $resPath $cleanedName
+                        }
+                        elseif ($Force) {
+                            $endings = [System.Collections.Generic.List[string]]@('.bak')
+                            1..100 | ForEach-Object {$endings.Add(".bak$_")}
+                            foreach ($end in $endings) {
+                                $backupPath = "$($outFilePathItem.FullName)$end"
+                                if (-not (Test-Path $backupPath)) {
+                                    break
+                                }
+                                else {
+                                    $backupPath = $null
+                                }
+                            }
+                            Write-Warning "Renaming '$($outFilePathItem.Name)' to '$($outFilePathItem.Name).bak' in case replacement download fails."
+                            Rename-Item $outFilePathItem.FullName -NewName $backupPath -Force
+                            $filePath = $OutFilePath
+                        }
+                        else {
+                            throw "File already exists at path '$($OutFilePath)'. Please specify -Force to overwrite any files with the same name if they exist."
+                        }
+                    }
+                    else {
+                        $filePath = $OutFilePath
+                    }
                     Write-Verbose "Saving file to path '$filePath'"
                     $stream = [System.IO.File]::Create($filePath)
                     $request.Download($stream)
                     $stream.Close()
+                    $res | Add-Member -MemberType NoteProperty -Name OutFilePath -Value $filePath -Force
+                    if ($backupPath) {
+                        Write-Verbose "File has been downloaded successfully! Removing the backup file at path: $backupPath"
+                        Remove-Item $backupPath -Recurse -Force -Confirm:$false
+                    }
                 }
                 $res
             }
         }
         catch {
+            $err = $_
+            if ($backupPath) {
+                if (Test-Path $outFilePathItem.FullName) {
+                    Remove-Item $outFilePathItem.FullName -Recurse -Force
+                }
+                Rename-Item $backupPath -NewName $outFilePathItem.FullName -Force
+            }
             if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
+                $PSCmdlet.ThrowTerminatingError($err)
             }
             else {
-                Write-Error $_
+                Write-Error $err
             }
         }
     }
