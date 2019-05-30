@@ -40,6 +40,9 @@ function Get-GSActivityReport {
     .PARAMETER PageSize
     Number of activity records to be shown in each page
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
     .EXAMPLE
     Get-GSActivityReport -StartTime (Get-Date).AddDays(-30)
 
@@ -76,7 +79,11 @@ function Get-GSActivityReport {
         [ValidateRange(1,1000)]
         [Alias("MaxResults")]
         [Int]
-        $PageSize = "1000"
+        $PageSize = "1000",
+        [parameter(Mandatory = $false)]
+        [Alias('First')]
+        [Int]
+        $Limit = 0
     )
     Begin {
         $serviceParams = @{
@@ -92,6 +99,10 @@ function Get-GSActivityReport {
             }
             Write-Verbose "Getting $ApplicationName Activity report"
             $request = $service.Activities.List($UserKey,($ApplicationName.ToLower()))
+            if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                $PageSize = $Limit
+            }
             $request.MaxResults = $PageSize
             foreach ($key in $PSBoundParameters.Keys | Where-Object {$_ -notin @('UserKey','ApplicationName')}) {
                 switch ($key) {
@@ -111,18 +122,25 @@ function Get-GSActivityReport {
                     }
                 }
             }
-            $response = @()
             [int]$i = 1
+            $overLimit = $false
             do {
                 $result = $request.Execute()
-                $response += $result.Items
+                $result.Items
                 $request.PageToken = $result.NextPageToken
                 [int]$retrieved = ($i + $result.Items.Count) - 1
                 Write-Verbose "Retrieved $retrieved events..."
+                if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                    $overLimit = $true
+                }
+                elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                    $newPS = $Limit - $retrieved
+                    Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                    $request.MaxResults = $newPS
+                }
                 [int]$i = $i + $result.Items.Count
             }
-            until (!$result.NextPageToken)
-            return $response
+            until ($overLimit -or !$result.NextPageToken)
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

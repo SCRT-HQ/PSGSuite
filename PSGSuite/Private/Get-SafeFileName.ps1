@@ -1,4 +1,4 @@
-function Get-SafeName {
+function Get-SafeFileName {
     [CmdletBinding()]
     Param (
         [parameter(Mandatory,ValueFromPipeline,Position = 0)]

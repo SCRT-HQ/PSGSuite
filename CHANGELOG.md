@@ -1,6 +1,7 @@
 # Changelog
 
 * [Changelog](#changelog)
+  * [2.28.0 - 2019-05-31](#2280---2019-05-31)
   * [2.27.0](#2270)
   * [2.26.4](#2264)
   * [2.26.3](#2263)
@@ -86,6 +87,26 @@
       * [Functions Aliased](#functions-aliased)
 
 ***
+
+## 2.28.0 - 2019-05-31
+
+* [Issue #188](https://github.com/scrthq/PSGSuite/issues/188)
+  * Added: `Get-GSDriveFile` now supports specifying a full file path.
+  * Fixed: `Get-GSDriveFile` will now replace any special path characters in the filename with underscores
+  * Added: The File object returned by `Get-GSDriveFile` will now include an additional `OutFilePath` property if the file is downloaded. This property will contain the full path to the downloaded file.
+* [Issue #190](https://github.com/scrthq/PSGSuite/issues/190)
+  * Fixed: `Fields` parameter on `Get-GSDriveFile` was not being honored.
+* [Issue #195](https://github.com/scrthq/PSGSuite/issues/195)
+  * Added: `Limit` parameter with `First` alias to the following List functions:
+    * `Get-GSActivityReport`
+    * `Get-GSDrive`
+    * `Get-GSTeamDrive`
+* [Issue #196](https://github.com/scrthq/PSGSuite/issues/196)
+  * Fixed: `Get-GSTeamDrive` was not paginating through the results.
+* Miscellaneous
+  * Fixed: `Export-PSGSuiteConfig` is faster due to safely assuming that the P12Key and/or ClientSecrets values have already been pulled from the corresponding keys.
+  * Fixed: Incomplete documentation for `Test-GSGroupMembership`.
+  * Added: `UseDomainAdminAccess` switch parameter to `Get-GSTeamDrive`
 
 ## 2.27.0
 

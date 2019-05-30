@@ -112,7 +112,7 @@ function Get-GSDriveFile {
                         $outFilePathItem = Get-Item $OutFilePath -ErrorAction SilentlyContinue
                         if ($outFilePathItem.PSIsContainer) {
                             $resPath = $outFilePathItem.FullName
-                            $cleanedName = Get-SafeName "$($res.Name).$($res.FileExtension)"
+                            $cleanedName = Get-SafeFileName "$($res.Name).$($res.FileExtension)"
                             $filePath = Join-Path $resPath $cleanedName
                         }
                         elseif ($Force) {
