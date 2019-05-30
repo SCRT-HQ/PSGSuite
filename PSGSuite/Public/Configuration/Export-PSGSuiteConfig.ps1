@@ -40,10 +40,8 @@ function Export-PSGSuiteConfig {
     }
     Process {
         try {
-            Write-Verbose "Updating current saved config for '$ConfigName' with P12Key and ClientSecrets contents if missing."
-            $baseConf | Set-PSGSuiteConfig -NoImport -Verbose:$false
             Write-Verbose "Exporting config '$ConfigName' to path: $Path"
-            Get-PSGSuiteConfig -ConfigName $ConfigName -NoImport -PassThru -Verbose:$false | Select-Object ConfigName,P12Key,ClientSecrets,AppEmail,AdminEmail,CustomerId,Domain,Preference | ConvertTo-Json -Depth 5 -Compress -Verbose:$false | Set-Content -Path $Path -Verbose:$false
+            $baseConf | Select-Object ConfigName,P12Key,ClientSecrets,AppEmail,AdminEmail,CustomerId,Domain,Preference | ConvertTo-Json -Depth 5 -Compress -Verbose:$false | Set-Content -Path $Path -Verbose:$false
         }
         catch {
             $PSCmdlet.ThrowTerminatingError($_)
