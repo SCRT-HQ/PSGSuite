@@ -203,6 +203,7 @@ function Get-GSUsageReport {
                 [int]$retrieved = ($i + $result.UsageReportsValue.Count) - 1
                 Write-Verbose "Retrieved $retrieved entities for this report..."
                 if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                    Write-Verbose "Limit reached: $Limit"
                     $overLimit = $true
                 }
                 elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {

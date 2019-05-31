@@ -110,6 +110,7 @@ function Get-GSDrive {
                         [int]$retrieved = ($i + $result.Drives.Count) - 1
                         Write-Verbose "Retrieved $retrieved Shared Drives..."
                         if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                            Write-Verbose "Limit reached: $Limit"
                             $overLimit = $true
                         }
                         elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {

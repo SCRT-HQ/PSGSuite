@@ -131,6 +131,7 @@ function Get-GSActivityReport {
                 [int]$retrieved = ($i + $result.Items.Count) - 1
                 Write-Verbose "Retrieved $retrieved events..."
                 if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                    Write-Verbose "Limit reached: $Limit"
                     $overLimit = $true
                 }
                 elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {

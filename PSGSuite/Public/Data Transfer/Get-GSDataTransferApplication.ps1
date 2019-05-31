@@ -14,6 +14,9 @@
 
     Defaults to 500 (although it's typically a much smaller number for most Customers)
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
     .EXAMPLE
     Get-GSDataTransferApplication
 
@@ -29,7 +32,11 @@
         [parameter(Mandatory = $false)]
         [ValidateRange(1,500)]
         [Int]
-        $PageSize = 500
+        $PageSize = 500,
+        [parameter(Mandatory = $false)]
+        [Alias('First')]
+        [Int]
+        $Limit = 0
     )
     Begin {
         $serviceParams = @{
@@ -49,12 +56,15 @@
             else {
                 $request = $service.Applications.List()
                 $request.CustomerId = $Script:PSGSuite.CustomerID
-                if ($PageSize) {
-                    $request.MaxResults = $PageSize
+                if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                    Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                    $PageSize = $Limit
                 }
+                $request.MaxResults = $PageSize
                 Write-Verbose "Getting all Data Transfer Applications"
                 $response = @()
                 [int]$i = 1
+                $overLimit = $false
                 do {
                     $result = $request.Execute()
                     $response += $result.Applications
@@ -63,9 +73,18 @@
                     }
                     [int]$retrieved = ($i + $result.Applications.Count) - 1
                     Write-Verbose "Retrieved $retrieved Data Transfer Applications..."
+                    if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                        Write-Verbose "Limit reached: $Limit"
+                        $overLimit = $true
+                    }
+                    elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                        $newPS = $Limit - $retrieved
+                        Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                        $request.MaxResults = $newPS
+                    }
                     [int]$i = $i + $result.Applications.Count
                 }
-                until (!$result.NextPageToken)
+                until ($overLimit -or !$result.NextPageToken)
                 return $response
             }
         }

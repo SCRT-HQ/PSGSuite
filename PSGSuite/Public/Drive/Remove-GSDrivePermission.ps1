@@ -58,7 +58,7 @@ function Remove-GSDrivePermission {
         try {
             if ($PSCmdlet.ShouldProcess("Removing Drive Permission Id '$PermissionId' from FileId '$FileID'")) {
                 $request = $service.Permissions.Delete($FileId,$PermissionId)
-                $request.SupportsTeamDrives = $true
+                $request.SupportsAllDrives = $true
                 $request.Execute()
                 Write-Verbose "Successfully removed Drive Permission Id '$PermissionId' from FileId '$FileID'"
             }

@@ -22,6 +22,9 @@ function Get-GSCalendarAcl {
     .PARAMETER PageSize
     Maximum number of events returned on one result page.
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
     .EXAMPLE
     Get-GSCalendarACL -User me -CalendarID "primary"
 
@@ -46,7 +49,11 @@ function Get-GSCalendarAcl {
         [parameter(Mandatory = $false, ParameterSetName = 'List')]
         [ValidateRange(1,2500)]
         [Int]
-        $PageSize = 2500
+        $PageSize = 2500,
+        [parameter(Mandatory = $false, ParameterSetName = 'List')]
+        [Alias('First')]
+        [Int]
+        $Limit = 0
     )
     Process {
         foreach ($U in $User) {
@@ -81,11 +88,14 @@ function Get-GSCalendarAcl {
                                     }
                                 }
                             }
-                            if ($PageSize) {
-                                $request.MaxResults = $PageSize
+                            if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                                Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                                $PageSize = $Limit
                             }
+                            $request.MaxResults = $PageSize
                             Write-Verbose "Getting ACL List of calendar '$calId' for user '$U'"
                             [int]$i = 1
+                            $overLimit = $false
                             do {
                                 $result = $request.Execute()
                                 $result.Items | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $calId -PassThru
@@ -94,9 +104,18 @@ function Get-GSCalendarAcl {
                                 }
                                 [int]$retrieved = ($i + $result.Items.Count) - 1
                                 Write-Verbose "Retrieved $retrieved Calendar ACLs..."
+                                if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                                    Write-Verbose "Limit reached: $Limit"
+                                    $overLimit = $true
+                                }
+                                elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                                    $newPS = $Limit - $retrieved
+                                    Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                                    $request.MaxResults = $newPS
+                                }
                                 [int]$i = $i + $result.Items.Count
                             }
-                            until (!$result.NextPageToken)
+                            until ($overLimit -or !$result.NextPageToken)
                         }
                     }
                 }

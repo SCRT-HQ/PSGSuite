@@ -22,6 +22,9 @@ function Get-GSCalendar {
     .PARAMETER PageSize
     Maximum number of entries returned on one result page. The page size can never be larger than 250 entries.
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
     .PARAMETER ShowDeleted
     Whether to include deleted calendar list entries in the result. Optional. The default is False.
 
@@ -57,6 +60,10 @@ function Get-GSCalendar {
         [ValidateRange(1,250)]
         [Int]
         $PageSize = 250,
+        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        [Alias('First')]
+        [Int]
+        $Limit = 0,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [switch]
         $ShowDeleted,
@@ -107,11 +114,14 @@ function Get-GSCalendar {
                                 $request.$key = $PSBoundParameters[$key]
                             }
                         }
-                        if ($PageSize) {
-                            $request.MaxResults = $PageSize
+                        if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                            Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                            $PageSize = $Limit
                         }
+                        $request.MaxResults = $PageSize
                         Write-Verbose "Getting Calendar List for user '$U'"
                         [int]$i = 1
+                        $overLimit = $false
                         do {
                             $result = $request.Execute()
                             $result.Items | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
@@ -120,9 +130,18 @@ function Get-GSCalendar {
                             }
                             [int]$retrieved = ($i + $result.Items.Count) - 1
                             Write-Verbose "Retrieved $retrieved Calendars..."
+                            if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                                Write-Verbose "Limit reached: $Limit"
+                                $overLimit = $true
+                            }
+                            elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                                $newPS = $Limit - $retrieved
+                                Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                                $request.MaxResults = $newPS
+                            }
                             [int]$i = $i + $result.Items.Count
                         }
-                        until (!$result.NextPageToken)
+                        until ($overLimit -or !$result.NextPageToken)
                     }
                     catch {
                         if ($ErrorActionPreference -eq 'Stop') {

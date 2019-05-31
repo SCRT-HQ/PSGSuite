@@ -59,6 +59,9 @@ function Get-GSUser {
     .PARAMETER PageSize
     Page size of the result set
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
     .PARAMETER OrderBy
     Property to use for sorting results.
 
@@ -106,7 +109,7 @@ function Get-GSUser {
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [Alias("Query")]
         [String[]]
-        $Filter,
+        $Filter = '*',
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [String]
         $Domain,
@@ -139,7 +142,11 @@ function Get-GSUser {
         [ValidateRange(1,500)]
         [Alias("MaxResults")]
         [Int]
-        $PageSize = "500",
+        $PageSize = 500,
+        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        [Alias('First')]
+        [Int]
+        $Limit = 0,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [ValidateSet("Email","GivenName","FamilyName")]
         [String]
@@ -207,9 +214,11 @@ function Get-GSUser {
                     $verbScope = "customer 'my_customer'"
                     $request.Customer = "my_customer"
                 }
-                if ($PageSize) {
-                    $request.MaxResults = $PageSize
+                if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                    Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                    $PageSize = $Limit
                 }
+                $request.MaxResults = $PageSize
                 foreach ($prop in $PSBoundParameters.Keys | Where-Object {$_ -in @('OrderBy','SortOrder','CustomFieldMask','ShowDeleted','ViewType')}) {
                     $request.$prop = $PSBoundParameters[$prop]
                 }
@@ -237,6 +246,7 @@ function Get-GSUser {
                 }
                 $response = New-Object System.Collections.ArrayList
                 [int]$i = 1
+                $overLimit = $false
                 do {
                     $result = $request.Execute()
                     if ($result.UsersValue) {
@@ -248,9 +258,18 @@ function Get-GSUser {
                     $request.PageToken = $result.NextPageToken
                     [int]$retrieved = ($i + $result.UsersValue.Count) - 1
                     Write-Verbose "Retrieved $retrieved users..."
+                    if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                        Write-Verbose "Limit reached: $Limit"
+                        $overLimit = $true
+                    }
+                    elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                        $newPS = $Limit - $retrieved
+                        Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                        $request.MaxResults = $newPS
+                    }
                     [int]$i = $i + $result.UsersValue.Count
                 }
-                until (!$result.NextPageToken)
+                until ($overLimit -or !$result.NextPageToken)
                 if ($SearchScope -ne "Subtree") {
                     if (!$SearchBase) {
                         $SearchBase = "/"

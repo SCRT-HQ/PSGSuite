@@ -21,7 +21,6 @@ function Get-GSDriveFile {
     The defined subset of fields to be returned
 
     Available values are:
-    * "Minimal"
     * "Standard"
     * "Full"
     * "Access"
@@ -56,7 +55,7 @@ function Get-GSDriveFile {
         $OutFilePath,
         [parameter(Mandatory = $false,ParameterSetName = "Depth")]
         [Alias('Depth')]
-        [ValidateSet("Minimal","Standard","Full","Access")]
+        [ValidateSet("Standard","Full","Access")]
         [String]
         $Projection = "Full",
         [parameter(Mandatory = $false,ParameterSetName = "Fields")]
@@ -68,7 +67,7 @@ function Get-GSDriveFile {
         $Force
     )
     Begin {
-        if ($Projection) {
+        if ($PSCmdlet.ParameterSetName -eq 'Depth') {
             $fs = switch ($Projection) {
                 Standard {
                     @("createdTime","description","fileExtension","id","lastModifyingUser","modifiedTime","name","owners","parents","properties","version","webContentLink","webViewLink")
@@ -81,7 +80,7 @@ function Get-GSDriveFile {
                 }
             }
         }
-        elseif ($Fields) {
+        elseif ($PSBoundParameters.ContainsKey('Fields')) {
             $fs = $Fields
         }
     }
@@ -102,7 +101,7 @@ function Get-GSDriveFile {
             foreach ($file in $FileId) {
                 $backupPath = $null
                 $request = $service.Files.Get($file)
-                $request.SupportsTeamDrives = $true
+                $request.SupportsAllDrives = $true
                 if ($fs) {
                     $request.Fields = $($fs -join ",")
                 }

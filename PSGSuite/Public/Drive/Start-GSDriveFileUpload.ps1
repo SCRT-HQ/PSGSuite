@@ -166,7 +166,7 @@ function Start-GSDriveFileUpload {
                     $stream = New-Object 'System.IO.FileStream' $detPart.FullName,([System.IO.FileMode]::Open),([System.IO.FileAccess]::Read),([System.IO.FileShare]"Delete, ReadWrite")
                     $request = $service.Files.Create($body,$stream,$contentType)
                     $request.QuotaUser = $User
-                    $request.SupportsTeamDrives = $true
+                    $request.SupportsAllDrives = $true
                     $request.ChunkSize = 512KB
                     $upload = $request.UploadAsync()
                     $task = $upload.ContinueWith([System.Action[System.Threading.Tasks.Task]] {if ($stream) {
@@ -264,7 +264,7 @@ function Start-GSDriveFileUpload {
                             $stream = New-Object 'System.IO.FileStream' $detPart.FullName,([System.IO.FileMode]::Open),([System.IO.FileAccess]::Read),([System.IO.FileShare]::Delete + [System.IO.FileShare]::ReadWrite)
                             $request = $service.Files.Create($body,$stream,$contentType)
                             $request.QuotaUser = $User
-                            $request.SupportsTeamDrives = $true
+                            $request.SupportsAllDrives = $true
                             $request.ChunkSize = 512KB
                             $upload = $request.UploadAsync()
                             $task = $upload.ContinueWith([System.Action[System.Threading.Tasks.Task]] {$stream.Dispose()})

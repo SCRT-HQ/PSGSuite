@@ -24,6 +24,9 @@ function Get-GSAdminRoleAssignment {
     .PARAMETER PageSize
     Page size of the result set
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
     .EXAMPLE
     Get-GSAdminRoleAssignment
 
@@ -52,7 +55,12 @@ function Get-GSAdminRoleAssignment {
         [ValidateRange(1,100)]
         [Alias("MaxResults")]
         [Int]
-        $PageSize
+        $PageSize = 100,
+        [parameter(Mandatory = $false,ParameterSetName = "ListUserKey")]
+        [parameter(Mandatory = $false,ParameterSetName = "ListRoleId")]
+        [Alias('First')]
+        [Int]
+        $Limit = 0
     )
     Begin {
         $serviceParams = @{
@@ -88,34 +96,48 @@ function Get-GSAdminRoleAssignment {
             }
             Default {
                 [int]$i = 1
+                $overLimit = $false
                 Write-Verbose "Getting Admin Role Assignment List"
                 $baseRequest = $service.RoleAssignments.List($customerId)
-                if ($PSBoundParameters.Keys -contains 'PageSize') {
-                    $baseRequest.MaxResults = $PSBoundParameters['PageSize']
+                if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                    Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                    $PageSize = $Limit
                 }
+                $baseRequest.MaxResults = $PageSize
                 if ($PSBoundParameters.Keys -contains 'RoleId' -or $PSBoundParameters.Keys -contains 'UserKey') {
                     switch ($PSBoundParameters.Keys) {
                         RoleId {
                             foreach ($Role in $RoleId) {
-                                try {
-                                    $request = $baseRequest
-                                    $request.RoleId = $Role
-                                    do {
-                                        $result = $request.Execute()
-                                        $result.Items | Add-Member -MemberType NoteProperty -Name 'Filter' -Value ([PSCustomObject]@{RoleId = $Role}) -PassThru
-                                        $request.PageToken = $result.NextPageToken
-                                        [int]$retrieved = ($i + $result.Items.Count) - 1
-                                        Write-Verbose "Retrieved $retrieved role assignments..."
-                                        [int]$i = $i + $result.Items.Count
+                                if (-not $overLimit) {
+                                    try {
+                                        $request = $baseRequest
+                                        $request.RoleId = $Role
+                                        do {
+                                            $result = $request.Execute()
+                                            $result.Items | Add-Member -MemberType NoteProperty -Name 'Filter' -Value ([PSCustomObject]@{RoleId = $Role}) -PassThru
+                                            $request.PageToken = $result.NextPageToken
+                                            [int]$retrieved = ($i + $result.Items.Count) - 1
+                                            Write-Verbose "Retrieved $retrieved role assignments..."
+                                            if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                                                Write-Verbose "Limit reached: $Limit"
+                                                $overLimit = $true
+                                            }
+                                            elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                                                $newPS = $Limit - $retrieved
+                                                Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                                                $request.MaxResults = $newPS
+                                            }
+                                            [int]$i = $i + $result.Items.Count
+                                        }
+                                        until ($overLimit -or !$result.NextPageToken)
                                     }
-                                    until (!$result.NextPageToken)
-                                }
-                                catch {
-                                    if ($ErrorActionPreference -eq 'Stop') {
-                                        $PSCmdlet.ThrowTerminatingError($_)
-                                    }
-                                    else {
-                                        Write-Error $_
+                                    catch {
+                                        if ($ErrorActionPreference -eq 'Stop') {
+                                            $PSCmdlet.ThrowTerminatingError($_)
+                                        }
+                                        else {
+                                            Write-Error $_
+                                        }
                                     }
                                 }
                             }
@@ -143,9 +165,18 @@ function Get-GSAdminRoleAssignment {
                                         $request.PageToken = $result.NextPageToken
                                         [int]$retrieved = ($i + $result.Items.Count) - 1
                                         Write-Verbose "Retrieved $retrieved role assignments..."
+                                        if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                                            Write-Verbose "Limit reached: $Limit"
+                                            $overLimit = $true
+                                        }
+                                        elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                                            $newPS = $Limit - $retrieved
+                                            Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                                            $request.MaxResults = $newPS
+                                        }
                                         [int]$i = $i + $result.Items.Count
                                     }
-                                    until (!$result.NextPageToken)
+                                    until ($overLimit -or !$result.NextPageToken)
                                 }
                                 catch {
                                     if ($ErrorActionPreference -eq 'Stop') {
@@ -168,9 +199,18 @@ function Get-GSAdminRoleAssignment {
                             $request.PageToken = $result.NextPageToken
                             [int]$retrieved = ($i + $result.Items.Count) - 1
                             Write-Verbose "Retrieved $retrieved role assignments..."
+                            if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                                Write-Verbose "Limit reached: $Limit"
+                                $overLimit = $true
+                            }
+                            elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                                $newPS = $Limit - $retrieved
+                                Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                                $request.MaxResults = $newPS
+                            }
                             [int]$i = $i + $result.Items.Count
                         }
-                        until (!$result.NextPageToken)
+                        until ($overLimit -or !$result.NextPageToken)
                     }
                     catch {
                         if ($ErrorActionPreference -eq 'Stop') {
