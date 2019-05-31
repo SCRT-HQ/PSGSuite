@@ -14,6 +14,9 @@ function Get-GSAdminRole {
     .PARAMETER PageSize
     Page size of the result set
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
     .EXAMPLE
     Get-GSAdminRole
 
@@ -35,7 +38,11 @@ function Get-GSAdminRole {
         [ValidateRange(1,100)]
         [Alias("MaxResults")]
         [Int]
-        $PageSize
+        $PageSize = 100,
+        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        [Alias('First')]
+        [Int]
+        $Limit = 0
     )
     Begin {
         $serviceParams = @{
@@ -73,19 +80,31 @@ function Get-GSAdminRole {
                 try {
                     Write-Verbose "Getting Admin Role List"
                     $request = $service.Roles.List($customerId)
-                    if ($PSBoundParameters.Keys -contains 'PageSize') {
-                        $request.MaxResults = $PSBoundParameters['PageSize']
+                    if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                        Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                        $PageSize = $Limit
                     }
+                    $request.MaxResults = $PageSize
                     [int]$i = 1
+                    $overLimit = $false
                     do {
                         $result = $request.Execute()
                         $result.Items
                         $request.PageToken = $result.NextPageToken
                         [int]$retrieved = ($i + $result.Items.Count) - 1
                         Write-Verbose "Retrieved $retrieved roles..."
+                        if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                            Write-Verbose "Limit reached: $Limit"
+                            $overLimit = $true
+                        }
+                        elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                            $newPS = $Limit - $retrieved
+                            Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                            $request.MaxResults = $newPS
+                        }
                         [int]$i = $i + $result.Items.Count
                     }
-                    until (!$result.NextPageToken)
+                    until ($overLimit -or !$result.NextPageToken)
                 }
                 catch {
                     if ($ErrorActionPreference -eq 'Stop') {

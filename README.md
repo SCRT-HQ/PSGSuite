@@ -143,12 +143,57 @@ Update-GSSheetValue               Export-GSSheet
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-#### 2.27.0
+#### 2.28.0
 
-* [Issue #185](https://github.com/scrthq/PSGSuite/issues/185)
-  * Fixed: `Get-GSGroup -Where_IsAMember $member` no longer errors.
-* [Issue #186](https://github.com/scrthq/PSGSuite/issues/186)
-  * Added: `Test-GSGroupMembership` to map to the [hasMember method](https://developers.google.com/admin-sdk/directory/v1/reference/members/hasMember).
+* [Issue #188](https://github.com/scrthq/PSGSuite/issues/188)
+  * Added: `Get-GSDriveFile` now supports specifying a full file path.
+  * Fixed: `Get-GSDriveFile` will now replace any special path characters in the filename with underscores
+  * Added: The File object returned by `Get-GSDriveFile` will now include an additional `OutFilePath` property if the file is downloaded. This property will contain the full path to the downloaded file.
+* [Issue #190](https://github.com/scrthq/PSGSuite/issues/190)
+  * Fixed: `Fields` parameter on `Get-GSDriveFile` and `Update-GSDriveFile` were not being honored.
+* [Issue #192](https://github.com/scrthq/PSGSuite/issues/192)
+  * Added: Parameters to `Update-GSDriveFile`:
+    * `CopyRequiresWriterPermission [switch]`
+    * `Starred [switch]`
+    * `Trashed [switch]`
+    * `WritersCanShare [switch]`
+* [Issue #194](https://github.com/scrthq/PSGSuite/issues/194)
+  * Added: Parameters to `Update-GSChromeOSDevice`:
+    * `AnnotatedAssetId [string]`
+    * `AnnotatedLocation [string]`
+    * `AnnotatedUser [string]`
+    * `Notes [string]`
+* [Issue #195](https://github.com/scrthq/PSGSuite/issues/195)
+  * Added: `Limit` parameter with `First` alias to the following `List` functions:
+    * `Get-GSActivityReport`
+    * `Get-GSAdminRole`
+    * `Get-GSAdminRoleAssignment`
+    * `Get-GSCalendar`
+    * `Get-GSCalendarAcl`
+    * `Get-GSCalendarEvent`
+    * `Get-GSChromeOSDevice`
+    * `Get-GSDataTransferApplication`
+    * `Get-GSDrive`
+    * `Get-GSDriveFileList`
+    * `Get-GSDrivePermission`
+    * `Get-GSGmailMessageList`
+    * `Get-GSGroup`
+    * `Get-GSGroupMember`
+    * `Get-GSMobileDevice`
+    * `Get-GSResource`
+    * `Get-GSTask`
+    * `Get-GSTaskList`
+    * `Get-GSUsageReport`
+    * `Get-GSUser`
+    * `Get-GSUserLicense`
+* [Issue #196](https://github.com/scrthq/PSGSuite/issues/196)
+  * Fixed: `Get-GSTeamDrive` was not paginating through the results.
+* [Issue #197](https://github.com/scrthq/PSGSuite/issues/197)
+  * Renamed: `Get-GSTeamDrive` has been changed to `Get-GSDrive`. `Get-GSTeamDrive` has been turned into an alias for `Get-GSDrive` to maintain backwards compatibility.
+  * Replaced: `SupportsTeamDrives = $true` with `SupportsAllDrives = $true` on all functions that have it.
 * Miscellaneous
-  * Improved build process to auto-update NuGet dependencies.
-  * Added new private function `Resolve-Email` to convert a name-part or the case-sensitive `me` to the full email address accordingly.
+  * Fixed: `Export-PSGSuiteConfig` is faster due to safely assuming that the P12Key and/or ClientSecrets values have already been pulled from the corresponding keys.
+  * Fixed: Incomplete documentation for `Test-GSGroupMembership`.
+  * Added: `UseDomainAdminAccess` switch parameter to `Get-GSTeamDrive`
+  * Removed: `Get-GSUserLicenseListPrivate` by rolling the `List` code into `Get-GSUserLicense`
+  * Removed: `Get-GSResourceListPrivate` by rolling the `List` code into `Get-GSResource`

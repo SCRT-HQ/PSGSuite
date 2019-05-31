@@ -224,7 +224,7 @@ function New-GSDriveFile {
                 $body.Parents = [String[]]$Parents
             }
             $request = $service.Files.Create($body)
-            $request.SupportsTeamDrives = $true
+            $request.SupportsAllDrives = $true
             if ($fs) {
                 $request.Fields = $($fs -join ",")
             }

@@ -65,16 +65,22 @@ task Clean -depends Init {
     Remove-Module -Name $env:BHProjectName -Force -ErrorAction SilentlyContinue
 
     if (Test-Path -Path $outputDir) {
-        Get-ChildItem -Path $outputDir -Recurse | Sort-Object {$_.FullName.Length} -Descending | ForEach-Object {
-            try {
-                Remove-Item $_.FullName -Force -Recurse
-            }
-            catch {
-                Write-Warning "Unable to delete: '$($_.FullName)'"
+        if ("$env:NoNugetRestore" -eq 'True') {
+            Write-BuildLog "Skipping DLL clean due to `$env:NoNugetRestore = $env:NoNugetRestore"
+            Get-ChildItem -Path $outputDir -Recurse -File | Where-Object {$_.FullName -notlike "$outputModVerDir\lib*"} | Sort-Object {$_.FullName.Length} -Descending | ForEach-Object {
+                try {
+                    Remove-Item $_.FullName -Force -Recurse
+                }
+                catch {
+                    Write-Warning "Unable to delete: '$($_.FullName)'"
+                }
             }
         }
+        else {
+            Remove-Item $outputDir -Recurse -Force
+        }
     }
-    else {
+    if (-not (Test-Path $outputDir)) {
         New-Item -Path $outputDir -ItemType Directory | Out-Null
     }
     "    Cleaned previous output directory [$outputDir]"
@@ -85,8 +91,10 @@ task Compile -depends Clean {
     $functionsToExport = @()
     $sutLib = [System.IO.Path]::Combine($sut,'lib')
     $aliasesToExport = (. $sut\Aliases\PSGSuite.Aliases.ps1).Keys
-    $modDir = New-Item -Path $outputModDir -ItemType Directory -ErrorAction SilentlyContinue
-    New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
+    if ("$env:NoNugetRestore" -ne 'True') {
+        $modDir = New-Item -Path $outputModDir -ItemType Directory -ErrorAction SilentlyContinue
+        New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
+    }
 
     # Append items to psm1
     Write-BuildLog 'Creating psm1...'
@@ -99,11 +107,16 @@ task Compile -depends Clean {
         "$(Get-Content $_.FullName -Raw)`nExport-ModuleMember -Function '$($_.BaseName)'`n" | Add-Content -Path $psm1 -Encoding UTF8
         $functionsToExport += $_.BaseName
     }
-
-    New-Item -Path "$outputModVerDir\lib" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
     Invoke-CommandWithLog {Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue -Force -Verbose:$false}
-    Write-BuildLog "Installing NuGet dependencies..."
-    Invoke-CommandWithLog {Install-NuGetDependencies -Destination $outputModVerDir -AddlSearchString $NuGetSearchStrings -Verbose}
+
+    if ("$env:NoNugetRestore" -ne 'True') {
+        New-Item -Path "$outputModVerDir\lib" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
+        Write-BuildLog "Installing NuGet dependencies..."
+        Invoke-CommandWithLog {Install-NuGetDependencies -Destination $outputModVerDir -AddlSearchString $NuGetSearchStrings -Verbose}
+    }
+    else {
+        Write-BuildLog "Skipping NuGet Restore due to `$env:NoNugetRestore = $env:NoNugetRestore"
+    }
 
     $aliasHashContents = (Get-Content "$sut\Aliases\PSGSuite.Aliases.ps1" -Raw).Trim()
 

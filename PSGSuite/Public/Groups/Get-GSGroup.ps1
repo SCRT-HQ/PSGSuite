@@ -26,6 +26,9 @@
 
     Defaults to 200
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
     .EXAMPLE
     Get-GSGroup -Where_IsAMember "joe@domain.com"
 
@@ -74,7 +77,12 @@
         [ValidateRange(1,200)]
         [Alias("MaxResults")]
         [Int]
-        $PageSize = "200"
+        $PageSize = 200,
+        [parameter(Mandatory = $false,ParameterSetName = "ListFilter")]
+        [parameter(Mandatory = $false,ParameterSetName = "ListWhereMember")]
+        [Alias('First')]
+        [Int]
+        $Limit = 0
     )
     Begin {
         $serviceParams = @{
@@ -142,11 +150,14 @@
                             $request.Customer = "my_customer"
                         }
                     }
-                    if ($PageSize) {
-                        $request.MaxResults = $PageSize
+                    if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                        Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                        $PageSize = $Limit
                     }
+                    $request.MaxResults = $PageSize
                     Write-Verbose $verbString
                     [int]$i = 1
+                    $overLimit = $false
                     do {
                         $result = $request.Execute()
                         if ($null -ne $result.GroupsValue) {
@@ -155,9 +166,18 @@
                         $request.PageToken = $result.NextPageToken
                         [int]$retrieved = ($i + $result.GroupsValue.Count) - 1
                         Write-Verbose "Retrieved $retrieved groups..."
+                        if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                            Write-Verbose "Limit reached: $Limit"
+                            $overLimit = $true
+                        }
+                        elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                            $newPS = $Limit - $retrieved
+                            Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                            $request.MaxResults = $newPS
+                        }
                         [int]$i = $i + $result.GroupsValue.Count
                     }
-                    until (!$result.NextPageToken)
+                    until ($overLimit -or !$result.NextPageToken)
                 }
                 catch {
                     if ($ErrorActionPreference -eq 'Stop') {

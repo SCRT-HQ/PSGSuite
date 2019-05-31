@@ -28,6 +28,9 @@ function Get-GSGmailMessageList {
     .PARAMETER PageSize
     The page size of the result set
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
     .EXAMPLE
     Get-GSGmailMessageList -Filter "to:me","after:2017/12/25" -ExcludeChats
 
@@ -58,7 +61,11 @@ function Get-GSGmailMessageList {
         [parameter(Mandatory = $false)]
         [ValidateRange(1,500)]
         [Int]
-        $PageSize = "500"
+        $PageSize = 500,
+        [parameter(Mandatory = $false)]
+        [Alias('First')]
+        [Int]
+        $Limit = 0
     )
     Process {
         try {
@@ -99,9 +106,11 @@ function Get-GSGmailMessageList {
                         }
                     }
                 }
-                if ($PageSize) {
-                    $request.MaxResults = $PageSize
+                if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                    Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                    $PageSize = $Limit
                 }
+                $request.MaxResults = $PageSize
                 if ($Filter) {
                     Write-Verbose "Getting all Messages matching filter '$Filter' for user '$U'"
                 }
@@ -109,6 +118,7 @@ function Get-GSGmailMessageList {
                     Write-Verbose "Getting all Messages for user '$U'"
                 }
                 [int]$i = 1
+                $overLimit = $false
                 do {
                     $result = $request.Execute()
                     if ($result.Messages) {
@@ -119,9 +129,18 @@ function Get-GSGmailMessageList {
                     }
                     [int]$retrieved = ($i + $result.Messages.Count) - 1
                     Write-Verbose "Retrieved $retrieved Messages..."
+                    if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                        Write-Verbose "Limit reached: $Limit"
+                        $overLimit = $true
+                    }
+                    elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                        $newPS = $Limit - $retrieved
+                        Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                        $request.MaxResults = $newPS
+                    }
                     [int]$i = $i + $result.Messages.Count
                 }
-                until (!$result.NextPageToken)
+                until ($overLimit -or !$result.NextPageToken)
             }
         }
         catch {

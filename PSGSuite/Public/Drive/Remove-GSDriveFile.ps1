@@ -48,7 +48,7 @@ function Remove-GSDriveFile {
                 if ($PSCmdlet.ShouldProcess("Deleting File Id '$file' from user '$User'")) {
                     Write-Verbose "Deleting File Id '$file' from user '$User'"
                     $request = $service.Files.Delete($file)
-                    $request.SupportsTeamDrives = $true
+                    $request.SupportsAllDrives = $true
                     $request.Execute()
                     Write-Verbose "File Id '$file' successfully deleted from user '$User'"
                 }

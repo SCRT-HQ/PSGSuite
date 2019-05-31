@@ -32,6 +32,9 @@ function Get-GSCalendarEvent {
     .PARAMETER PageSize
     Maximum number of events returned on one result page.
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
     .PARAMETER ShowDeleted
     Whether to include deleted events (with status equals "cancelled") in the result. Cancelled instances of recurring events (but not the underlying recurring event) will still be included if showDeleted and singleEvents are both False. If showDeleted and singleEvents are both True, only single instances of deleted events (but not the underlying recurring events) are returned.
 
@@ -82,6 +85,10 @@ function Get-GSCalendarEvent {
         [ValidateRange(1,2500)]
         [Int]
         $PageSize = 2500,
+        [parameter(Mandatory = $false,ParameterSetName = 'List')]
+        [Alias('First')]
+        [Int]
+        $Limit = 0,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [switch]
         $ShowDeleted,
@@ -169,9 +176,11 @@ function Get-GSCalendarEvent {
                                     }
                                 }
                             }
-                            if ($PageSize) {
-                                $request.MaxResults = $PageSize
+                            if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                                Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                                $PageSize = $Limit
                             }
+                            $request.MaxResults = $PageSize
                             if ($Filter) {
                                 Write-Verbose "Getting all Calendar Events matching filter '$Filter' on calendar '$calId' for user '$U'"
                             }
@@ -179,6 +188,7 @@ function Get-GSCalendarEvent {
                                 Write-Verbose "Getting all Calendar Events on calendar '$calId' for user '$U'"
                             }
                             [int]$i = 1
+                            $overLimit = $false
                             do {
                                 $result = $request.Execute()
                                 $result.Items | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $calId -PassThru
@@ -187,9 +197,18 @@ function Get-GSCalendarEvent {
                                 }
                                 [int]$retrieved = ($i + $result.Items.Count) - 1
                                 Write-Verbose "Retrieved $retrieved Calendar Events..."
+                                if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                                    Write-Verbose "Limit reached: $Limit"
+                                    $overLimit = $true
+                                }
+                                elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                                    $newPS = $Limit - $retrieved
+                                    Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                                    $request.MaxResults = $newPS
+                                }
                                 [int]$i = $i + $result.Items.Count
                             }
-                            until (!$result.NextPageToken)
+                            until ($overLimit -or !$result.NextPageToken)
                         }
                         catch {
                             if ($ErrorActionPreference -eq 'Stop') {

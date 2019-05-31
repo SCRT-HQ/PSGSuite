@@ -24,6 +24,9 @@
     .PARAMETER PageSize
     Page size of the result set
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
     .PARAMETER OrderBy
     Device property to use for sorting results.
 
@@ -69,7 +72,11 @@
         [parameter(Mandatory = $false)]
         [ValidateRange(1,1000)]
         [Int]
-        $PageSize = "1000",
+        $PageSize = 1000,
+        [parameter(Mandatory = $false)]
+        [Alias('First')]
+        [Int]
+        $Limit = 0,
         [parameter(Mandatory = $false)]
         [ValidateSet("deviceId","email","lastSync","model","name","os","status","type")]
         [String]
@@ -85,10 +92,23 @@
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
+        $customerId = if ($Script:PSGSuite.CustomerID) {
+            $Script:PSGSuite.CustomerID
+        }
+        else {
+            "my_customer"
+        }
     }
     Process {
         try {
-            $request = $service.Mobiledevices.List($Script:PSGSuite.CustomerID)
+            $request = $service.Mobiledevices.List($customerId)
+            if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                $PageSize = $Limit
+            }
+            $request.MaxResults = $PageSize
+            [int]$i = 1
+            $overLimit = $false
             switch ($PSCmdlet.ParameterSetName) {
                 User {
                     if ($User) {
@@ -102,57 +122,75 @@
                             $Filter = "email:`"$U`""
                             $request.Query = $Filter
                             Write-Verbose "Getting Mobile Device list for User '$U'"
-                            $response = @()
-                            [int]$i = 1
                             do {
                                 $result = $request.Execute()
-                                $response += $result.Mobiledevices
+                                $result.Mobiledevices
                                 if ($result.NextPageToken) {
                                     $request.PageToken = $result.NextPageToken
                                 }
                                 [int]$retrieved = ($i + $result.Mobiledevices.Count) - 1
                                 Write-Verbose "Retrieved $retrieved Mobile Devices..."
+                                if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                                    Write-Verbose "Limit reached: $Limit"
+                                    $overLimit = $true
+                                }
+                                elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                                    $newPS = $Limit - $retrieved
+                                    Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                                    $request.MaxResults = $newPS
+                                }
                                 [int]$i = $i + $result.Mobiledevices.Count
                             }
-                            until (!$result.NextPageToken)
-                            return $response
+                            until ($overLimit -or !$result.NextPageToken)
                         }
                     }
                     else {
                         Write-Verbose "Getting Mobile Device list for customer '$($script:PSGSuite.CustomerID)'"
-                        $response = @()
-                        [int]$i = 1
                         do {
                             $result = $request.Execute()
-                            $response += $result.Mobiledevices
+                            $result.Mobiledevices
                             if ($result.NextPageToken) {
                                 $request.PageToken = $result.NextPageToken
                             }
                             [int]$retrieved = ($i + $result.Mobiledevices.Count) - 1
                             Write-Verbose "Retrieved $retrieved Mobile Devices..."
+                            if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                                Write-Verbose "Limit reached: $Limit"
+                                $overLimit = $true
+                            }
+                            elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                                $newPS = $Limit - $retrieved
+                                Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                                $request.MaxResults = $newPS
+                            }
                             [int]$i = $i + $result.Mobiledevices.Count
                         }
-                        until (!$result.NextPageToken)
-                        return $response
+                        until ($overLimit -or !$result.NextPageToken)
                     }
                 }
                 Query {
                     $request.Query = $Filter
                     Write-Verbose "Getting Mobile Device list for filter '$Filter'"
-                    $response = @()
-                    [int]$i = 1
                     do {
                         $result = $request.Execute()
-                        $response += $result.Mobiledevices
+                        $result.Mobiledevices
                         if ($result.NextPageToken) {
                             $request.PageToken = $result.NextPageToken
                         }
                         [int]$retrieved = ($i + $result.Mobiledevices.Count) - 1
                         Write-Verbose "Retrieved $retrieved Mobile Devices..."
+                        if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                            Write-Verbose "Limit reached: $Limit"
+                            $overLimit = $true
+                        }
+                        elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                            $newPS = $Limit - $retrieved
+                            Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                            $request.MaxResults = $newPS
+                        }
                         [int]$i = $i + $result.Mobiledevices.Count
                     }
-                    until (!$result.NextPageToken)
-                    return $response
+                    until ($overLimit -or !$result.NextPageToken)
                 }
             }
         }

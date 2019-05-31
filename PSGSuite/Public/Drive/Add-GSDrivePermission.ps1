@@ -179,7 +179,7 @@ function Add-GSDrivePermission {
                 }
             }
             $request = $service.Permissions.Create($body,$FileId)
-            $request.SupportsTeamDrives = $true
+            $request.SupportsAllDrives = $true
             foreach ($key in $PSBoundParameters.Keys) {
                 if ($request.PSObject.Properties.Name -contains $key -and $key -ne 'FileId') {
                     $request.$key = $PSBoundParameters[$key]

@@ -29,6 +29,18 @@ function Update-GSChromeOSDevice {
     * "retiring_device": Use if you're reselling, donating, or permanently removing the device from use.
     * "same_model_replacement": Use if a hardware issue was encountered on a device and it is being replaced with the same model or a like-model replacement from a repair vendor / manufacturer.
 
+    .PARAMETER AnnotatedAssetId
+    The asset identifier as noted by an administrator or specified during enrollment.
+
+    .PARAMETER AnnotatedLocation
+    The address or location of the device as noted by the administrator. Maximum length is 200 characters. Empty values are allowed.
+
+    .PARAMETER AnnotatedUser
+    The user of the device as noted by the administrator. Maximum length is 100 characters. Empty values are allowed.
+
+    .PARAMETER Notes
+    Notes about this device added by the administrator. This property can be searched with the list method's query parameter. Maximum length is 500 characters. Empty values are allowed.
+
     .PARAMETER OrgUnitPath
     Full path of the target organizational unit or its ID that you would like to move the device to.
 
@@ -53,6 +65,21 @@ function Update-GSChromeOSDevice {
         [ValidateSet('different_model_replacement','retiring_device','same_model_replacement')]
         [String]
         $DeprovisionReason,
+        [parameter(Mandatory = $false)]
+        [String]
+        $AnnotatedAssetId,
+        [parameter(Mandatory = $false)]
+        [AllowNull()]
+        [String]
+        $AnnotatedLocation,
+        [parameter(Mandatory = $false)]
+        [AllowNull()]
+        [String]
+        $AnnotatedUser,
+        [parameter(Mandatory = $false)]
+        [AllowNull()]
+        [String]
+        $Notes,
         [parameter(Mandatory = $false)]
         [String]
         $OrgUnitPath

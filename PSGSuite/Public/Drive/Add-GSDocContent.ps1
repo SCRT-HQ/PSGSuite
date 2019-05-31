@@ -69,7 +69,7 @@ function Add-GSDocContent {
             $request = $service.Files.Update($body,$FileId,$stream,$contentType)
             $request.QuotaUser = $User
             $request.ChunkSize = 512KB
-            $request.SupportsTeamDrives = $true
+            $request.SupportsAllDrives = $true
             Write-Verbose "Adding content to File '$FileID'"
             $request.Upload() | Out-Null
         }
