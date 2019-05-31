@@ -1,26 +1,16 @@
 # PSGSuite
 <div align="center">
-<img src="bin/img/psgsuite2.0.0.png" alt="PSGSuite 2.0.0 released!" />
-</br>
-</br>
+  <img src="bin/img/psgsuite2.0.0.png" alt="PSGSuite 2.0.0 released!" />
+  </br>
+  </br>
   <!-- Azure Pipelines -->
   <a href="https://dev.azure.com/scrthq/SCRT%20HQ/_build/latest?definitionId=2">
     <img src="https://dev.azure.com/scrthq/SCRT%20HQ/_apis/build/status/PSGSuite-CI"
       alt="Azure Pipelines" title="Azure Pipelines" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <!-- Codacy -->
-  <a href="https://www.codacy.com/app/scrthq/PSGSuite?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scrthq/PSGSuite&amp;utm_campaign=Badge_Grade">
-    <img src="https://api.codacy.com/project/badge/Grade/0d5203a1cf1945fe94c46b779eecb7f0"
-      alt="Codacy" title="Codacy" />
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <!-- PS Gallery -->
-  <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
-    <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat&logo=powershell"
-      alt="PowerShell Gallery" title="PowerShell Gallery" />
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Discord -->
   <a href="https://discord.gg/G66zVG7">
-    <img src="https://img.shields.io/discord/235574673155293194.svg?style=flat&label=Discord&logo=discord"
+    <img src="https://img.shields.io/discord/235574673155293194.svg?style=flat&label=Discord&logo=discord&color=purple"
       alt="Discord - Chat" title="Discord - Chat" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Slack -->
@@ -30,8 +20,30 @@
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Gitter -->
   <a href="https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
-    <img src="https://img.shields.io/gitter/room/scrthq/PSGSuite.svg?logo=gitter&style=flat"
+    <img src="https://img.shields.io/gitter/room/scrthq/PSGSuite.svg?logo=gitter&style=flat&color=red"
       alt="Gitter - Chat" title="Gitter - Chat" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- Codacy -->
+  <a href="https://www.codacy.com/app/scrthq/PSGSuite?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scrthq/PSGSuite&amp;utm_campaign=Badge_Grade">
+    <img src="https://api.codacy.com/project/badge/Grade/0d5203a1cf1945fe94c46b779eecb7f0"
+      alt="Codacy" title="Codacy" />
+  </a>
+  </br>
+  </br>
+  <!-- PS Gallery -->
+  <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
+    <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat&logo=powershell&color=blue"
+      alt="PowerShell Gallery" title="PowerShell Gallery" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- GitHub Releases -->
+  <a href="https://github.com/scrthq/PSGSuite/releases/latest">
+    <img src="https://img.shields.io/github/downloads/scrthq/PSGSuite/total.svg?logo=github&color=blue"
+      alt="GitHub Releases" title="GitHub Releases" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- GitHub Releases -->
+  <a href="https://github.com/scrthq/PSGSuite/releases/latest">
+    <img src="https://img.shields.io/github/release/scrthq/PSGSuite.svg?label=version&logo=github"
+      alt="GitHub Releases" title="GitHub Releases" />
   </a>
 </div>
 <br />
