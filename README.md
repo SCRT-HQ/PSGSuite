@@ -158,6 +158,11 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.28.1
+
+* [Issue #188](https://github.com/scrthq/PSGSuite/issues/188)
+  * Fixed: `Get-SafeFileName` correctly replaces special RegEx chars with underscores as well.
+
 #### 2.28.0
 
 * [Issue #188](https://github.com/scrthq/PSGSuite/issues/188)
