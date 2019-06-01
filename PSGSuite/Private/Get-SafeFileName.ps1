@@ -6,6 +6,6 @@ function Get-SafeFileName {
         $Name
     )
     Process {
-        $Name -replace "[$(([System.IO.Path]::GetInvalidFileNameChars() + [System.IO.Path]::GetInvalidPathChars()) -join '')]","_"
+        $Name -replace "[$([RegEx]::Escape("$(([System.IO.Path]::GetInvalidFileNameChars() + [System.IO.Path]::GetInvalidPathChars()) -join '')"))]","_"
     }
 }

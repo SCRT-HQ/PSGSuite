@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+  * [2.28.1](#2281)
   * [2.28.0](#2280)
   * [2.27.0](#2270)
   * [2.26.4](#2264)
@@ -87,6 +88,11 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.28.1
+
+* [Issue #188](https://github.com/scrthq/PSGSuite/issues/188)
+  * Fixed: `Get-SafeFileName` correctly replaces special RegEx chars with underscores as well.
 
 ## 2.28.0
 
