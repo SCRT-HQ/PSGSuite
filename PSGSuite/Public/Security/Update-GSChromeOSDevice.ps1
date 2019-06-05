@@ -152,7 +152,7 @@ function Update-GSChromeOSDevice {
             foreach ($dev in $ResourceId) {
                 try {
                     Write-Verbose "Updating Chrome OS Device '$dev'"
-                    $request = $service.Chromeosdevices.Patch($actionBody,$customerId,$dev)
+                    $request = $service.Chromeosdevices.Patch($body,$customerId,$dev)
                     $request.Execute()
                 }
                 catch {

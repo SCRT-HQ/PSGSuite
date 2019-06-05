@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+  * [2.28.2](#2282)
   * [2.28.1](#2281)
   * [2.28.0](#2280)
   * [2.27.0](#2270)
@@ -88,6 +89,15 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.28.2
+
+* [Issue #194](https://github.com/scrthq/PSGSuite/issues/194)
+  * Fixed: Parameters not setting correctyl on `Update-GSChromeOSDevice`:
+    * `AnnotatedAssetId [string]`
+    * `AnnotatedLocation [string]`
+    * `AnnotatedUser [string]`
+    * `Notes [string]`
 
 ## 2.28.1
 
