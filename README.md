@@ -158,6 +158,15 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.28.2
+
+* [Issue #194](https://github.com/scrthq/PSGSuite/issues/194)
+  * Fixed: Parameters not setting correctyl on `Update-GSChromeOSDevice`:
+    * `AnnotatedAssetId [string]`
+    * `AnnotatedLocation [string]`
+    * `AnnotatedUser [string]`
+    * `Notes [string]`
+
 #### 2.28.1
 
 * [Issue #188](https://github.com/scrthq/PSGSuite/issues/188)
