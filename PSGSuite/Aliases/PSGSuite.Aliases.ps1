@@ -1,3 +1,4 @@
+#    Alias  =>  =>  =>  =>  =>  =>  =>  =>  Function
 @{
     'Add-GSDriveFilePermissions'        = 'Add-GSDrivePermission'
     'Export-PSGSuiteConfiguration'      = 'Set-PSGSuiteConfig'
@@ -33,10 +34,13 @@
     'Import-PSGSuiteConfiguration'      = 'Get-PSGSuiteConfig'
     'Move-GSGmailMessageToTrash'        = 'Remove-GSGmailMessage'
     'New-GSCalendarResource'            = 'New-GSResource'
+    'New-GSTeamDrive'                   = 'New-GSDrive'
     'Remove-GSGmailMessageFromTrash'    = 'Restore-GSGmailMessage'
+    'Remove-GSTeamDrive'                = 'Remove-GSDrive'
     'Set-PSGSuiteDefaultDomain'         = 'Switch-PSGSuiteConfig'
     'Switch-PSGSuiteDomain'             = 'Switch-PSGSuiteConfig'
     'Update-GSCalendarResource'         = 'Update-GSResource'
     'Update-GSGmailSendAsSettings'      = 'Update-GSGmailSendAsAlias'
     'Update-GSSheetValue'               = 'Export-GSSheet'
+    'Update-GSTeamDrive'                = 'Update-GSDrive'
 }

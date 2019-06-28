@@ -1,31 +1,31 @@
-function Remove-GSTeamDrive {
+function Remove-GSDrive {
     <#
     .SYNOPSIS
-    Removes a Team Drive
+    Removes a Shared Drive
 
     .DESCRIPTION
-    Removes a Team Drive
+    Removes a Shared Drive
 
-    .PARAMETER TeamDriveId
-    The Id of the Team Drive to remove
+    .PARAMETER DriveId
+    The Id of the Shared Drive to remove
 
     .PARAMETER User
-    The email or unique Id of the user with permission to delete the Team Drive
+    The email or unique Id of the user with permission to delete the Shared Drive
 
     Defaults to the AdminEmail user
 
     .EXAMPLE
-    Remove-TeamDrive -TeamDriveId "0AJ8Xjq3FcdCKUk9PVA" -Confirm:$false
+    Remove-Drive -DriveId "0AJ8Xjq3FcdCKUk9PVA" -Confirm:$false
 
-    Removes the Team Drive '0AJ8Xjq3FcdCKUk9PVA', skipping confirmation
+    Removes the Shared Drive '0AJ8Xjq3FcdCKUk9PVA', skipping confirmation
     #>
     [cmdletbinding(SupportsShouldProcess=$true,ConfirmImpact="High")]
     Param
     (
         [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
-        [Alias('Id')]
+        [Alias('Id','TeamDriveId')]
         [String[]]
-        $TeamDriveId,
+        $DriveId,
         [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
         [Alias('Owner','PrimaryEmail','UserKey','Mail')]
         [string]
@@ -45,12 +45,12 @@ function Remove-GSTeamDrive {
         }
         $service = New-GoogleService @serviceParams
         try {
-            foreach ($id in $TeamDriveId) {
-                if ($PSCmdlet.ShouldProcess("Deleting Team Drive '$id' from user '$User'")) {
-                    Write-Verbose "Deleting Team Drive '$id' from user '$User'"
-                    $request = $service.Teamdrives.Delete($id)
+            foreach ($id in $DriveId) {
+                if ($PSCmdlet.ShouldProcess("Deleting Shared Drive '$id' from user '$User'")) {
+                    Write-Verbose "Deleting Shared Drive '$id' from user '$User'"
+                    $request = $service.Drives.Delete($id)
                     $request.Execute()
-                    Write-Verbose "Team Drive '$id' successfully deleted from user '$User'"
+                    Write-Verbose "Shared Drive '$id' successfully deleted from user '$User'"
                 }
             }
         }
