@@ -1,4 +1,5 @@
-* [PSGSuite - ChangeLog](#psgsuite---changelog)
+* [PSGSuite - ChangeLog](#PSGSuite---ChangeLog)
+  * [2.29.0](#2290)
   * [2.28.2](#2282)
   * [2.28.1](#2281)
   * [2.28.0](#2280)
@@ -80,15 +81,27 @@
   * [2.0.2](#202)
   * [2.0.1](#201)
   * [2.0.0](#200)
-    * [New Functionality](#new-functionality)
-    * [Breaking Changes in 2.0.0](#breaking-changes-in-200)
-      * [Gmail Delegation Management Removed](#gmail-delegation-management-removed)
-      * [Functions Removed](#functions-removed)
-      * [Functions Aliased](#functions-aliased)
+    * [New Functionality](#New-Functionality)
+    * [Breaking Changes in 2.0.0](#Breaking-Changes-in-200)
+      * [Gmail Delegation Management Removed](#Gmail-Delegation-Management-Removed)
+      * [Functions Removed](#Functions-Removed)
+      * [Functions Aliased](#Functions-Aliased)
 
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.29.0
+
+* [Issue #201](https://github.com/scrthq/PSGSuite/issues/201)
+  * Fixed: Fields parameter on remaining `*-GSDriveFile` functions
+* [Issue #197](https://github.com/scrthq/PSGSuite/issues/197)
+  * Updated: All remaining `*-TeamDrive` functions now use the new Drives namespace. All previous functions names have been converted to aliases to maintain backwards compatibility.
+  * Added: `Hide-GSDrive`
+  * Added: `Show-GSDrive`
+* [Issue #184](https://github.com/scrthq/PSGSuite/issues/184)
+  * Added: `EnableCollaborativeInbox` parameter to `Update-GSGroupSettings`
+  * Added: `WhoCanDiscoverGroup` parameter to `Update-GSGroupSettings`
 
 ## 2.28.2
 

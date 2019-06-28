@@ -39,6 +39,9 @@ function Update-GSGroupSettings {
     .PARAMETER Email
     Email id of the group
 
+    .PARAMETER EnableCollaborativeInbox
+    Specifies whether the collaborative inbox functionality will be turned on or off for the group.
+
     .PARAMETER IncludeCustomFooter
     Whether to include custom footer
 
@@ -112,6 +115,13 @@ function Update-GSGroupSettings {
     * "ALL_IN_DOMAIN_CAN_CONTACT"
     * "ALL_MEMBERS_CAN_CONTACT"
     * "ALL_MANAGERS_CAN_CONTACT"
+
+    .PARAMETER WhoCanDiscoverGroup
+    Specifies the set of users for whom this group is discoverable.
+    Available values are:
+    * "ANYONE_CAN_DISCOVER"
+    * "ALL_IN_DOMAIN_CAN_DISCOVER"
+    * "ALL_MEMBERS_CAN_DISCOVER"
 
     .PARAMETER WhoCanInvite
     Permissions to invite members.
@@ -212,6 +222,9 @@ function Update-GSGroupSettings {
         $Email,
         [parameter(Mandatory = $false)]
         [Switch]
+        $EnableCollaborativeInbox,
+        [parameter(Mandatory = $false)]
+        [Switch]
         $IncludeCustomFooter,
         [parameter(Mandatory = $false)]
         [Switch]
@@ -255,6 +268,10 @@ function Update-GSGroupSettings {
         [ValidateSet("ALL_IN_DOMAIN_CAN_CONTACT","ALL_MANAGERS_CAN_CONTACT","ALL_MEMBERS_CAN_CONTACT","ANYONE_CAN_CONTACT")]
         [String]
         $WhoCanContactOwner,
+        [parameter(Mandatory = $false)]
+        [ValidateSet("ANYONE_CAN_DISCOVER","ALL_IN_DOMAIN_CAN_DISCOVER","ALL_MEMBERS_CAN_DISCOVER")]
+        [String]
+        $WhoCanDiscoverGroup,
         [parameter(Mandatory = $false)]
         [ValidateSet("ALL_MANAGERS_CAN_INVITE","ALL_MEMBERS_CAN_INVITE","NONE_CAN_INVITE")]
         [String]
