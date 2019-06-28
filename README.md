@@ -169,12 +169,3 @@ All other functions are either intact or have an alias included to support backw
 * [Issue #184](https://github.com/scrthq/PSGSuite/issues/184)
   * Added: `EnableCollaborativeInbox` parameter to `Update-GSGroupSettings`
   * Added: `WhoCanDiscoverGroup` parameter to `Update-GSGroupSettings`
-
-## 2.28.2
-
-* [Issue #194](https://github.com/scrthq/PSGSuite/issues/194)
-  * Fixed: Parameters not setting correctyl on `Update-GSChromeOSDevice`:
-    * `AnnotatedAssetId [string]`
-    * `AnnotatedLocation [string]`
-    * `AnnotatedUser [string]`
-    * `Notes [string]`
