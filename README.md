@@ -168,4 +168,4 @@ All other functions are either intact or have an alias included to support backw
   * Added: `Show-GSDrive`
 * [Issue #184](https://github.com/scrthq/PSGSuite/issues/184)
   * Added: `EnableCollaborativeInbox` parameter to `Update-GSGroupSettings`
-  * Added: `WhoCanDiscoverGroup` parameter to `Update-GSGroupSettings`
+  * Added: `WhoCanDiscoverGroup` parameter to `Update-GSGroupSettings`.
