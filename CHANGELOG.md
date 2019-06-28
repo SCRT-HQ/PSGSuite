@@ -99,6 +99,9 @@
   * Updated: All remaining `*-TeamDrive` functions now use the new Drives namespace. All previous functions names have been converted to aliases to maintain backwards compatibility.
   * Added: `Hide-GSDrive`
   * Added: `Show-GSDrive`
+* [Issue #184](https://github.com/scrthq/PSGSuite/issues/184)
+  * Added: `EnableCollaborativeInbox` parameter to `Update-GSGroupSettings`
+  * Added: `WhoCanDiscoverGroup` parameter to `Update-GSGroupSettings`
 
 ## 2.28.2
 
