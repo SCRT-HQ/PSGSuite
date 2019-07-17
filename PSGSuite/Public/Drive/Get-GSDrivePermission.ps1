@@ -32,13 +32,14 @@ function Get-GSDrivePermission {
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (
-        [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
+        [Alias('Id')]
+        [String]
+        $FileId,
+        [parameter(Mandatory = $false,Position = 1,ValueFromPipelineByPropertyName = $true)]
         [Alias('Owner','PrimaryEmail','UserKey','Mail')]
         [string]
         $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $true)]
-        [String]
-        $FileId,
         [parameter(Mandatory = $false,ParameterSetName = "Get")]
         [String[]]
         $PermissionId,

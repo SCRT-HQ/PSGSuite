@@ -78,11 +78,8 @@ function Add-GSDrivePermission {
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High",DefaultParameterSetName = "Email")]
     Param
     (
-        [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
-        [Alias('Owner','PrimaryEmail','UserKey','Mail')]
-        [string]
-        $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $true)]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
+        [Alias('Id')]
         [String]
         $FileId,
         [parameter(Mandatory = $true)]
@@ -93,6 +90,10 @@ function Add-GSDrivePermission {
         [ValidateSet("User","Group","Domain","Anyone")]
         [String]
         $Type,
+        [parameter(Mandatory = $false,Position = 1,ValueFromPipelineByPropertyName = $true)]
+        [Alias('Owner','PrimaryEmail','UserKey','Mail')]
+        [string]
+        $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false,ParameterSetName = "Email")]
         [String]
         $EmailAddress,

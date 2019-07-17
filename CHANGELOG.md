@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#PSGSuite---ChangeLog)
+  * [2.30.0](#2300)
   * [2.29.0](#2290)
   * [2.28.2](#2282)
   * [2.28.1](#2281)
@@ -90,6 +91,25 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.30.0
+
+* [Issue #193](https://github.com/scrthq/PSGSuite/issues/193)
+  * Added: Drive Revision functions:
+    * `Get-GSDriveRevision`
+    * `Remove-GSDriveRevision`
+    * `Update-GSDriveRevision`
+* [Issue #210](https://github.com/scrthq/PSGSuite/issues/210)
+  * Fixed: `Update-GSUser` was not accepting User ID's as the User parameter
+* [Issue #209](https://github.com/scrthq/PSGSuite/issues/209)
+  * Added: Support for inline image downloading with `Get-GSGmailMessage` where the image is not included on the Attachments property of the parsed message object.
+  * Fixed: `Get-GSGmailMessage` will now automatically set the `Format` to `Raw` if either `ParseMessage` or `SaveAttachmentsTo` is passed, as `ParseMessage` is a requirement in order to be able to access the message attachments as needed.
+* [Issue #204](https://github.com/scrthq/PSGSuite/issues/204)
+  * Added: `Recurse` parameter to `Get-GSDriveFileList` to allow recursively listing all files and subfolders underneath the result set. Confirmed setting the `Limit` parameter also works as expected with `Recurse` included, stopping is the original limit is reached.
+  * Added: `Get-GSDriveFolderSize` function to return the calculated total size of the files in the specified folder(s).
+* Miscellaneous
+  * Added: `Rfc822MsgId` parameter to `Get-GSGmailMessageList` to easily build a query looking for a specific RFS 822 Message ID.
+  * Added: Pipeline support for `*-GSDrivePermission` functions to enable piping Drive Files into them to manage permissions without looping manually.
 
 ## 2.29.0
 
