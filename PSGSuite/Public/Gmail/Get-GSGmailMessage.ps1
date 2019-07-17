@@ -68,7 +68,7 @@ function Get-GSGmailMessage {
         elseif ($User -notlike "*@*.*") {
             $User = "$($User)@$($Script:PSGSuite.Domain)"
         }
-        if ($ParseMessage) {
+        if ($ParseMessage -or $SaveAttachmentsTo) {
             $Format = "Raw"
         }
         $serviceParams = @{
@@ -92,11 +92,22 @@ function Get-GSGmailMessage {
                 }
                 Write-Verbose "Getting Message Id '$mId' for user '$User'"
                 $result = $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
-                if ($ParseMessage) {
+                if ($ParseMessage -or $SaveAttachmentsTo) {
                     $parsed = Read-MimeMessage -String $(Convert-Base64 -From WebSafeBase64String -To NormalString -String $result.Raw) | Select-Object @{N = 'User';E = {$User}},@{N = "Id";E = {$result.Id}},@{N = "ThreadId";E = {$result.ThreadId}},@{N = "LabelIds";E = {$result.LabelIds}},@{N = "Snippet";E = {$result.Snippet}},@{N = "HistoryId";E = {$result.HistoryId}},@{N = "InternalDate";E = {$result.InternalDate}},@{N = "InternalDateConverted";E = {Convert-EpochToDate -EpochString $result.internalDate}},@{N = "SizeEstimate";E = {$result.SizeEstimate}},*
                     if ($SaveAttachmentsTo) {
                         $resPath = Resolve-Path $SaveAttachmentsTo
-                        $attachments = $parsed.Attachments
+                        $attachments = New-Object System.Collections.Generic.List[object]
+                        if ($parsed.Attachments | Where-Object {$_.FileName}) {
+                            $parsed.Attachments | Where-Object {$_.FileName} | ForEach-Object {
+                                $attachments.Add($_)
+                            }
+                        }
+                        if ($parsed.BodyParts | Where-Object {$_.FileName}) {
+                            $parsed.BodyParts | Where-Object {$_.FileName} | ForEach-Object {
+                                $attachments.Add($_)
+                            }
+                        }
+                        $attachments = $attachments | Sort-Object {"$($_.FileName)_$($_.ContentId)"} -Unique
                         foreach ($att in $attachments) {
                             $cleanedName = Get-SafeFileName $att.FileName
                             $fileName = Join-Path $resPath $cleanedName

@@ -221,12 +221,7 @@ function Update-GSUser {
     Process {
         foreach ($U in $User) {
             try {
-                if ($U -ceq 'me') {
-                    $U = $Script:PSGSuite.AdminEmail
-                }
-                elseif ($U -notlike "*@*.*") {
-                    $U = "$($U)@$($Script:PSGSuite.Domain)"
-                }
+                Resolve-Email ([ref]$U)
                 if ($PSCmdlet.ShouldProcess("Updating user '$U'")) {
                     Write-Verbose "Updating user '$U'"
                     $userObj = Get-GSUser $U -Verbose:$false

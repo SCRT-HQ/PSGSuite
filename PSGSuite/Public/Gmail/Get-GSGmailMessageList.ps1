@@ -37,17 +37,21 @@ function Get-GSGmailMessageList {
     Gets the list of messages sent directly to the user after 2017/12/25 excluding chats
     #>
     [OutputType('Google.Apis.Gmail.v1.Data.Message')]
-    [cmdletbinding()]
+    [cmdletbinding(DefaultParameterSetName = "Filter")]
     Param
     (
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail")]
         [String]
         $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ParameterSetName = "Filter")]
         [Alias('Query')]
         [String[]]
         $Filter,
+        [parameter(Mandatory = $false,ParameterSetName = "Rfc822MsgId")]
+        [Alias('MessageId','MsgId')]
+        [String]
+        $Rfc822MsgId,
         [parameter(Mandatory = $false)]
         [Alias('LabelId')]
         [String[]]
@@ -93,6 +97,9 @@ function Get-GSGmailMessageList {
                 $request = $service.Users.Messages.List($U)
                 foreach ($key in $PSBoundParameters.Keys) {
                     switch ($key) {
+                        Rfc822MsgId {
+                            $request.Q = "rfc822msgid:$($Rfc822MsgId.Trim())"
+                        }
                         Filter {
                             $request.Q = $($Filter -join " ")
                         }
@@ -111,8 +118,8 @@ function Get-GSGmailMessageList {
                     $PageSize = $Limit
                 }
                 $request.MaxResults = $PageSize
-                if ($Filter) {
-                    Write-Verbose "Getting all Messages matching filter '$Filter' for user '$U'"
+                if ($request.Q) {
+                    Write-Verbose "Getting all Messages matching filter '$($request.Q)' for user '$U'"
                 }
                 else {
                     Write-Verbose "Getting all Messages for user '$U'"

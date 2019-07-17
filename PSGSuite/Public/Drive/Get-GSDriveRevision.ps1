@@ -21,14 +21,14 @@ function Get-GSDriveRevision {
     The specific fields to returned
 
     .EXAMPLE
-    Get-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976'
+    Get-GSDriveFile -FileId $fileId | Get-GSDriveRevision
 
-    Gets the information for the file
+    Gets the list of revisions for the file
 
     .EXAMPLE
-    Get-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -OutFilePath (Get-Location).Path
+    Get-GSDriveRevision -FileId $fileId -Limit 1
 
-    Gets the information for the file and saves the file in the current working directory
+    Gets the most recent revision for the file
     #>
     [OutputType('Google.Apis.Drive.v3.Data.Revision')]
     [cmdletbinding(DefaultParameterSetName = "List")]
@@ -49,9 +49,9 @@ function Get-GSDriveRevision {
         [Alias('Owner','PrimaryEmail','UserKey','Mail')]
         [string]
         $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $false,ParameterSetName = "Fields")]
+        [parameter(Mandatory = $false)]
         [String[]]
-        $Fields,
+        $Fields = '*',
         [parameter(Mandatory = $false,ParameterSetName = "Get")]
         [Switch]
         $Force,
@@ -83,12 +83,10 @@ function Get-GSDriveRevision {
                 try {
                     foreach ($revision in $RevisionId) {
                         $request = $service.Revisions.Get($FileId,$revision)
-                        if ($Fields) {
-                            $request.Fields = $($Fields -join ",")
-                        }
                         $baseVerbose = "Getting"
                         if ($Fields) {
                             $baseVerbose += " Fields [$($Fields -join ",")] of"
+                            $request.Fields = $($Fields -join ",")
                         }
                         $baseVerbose += " Drive File Revision Id '$revision' of File Id '$FileId' for User '$User'"
                         Write-Verbose $baseVerbose
