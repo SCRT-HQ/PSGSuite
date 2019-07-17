@@ -31,7 +31,6 @@ function Remove-GSDrivePermission {
     Param
     (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
-        [Alias('Id')]
         [String]
         $FileId,
         [parameter(Mandatory = $false,Position = 1,ValueFromPipelineByPropertyName = $true)]

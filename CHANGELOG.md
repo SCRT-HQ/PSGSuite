@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#PSGSuite---ChangeLog)
+  * [2.30.1](#2301)
   * [2.30.0](#2300)
   * [2.29.0](#2290)
   * [2.28.2](#2282)
@@ -91,6 +92,11 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.30.1
+
+* Miscellaneous
+  * Fixed: `Remove-GSDrivePermission` duplicate parameter alias prevented usage after module update.
 
 ## 2.30.0
 

@@ -158,6 +158,11 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.30.1
+
+* Miscellaneous
+  * Fixed: `Remove-GSDrivePermission` duplicate parameter alias prevented usage after module update.
+
 #### 2.30.0
 
 * [Issue #193](https://github.com/scrthq/PSGSuite/issues/193)
