@@ -90,6 +90,7 @@ function Get-GSUserLicense {
             switch ($PSCmdlet.ParameterSetName) {
                 Get {
                     foreach ($U in $User) {
+                        $response = $null
                         if ($U -ceq 'me') {
                             $U = $Script:PSGSuite.AdminEmail
                         }
@@ -116,7 +117,7 @@ function Get-GSUserLicense {
                             $request.Execute()
                         }
                         else {
-                            foreach ($license in (@("Cloud-Identity","Cloud-Identity-Premium","Drive-Enterprise","G-Suite-Enterprise","Google-Apps-Unlimited","Google-Apps-For-Business","Google-Apps-For-Postini","Google-Apps-Lite","Google-Drive-storage-20GB","Google-Drive-storage-50GB","Google-Drive-storage-200GB","Google-Drive-storage-400GB","Google-Drive-storage-1TB","Google-Drive-storage-2TB","Google-Drive-storage-4TB","Google-Drive-storage-8TB","Google-Drive-storage-16TB","Google-Vault","Google-Vault-Former-Employee") | Sort-Object)) {
+                            foreach ($license in (@("G-Suite-Enterprise","Google-Apps-Unlimited","Google-Apps-For-Business","Google-Vault","Google-Vault-Former-Employee","Cloud-Identity","Cloud-Identity-Premium","Drive-Enterprise","Google-Apps-For-Postini","Google-Apps-Lite","Google-Drive-storage-20GB","Google-Drive-storage-50GB","Google-Drive-storage-200GB","Google-Drive-storage-400GB","Google-Drive-storage-1TB","Google-Drive-storage-2TB","Google-Drive-storage-4TB","Google-Drive-storage-8TB","Google-Drive-storage-16TB") | Sort-Object)) {
                                 Write-Verbose "Getting License SKU '$License' for User '$U'"
                                 switch ($License) {
                                     "G-Suite-Enterprise" {
@@ -143,10 +144,10 @@ function Get-GSUserLicense {
                                 }
                             }
                             if (!$response) {
-                                Write-Error "No license found for $U!"
+                                Write-Warning "No license found for $U!"
                             }
                             else {
-                                return $response
+                                $response
                             }
                         }
                     }

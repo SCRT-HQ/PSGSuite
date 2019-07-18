@@ -158,6 +158,12 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.30.2
+
+* [Issue #212](https://github.com/scrthq/PSGSuite/issues/212)
+  * Fixed: `Get-GSUserLicense` no longer short circuiting after first license match when processing pipeline input
+  * Updated: License SKU order to check most common license types first for `Get-GSUserLicense`, which should result in faster overall processing when working with a large amount of users.
+
 #### 2.30.1
 
 * Miscellaneous
