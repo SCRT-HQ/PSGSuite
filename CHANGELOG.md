@@ -1,4 +1,5 @@
-* [PSGSuite - ChangeLog](#PSGSuite---ChangeLog)
+* [PSGSuite - ChangeLog](#psgsuite---changelog)
+  * [2.31.0](#2310)
   * [2.30.2](#2302)
   * [2.30.1](#2301)
   * [2.30.0](#2300)
@@ -84,15 +85,33 @@
   * [2.0.2](#202)
   * [2.0.1](#201)
   * [2.0.0](#200)
-    * [New Functionality](#New-Functionality)
-    * [Breaking Changes in 2.0.0](#Breaking-Changes-in-200)
-      * [Gmail Delegation Management Removed](#Gmail-Delegation-Management-Removed)
-      * [Functions Removed](#Functions-Removed)
-      * [Functions Aliased](#Functions-Aliased)
+    * [New Functionality](#new-functionality)
+    * [Breaking Changes in 2.0.0](#breaking-changes-in-200)
+      * [Gmail Delegation Management Removed](#gmail-delegation-management-removed)
+      * [Functions Removed](#functions-removed)
+      * [Functions Aliased](#functions-aliased)
 
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.31.0
+
+* [Issue #213](https://github.com/scrthq/PSGSuite/issues/213)
+  * Added: Support for `RELEASE_RESOURCES` TransferParam for Calendar application data transfers to function `Start-GSDataTransfer`
+* [Issue #215](https://github.com/scrthq/PSGSuite/issues/215)
+  * Added:
+    * `Get-GSDomain` ###
+    * `Remove-GSDomain` ###
+    * `New-GSDomain` ###
+    * `Get-GSDomainAlias` ###
+    * `New-GSDomainAlias` ###
+  * _These will need the additional scope of `https://www.googleapis.com/auth/admin.directory.domain` added in order to use!_
+* Miscellaneous
+  * Added:
+    * `Get-GSCustomer`
+    * `Update-GSCustomer` ###
+  * _These will need the additional scope of `https://www.googleapis.com/auth/admin.directory.customer` added in order to use!_
 
 ## 2.30.2
 
