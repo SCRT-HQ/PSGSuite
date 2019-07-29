@@ -110,7 +110,8 @@
 * Miscellaneous
   * Added:
     * `Get-GSCustomer`
-    * `Update-GSCustomer` ###
+    * `Update-GSCustomer`
+    * `Add-GSCustomerPostalAddress`
   * _These will need the additional scope of `https://www.googleapis.com/auth/admin.directory.customer` added in order to use!_
 
 ## 2.30.2

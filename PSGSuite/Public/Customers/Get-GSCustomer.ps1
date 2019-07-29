@@ -18,7 +18,7 @@ function Get-GSCustomer {
         [Parameter(Position = 0,ValueFromPipeline,ValueFromPipelineByPropertyName)]
         [Alias('CustomerId')]
         [String]
-        $CustomerKey
+        $CustomerKey = $Script:PSGSuite.CustomerId
     )
     Begin {
         $serviceParams = @{
