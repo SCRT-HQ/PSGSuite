@@ -1,25 +1,25 @@
-function Remove-GSDomain {
+function Remove-GSDomainAlias {
     <#
     .SYNOPSIS
-    Removes a Domain
+    Removes a Domain Alias
 
     .DESCRIPTION
-    Removes a Domain
+    Removes a Domain Alias
 
     .PARAMETER DomainName
     Name of the domain to remove.
 
     .EXAMPLE
-    Remove-GSDDomain 'testing.com'
+    Remove-GSDDomainAlias 'testingalias.com'
 
-    Removes the 'testing.com' domain from your account.
+    Removes the 'testingalias.com' domain alias from your account.
     #>
     [CmdletBinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
     Param(
         [Parameter(Position = 0,ValueFromPipeline,ValueFromPipelineByPropertyName)]
-        [Alias('Domain')]
+        [Alias('DomainAlias')]
         [String[]]
-        $DomainName
+        $DomainAliasName
     )
     Begin {
         $serviceParams = @{
@@ -29,13 +29,13 @@ function Remove-GSDomain {
         $service = New-GoogleService @serviceParams
     }
     Process {
-        foreach ($domain in $DomainName) {
+        foreach ($alias in $DomainAliasName) {
             try {
-                if ($PSCmdlet.ShouldProcess("Removing Domain '$domain'")) {
-                    Write-Verbose "Removing Domain '$domain'"
-                    $request = $service.Domains.Get($Script:PSGSuite.CustomerId,$domain)
+                if ($PSCmdlet.ShouldProcess("Removing Domain Alias '$domain'")) {
+                    Write-Verbose "Removing Domain Alias '$alias'"
+                    $request = $service.DomainAliases.Delete($Script:PSGSuite.CustomerId,$alias)
                     $request.Execute()
-                    Write-Verbose "Domain '$domain' removed successfully"
+                    Write-Verbose "Domain Alias '$alias' removed successfully"
                 }
             }
             catch {

@@ -97,15 +97,18 @@
 
 ## 2.31.0
 
+* [Issue #218](https://github.com/scrthq/PSGSuite/issues/218)
+  * Fixed: `Update-GSOrganizationalUnit` was failing with `null` reference errors.
 * [Issue #213](https://github.com/scrthq/PSGSuite/issues/213)
   * Added: Support for `RELEASE_RESOURCES` TransferParam for Calendar application data transfers to function `Start-GSDataTransfer`
 * [Issue #215](https://github.com/scrthq/PSGSuite/issues/215)
   * Added:
-    * `Get-GSDomain` ###
-    * `Remove-GSDomain` ###
-    * `New-GSDomain` ###
-    * `Get-GSDomainAlias` ###
-    * `New-GSDomainAlias` ###
+    * `Get-GSDomain`
+    * `Remove-GSDomain`
+    * `New-GSDomain`
+    * `Get-GSDomainAlias`
+    * `New-GSDomainAlias`
+    * `Remove-GSDomainAlias`
   * _These will need the additional scope of `https://www.googleapis.com/auth/admin.directory.domain` added in order to use!_
 * Miscellaneous
   * Added:
