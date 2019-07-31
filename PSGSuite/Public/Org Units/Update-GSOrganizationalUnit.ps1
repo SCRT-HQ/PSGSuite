@@ -71,10 +71,13 @@
         try {
             $body = switch ($PSCmdlet.ParameterSetName) {
                 Path {
-                    Get-GSOrganizationalUnit -OrgUnitPath $OrgUnitPath -Verbose:$false
+                    Get-GSOrganizationalUnit -SearchBase $OrgUnitPath -SearchScope Base -Verbose:$false
                 }
                 Id {
-                    Get-GSOrganizationalUnit -OrgUnitPath $OrgUnitID -Verbose:$false
+                    if ($OrgUnitID -notmatch '^id\:') {
+                        $OrgUnitID = "id:$OrgUnitID"
+                    }
+                    Get-GSOrganizationalUnit -SearchBase $OrgUnitID -SearchScope Base -Verbose:$false
                 }
             }
             if ($ParentOrgUnitPath) {
