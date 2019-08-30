@@ -94,7 +94,7 @@ function New-GoogleService {
             }
             $svc = New-Object "$ServiceType" (New-Object 'Google.Apis.Services.BaseClientService+Initializer' -Property @{
                     HttpClientInitializer = $credential
-                    ApplicationName       = "PSGSuite - $env:USERNAME"
+                    ApplicationName       = "PSGSuite"
                 }
             )
             $script:_PSGSuiteSessions[$sessionKey] = ([PSCustomObject]@{

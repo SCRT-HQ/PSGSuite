@@ -100,6 +100,13 @@
 
 * [Issue #222](https://github.com/scrthq/PSGSuite/issues/222)
   * Fixed: `Remove-GSUserASP` and `Remove-GSUserToken` not removing all when no Id is passed due to no service being created.
+* [Issue #225](https://github.com/scrthq/PSGSuite/issues/225)
+  * Added: `RecoveryEmail` and `RecoveryPhone` parameters to `Update-GSUser`
+* [Issue #189](https://github.com/scrthq/PSGSuite/issues/189)
+  * Removed `$env:UserName` from the application name when creating the client in `New-GoogleService` to prevent errors with the underlying .NET SDK.
+* Miscellaneous
+  * Fixed: Corrected logic on the `FullName` parameter on `Update-GSUser` to parse the name parts.
+  * Updated Google .NET SDKs to latest versions.
 
 ## 2.31.0
 

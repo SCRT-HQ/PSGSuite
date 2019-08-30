@@ -1,17 +1,15 @@
-﻿[cmdletbinding(DefaultParameterSetName = 'task')]
+﻿[cmdletbinding()]
 param(
-    [parameter(ParameterSetName = 'task', Position = 0)]
+    [parameter( Position = 0)]
     [ValidateSet('Init','Clean','Compile','Import','Test','TestOnly','Deploy','Skip')]
     [string[]]
     $Task = @('Init','Clean','Compile','Import'),
-    [parameter(ParameterSetName = 'task')]
+    [parameter()]
     [Alias('nr','nor')]
     [switch]$NoRestore,
 
     [switch]$UpdateModules,
     [switch]$Force,
-
-    [parameter(ParameterSetName = 'help')]
     [switch]$Help
 )
 $env:_BuildStart = Get-Date -Format 'o'
