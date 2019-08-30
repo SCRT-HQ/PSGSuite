@@ -71,6 +71,12 @@ function Update-GSUser {
 
     To CLEAR all values for a user, pass `$null` as the value for this parameter.
 
+    .PARAMETER RecoveryEmail
+    Recovery email of the user.
+
+    .PARAMETER RecoveryPhone
+    Recovery phone of the user. The phone number must be in the E.164 format, starting with the plus sign (+). Example: +16506661212. The value provided for RecoveryPhone is stripped of all non-digit characters and prepended with a + to ensure correct formatting.
+
     .PARAMETER Relations
     A list of the user's relationships to other users.
 
@@ -129,7 +135,7 @@ function Update-GSUser {
     Updates user john.smith@domain.com with a new primary email of "johnathan.smith@domain.com", sets their Given Name to "Johnathan" and unsuspends them. Their previous primary email "john.smith@domain.com" will become an alias on their account automatically
     #>
     [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.User')]
-    [cmdletbinding(SupportsShouldProcess = $true, ConfirmImpact = "High")]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = "High",DefaultParameterSetName = "NamePart")]
     Param
     (
         [parameter(Mandatory = $true, Position = 0, ValueFromPipelineByPropertyName = $true)]
@@ -140,13 +146,13 @@ function Update-GSUser {
         [parameter(Mandatory = $false)]
         [String]
         $PrimaryEmail,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ParameterSetName = "NamePart")]
         [String]
         $GivenName,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ParameterSetName = "NamePart")]
         [String]
         $FamilyName,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ParameterSetName = "FullName")]
         [String]
         $FullName,
         [parameter(Mandatory = $false)]
@@ -182,6 +188,12 @@ function Update-GSUser {
         [parameter(Mandatory = $false)]
         [Google.Apis.Admin.Directory.directory_v1.Data.UserRelation[]]
         $Relations,
+        [parameter(Mandatory = $false)]
+        [String]
+        $RecoveryEmail,
+        [parameter(Mandatory = $false)]
+        [String]
+        $RecoveryPhone,
         [parameter(Mandatory = $false)]
         [Google.Apis.Admin.Directory.directory_v1.Data.UserPhone[]]
         $Phones,
@@ -246,7 +258,17 @@ function Update-GSUser {
                                 $nameUpdated = $true
                             }
                             FullName {
-                                $name.$prop = $PSBoundParameters[$prop]
+                                $fName = $PSBoundParameters[$prop]
+                                if ($fName -match ',') {
+                                    $splitName = ($fName -split ',',2).Trim()
+                                    $name.FamilyName = $splitName[0]
+                                    $name.GivenName = $splitName[1]
+                                }
+                                else {
+                                    $splitName = ($fName -split ' ').Trim()
+                                    $name.FamilyName = $splitName[-1]
+                                    $name.GivenName = $splitName[0..$($splitName.Count - 2)] -join " "
+                                }
                                 $nameUpdated = $true
                             }
                             Password {

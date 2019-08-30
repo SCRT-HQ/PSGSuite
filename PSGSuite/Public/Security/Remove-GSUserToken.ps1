@@ -2,19 +2,19 @@
     <#
     .SYNOPSIS
     Removes a security token from a user
-    
+
     .DESCRIPTION
     Removes a security token from a user
-    
+
     .PARAMETER User
     The user to remove the security token from
-    
+
     .PARAMETER ClientID
     The client Id of the security token. If excluded, all security tokens for the user are removed
-    
+
     .EXAMPLE
     An example
-    
+
     .NOTES
     General notes
     #>
@@ -31,13 +31,11 @@
         $ClientID
     )
     Begin {
-        if ($PSBoundParameters.Keys -contains 'ClientID') {
-            $serviceParams = @{
-                Scope       = 'https://www.googleapis.com/auth/admin.directory.user.security'
-                ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
-            }
-            $service = New-GoogleService @serviceParams
+        $serviceParams = @{
+            Scope       = 'https://www.googleapis.com/auth/admin.directory.user.security'
+            ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
+        $service = New-GoogleService @serviceParams
     }
     Process {
         try {

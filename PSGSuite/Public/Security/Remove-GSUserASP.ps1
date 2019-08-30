@@ -2,16 +2,16 @@
     <#
     .SYNOPSIS
     Removes an Application Specific Password for a user
-    
+
     .DESCRIPTION
     Removes an Application Specific Password for a user
-    
+
     .PARAMETER User
     The user to remove ASPs ValueFromPipeline
-    
+
     .PARAMETER CodeId
     The ASP Code Id to remove. If excluded, all ASPs for the user will be removed
-    
+
     .EXAMPLE
     Remove-GSUserASP -User joe
 
@@ -30,13 +30,11 @@
         $CodeId
     )
     Begin {
-        if ($PSBoundParameters.Keys -contains 'CodeId') {
-            $serviceParams = @{
-                Scope       = 'https://www.googleapis.com/auth/admin.directory.user.security'
-                ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
-            }
-            $service = New-GoogleService @serviceParams
+        $serviceParams = @{
+            Scope       = 'https://www.googleapis.com/auth/admin.directory.user.security'
+            ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
+        $service = New-GoogleService @serviceParams
     }
     Process {
         try {

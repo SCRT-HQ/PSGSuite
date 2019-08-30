@@ -1,56 +1,18 @@
-﻿
-[cmdletbinding(DefaultParameterSetName = 'task')]
+﻿[cmdletbinding()]
 param(
-    [parameter(ParameterSetName = 'task', Position = 0)]
+    [parameter( Position = 0)]
     [ValidateSet('Init','Clean','Compile','Import','Test','TestOnly','Deploy','Skip')]
     [string[]]
     $Task = @('Init','Clean','Compile','Import'),
-
-    [parameter(ParameterSetName = 'help')]
-    [switch]$Help,
+    [parameter()]
+    [Alias('nr','nor')]
+    [switch]$NoRestore,
 
     [switch]$UpdateModules,
-    [switch]$Force
+    [switch]$Force,
+    [switch]$Help
 )
-
-$env:BuildProjectName = 'PSGSuite'
 $env:_BuildStart = Get-Date -Format 'o'
-$env:BuildScriptPath = $PSScriptRoot
-
-. ([System.IO.Path]::Combine($PSScriptRoot,"ci","AzurePipelinesHelpers.ps1"))
-
-Add-EnvironmentSummary "Build started"
-
-Set-BuildVariables
-
-Add-Heading "Setting package feeds"
-
-$modHash = @{
-    PackageManagement = '1.3.1'
-    PowerShellGet     = '2.1.2'
-}
-foreach ($module in $modHash.Keys | Sort-Object) {
-    Write-BuildLog "Updating $module module if needed"
-    if ($null -eq (Get-Module $module -ListAvailable | Where-Object {[System.Version]$_.Version -ge [System.Version]($modHash[$module])})) {
-        Write-BuildLog "$module is below the minimum required version! Updating"
-        Install-Module $module -MinimumVersion $modHash[$module] -Force -AllowClobber -SkipPublisherCheck -Scope CurrentUser -Verbose:$false
-    }
-}
-
-Invoke-CommandWithLog {Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false}
-Invoke-CommandWithLog {Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false}
-Invoke-CommandWithLog {$PSDefaultParameterValues = @{
-    '*-Module:Verbose' = $false
-    'Import-Module:ErrorAction' = 'Stop'
-    'Import-Module:Force' = $true
-    'Import-Module:Verbose' = $false
-    'Install-Module:AllowClobber' = $true
-    'Install-Module:ErrorAction' = 'Stop'
-    'Install-Module:Force' = $true
-    'Install-Module:Scope' = 'CurrentUser'
-    'Install-Module:Verbose' = $false
-}}
-
 $update = @{}
 $verbose = @{}
 if ($PSBoundParameters.ContainsKey('UpdateModules')) {
@@ -60,16 +22,54 @@ if ($PSBoundParameters.ContainsKey('Verbose')) {
     $verbose['Verbose'] = $PSBoundParameters['Verbose']
 }
 
+. ([System.IO.Path]::Combine($PSScriptRoot,"ci","AzurePipelinesHelpers.ps1"))
+
 if ($Help) {
     Add-Heading "Getting help"
-    Write-BuildLog -c '"psake" | Resolve-Module @update -Verbose'
-    'psake' | Resolve-Module @update -Verbose
+    Write-BuildLog -c '"psake" | Resolve-Module @update @Verbose'
+    'psake' | Resolve-Module @update @verbose
     Write-BuildLog "psake script tasks:"
     Get-PSakeScriptTasks -buildFile "$PSScriptRoot\psake.ps1" |
         Sort-Object -Property Name |
         Format-Table -Property Name, Description, Alias, DependsOn
 }
 else {
+    $env:BuildProjectName = 'PSGSuite'
+    $env:BuildScriptPath = $PSScriptRoot
+    $env:NoNugetRestore = $NoRestore
+
+    Add-EnvironmentSummary "Build started"
+
+    Set-BuildVariables
+
+    Add-Heading "Setting package feeds"
+
+    $modHash = @{
+        PackageManagement = '1.3.1'
+        PowerShellGet     = '2.1.2'
+    }
+    foreach ($module in $modHash.Keys | Sort-Object) {
+        Write-BuildLog "Updating $module module if needed"
+        if ($null -eq (Get-Module $module -ListAvailable | Where-Object {[System.Version]$_.Version -ge [System.Version]($modHash[$module])})) {
+            Write-BuildLog "$module is below the minimum required version! Updating"
+            Install-Module $module -MinimumVersion $modHash[$module] -Force -AllowClobber -SkipPublisherCheck -Scope CurrentUser -Verbose:$false
+        }
+    }
+
+    Invoke-CommandWithLog {Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false}
+    Invoke-CommandWithLog {Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false}
+    Invoke-CommandWithLog {$PSDefaultParameterValues = @{
+        '*-Module:Verbose' = $false
+        'Import-Module:ErrorAction' = 'Stop'
+        'Import-Module:Force' = $true
+        'Import-Module:Verbose' = $false
+        'Install-Module:AllowClobber' = $true
+        'Install-Module:ErrorAction' = 'Stop'
+        'Install-Module:Force' = $true
+        'Install-Module:Scope' = 'CurrentUser'
+        'Install-Module:Verbose' = $false
+    }}
+
     Add-Heading "Finalizing build prerequisites"
     if (
         $Task -eq 'Deploy' -and -not $Force -and (
