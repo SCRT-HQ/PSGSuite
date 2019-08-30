@@ -1,5 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
-  * [2.31.1](#2311)
+  * [2.31.1 - 2019-08-30](#2311---2019-08-30)
   * [2.31.0](#2310)
   * [2.30.2](#2302)
   * [2.30.1](#2301)
@@ -96,7 +96,7 @@
 
 # PSGSuite - ChangeLog
 
-## 2.31.1
+## 2.31.1 - 2019-08-30
 
 * [Issue #222](https://github.com/scrthq/PSGSuite/issues/222)
   * Fixed: `Remove-GSUserASP` and `Remove-GSUserToken` not removing all when no Id is passed due to no service being created.
