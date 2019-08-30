@@ -195,6 +195,9 @@ function Add-Heading {
         [Switch]
         $Passthru
     )
+    if (-not $env:_BuildStart) {
+        $env:_BuildStart = Get-Date -Format 'o'
+    }
     $date = "[$((Get-Date).ToString("HH:mm:ss")) +$(((Get-Date) - (Get-Date $env:_BuildStart)).ToString())]"
     $msgList = @(
         ''
@@ -281,6 +284,9 @@ function Write-BuildLog {
         $Clean
     )
     Begin {
+        if (-not $env:_BuildStart) {
+            $env:_BuildStart = Get-Date -Format 'o'
+        }
         if ($PSBoundParameters.ContainsKey('Debug') -and $PSBoundParameters['Debug'] -eq $true) {
             $fg = 'Yellow'
             $lvl = '##[debug]   '
@@ -382,7 +388,6 @@ function Set-EnvironmentVariable {
         $Value
     )
     $fullVal = $Value -join " "
-    Write-BuildLog "Setting env variable '$Name' to '$fullVal'"
     Set-Item -Path Env:\$Name -Value $fullVal -Force
     if ($IsCI) {
         "##vso[task.setvariable variable=$Name]$fullVal" | Write-Host
@@ -419,7 +424,6 @@ function Set-BuildVariables {
             BHCommitMessage = $((git log --format=%B -n 1).Trim())
         }
     }
-    Add-Heading 'Setting environment variables if needed'
     foreach ($var in $gitVars.Keys) {
         if (-not (Test-Path Env:\$var)) {
             Set-EnvironmentVariable $var $gitVars[$var]
