@@ -1,166 +1,17 @@
 resources:
-- repo: self
-  clean: true
+  repositories:
+    - repository: templates
+      type: github
+      name: SCRT-HQ/AzurePipelineTemplates
+      endpoint: Github
+
+variables:
+- group: deployment-vars
 
 trigger:
   branches:
     include:
-    - master
-    - "*"
-    exclude:
-    - refs/tag/*
+    - refs/heads/*
 
-phases:
-- phase: Phase_1
-  displayName: Compile Module
-  condition: succeeded()
-  queue:
-    name: Hosted VS2017
-
-  steps:
-  - powershell: . ./build.ps1
-    displayName: Compile Module
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: Compiled Module'
-    inputs:
-      PathtoPublish: BuildOutput
-      ArtifactName: BuildOutput
-
-
-- phase: Phase_2
-  displayName: Test Module on Windows (PSv5)
-  dependsOn: Phase_1
-  condition: succeeded()
-  queue:
-    name: Hosted VS2017
-
-  steps:
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
-    inputs:
-      artifactName: BuildOutput
-      downloadPath: '$(Build.SourcesDirectory)'
-
-  - powershell: |
-      $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
-      . ./build.ps1 -Task TestOnly
-    displayName: Test Module
-
-  - task: PublishTestResults@2
-    displayName: 'Publish Test Results **/Test*.xml'
-    inputs:
-      testRunner: NUnit
-      testResultsFiles: '**/Test*.xml'
-    condition: succeededOrFailed()
-
-
-- phase: Phase_3
-  displayName: Test Module on Ubuntu
-  dependsOn: Phase_1
-  condition: succeeded()
-  queue:
-    name: Hosted Ubuntu 1604
-
-  steps:
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
-    inputs:
-      artifactName: BuildOutput
-      downloadPath: '$(Build.SourcesDirectory)'
-
-  - powershell: |
-      $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
-      . ./build.ps1 -Task TestOnly
-    displayName: Test Module
-
-  - task: PublishTestResults@2
-    displayName: 'Publish Test Results **/Test*.xml'
-    inputs:
-      testRunner: NUnit
-      testResultsFiles: '**/Test*.xml'
-    condition: succeededOrFailed()
-
-
-- phase: Phase_4
-  displayName: Test Module on macOS
-  dependsOn: Phase_1
-  condition: succeeded()
-  queue:
-    name: Hosted macOS
-
-  steps:
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
-    inputs:
-      artifactName: BuildOutput
-      downloadPath: '$(Build.SourcesDirectory)'
-
-  - powershell: |
-      $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
-      . ./build.ps1 -Task TestOnly
-    displayName: Test Module
-
-  - task: PublishTestResults@2
-    displayName: 'Publish Test Results **/Test*.xml'
-    inputs:
-      testRunner: NUnit
-      testResultsFiles: '**/Test*.xml'
-    condition: succeededOrFailed()
-
-
-- phase: Phase_5
-  displayName: Test Module on Windows (PSv6)
-  dependsOn: Phase_1
-  condition: succeeded()
-  queue:
-    name: Hosted VS2017
-
-  steps:
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
-    inputs:
-      artifactName: BuildOutput
-      downloadPath: '$(Build.SourcesDirectory)'
-
-  - powershell: |
-      $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
-      $Env:Path = [Environment]::GetEnvironmentVariable('Path',[EnvironmentVariableTarget]::Machine)
-      pwsh -command ". ./build.ps1 -Task TestOnly"
-    displayName: Test Module
-
-  - task: PublishTestResults@2
-    displayName: 'Publish Test Results **/Test*.xml'
-    inputs:
-      testRunner: NUnit
-      testResultsFiles: '**/Test*.xml'
-    condition: succeededOrFailed()
-
-- phase: Phase_6
-  displayName: Deploy Module
-  dependsOn:
-  - Phase_2
-  - Phase_3
-  - Phase_4
-  - Phase_5
-  condition: and(succeeded(), in(variables['Build.Reason'], 'Manual', 'IndividualCI', 'BatchedCI'), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  queue:
-    name: Hosted VS2017
-
-  steps:
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download Build Artifacts'
-    inputs:
-      artifactName: BuildOutput
-      downloadPath: '$(Build.SourcesDirectory)'
-
-  - powershell: |
-      $Env:PSGSuiteConfigJson = '$(PSGSuiteConfigJson)'
-      $Env:GitHubPAT = '$(GitHub.PAT)'
-      $Env:NuGetApiKey = '$(NuGetApiKey)'
-      $Env:TwitterAccessSecret = '$(Twitter.AccessSecret)'
-      $Env:TwitterAccessToken = '$(Twitter.AccessToken)'
-      $Env:TwitterConsumerKey = '$(Twitter.ConsumerKey)'
-      $Env:TwitterConsumerSecret = '$(Twitter.ConsumerSecret)'
-      . ./build.ps1 -Task Deploy
-    displayName: Deploy to PowerShell Gallery
+stages:
+- template: BuildTestDeployModule/azure-pipelines.yml@templates
