@@ -44,16 +44,13 @@ else {
 
     Add-Heading "Setting package feeds"
 
-    $modHash = @{
-        PackageManagement = '1.3.1'
-        PowerShellGet     = '2.1.2'
-    }
-    foreach ($module in $modHash.Keys | Sort-Object) {
-        Write-BuildLog "Updating $module module if needed"
-        if ($null -eq (Get-Module $module -ListAvailable | Where-Object {[System.Version]$_.Version -ge [System.Version]($modHash[$module])})) {
-            Write-BuildLog "$module is below the minimum required version! Updating"
-            Install-Module $module -MinimumVersion $modHash[$module] -Force -AllowClobber -SkipPublisherCheck -Scope CurrentUser -Verbose:$false
-        }
+    $modHash = @(
+        'PackageManagement'
+        'PowerShellGet'
+    )
+    foreach ($module in $modHash) {
+        Write-BuildLog "Installing latest version of $module"
+        Install-Module $module -Force -AllowClobber -SkipPublisherCheck -Scope CurrentUser -Verbose:$false
     }
 
     Invoke-CommandWithLog {Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false}
