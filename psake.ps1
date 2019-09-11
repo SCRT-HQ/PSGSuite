@@ -295,9 +295,9 @@ $pesterScriptBlock = {
     $env:PSModulePath = $origModulePath
 }
 
-task Test -Depends Compile $pesterScriptBlock -description 'Run Pester tests'
+task Full -Depends Compile $pesterScriptBlock -description 'Run Pester tests'
 
-task TestOnly -Depends Init $pesterScriptBlock -description 'Run Pester tests only [no module compilation]'
+task Test -Depends Init $pesterScriptBlock -description 'Run Pester tests only [no module compilation]'
 
 $deployScriptBlock = {
     function Publish-GitHubRelease {
