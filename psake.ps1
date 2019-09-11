@@ -51,7 +51,7 @@ task Init {
         $env:BHProjectName = $moduleName
     }
 
-    'Configuration', 'Pester' | Foreach-Object {
+    'Configuration' | Foreach-Object {
         Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Confirm:$false -ErrorAction Stop -Force
         Import-Module -Name $_ -Verbose:$false -ErrorAction Stop -Force
     }
@@ -255,6 +255,10 @@ Task Import -Depends Compile {
 } -description 'Imports the newly compiled module'
 
 $pesterScriptBlock = {
+    'Pester' | Foreach-Object {
+        Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Confirm:$false -ErrorAction Stop -Force
+        Import-Module -Name $_ -Verbose:$false -ErrorAction Stop -Force
+    }
     Push-Location
     Set-Location -PassThru $outputModDir
     if (-not $ENV:BHProjectPath) {
