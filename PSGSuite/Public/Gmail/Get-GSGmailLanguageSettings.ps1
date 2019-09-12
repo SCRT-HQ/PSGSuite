@@ -7,7 +7,9 @@ function Get-GSGmailLanguageSettings {
     Gets Gmail display language settings
 
     .PARAMETER User
-    The user to get the Gmail display language settings for
+    The user to get the Gmail display language settings for.
+
+    Defaults to the AdminEmail user.
 
     .EXAMPLE
     Get-GSGmailLanguageSettings -User me
@@ -17,11 +19,11 @@ function Get-GSGmailLanguageSettings {
     [OutputType('Google.Apis.Gmail.v1.Data.LanguageSettings')]
     [cmdletbinding()]
     Param (
-        [parameter(Mandatory,Position = 0,ValueFromPipelineByPropertyName = $true)]
+        [parameter(Position = 0,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [string[]]
-        $User
+        $User = $Script:PSGSuite.AdminEmail
     )
     Process {
         foreach ($U in $User) {

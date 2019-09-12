@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+  * [2.32.0 - 2019-09-12](#2320---2019-09-12)
   * [2.31.1 - 2019-08-30](#2311---2019-08-30)
   * [2.31.0](#2310)
   * [2.30.2](#2302)
@@ -95,6 +96,15 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.32.0 - 2019-09-12
+
+* [Issue #229](https://github.com/scrthq/PSGSuite/issues/229)
+  * Added: `Update-GSGmailLanguageSettings` and `Get-GSGmailLanguageSettings` functions to update/get a user's default language settings in Gmail.
+* [Issue #231](https://github.com/scrthq/PSGSuite/issues/231)
+  * Added: `None` support to DefaultNotificationType parameter values on `Add-GSCalendarSubscription`.
+* [Issue #232](https://github.com/scrthq/PSGSuite/issues/232)
+  * Added: `Visibility` parameter on `New-GSCalendarEvent` and `Update-GSCalendarEvent` to set the visibility of a calendar event.
 
 ## 2.31.1 - 2019-08-30
 

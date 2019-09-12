@@ -6,7 +6,8 @@ resources:
       endpoint: Github
 
 variables:
-- name: PSGSuiteConfigJson
+- name: PSGSuiteConfig
+  value: $(PSGSuiteConfigJson)
 - group: deployment-vars
 
 trigger:
