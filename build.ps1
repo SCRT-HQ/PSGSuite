@@ -56,11 +56,6 @@ else {
         }
     }
 
-    $modHash.Keys | ForEach-Object {
-        Remove-Module $_ -ErrorAction SilentlyContinue
-        Import-Module $_ -Force
-    }
-
     Invoke-CommandWithLog {Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false}
     Invoke-CommandWithLog {Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false}
     Invoke-CommandWithLog {$PSDefaultParameterValues = @{
