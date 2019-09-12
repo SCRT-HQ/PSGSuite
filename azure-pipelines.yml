@@ -7,7 +7,6 @@ resources:
 
 variables:
 - name: PSGSuiteConfigJson
-  value: $(PSGSuiteConfigJson)
 - group: deployment-vars
 
 trigger:
