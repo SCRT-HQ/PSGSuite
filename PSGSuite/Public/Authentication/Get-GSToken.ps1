@@ -1,10 +1,16 @@
 function Get-GSToken {
     <#
-    .Synopsis
+    .SYNOPSIS
     Requests an Access Token for REST API authentication. Defaults to 3600 seconds token expiration time.
 
     .DESCRIPTION
     Requests an Access Token for REST API authentication. Defaults to 3600 seconds token expiration time.
+
+    .PARAMETER Scopes
+    The list of scopes to request the token for
+
+    .PARAMETER AdminEmail
+    The email address of the user to request the token for. This is typically the Admin user.
 
     .EXAMPLE
     $Token = Get-GSToken -Scopes 'https://www.google.com/m8/feeds' -AdminEmail $User
@@ -13,8 +19,7 @@ function Get-GSToken {
         'GData-Version' = '3.0'
     }
     #>
-    Param
-    (
+    Param (
         [parameter(Mandatory = $true)]
         [Alias('Scope')]
         [ValidateNotNullOrEmpty()]

@@ -6,15 +6,18 @@ function Get-GSCalendarEvent {
     .DESCRIPTION
     Gets the calendar events for a user
 
-    .PARAMETER User
-    The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
-
-    Defaults to the AdminEmail in the config
+    .PARAMETER EventId
+    The Id of the event to get info for
 
     .PARAMETER CalendarId
     The calendar ID of the calendar you would like to list events from.
 
     Defaults to the user's primary calendar
+
+    .PARAMETER User
+    The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
+
+    Defaults to the AdminEmail in the config
 
     .PARAMETER Filter
     Free text search terms to find events that match these terms in any field, except for extended properties.
@@ -43,6 +46,12 @@ function Get-GSCalendarEvent {
 
     .PARAMETER SingleEvents
     Whether to expand recurring events into instances and only return single one-off events and instances of recurring events, but not the underlying recurring events themselves.
+
+    .PARAMETER PrivateExtendedProperty
+    Extended properties constraint specified as a hashtable where propertyName=value. Matches only private properties.
+
+    .PARAMETER SharedExtendedProperty
+    Extended properties constraint specified as a hashtable where propertyName=value. Matches only shared properties.
 
     .PARAMETER TimeMin
     Lower bound (inclusive) for an event's end time to filter by. If TimeMax is set, TimeMin must be smaller than timeMax.

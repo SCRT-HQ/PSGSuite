@@ -38,6 +38,21 @@ else {
     $env:BuildScriptPath = $PSScriptRoot
     $env:NoNugetRestore = $NoRestore
 
+    Invoke-CommandWithLog {$global:PSDefaultParameterValues = @{
+        '*-Module:Verbose' = $false
+        'Import-Module:ErrorAction' = 'Stop'
+        'Import-Module:Force' = $true
+        'Import-Module:Verbose' = $false
+        'Install-Module:AllowClobber' = $true
+        'Install-Module:ErrorAction' = 'Stop'
+        'Install-Module:Force' = $true
+        'Install-Module:Scope' = 'CurrentUser'
+        'Install-Module:Repository' = 'PSGallery'
+        'Install-Module:Verbose' = $false
+    }}
+    Invoke-CommandWithLog {Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false}
+    Invoke-CommandWithLog {Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false}
+
     Add-EnvironmentSummary "Build started"
 
     Set-BuildVariables
@@ -48,27 +63,9 @@ else {
         PackageManagement = '1.4.4'
         PowerShellGet     = '2.2.1'
     }
-    foreach ($module in $modHash.Keys | Sort-Object) {
-        Write-BuildLog "Updating $module module if needed"
-        if ($null -eq (Get-Module $module -ListAvailable | Where-Object {[System.Version]$_.Version -ge [System.Version]($modHash[$module])})) {
-            Write-BuildLog "$module is below the minimum required version! Updating"
-            Install-Module $module -MinimumVersion $modHash[$module] -Force -AllowClobber -SkipPublisherCheck -Scope CurrentUser -Verbose:$false
-        }
+    $modHash.GetEnumerator() | ForEach-Object {
+        Install-Module $_.Key -MinimumVersion $_.Value -Repository PSGallery -Force
     }
-
-    Invoke-CommandWithLog {Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false}
-    Invoke-CommandWithLog {Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false}
-    Invoke-CommandWithLog {$PSDefaultParameterValues = @{
-        '*-Module:Verbose' = $false
-        'Import-Module:ErrorAction' = 'Stop'
-        'Import-Module:Force' = $true
-        'Import-Module:Verbose' = $false
-        'Install-Module:AllowClobber' = $true
-        'Install-Module:ErrorAction' = 'Stop'
-        'Install-Module:Force' = $true
-        'Install-Module:Scope' = 'CurrentUser'
-        'Install-Module:Verbose' = $false
-    }}
 
     Add-Heading "Finalizing build prerequisites"
     if (

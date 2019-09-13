@@ -28,6 +28,9 @@ function Get-GSDriveFile {
     .PARAMETER Fields
     The specific fields to returned
 
+    .PARAMETER Force
+    If $true and OutFilePath is specified, overwrites any existing files at the desired path.
+
     .EXAMPLE
     Get-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976'
 

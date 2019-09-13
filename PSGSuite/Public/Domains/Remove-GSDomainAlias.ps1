@@ -6,8 +6,8 @@ function Remove-GSDomainAlias {
     .DESCRIPTION
     Removes a Domain Alias
 
-    .PARAMETER DomainName
-    Name of the domain to remove.
+    .PARAMETER DomainAliasName
+    Alias of the domain to remove.
 
     .EXAMPLE
     Remove-GSDDomainAlias 'testingalias.com'

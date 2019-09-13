@@ -35,6 +35,9 @@ function Add-GSCustomerPostalAddress {
 
     .PARAMETER InputObject
     Used for pipeline input of an existing UserAddress object to strip the extra attributes and prevent errors
+
+    .EXAMPLE
+    Add-GSCustomerPostalAddress -AddressLine1 '123 Front St' -AddressLine2 'Los Angeles, CA 90210' -ContactName 'Jim'
     #>
     [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.CustomerPostalAddress')]
     [CmdletBinding(DefaultParameterSetName = "InputObject")]

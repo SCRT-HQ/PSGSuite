@@ -158,36 +158,26 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-#### 2.31.1 - 2019-08-30
+#### 2.32.0 - 2019-09-12
 
-* [Issue #222](https://github.com/scrthq/PSGSuite/issues/222)
-  * Fixed: `Remove-GSUserASP` and `Remove-GSUserToken` not removing all when no Id is passed due to no service being created.
-* [Issue #225](https://github.com/scrthq/PSGSuite/issues/225)
-  * Added: `RecoveryEmail` and `RecoveryPhone` parameters to `Update-GSUser`
-* [Issue #189](https://github.com/scrthq/PSGSuite/issues/189)
-  * Removed `$env:UserName` from the application name when creating the client in `New-GoogleService` to prevent errors with the underlying .NET SDK.
+* [Issue #229](https://github.com/scrthq/PSGSuite/issues/229)
+  * Added: `Update-GSGmailLanguageSettings` and `Get-GSGmailLanguageSettings` functions to update/get a users default language settings in Gmail.
+* [Issue #231](https://github.com/scrthq/PSGSuite/issues/231)
+  * Added: `Update-GSCalenderSubscription` function to updated existing calendar subscriptions.
+  * Removed: Default values for the following parameters on `Add-GSCalendarSubscription` to prevent automatically adding notifications for new CalendarList entries (subscriptions):
+    * `DefaultNotificationType`
+    * `DefaultNotificationMethod`
+    * `DefaultReminderMethod`
+    * `DefaultReminderMinutes`
+  * Added: `Notifications` and `Reminders` parameters to `Add-GSCalenderSubscription` and `Update-GSCalenderSubscription`
+  * Added: `Reminders` parameter to `New-GSCalendarEvent` and `Update-GSCalendarEvent` functions to set custom reminders on calendar events.
+  * Added: `Add-GSCalendarEventReminder` and `Add-GSCalendarNotification` helper functions.
+  * Updated: `DisableReminder` switch parameter name on `New-GSCalendarEvent` and `Update-GSCalendarEvent` functions to `DisableDefaultReminder` to better align with what that actually effects (default reminder inheritance only, not reminder overrides). The previous parameter name has been set as an alias to maintain backwards compatibility.
+  * Added: `RemoveAllReminders` parameter to `Update-GSCalendarEvent` to remove all custom reminders and disable calendar inheritance.
+* [Issue #232](https://github.com/scrthq/PSGSuite/issues/232)
+  * Added: `Visibility` parameter on `New-GSCalendarEvent` and `Update-GSCalendarEvent` to set the visibility of a calendar event.
 * Miscellaneous
-  * Fixed: Corrected logic on the `FullName` parameter on `Update-GSUser` to parse the name parts.
+  * Forced `Type` parameter values to lower on the `Add-GSUser*` helper functions to ensure case senstive field matches whats expected.
   * Updated Google .NET SDKs to latest versions.
-
-#### 2.31.0
-
-* [Issue #218](https://github.com/scrthq/PSGSuite/issues/218)
-  * Fixed: `Update-GSOrganizationalUnit` was failing with `null` reference errors.
-* [Issue #213](https://github.com/scrthq/PSGSuite/issues/213)
-  * Added: Support for `RELEASE_RESOURCES` TransferParam for Calendar application data transfers to function `Start-GSDataTransfer`
-* [Issue #215](https://github.com/scrthq/PSGSuite/issues/215)
-  * Added:
-    * `Get-GSDomain`
-    * `Remove-GSDomain`
-    * `New-GSDomain`
-    * `Get-GSDomainAlias`
-    * `New-GSDomainAlias`
-    * `Remove-GSDomainAlias`
-  * _These will need the additional scope of `https://www.googleapis.com/auth/admin.directory.domain` added in order to use!_
-* Miscellaneous
-  * Added:
-    * `Get-GSCustomer`
-    * `Update-GSCustomer`
-    * `Add-GSCustomerPostalAddress`
-  * _These will need the additional scope of `https://www.googleapis.com/auth/admin.directory.customer` added in order to use!_
+  * Updated and corrected a LOT of comment based function help.
+  * Added function help tests to validate that functions contain expected help content.

@@ -65,9 +65,6 @@ function Add-GSUserRelation {
         [Parameter(Mandatory = $false, ParameterSetName = "Fields")]
         [String]
         $CustomType,
-        [Parameter(Mandatory = $false, ParameterSetName = "Fields")]
-        [String]
-        $ETag,
         [Parameter(Mandatory = $false, ValueFromPipeline = $true, ParameterSetName = "InputObject")]
         [Google.Apis.Admin.Directory.directory_v1.Data.UserRelation[]]
         $InputObject
@@ -77,7 +74,6 @@ function Add-GSUserRelation {
             'CustomType'
             'Type',
             'Value'
-            'ETag'
         )
         if ($PSBoundParameters.Keys -contains 'CustomType') {
             $PSBoundParameters['Type'] = 'custom'

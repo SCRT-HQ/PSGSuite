@@ -31,6 +31,9 @@ function Get-GSActivityReport {
     .PARAMETER ActorIpAddress
     IP Address of host where the event was performed. Supports both IPv4 and IPv6 addresses
 
+    .PARAMETER StartTime
+    Return events which occurred after this time
+
     .PARAMETER EndTime
     Return events which occurred at or before this time
 

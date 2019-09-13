@@ -12,13 +12,25 @@ function Get-GSDriveRevision {
     .PARAMETER RevisionId
     The unique Id of the revision to get. If excluded, gets the list of revisions for the file
 
+    .PARAMETER OutFilePath
+    The path to save the revision to
+
     .PARAMETER User
     The email or unique Id of the owner of the Drive file
 
     Defaults to the AdminEmail user
 
     .PARAMETER Fields
-    The specific fields to returned
+    The specific fields to be returned
+
+    .PARAMETER Force
+    If $true, overwrites any existing files at the desired path
+
+    .PARAMETER PageSize
+    The maximum size of each page to return
+
+    .PARAMETER Limit
+    The maximum amount of objects to return
 
     .EXAMPLE
     Get-GSDriveFile -FileId $fileId | Get-GSDriveRevision

@@ -6,7 +6,7 @@ function Add-GSGmailSmtpMsa {
     .DESCRIPTION
     Builds a SmtpMsa object to use when creating or updating SmtpMsa settings withing the Gmail SendAs settings.
 
-    .PARAMETER Host
+    .PARAMETER HostName
     The hostname of the SMTP service.
 
     .PARAMETER Port

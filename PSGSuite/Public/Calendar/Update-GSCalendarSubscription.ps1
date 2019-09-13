@@ -1,16 +1,16 @@
-function Add-GSCalendarSubscription {
+function Update-GSCalendarSubscription {
     <#
     .SYNOPSIS
-    Adds a calendar to a users calendar list (aka subscribes to the specified calendar)
+    Updates a calendar in a users calendar list (aka subscription)
 
     .DESCRIPTION
-    Adds a calendar to a users calendar list (aka subscribes to the specified calendar)
+    Updates a calendar in a users calendar list (aka subscription)
 
     .PARAMETER User
     The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
 
     .PARAMETER CalendarID
-    The calendar ID of the calendar you would like to subscribe the user to
+    The calendar ID of the calendar subscription you would like to update.
 
     .PARAMETER ColorRgbFormat
     Whether to use the foregroundColor and backgroundColor fields to write the calendar colors (RGB). If this feature is used, the index-based colorId field will be set to the best matching option automatically.
@@ -25,6 +25,9 @@ function Add-GSCalendarSubscription {
     A list of reminders to add to this calendar.
 
     This parameter expects a 'Google.Apis.Calendar.v3.Data.EventReminder[]' object type. You can create objects of this type easily by using the function 'Add-GSCalendarEventReminder'
+
+    .PARAMETER RemoveReminders
+    If $true, removes reminders from this CalendarSubscription.
 
     .PARAMETER DefaultReminderMethod
     The method used by this reminder. Defaults to email.
@@ -43,6 +46,9 @@ function Add-GSCalendarSubscription {
     A list of notifications to add to this calendar.
 
     This parameter expects a 'Google.Apis.Calendar.v3.Data.CalendarNotification[]' object type. You can create objects of this type easily by using the function 'Add-GSCalendarNotification'
+
+    .PARAMETER RemoveNotifications
+    If $true, removes notifications from this CalendarSubscription.
 
     .PARAMETER DefaultNotificationMethod
     The method used to deliver the notification.
@@ -68,9 +74,9 @@ function Add-GSCalendarSubscription {
     The summary that the authenticated user has set for this calendar.
 
     .EXAMPLE
-    Add-GSCalendarSubscription -User me -CalendarId john.smith@domain.com -Selected -Color Cyan
+    Update-GSCalendarSubscription -User me -CalendarId john.smith@domain.com -Selected -Color Cyan
 
-    Adds the calendar 'john.smith@domain.com' to the AdminEmail user's calendar list
+    Updates the calendar 'john.smith@domain.com' on the AdminEmail user's calendar list by marking it as selected and setting the color to Cyan
     #>
     [OutputType('Google.Apis.Calendar.v3.Data.CalendarListEntry')]
     [cmdletbinding()]
@@ -81,45 +87,52 @@ function Add-GSCalendarSubscription {
         [ValidateNotNullOrEmpty()]
         [String]
         $User,
-        [parameter(Mandatory,Position = 1)]
+        [parameter(Mandatory,Position = 1,ValueFromPipelineByPropertyName)]
+        [Alias('Id')]
         [String[]]
         $CalendarId,
         [parameter(Mandatory = $false)]
         [Switch]
         $ColorRgbFormat,
-        [parameter()]
+        [parameter(Mandatory = $false)]
         [Switch]
         $Selected,
-        [parameter()]
+        [parameter(Mandatory = $false)]
         [Switch]
         $Hidden,
         [parameter()]
         [Google.Apis.Calendar.v3.Data.EventReminder[]]
         $Reminders,
         [parameter()]
+        [switch]
+        $RemoveReminders,
+        [parameter(Mandatory = $false)]
         [ValidateSet('email','sms','popup')]
         [String]
         $DefaultReminderMethod,
-        [parameter()]
+        [parameter(Mandatory = $false)]
         [ValidateRange(0,40320)]
         [Int]
-        $DefaultReminderMinutes = 30,
+        $DefaultReminderMinutes = 10,
         [parameter()]
         [Google.Apis.Calendar.v3.Data.CalendarNotification[]]
         $Notifications,
         [parameter()]
+        [switch]
+        $RemoveNotifications,
+        [parameter(Mandatory = $false)]
         [ValidateSet('email','sms')]
         [String]
         $DefaultNotificationMethod,
-        [parameter()]
+        [parameter(Mandatory = $false)]
         [ValidateSet('eventCreation','eventChange','eventCancellation','eventResponse','agenda')]
         [String]
         $DefaultNotificationType,
-        [parameter()]
+        [parameter(Mandatory = $false)]
         [ValidateSet("Periwinkle","Seafoam","Lavender","Coral","Goldenrod","Beige","Cyan","Grey","Blue","Green","Red")]
         [String]
         $Color,
-        [parameter()]
+        [parameter(Mandatory = $false)]
         [String]
         $SummaryOverride
     )
@@ -153,36 +166,65 @@ function Add-GSCalendarSubscription {
             }
             $service = New-GoogleService @serviceParams
             foreach ($calId in $CalendarID) {
-                $body = New-Object 'Google.Apis.Calendar.v3.Data.CalendarListEntry' -Property @{
-                    Id = $calId
-                    Selected = $Selected
-                    Hidden = $Hidden
+                $body = Get-GSCalendarSubscription -User $User -CalendarId $calId -Verbose:$false
+                if ($RemoveReminders) {
+                    $body.DefaultReminders = New-Object 'System.Collections.Generic.List[Google.Apis.Calendar.v3.Data.EventReminder]'
                 }
-                if ($PSBoundParameters.ContainsKey('Reminders')) {
-                    $body.DefaultReminders = $Reminders
+                elseif ($PSBoundParameters.ContainsKey('Reminders')) {
+                    if ($null -eq $body.DefaultReminders) {
+                        $body.DefaultReminders = $Reminders
+                    }
+                    else {
+                        $Reminders | ForEach-Object {
+                            $body.DefaultReminders.Add($_) | Out-Null
+                        }
+                    }
                 }
                 elseif ($PSBoundParameters.ContainsKey('DefaultReminderMethod')) {
-                    $DefaultReminders = New-Object 'Google.Apis.Calendar.v3.Data.EventReminder' -Property @{
+                    $defReminder = New-Object 'Google.Apis.Calendar.v3.Data.EventReminder' -Property @{
                         Method = $DefaultReminderMethod
                         Minutes = $DefaultReminderMinutes
                     }
-                    $body.DefaultReminders = [Google.Apis.Calendar.v3.Data.EventReminder[]]$DefaultReminders
-                }
-                if ($PSBoundParameters.ContainsKey('Notifications')) {
-                    $body.NotificationSettings = New-Object 'Google.Apis.Calendar.v3.Data.CalendarListEntry+NotificationSettingsData' -Property @{
-                        Notifications = [Google.Apis.Calendar.v3.Data.CalendarNotification[]]$Notifications
+                    if ($null -eq $body.DefaultReminders) {
+                        $body.DefaultReminders = [Google.Apis.Calendar.v3.Data.EventReminder[]]$defReminder
+                    }
+                    else {
+                        $body.DefaultReminders.Add($defReminder)
                     }
                 }
-                elseif ($PSBoundParameters.ContainsKey('DefaultNotificationMethod') -or $PSBoundParameters.ContainsKey('DefaultNotificationType')) {
-                    $DefaultNotification = New-Object 'Google.Apis.Calendar.v3.Data.CalendarNotification'
-                    if ($PSBoundParameters.ContainsKey('DefaultNotificationMethod')) {
-                        $DefaultNotification.Method = $DefaultNotificationMethod
-                    }
-                    if ($PSBoundParameters.ContainsKey('DefaultNotificationType')) {
-                        $DefaultNotification.Type = $DefaultNotificationType
-                    }
+                if ($RemoveNotifications) {
                     $body.NotificationSettings = New-Object 'Google.Apis.Calendar.v3.Data.CalendarListEntry+NotificationSettingsData' -Property @{
-                        Notifications = [Google.Apis.Calendar.v3.Data.CalendarNotification[]]$DefaultNotification
+                        Notifications = New-Object 'System.Collections.Generic.List[Google.Apis.Calendar.v3.Data.CalendarNotification]'
+                    }
+                }
+                elseif ($PSBoundParameters.ContainsKey('Notifications')) {
+                    if ($null -eq $body.NotificationSettings) {
+                        $body.NotificationSettings = New-Object 'Google.Apis.Calendar.v3.Data.CalendarListEntry+NotificationSettingsData' -Property @{
+                            Notifications = [Google.Apis.Calendar.v3.Data.CalendarNotification[]]$Notifications
+                        }
+                    }
+                    else {
+                        $Notifications | ForEach-Object {
+                            $body.NotificationSettings.Notifications.Add($_) | Out-Null
+                        }
+                    }
+                }
+                elseif ($PSBoundParameters.ContainsKey('DefaultNotificationMethod') -and $PSBoundParameters.ContainsKey('DefaultNotificationType')) {
+                    if ($null -eq $body.NotificationSettings) {
+                        $DefaultNotification = New-Object 'Google.Apis.Calendar.v3.Data.CalendarNotification' -Property @{
+                            Method = $DefaultNotificationMethod
+                            Type = $DefaultNotificationType
+                        }
+                        $body.NotificationSettings = New-Object 'Google.Apis.Calendar.v3.Data.CalendarListEntry+NotificationSettingsData' -Property @{
+                            Notifications = [Google.Apis.Calendar.v3.Data.CalendarNotification[]]$DefaultNotification
+                        }
+                    }
+                    else {
+                        $DefaultNotification = New-Object 'Google.Apis.Calendar.v3.Data.CalendarNotification' -Property @{
+                            Method = $DefaultNotificationMethod
+                            Type = $DefaultNotificationType
+                        }
+                        $body.NotificationSettings.Notifications.Add($DefaultNotification) | Out-Null
                     }
                 }
                 foreach ($key in $PSBoundParameters.Keys) {
@@ -197,8 +239,8 @@ function Add-GSCalendarSubscription {
                         }
                     }
                 }
-                Write-Verbose "Subscribing user '$User' to Calendar '$($calId)'"
-                $request = $service.CalendarList.Insert($body)
+                Write-Verbose "Updating Calendar '$($calId) for user '$User'"
+                $request = $service.CalendarList.Patch($body,$calId)
                 if ($PSBoundParameters.ContainsKey('ColorRgbFormat')) {
                     $request.ColorRgbFormat = $ColorRgbFormat
                 }

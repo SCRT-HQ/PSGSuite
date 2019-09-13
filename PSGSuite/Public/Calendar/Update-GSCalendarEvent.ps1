@@ -36,10 +36,27 @@ function Update-GSCalendarEvent {
     .PARAMETER Location
     Event location
 
+    .PARAMETER Visibility
+    Visibility of the event.
+
+    Possible values are:
+    * "default" - Uses the default visibility for events on the calendar. This is the default value.
+    * "public" - The event is public and event details are visible to all readers of the calendar.
+    * "private" - The event is private and only event attendees may view event details.
+    * "confidential" - The event is private. This value is provided for compatibility reasons.
+
     .PARAMETER EventColor
     Color of the event as seen in Calendar
 
-    .PARAMETER DisableReminder
+    .PARAMETER Reminders
+    A list of reminders to add to this calendar event.
+
+    This parameter expects a 'Google.Apis.Calendar.v3.Data.EventReminder[]' object type. You can create objects of this type easily by using the function 'Add-GSCalendarEventReminder'
+
+    .PARAMETER RemoveAllReminders
+    If $true, removes all reminder overrides and disables the default reminder inheritance from the calendar that the event is on.
+
+    .PARAMETER DisableDefaultReminder
     When $true, disables inheritance of the default Reminders from the Calendar the event was created on.
 
     .PARAMETER LocalStartDateTime
@@ -112,12 +129,23 @@ function Update-GSCalendarEvent {
         [String]
         $Location,
         [parameter(Mandatory = $false)]
+        [ValidateSet('default','public','private','confidential')]
+        [String]
+        $Visibility,
+        [parameter(Mandatory = $false)]
         [ValidateSet("Periwinkle","Seafoam","Lavender","Coral","Goldenrod","Beige","Cyan","Grey","Blue","Green","Red")]
         [String]
         $EventColor,
+        [parameter()]
+        [Google.Apis.Calendar.v3.Data.EventReminder[]]
+        $Reminders,
         [parameter(Mandatory = $false)]
         [Switch]
-        $DisableReminder,
+        $RemoveAllReminders,
+        [parameter(Mandatory = $false)]
+        [Alias('DisableReminder')]
+        [Switch]
+        $DisableDefaultReminder,
         [parameter(Mandatory = $false)]
         [DateTime]
         $LocalStartDateTime,
@@ -185,6 +213,7 @@ function Update-GSCalendarEvent {
                 if ($Attendees) {
                     $body.Attendees = [Google.Apis.Calendar.v3.Data.EventAttendee[]]$Attendees
                 }
+                $RemindersData = $null
                 foreach ($key in $PSBoundParameters.Keys) {
                     switch ($key) {
                         EventColor {
@@ -218,11 +247,23 @@ function Update-GSCalendarEvent {
                                 $ExtendedProperties.Shared.Add($prop,$SharedExtendedProperties[$prop])
                             }
                         }
-                        DisableReminder {
-                            $reminder = New-Object 'Google.Apis.Calendar.v3.Data.Event+RemindersData' -Property @{
-                                UseDefault = (-not $DisableReminder)
+                        Reminders {
+                            if ($null -eq $RemindersData) {
+                                $RemindersData = New-Object 'Google.Apis.Calendar.v3.Data.Event+RemindersData'
                             }
-                            $body.Reminders = $reminder
+                            $RemindersData.Overrides = $Reminders
+                        }
+                        RemoveAllReminders {
+                            $RemindersData = New-Object 'Google.Apis.Calendar.v3.Data.Event+RemindersData' -Property @{
+                                UseDefault = $false
+                                Overrides = New-Object 'System.Collections.Generic.List[Google.Apis.Calendar.v3.Data.EventReminder]'
+                            }
+                        }
+                        DisableDefaultReminder {
+                            if ($null -eq $RemindersData) {
+                                $RemindersData = New-Object 'Google.Apis.Calendar.v3.Data.Event+RemindersData'
+                            }
+                            $RemindersData.UseDefault = (-not $DisableDefaultReminder)
                         }
                         Default {
                             if ($body.PSObject.Properties.Name -contains $key) {
@@ -230,6 +271,9 @@ function Update-GSCalendarEvent {
                             }
                         }
                     }
+                }
+                if ($RemindersData) {
+                    $body.Reminders = $RemindersData
                 }
                 if ($ExtendedProperties) {
                     $body.ExtendedProperties = $ExtendedProperties

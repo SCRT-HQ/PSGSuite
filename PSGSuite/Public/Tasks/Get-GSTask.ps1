@@ -6,11 +6,6 @@ function Get-GSTask {
     .DESCRIPTION
     Gets a specific Task or the list of Tasks
 
-    .PARAMETER User
-    The User who owns the Task.
-
-    Defaults to the AdminUser's email.
-
     .PARAMETER Task
     The unique Id of the Task.
 
@@ -18,6 +13,35 @@ function Get-GSTask {
 
     .PARAMETER Tasklist
     The unique Id of the Tasklist the Task is on.
+
+    .PARAMETER User
+    The User who owns the Task.
+
+    Defaults to the AdminUser's email.
+
+    .PARAMETER CompletedMax
+    Upper bound for a task's completion date to filter by.
+
+    .PARAMETER CompletedMin
+    Lower bound for a task's completion date to filter by.
+
+    .PARAMETER DueMax
+    Upper bound for a task's due date to filter by.
+
+    .PARAMETER DueMin
+    Lower bound for a task's due date to filter by.
+
+    .PARAMETER UpdatedMin
+    Lower bound for a task's last modification time to filter by.
+
+    .PARAMETER ShowCompleted
+    Flag indicating whether completed tasks are returned in the result.
+
+    .PARAMETER ShowDeleted
+    Flag indicating whether deleted tasks are returned in the result.
+
+    .PARAMETER ShowHidden
+    Flag indicating whether hidden tasks are returned in the result.
 
     .PARAMETER PageSize
     Page size of the result set
