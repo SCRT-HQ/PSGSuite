@@ -12,9 +12,12 @@ function Get-GSGmailMessageList {
     Defaults to the AdminEmail user
 
     .PARAMETER Filter
-    Only return messages matching the specified query. Supports the same query format as the Gmail search box. For example, "from:someuser@example.com rfc822msgid: is:unread"
+    Only return messages matching the specified query. Supports the same query format as the Gmail search box. For example, "from:someuser@example.com rfc822msgid:<lkj123l4jj1lj@gmail.com> is:unread"
 
     More info on Gmail search operators here: https://support.google.com/mail/answer/7190?hl=en
+
+    .PARAMETER Rfc822MsgId
+    The RFC822 Message ID to add to your filter.
 
     .PARAMETER LabelIds
     Only return messages with labels that match all of the specified label IDs

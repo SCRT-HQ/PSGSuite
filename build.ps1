@@ -48,13 +48,22 @@ else {
         PackageManagement = '1.4.4'
         PowerShellGet     = '2.2.1'
     }
+    $updatedCoreModules = $false
     foreach ($module in $modHash.Keys | Sort-Object) {
         Write-BuildLog "Updating $module module if needed"
         if ($null -eq (Get-Module $module -ListAvailable | Where-Object {[System.Version]$_.Version -ge [System.Version]($modHash[$module])})) {
             Write-BuildLog "$module is below the minimum required version! Updating"
-            Install-Module $module -MinimumVersion $modHash[$module] -Force -AllowClobber -SkipPublisherCheck -Scope CurrentUser -Verbose:$false
+            Update-Module $module -Force
+            $updatedCoreModules = $true
         }
     }
+    if ($updatedCoreModules) {
+        $modHash.Keys | ForEach-Object {
+            Remove-Module $_ -ErrorAction SilentlyContinue
+        }
+        Import-Module PowerShellGet
+    }
+
 
     Invoke-CommandWithLog {Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false}
     Invoke-CommandWithLog {Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false}

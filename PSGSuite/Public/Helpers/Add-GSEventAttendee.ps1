@@ -38,6 +38,9 @@ function Add-GSEventAttendee {
 
     .PARAMETER InputObject
     Used for pipeline input of an existing UserAddress object to strip the extra attributes and prevent errors
+
+    .EXAMPLE
+    Add-GSEventAttendee -Email 'joe@domain.com'
     #>
     [OutputType('Google.Apis.Calendar.v3.Data.EventAttendee')]
     [CmdletBinding(DefaultParameterSetName = "InputObject")]

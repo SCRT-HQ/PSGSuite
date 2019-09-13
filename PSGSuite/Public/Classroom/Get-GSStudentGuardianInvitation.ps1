@@ -21,7 +21,7 @@ function Get-GSStudentGuardianInvitation {
     .PARAMETER GuardianEmail
     If specified, only results with the specified GuardianEmail will be returned.
 
-    .PARAMETER State
+    .PARAMETER States
     If specified, only results with the specified state values will be returned. Otherwise, results with a state of PENDING will be returned.
 
     The State can be one of the following:

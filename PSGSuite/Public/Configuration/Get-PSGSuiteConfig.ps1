@@ -20,6 +20,9 @@ function Get-PSGSuiteConfig {
     .PARAMETER PassThru
     If specified, returns the config after loading it
 
+    .PARAMETER NoImport
+    If $true, just returns the specified config but does not impart it in the current session.
+
     .EXAMPLE
     Get-PSGSuiteConfig personalDomain -PassThru
 

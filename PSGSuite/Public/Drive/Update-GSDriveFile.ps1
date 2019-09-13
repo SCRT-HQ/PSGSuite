@@ -64,6 +64,9 @@ function Update-GSDriveFile {
 
     Only the owner may trash a file, and other users cannot see files in the owner's trash.
 
+    .PARAMETER WritersCanShare
+    If $true, sets Writers Can Share to true on the file.
+
     .PARAMETER Projection
     The defined subset of fields to be returned
 

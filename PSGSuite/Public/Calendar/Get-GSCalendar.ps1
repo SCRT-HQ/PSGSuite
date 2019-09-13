@@ -39,6 +39,11 @@ function Get-GSCalendar {
     To ensure client state consistency minAccessRole query parameter cannot be specified together with nextSyncToken. If the syncToken expires, the server will respond with a 410 GONE response code and the client should clear its storage and perform a full synchronization without any syncToken. Learn more about incremental synchronization.
 
     Optional. The default is to return all entries.
+
+    .EXAMPLE
+    Get-GSCalendar
+
+    Gets the list of calendar subscriptions for the AdminEmail user.
     #>
     [OutputType('Google.Apis.Calendar.v3.Data.CalendarListEntry')]
     [cmdletbinding(DefaultParameterSetName = "List")]

@@ -43,6 +43,11 @@ function Send-GSChatMessage {
     .PARAMETER ThreadKey
     Opaque thread identifier string that can be specified to group messages into a single thread. If this is the first message with a given thread identifier, a new thread is created. Subsequent messages with the same thread identifier will be posted into the same thread. This relieves bots and webhooks from having to store the Hangouts Chat thread ID of a thread (created earlier by them) to post further updates to it.
 
+    .PARAMETER RestParent
+    The resource name of the space to send the message to via REST API call, in the form "spaces".
+
+    Example: spaces/AAAAMpdlehY
+
     .PARAMETER Webhook
     The Url of the Webhook for the space to send the message to.
 
@@ -56,6 +61,9 @@ function Send-GSChatMessage {
     Any Chat message segment objects created with functions named `Add-GSChat*` passed through the pipeline or added directly to this parameter as values.
 
     If section widgets are passed directly to this function, a new section without a SectionHeader will be created and the widgets will be added to it
+
+    .PARAMETER BodyPassThru
+    If $true, returns the message body.
 
     .EXAMPLE
     Send-GSChatMessage -Text "Post job report:" -Cards $cards -Webhook (Get-GSChatWebhook JobReports)

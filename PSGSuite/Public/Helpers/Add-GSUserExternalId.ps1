@@ -71,7 +71,12 @@ function Add-GSUserExternalId {
                 Fields {
                     $obj = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserExternalId'
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
-                        $obj.$prop = $PSBoundParameters[$prop]
+                        if ($prop -eq 'Type') {
+                            $obj.$prop = $PSBoundParameters[$prop].ToLower()
+                        }
+                        else {
+                            $obj.$prop = $PSBoundParameters[$prop]
+                        }
                     }
                     $obj
                 }

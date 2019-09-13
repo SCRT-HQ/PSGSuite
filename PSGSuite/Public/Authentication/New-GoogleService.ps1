@@ -1,4 +1,27 @@
 function New-GoogleService {
+    <#
+    .SYNOPSIS
+    Creates a new Google Service object that handles authentication for the scopes specified
+
+    .DESCRIPTION
+    Creates a new Google Service object that handles authentication for the scopes specified
+
+    .PARAMETER Scope
+    The scope or scopes to build the service with, e.g. https://www.googleapis.com/auth/admin.reports.audit.readonly
+
+    .PARAMETER ServiceType
+    The type of service to create, e.g. Google.Apis.Admin.Reports.reports_v1.ReportsService
+
+    .PARAMETER User
+    The user to request the service for during the authentication process
+
+    .EXAMPLE
+    $serviceParams = @{
+        Scope       = 'https://www.googleapis.com/auth/admin.reports.audit.readonly'
+        ServiceType = 'Google.Apis.Admin.Reports.reports_v1.ReportsService'
+    }
+    $service = New-GoogleService @serviceParams
+    #>
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory = $true,Position = 0)]

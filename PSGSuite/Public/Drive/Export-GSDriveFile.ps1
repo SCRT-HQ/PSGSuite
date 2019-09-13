@@ -50,6 +50,9 @@ function Export-GSDriveFile {
     .PARAMETER Fields
     The specific fields to returned
 
+    .PARAMETER Force
+    If $true, overwrites any existing files at the same path.
+
     .EXAMPLE
     Export-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -Type CSV -OutFilePath .\SheetExport.csv
 

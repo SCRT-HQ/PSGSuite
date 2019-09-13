@@ -39,6 +39,12 @@ function Get-GSUsageReport {
     .PARAMETER Limit
     The maximum amount of results you want returned. Exclude or set to 0 to return all results
 
+    .PARAMETER Flat
+    If $true, returns a flattened object for easy parsing.
+
+    .PARAMETER Raw
+    If $true, returns the raw, unformatted results.
+
     .EXAMPLE
     Get-GSUsageReport -Date (Get-Date).AddDays(-30)
 

@@ -46,7 +46,10 @@ function Set-PSGSuiteConfig {
     The Service Account's Client ID from the Google Developer's Console. This is optional and is only used as a reference for yourself to prevent needing to check the Developer's Console for the ID when verifying API Client Access.
 
     .PARAMETER Webhook
-    Web
+    Chat Webhooks to add to the config.
+
+    .PARAMETER Space
+    Chat spaces to add to the config.
 
     .PARAMETER Scope
     The scope at which you would like to set this config.

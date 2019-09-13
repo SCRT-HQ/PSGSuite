@@ -5,7 +5,7 @@ $TargetModulePath = Get-ChildItem "$ProjectRoot\BuildOutput\$($ModuleName)" | So
 
 Describe "Public Function Help tests" {
     # Adapted from Francois' post here: https://lazywinadmin.com/2016/05/using-pester-to-test-your-comment-based.html
-    Import-Module "$TargetModulePath\$($ModuleName).psd1" -Force
+    Import-Module "$TargetModulePath\$($ModuleName).psd1" -Force -ErrorAction SilentlyContinue
     $FunctionsList = (Get-Module $ModuleName).ExportedFunctions.Keys
     foreach ($Function in $FunctionsList) {
         $Help = Get-Help -Name $Function -Full

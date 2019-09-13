@@ -107,7 +107,12 @@ function Add-GSUserIm {
                 Fields {
                     $obj = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserIm'
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
-                        $obj.$prop = $PSBoundParameters[$prop]
+                        if ($prop -in @('Type','Protocol')) {
+                            $obj.$prop = $PSBoundParameters[$prop].ToLower()
+                        }
+                        else {
+                            $obj.$prop = $PSBoundParameters[$prop]
+                        }
                     }
                     $obj
                 }
