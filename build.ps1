@@ -38,7 +38,7 @@ else {
     $env:BuildScriptPath = $PSScriptRoot
     $env:NoNugetRestore = $NoRestore
 
-    Invoke-CommandWithLog {$PSDefaultParameterValues = @{
+    Invoke-CommandWithLog {$global:PSDefaultParameterValues = @{
         '*-Module:Verbose' = $false
         'Import-Module:ErrorAction' = 'Stop'
         'Import-Module:Force' = $true
@@ -64,7 +64,7 @@ else {
         PowerShellGet     = '2.2.1'
     }
     $modHash.GetEnumerator() | ForEach-Object {
-        Install-Module $_.Key -MinimumVersion $_.Value
+        Install-Module $_.Key -MinimumVersion $_.Value -Repository PSGallery -Force
     }
 
     Add-Heading "Finalizing build prerequisites"
