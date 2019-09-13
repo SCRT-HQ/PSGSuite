@@ -38,35 +38,6 @@ else {
     $env:BuildScriptPath = $PSScriptRoot
     $env:NoNugetRestore = $NoRestore
 
-    Add-EnvironmentSummary "Build started"
-
-    Set-BuildVariables
-
-    Add-Heading "Setting package feeds"
-
-    $modHash = @{
-        PackageManagement = '1.4.4'
-        PowerShellGet     = '2.2.1'
-    }
-    $updatedCoreModules = $false
-    foreach ($module in $modHash.Keys | Sort-Object) {
-        Write-BuildLog "Updating $module module if needed"
-        if ($null -eq (Get-Module $module -ListAvailable | Where-Object {[System.Version]$_.Version -ge [System.Version]($modHash[$module])})) {
-            Write-BuildLog "$module is below the minimum required version! Updating"
-            Update-Module $module -Force
-            $updatedCoreModules = $true
-        }
-    }
-    if ($updatedCoreModules) {
-        $modHash.Keys | ForEach-Object {
-            Remove-Module $_ -ErrorAction SilentlyContinue
-        }
-        Import-Module PowerShellGet
-    }
-
-
-    Invoke-CommandWithLog {Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false}
-    Invoke-CommandWithLog {Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false}
     Invoke-CommandWithLog {$PSDefaultParameterValues = @{
         '*-Module:Verbose' = $false
         'Import-Module:ErrorAction' = 'Stop'
@@ -78,6 +49,20 @@ else {
         'Install-Module:Scope' = 'CurrentUser'
         'Install-Module:Verbose' = $false
     }}
+    Invoke-CommandWithLog {Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false}
+    Invoke-CommandWithLog {Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false}
+
+    Add-EnvironmentSummary "Build started"
+
+    Set-BuildVariables
+
+    Add-Heading "Setting package feeds"
+
+    $modHash = @{
+        PackageManagement = '1.4.4'
+        PowerShellGet     = '2.2.1'
+    }
+    $modHash.Keys | Resolve-Module -UpdateModules @verbose
 
     Add-Heading "Finalizing build prerequisites"
     if (
