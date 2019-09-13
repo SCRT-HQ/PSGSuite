@@ -47,6 +47,7 @@ else {
         'Install-Module:ErrorAction' = 'Stop'
         'Install-Module:Force' = $true
         'Install-Module:Scope' = 'CurrentUser'
+        'Install-Module:Repository' = 'PSGallery'
         'Install-Module:Verbose' = $false
     }}
     Invoke-CommandWithLog {Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false}
@@ -62,7 +63,9 @@ else {
         PackageManagement = '1.4.4'
         PowerShellGet     = '2.2.1'
     }
-    $modHash.Keys | Resolve-Module -UpdateModules @verbose
+    $modHash.GetEnumerator() | ForEach-Object {
+        Install-Module $_.Key -MinimumVersion $_.Value
+    }
 
     Add-Heading "Finalizing build prerequisites"
     if (
