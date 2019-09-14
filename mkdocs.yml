@@ -2,7 +2,7 @@
 site_name: 'PSGSuite'
 site_description: 'PowerShell for G Suite'
 site_author: 'Nate Ferrell'
-site_url: 'https://scrthq.github.io/PSGSuite'
+site_url: 'https://psgsuite.io'
 
 # Repository
 repo_name: 'scrthq/PSGSuite'

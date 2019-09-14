@@ -304,13 +304,6 @@ Task MkDocs -Depends Init {
             }
         }
     }
-    Set-Location $PSScriptRoot
-    if ($null -eq (Get-Command "mkdocs*")) {
-        pip install --user mkdocs
-        pip install --user mkdocs-material
-        pip install --user mkdocs-minify-plugin
-    }
-    mkdocs gh-deploy --message "[skip ci] Deploying Docs update @ $(Get-Date) to https://scrthq.github.io/PSGSuite" --verbose --force --ignore-version
 }
 
 Task Import -Depends Compile {
