@@ -253,8 +253,8 @@ Task MkDocs -Depends Init {
     'platyPS','PSGSuite' | ForEach-Object {
         "    Installing $_ if missing"
         $_ | Resolve-Module
+        Import-Module $_
     }
-    Import-Module platyPS,PSGSuite
     $docPath = Join-Path $PSScriptRoot 'docs'
     $funcPath = Join-Path $docPath 'Functions'
     $docStage = Join-Path $PSScriptRoot 'docstage'
