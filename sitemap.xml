@@ -21,1182 +21,1182 @@
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Authentication/Clear-PSGSuiteServiceCache/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Authentication/Clear-PSGSuiteServiceCache/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Authentication/Get-GSToken/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Authentication/Get-GSToken/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Authentication/Get-PSGSuiteServiceCache/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Authentication/Get-PSGSuiteServiceCache/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Authentication/New-GoogleService/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Authentication/New-GoogleService/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Calendar/Add-GSCalendarSubscription/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Calendar/Add-GSCalendarSubscription/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Calendar/Get-GSCalendar/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Calendar/Get-GSCalendar/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Calendar/Get-GSCalendarAcl/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Calendar/Get-GSCalendarAcl/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Calendar/Get-GSCalendarEvent/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Calendar/Get-GSCalendarEvent/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Calendar/Get-GSCalendarSubscription/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Calendar/Get-GSCalendarSubscription/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Calendar/New-GSCalendarAcl/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Calendar/New-GSCalendarAcl/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Calendar/New-GSCalendarEvent/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Calendar/New-GSCalendarEvent/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Calendar/Remove-GSCalendarAcl/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Calendar/Remove-GSCalendarAcl/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Calendar/Remove-GSCalendarEvent/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Calendar/Remove-GSCalendarEvent/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Calendar/Remove-GSCalendarSubscription/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Calendar/Remove-GSCalendarSubscription/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Calendar/Update-GSCalendarEvent/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Calendar/Update-GSCalendarEvent/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Calendar/Update-GSCalendarSubscription/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Calendar/Update-GSCalendarSubscription/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Chat/Get-GSChatMember/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Chat/Get-GSChatMember/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Chat/Get-GSChatMessage/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Chat/Get-GSChatMessage/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Chat/Get-GSChatSpace/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Chat/Get-GSChatSpace/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Chat/Remove-GSChatMessage/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Chat/Remove-GSChatMessage/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Chat/Send-GSChatMessage/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Chat/Send-GSChatMessage/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Chat/Update-GSChatMessage/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Chat/Update-GSChatMessage/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Add-GSCourseParticipant/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Add-GSCourseParticipant/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Confirm-GSCourseInvitation/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Confirm-GSCourseInvitation/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Get-GSClassroomUserProfile/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Get-GSClassroomUserProfile/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Get-GSCourse/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Get-GSCourse/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Get-GSCourseAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Get-GSCourseAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Get-GSCourseInvitation/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Get-GSCourseInvitation/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Get-GSCourseParticipant/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Get-GSCourseParticipant/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Get-GSStudentGuardian/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Get-GSStudentGuardian/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Get-GSStudentGuardianInvitation/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Get-GSStudentGuardianInvitation/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/New-GSCourse/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/New-GSCourse/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/New-GSCourseAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/New-GSCourseAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/New-GSCourseInvitation/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/New-GSCourseInvitation/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/New-GSStudentGuardianInvitation/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/New-GSStudentGuardianInvitation/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Remove-GSCourse/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Remove-GSCourse/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Remove-GSCourseAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Remove-GSCourseAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Remove-GSCourseInvitation/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Remove-GSCourseInvitation/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Remove-GSCourseParticipant/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Remove-GSCourseParticipant/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Remove-GSStudentGuardian/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Remove-GSStudentGuardian/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Revoke-GSStudentGuardianInvitation/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Revoke-GSStudentGuardianInvitation/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Classroom/Update-GSCourse/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Classroom/Update-GSCourse/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Configuration/Export-PSGSuiteConfig/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Configuration/Export-PSGSuiteConfig/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Configuration/Get-GSChatConfig/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Configuration/Get-GSChatConfig/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Configuration/Get-PSGSuiteConfig/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Configuration/Get-PSGSuiteConfig/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Configuration/Import-PSGSuiteConfig/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Configuration/Import-PSGSuiteConfig/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Configuration/Set-PSGSuiteConfig/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Configuration/Set-PSGSuiteConfig/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Configuration/Show-PSGSuiteConfig/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Configuration/Show-PSGSuiteConfig/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Configuration/Switch-PSGSuiteConfig/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Configuration/Switch-PSGSuiteConfig/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Contacts/Get-GSContactList/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Contacts/Get-GSContactList/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Contacts/Remove-GSContact/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Contacts/Remove-GSContact/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Customers/Get-GSCustomer/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Customers/Get-GSCustomer/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Customers/Update-GSCustomer/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Customers/Update-GSCustomer/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Data Transfer/Get-GSDataTransferApplication/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Data Transfer/Get-GSDataTransferApplication/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Data Transfer/Start-GSDataTransfer/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Data Transfer/Start-GSDataTransfer/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Delegation/Add-GSGmailDelegate/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Delegation/Add-GSGmailDelegate/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Delegation/Get-GSGmailDelegate/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Delegation/Get-GSGmailDelegate/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Delegation/Remove-GSGmailDelegate/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Delegation/Remove-GSGmailDelegate/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Domains/Get-GSDomain/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Domains/Get-GSDomain/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Domains/Get-GSDomainAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Domains/Get-GSDomainAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Domains/New-GSDomain/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Domains/New-GSDomain/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Domains/New-GSDomainAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Domains/New-GSDomainAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Domains/Remove-GSDomain/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Domains/Remove-GSDomain/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Domains/Remove-GSDomainAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Domains/Remove-GSDomainAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Add-GSDocContent/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Add-GSDocContent/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Add-GSDrivePermission/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Add-GSDrivePermission/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Copy-GSDriveFile/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Copy-GSDriveFile/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Export-GSDriveFile/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Export-GSDriveFile/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Get-GSDocContent/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Get-GSDocContent/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Get-GSDrive/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Get-GSDrive/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Get-GSDriveFile/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Get-GSDriveFile/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Get-GSDriveFileList/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Get-GSDriveFileList/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Get-GSDriveFileUploadStatus/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Get-GSDriveFileUploadStatus/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Get-GSDriveFolderSize/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Get-GSDriveFolderSize/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Get-GSDrivePermission/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Get-GSDrivePermission/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Get-GSDriveProfile/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Get-GSDriveProfile/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Get-GSDriveRevision/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Get-GSDriveRevision/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Hide-GSDrive/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Hide-GSDrive/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/New-GSDrive/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/New-GSDrive/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/New-GSDriveFile/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/New-GSDriveFile/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Remove-GSDrive/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Remove-GSDrive/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Remove-GSDriveFile/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Remove-GSDriveFile/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Remove-GSDrivePermission/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Remove-GSDrivePermission/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Remove-GSDriveRevision/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Remove-GSDriveRevision/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Set-GSDocContent/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Set-GSDocContent/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Show-GSDrive/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Show-GSDrive/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Start-GSDriveFileUpload/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Start-GSDriveFileUpload/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Stop-GSDriveFileUpload/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Stop-GSDriveFileUpload/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Update-GSDrive/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Update-GSDrive/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Update-GSDriveFile/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Update-GSDriveFile/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Update-GSDriveRevision/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Update-GSDriveRevision/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Drive/Watch-GSDriveUpload/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Drive/Watch-GSDriveUpload/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Add-GSGmailFilter/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Add-GSGmailFilter/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Add-GSGmailForwardingAddress/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Add-GSGmailForwardingAddress/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Get-GSGmailAutoForwardingSettings/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Get-GSGmailAutoForwardingSettings/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Get-GSGmailFilter/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Get-GSGmailFilter/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Get-GSGmailForwardingAddress/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Get-GSGmailForwardingAddress/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Get-GSGmailImapSettings/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Get-GSGmailImapSettings/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Get-GSGmailLabel/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Get-GSGmailLabel/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Get-GSGmailLanguageSettings/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Get-GSGmailLanguageSettings/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Get-GSGmailMessage/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Get-GSGmailMessage/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Get-GSGmailMessageList/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Get-GSGmailMessageList/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Get-GSGmailPopSettings/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Get-GSGmailPopSettings/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Get-GSGmailProfile/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Get-GSGmailProfile/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Get-GSGmailSMIMEInfo/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Get-GSGmailSMIMEInfo/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Get-GSGmailSendAsAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Get-GSGmailSendAsAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Get-GSGmailVacationSettings/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Get-GSGmailVacationSettings/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/New-GSGmailLabel/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/New-GSGmailLabel/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/New-GSGmailSMIMEInfo/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/New-GSGmailSMIMEInfo/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/New-GSGmailSendAsAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/New-GSGmailSendAsAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Remove-GSGmailFilter/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Remove-GSGmailFilter/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Remove-GSGmailLabel/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Remove-GSGmailLabel/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Remove-GSGmailMessage/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Remove-GSGmailMessage/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Remove-GSGmailSMIMEInfo/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Remove-GSGmailSMIMEInfo/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Remove-GSGmailSendAsAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Remove-GSGmailSendAsAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Restore-GSGmailMessage/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Restore-GSGmailMessage/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Send-GSGmailSendAsConfirmation/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Send-GSGmailSendAsConfirmation/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Send-GmailMessage/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Send-GmailMessage/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Update-GSGmailAutoForwardingSettings/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Update-GSGmailAutoForwardingSettings/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Update-GSGmailImapSettings/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Update-GSGmailImapSettings/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Update-GSGmailLabel/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Update-GSGmailLabel/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Update-GSGmailLanguageSettings/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Update-GSGmailLanguageSettings/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Update-GSGmailMessageLabels/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Update-GSGmailMessageLabels/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Update-GSGmailPopSettings/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Update-GSGmailPopSettings/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Update-GSGmailSendAsAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Update-GSGmailSendAsAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Update-GSGmailSignature/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Update-GSGmailSignature/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Gmail/Update-GSGmailVacationSettings/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Gmail/Update-GSGmailVacationSettings/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/Add-GSGroupMember/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/Add-GSGroupMember/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/Add-GSPrincipalGroupMembership/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/Add-GSPrincipalGroupMembership/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/Get-GSGroup/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/Get-GSGroup/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/Get-GSGroupAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/Get-GSGroupAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/Get-GSGroupMember/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/Get-GSGroupMember/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/Get-GSGroupSettings/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/Get-GSGroupSettings/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/New-GSGroup/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/New-GSGroup/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/New-GSGroupAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/New-GSGroupAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/Remove-GSGroup/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/Remove-GSGroup/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/Remove-GSGroupAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/Remove-GSGroupAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/Remove-GSGroupMember/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/Remove-GSGroupMember/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/Remove-GSPrincipalGroupMembership/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/Remove-GSPrincipalGroupMembership/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/Set-GSGroupSettings/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/Set-GSGroupSettings/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/Test-GSGroupMembership/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/Test-GSGroupMembership/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/Update-GSGroupMember/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/Update-GSGroupMember/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Groups/Update-GSGroupSettings/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Groups/Update-GSGroupSettings/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSCalendarEventReminder/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSCalendarEventReminder/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSCalendarNotification/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSCalendarNotification/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSChatButton/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSChatButton/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSChatCard/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSChatCard/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSChatCardAction/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSChatCardAction/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSChatCardSection/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSChatCardSection/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSChatImage/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSChatImage/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSChatKeyValue/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSChatKeyValue/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSChatOnClick/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSChatOnClick/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSChatTextParagraph/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSChatTextParagraph/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSCustomerPostalAddress/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSCustomerPostalAddress/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSEventAttendee/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSEventAttendee/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSGmailSmtpMsa/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSGmailSmtpMsa/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSUserAddress/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSUserAddress/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSUserEmail/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSUserEmail/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSUserExternalId/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSUserExternalId/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSUserIm/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSUserIm/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSUserLocation/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSUserLocation/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSUserOrganization/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSUserOrganization/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSUserPhone/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSUserPhone/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSUserRelation/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSUserRelation/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Add-GSUserSchemaField/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Add-GSUserSchemaField/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Block-CoreCLREncryptionWarning/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Block-CoreCLREncryptionWarning/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Compare-ModuleVersion/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Compare-ModuleVersion/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Helpers/Unblock-CoreCLREncryptionWarning/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Helpers/Unblock-CoreCLREncryptionWarning/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Licensing/Get-GSUserLicense/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Licensing/Get-GSUserLicense/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Licensing/Remove-GSUserLicense/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Licensing/Remove-GSUserLicense/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Licensing/Set-GSUserLicense/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Licensing/Set-GSUserLicense/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Licensing/Update-GSUserLicense/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Licensing/Update-GSUserLicense/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Org Units/Get-GSOrganizationalUnit/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Org Units/Get-GSOrganizationalUnit/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Org Units/New-GSOrganizationalUnit/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Org Units/New-GSOrganizationalUnit/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Org Units/Remove-GSOrganizationalUnit/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Org Units/Remove-GSOrganizationalUnit/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Org Units/Update-GSOrganizationalUnit/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Org Units/Update-GSOrganizationalUnit/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Reports/Get-GSActivityReport/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Reports/Get-GSActivityReport/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Reports/Get-GSUsageReport/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Reports/Get-GSUsageReport/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Resources/Get-GSResource/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Resources/Get-GSResource/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Resources/New-GSResource/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Resources/New-GSResource/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Resources/Remove-GSResource/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Resources/Remove-GSResource/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Resources/Update-GSResource/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Resources/Update-GSResource/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/RoleAssignments/Get-GSAdminRoleAssignment/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/RoleAssignments/Get-GSAdminRoleAssignment/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/RoleAssignments/New-GSAdminRoleAssignment/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/RoleAssignments/New-GSAdminRoleAssignment/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/RoleAssignments/Remove-GSAdminRoleAssignment/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/RoleAssignments/Remove-GSAdminRoleAssignment/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Roles/Get-GSAdminRole/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Roles/Get-GSAdminRole/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Roles/New-GSAdminRole/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Roles/New-GSAdminRole/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Roles/Remove-GSAdminRole/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Roles/Remove-GSAdminRole/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Roles/Update-GSAdminRole/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Roles/Update-GSAdminRole/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Schemas/Get-GSUserSchema/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Schemas/Get-GSUserSchema/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Schemas/New-GSUserSchema/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Schemas/New-GSUserSchema/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Schemas/Remove-GSUserSchema/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Schemas/Remove-GSUserSchema/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Schemas/Set-GSUserSchema/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Schemas/Set-GSUserSchema/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Schemas/Update-GSUserSchema/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Schemas/Update-GSUserSchema/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Security/Get-GSChromeOSDevice/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Security/Get-GSChromeOSDevice/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Security/Get-GSMobileDevice/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Security/Get-GSMobileDevice/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Security/Get-GSUserASP/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Security/Get-GSUserASP/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Security/Get-GSUserToken/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Security/Get-GSUserToken/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Security/Get-GSUserVerificationCodes/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Security/Get-GSUserVerificationCodes/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Security/New-GSUserVerificationCodes/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Security/New-GSUserVerificationCodes/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Security/Remove-GSMobileDevice/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Security/Remove-GSMobileDevice/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Security/Remove-GSUserASP/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Security/Remove-GSUserASP/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Security/Remove-GSUserToken/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Security/Remove-GSUserToken/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Security/Revoke-GSUserVerificationCodes/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Security/Revoke-GSUserVerificationCodes/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Security/Update-GSChromeOSDevice/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Security/Update-GSChromeOSDevice/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Security/Update-GSMobileDevice/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Security/Update-GSMobileDevice/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Sheets/Clear-GSSheet/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Sheets/Clear-GSSheet/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Sheets/Copy-GSSheet/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Sheets/Copy-GSSheet/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Sheets/Export-GSSheet/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Sheets/Export-GSSheet/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Sheets/Get-GSSheetInfo/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Sheets/Get-GSSheetInfo/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Sheets/Import-GSSheet/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Sheets/Import-GSSheet/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Sheets/New-GSSheet/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Sheets/New-GSSheet/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Tasks/Clear-GSTasklist/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Tasks/Clear-GSTasklist/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Tasks/Get-GSTask/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Tasks/Get-GSTask/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Tasks/Get-GSTasklist/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Tasks/Get-GSTasklist/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Tasks/Move-GSTask/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Tasks/Move-GSTask/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Tasks/New-GSTask/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Tasks/New-GSTask/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Tasks/New-GSTasklist/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Tasks/New-GSTasklist/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Tasks/Remove-GSTask/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Tasks/Remove-GSTask/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Tasks/Remove-GSTasklist/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Tasks/Remove-GSTasklist/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Tasks/Update-GSTask/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Tasks/Update-GSTask/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Tasks/Update-GSTasklist/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Tasks/Update-GSTasklist/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/URL Shortener/Get-GSShortUrl/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/URL Shortener/Get-GSShortUrl/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/URL Shortener/New-GSShortUrl/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/URL Shortener/New-GSShortUrl/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Users/Get-GSUser/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Users/Get-GSUser/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Users/Get-GSUserAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Users/Get-GSUserAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Users/Get-GSUserPhoto/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Users/Get-GSUserPhoto/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Users/New-GSUser/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Users/New-GSUser/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Users/New-GSUserAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Users/New-GSUserAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Users/Remove-GSUser/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Users/Remove-GSUser/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Users/Remove-GSUserAlias/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Users/Remove-GSUserAlias/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Users/Remove-GSUserPhoto/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Users/Remove-GSUserPhoto/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Users/Restore-GSUser/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Users/Restore-GSUser/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Users/Sync-GSUserCache/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Users/Sync-GSUserCache/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Users/Update-GSUser/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Users/Update-GSUser/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://scrthq.github.io/PSGSuite/Functions/Users/Update-GSUserPhoto/</loc>
+     <loc>https://scrthq.github.io/PSGSuite/Function Help/Users/Update-GSUserPhoto/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
