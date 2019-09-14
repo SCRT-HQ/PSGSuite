@@ -6,6 +6,21 @@
      <changefreq>daily</changefreq>
     </url>
     <url>
+     <loc>https://scrthq.github.io/PSGSuite/Initial Setup/</loc>
+     <lastmod>2019-09-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://scrthq.github.io/PSGSuite/Managing Users/</loc>
+     <lastmod>2019-09-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://scrthq.github.io/PSGSuite/Multiple Configurations/</loc>
+     <lastmod>2019-09-14</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
      <loc>https://scrthq.github.io/PSGSuite/Functions/Authentication/Clear-PSGSuiteServiceCache/</loc>
      <lastmod>2019-09-14</lastmod>
      <changefreq>daily</changefreq>
