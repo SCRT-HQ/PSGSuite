@@ -256,7 +256,7 @@ Task MkDocs -Depends Init {
         Import-Module $_
     }
     $docPath = Join-Path $PSScriptRoot 'docs'
-    $funcPath = Join-Path $docPath 'Functions'
+    $funcPath = Join-Path $docPath 'Function Help'
     $docStage = Join-Path $PSScriptRoot 'docstage'
     $sitePath = Join-Path $PSScriptRoot 'site'
     <# "    Importing module from path: $outputModDir"
