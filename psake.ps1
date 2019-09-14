@@ -249,7 +249,7 @@ catch {
     Get-ChildItem $outputModVerDir | Format-Table -Autosize
 } -description 'Compiles module from source'
 
-Task MkDocs -Depends Compile {
+Task MkDocs -Depends Init {
     '    Installing platyPS if missing'
     'platyPS' | Resolve-Module
     Import-Module platyPS
@@ -257,9 +257,11 @@ Task MkDocs -Depends Compile {
     $funcPath = Join-Path $docPath 'Functions'
     $docStage = Join-Path $PSScriptRoot 'docstage'
     $sitePath = Join-Path $PSScriptRoot 'site'
-    <# "    Importing module from path: $outputModDir"
-    Import-Module $outputModDir -Force -Verbose #>
-    Import-Module $env:BHProjectName -Force -Verbose
+    "    Importing module from path: $outputModDir"
+    <# $origPSModulePath = $env:PSModulePath
+    $env:PSModulePath = $outputModDir + [System.IO.Path]::PathSeparator + $env:PSModulePath #>
+    Import-Module (Join-Path $outputModDir $env:BHProjectName) -Force -Verbose
+    #Import-Module $env:BHProjectName -Force -Verbose
 
     "    Setting index.md content from README"
     Get-Content (Join-Path $PSScriptRoot 'README.md') -Raw | Set-Content (Join-Path $docPath 'index.md') -Force
@@ -299,6 +301,11 @@ Task MkDocs -Depends Compile {
         }
     }
     Set-Location $PSScriptRoot
+    if ($null -eq (Get-Command "mkdocs*")) {
+        pip install mkdocs
+        pip install mkdocs-material
+        pip install mkdocs-minify-plugin
+    }
     mkdocs gh-deploy --message "Deploying Docs update @ $(Get-Date) to https://scrthq.github.io/PSGSuite" --verbose --force --ignore-version
 }
 

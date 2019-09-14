@@ -181,3 +181,4 @@ All other functions are either intact or have an alias included to support backw
   * Updated Google .NET SDKs to latest versions.
   * Updated and corrected a LOT of comment based function help.
   * Added function help tests to validate that functions contain expected help content.
+

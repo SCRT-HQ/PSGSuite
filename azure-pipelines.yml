@@ -15,3 +15,5 @@ trigger:
 
 stages:
 - template: BuildTestDeployModule/azure-pipelines.yml@templates
+  parameters:
+    MkDocs: 'True'
