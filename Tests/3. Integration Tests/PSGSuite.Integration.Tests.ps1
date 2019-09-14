@@ -1,4 +1,4 @@
-if ($ENV:BUILD_BUILDURI -like 'vstfs:*' -and -not [String]::IsNullOrEmpty($env:PSGSuiteConfig)) {
+if ($ENV:BUILD_BUILDURI -like 'vstfs:*' -and -not [String]::IsNullOrEmpty($env:PSGSuiteConfigJson)) {
     $projectRoot = Resolve-Path "$PSScriptRoot\..\.."
     $ModulePath = Resolve-Path "$projectRoot\BuildOutput\$($env:BHProjectName)"
     $decompiledModulePath = Resolve-Path "$projectRoot\$($env:BHProjectName)"
@@ -10,7 +10,7 @@ if ($ENV:BUILD_BUILDURI -like 'vstfs:*' -and -not [String]::IsNullOrEmpty($env:P
     $moduleRoot = Split-Path (Resolve-Path "$ModulePath\*\*.psd1")
 
     Import-Module $ModulePath -Force -Verbose:$false
-    Import-PSGSuiteConfig -Json $env:PSGSuiteConfig -Temporary -Verbose
+    Import-PSGSuiteConfig -Json $env:PSGSuiteConfigJson -Temporary -Verbose
 
     $u = Get-GSUser
     $u | Select-Object @{N="GivenName";E={$_.Name.GivenName}},OrgUnitPath,Kind
