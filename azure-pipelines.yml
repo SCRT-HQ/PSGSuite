@@ -11,9 +11,10 @@ variables:
 trigger:
   branches:
     include:
-    - refs/heads/*
+      - refs/heads/*
 
 stages:
 - template: BuildTestDeployModule/azure-pipelines.yml@templates
   parameters:
     MkDocs: 'True'
+    GitUrl: 'git@github.com:scrthq/PSGSuite.git'

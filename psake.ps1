@@ -250,18 +250,20 @@ catch {
 } -description 'Compiles module from source'
 
 Task MkDocs -Depends Init {
-    '    Installing platyPS if missing'
-    'platyPS' | Resolve-Module
-    Import-Module platyPS
+    'platyPS','PSGSuite' | ForEach-Object {
+        "    Installing $_ if missing"
+        $_ | Resolve-Module
+    }
+    Import-Module platyPS,PSGSuite
     $docPath = Join-Path $PSScriptRoot 'docs'
     $funcPath = Join-Path $docPath 'Functions'
     $docStage = Join-Path $PSScriptRoot 'docstage'
     $sitePath = Join-Path $PSScriptRoot 'site'
-    "    Importing module from path: $outputModDir"
-    <# $origPSModulePath = $env:PSModulePath
-    $env:PSModulePath = $outputModDir + [System.IO.Path]::PathSeparator + $env:PSModulePath #>
-    Import-Module (Join-Path $outputModDir $env:BHProjectName) -Force -Verbose
-    #Import-Module $env:BHProjectName -Force -Verbose
+    <# "    Importing module from path: $outputModDir"
+    $origPSModulePath = $env:PSModulePath
+    $env:PSModulePath = $env:BHBuildOutput + [System.IO.Path]::PathSeparator + $env:PSModulePath
+    #Import-Module $outputModDir -Force -Verbose
+    Import-Module $env:BHProjectName -Force -Verbose #>
 
     "    Setting index.md content from README"
     Get-Content (Join-Path $PSScriptRoot 'README.md') -Raw | Set-Content (Join-Path $docPath 'index.md') -Force
@@ -280,7 +282,9 @@ Task MkDocs -Depends Init {
     "    Creating a fresh Doc Stage folder: $docstage"
     New-Item $docstage -ItemType Directory -Force | Out-Null
 
-    New-MarkdownHelp -Module PSGSuite -NoMetadata -OutputFolder $docstage -Force -AlphabeticParamsOrder -ExcludeDontShow -Verbose
+    New-MarkdownHelp -Module PSGSuite -NoMetadata -OutputFolder $docstage -Force -AlphabeticParamsOrder -ExcludeDontShow -Verbose | Out-Null
+
+    $env:PSModulePath = $origPSModulePath
 
     $stagesDocs = Get-ChildItem $docstage -Recurse -Filter "*.md"
     foreach ($folder in (Get-ChildItem (Join-Path -Path $sut -ChildPath 'Public') -Directory)) {
@@ -296,7 +300,7 @@ Task MkDocs -Depends Init {
         foreach ($func in (Get-ChildItem $folder.FullName -Recurse -Filter "*.ps1")) {
             if ($doc = $stagesDocs | Where-Object {$_.BaseName -eq $func.BaseName}) {
                 "    Moving function doc '$($func.BaseName)' to doc folder: $docFolder"
-                Move-Item $doc.FullName -Destination $docFolder -Force
+                Move-Item $doc.FullName -Destination $docFolder -Force | Out-Null
             }
         }
     }
@@ -306,7 +310,7 @@ Task MkDocs -Depends Init {
         pip install mkdocs-material
         pip install mkdocs-minify-plugin
     }
-    mkdocs gh-deploy --message "Deploying Docs update @ $(Get-Date) to https://scrthq.github.io/PSGSuite" --verbose --force --ignore-version
+    mkdocs gh-deploy --message "[skip ci] Deploying Docs update @ $(Get-Date) to https://scrthq.github.io/PSGSuite" --verbose --force --ignore-version
 }
 
 Task Import -Depends Compile {
