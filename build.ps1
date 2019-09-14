@@ -1,7 +1,7 @@
 ﻿[cmdletbinding()]
 param(
     [parameter( Position = 0)]
-    [ValidateSet('Init','Clean','Compile','Import','Test','Full','Deploy','Skip')]
+    [ValidateSet('Init','Clean','Compile','Import','Test','Full','Deploy','Skip','MkDocs')]
     [string[]]
     $Task = @('Init','Clean','Compile','Import'),
     [parameter()]
@@ -13,6 +13,7 @@ param(
     [switch]$Help
 )
 $env:_BuildStart = Get-Date -Format 'o'
+
 $update = @{}
 $verbose = @{}
 if ($PSBoundParameters.ContainsKey('UpdateModules')) {
@@ -36,7 +37,13 @@ if ($Help) {
 else {
     $env:BuildProjectName = 'PSGSuite'
     $env:BuildScriptPath = $PSScriptRoot
-    $env:NoNugetRestore = $NoRestore
+
+    if ($Task -contains 'MkDocs') {
+        $env:NoNugetRestore = $true
+    }
+    else {
+        $env:NoNugetRestore = $NoRestore
+    }
 
     Invoke-CommandWithLog {$global:PSDefaultParameterValues = @{
         '*-Module:Verbose' = $false
@@ -125,11 +132,10 @@ else {
         }
         Add-Heading "Invoking psake with task list: [ $($Task -join ', ') ]"
         $psakeParams = @{
-            nologo = $true
             buildFile = "$PSScriptRoot\psake.ps1"
             taskList = $Task
         }
-        Invoke-psake @psakeParams @verbose
+        Invoke-psake @psakeParams @verbose -parameters @{NoRestore = $NoRestore}
         if (($Task -contains 'Import' -or $Task -contains 'Test') -and $psake.build_success) {
             Add-Heading "Importing $env:BuildProjectName to local scope"
             Import-Module ([System.IO.Path]::Combine($env:BHBuildOutput,$env:BHProjectName)) -Verbose:$false

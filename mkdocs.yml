@@ -1,0 +1,56 @@
+# Project information
+site_name: 'PSGSuite'
+site_description: 'PowerShell for G Suite'
+site_author: 'Nate Ferrell'
+site_url: 'https://scrthq.github.io/PSGSuite'
+
+# Repository
+repo_name: 'scrthq/PSGSuite'
+repo_url: 'https://github.com/scrthq/PSGSuite'
+
+# Copyright
+copyright: 'Copyright &copy; 2015 - 2019 Nate Ferrell'
+
+# Configuration
+theme:
+  name: 'material'
+  language: 'en'
+  palette:
+    primary: 'indigo'
+    accent: 'indigo'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+
+# Customization
+extra:
+  disqus: 'psgsuite'
+  manifest: 'manifest.webmanifest'
+  search:
+    tokenizer: '\s+'
+  social:
+    - type: 'github'
+      link: 'https://github.com/scrthq'
+    - type: 'twitter'
+      link: 'https://twitter.com/scrthq'
+    - type: 'linkedin'
+      link: 'https://linkedin.com/in/scrthq'
+
+# Google Analytics
+#google_analytics:
+#  - 'UA-XXXXXXXX-X'
+#  - 'auto'
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+
+# Plugins
+plugins:
+  - search
+  - minify:
+      minify_html: true

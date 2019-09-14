@@ -44,6 +44,15 @@ function New-GSCalendarEvent {
     .PARAMETER Location
     Event location
 
+    .PARAMETER Visibility
+    Visibility of the event.
+
+    Possible values are:
+    * "default" - Uses the default visibility for events on the calendar. This is the default value.
+    * "public" - The event is public and event details are visible to all readers of the calendar.
+    * "private" - The event is private and only event attendees may view event details.
+    * "confidential" - The event is private. This value is provided for compatibility reasons.
+
     .PARAMETER EventColor
     Color of the event as seen in Calendar
 
@@ -125,6 +134,10 @@ function New-GSCalendarEvent {
         [parameter(Mandatory = $false)]
         [String]
         $Location,
+        [parameter(Mandatory = $false)]
+        [ValidateSet('default','public','private','confidential')]
+        [String]
+        $Visibility,
         [parameter(Mandatory = $false)]
         [ValidateSet("Periwinkle","Seafoam","Lavender","Coral","Goldenrod","Beige","Cyan","Grey","Blue","Green","Red")]
         [String]

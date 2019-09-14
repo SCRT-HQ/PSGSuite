@@ -249,6 +249,59 @@ catch {
     Get-ChildItem $outputModVerDir | Format-Table -Autosize
 } -description 'Compiles module from source'
 
+Task MkDocs -Depends Compile {
+    '    Installing platyPS if missing'
+    'platyPS' | Resolve-Module
+    Import-Module platyPS
+    $docPath = Join-Path $PSScriptRoot 'docs'
+    $funcPath = Join-Path $docPath 'Functions'
+    $docStage = Join-Path $PSScriptRoot 'docstage'
+    $sitePath = Join-Path $PSScriptRoot 'site'
+    <# "    Importing module from path: $outputModDir"
+    Import-Module $outputModDir -Force -Verbose #>
+    Import-Module $env:BHProjectName -Force -Verbose
+
+    "    Setting index.md content from README"
+    Get-Content (Join-Path $PSScriptRoot 'README.md') -Raw | Set-Content (Join-Path $docPath 'index.md') -Force
+    if (-not (Test-Path $docPath)) {
+        "    Creating Doc Path: $docPath"
+        New-Item $docPath -ItemType Directory -Force | Out-Null
+    }
+    if (-not (Test-Path $sitePath)) {
+        "    Creating Site Path: $sitePath"
+        New-Item $sitePath -ItemType Directory -Force | Out-Null
+    }
+    if (Test-Path $docstage) {
+        "    Clearing out Doc Stage Path: $docstage"
+        Remove-Item $docstage -Recurse -Force
+    }
+    "    Creating a fresh Doc Stage folder: $docstage"
+    New-Item $docstage -ItemType Directory -Force | Out-Null
+
+    New-MarkdownHelp -Module PSGSuite -NoMetadata -OutputFolder $docstage -Force -AlphabeticParamsOrder -ExcludeDontShow -Verbose
+
+    $stagesDocs = Get-ChildItem $docstage -Recurse -Filter "*.md"
+    foreach ($folder in (Get-ChildItem (Join-Path -Path $sut -ChildPath 'Public') -Directory)) {
+        $docFolder = Join-Path $funcPath $folder.BaseName
+        if (-not (Test-Path $docFolder)) {
+            "    Creating Doc Folder: $docFolder"
+            New-Item $docFolder -ItemType Directory -Force | Out-Null
+        }
+        else {
+            "    Cleaning up existing Doc Folder"
+            Get-ChildItem $docFolder -Recurse | Remove-Item -Recurse -Force
+        }
+        foreach ($func in (Get-ChildItem $folder.FullName -Recurse -Filter "*.ps1")) {
+            if ($doc = $stagesDocs | Where-Object {$_.BaseName -eq $func.BaseName}) {
+                "    Moving function doc '$($func.BaseName)' to doc folder: $docFolder"
+                Move-Item $doc.FullName -Destination $docFolder -Force
+            }
+        }
+    }
+    Set-Location $PSScriptRoot
+    mkdocs gh-deploy --message "Deploying Docs update @ $(Get-Date) to https://scrthq.github.io/PSGSuite" --verbose --force --ignore-version
+}
+
 Task Import -Depends Compile {
     '    Testing import of compiled module'
     Import-Module (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")
