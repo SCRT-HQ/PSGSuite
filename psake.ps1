@@ -306,7 +306,6 @@ Task MkDocs -Depends Init {
     }
     Set-Location $PSScriptRoot
     if ($null -eq (Get-Command "mkdocs*")) {
-        pip install --user wheel
         pip install --user mkdocs
         pip install --user mkdocs-material
         pip install --user mkdocs-minify-plugin
