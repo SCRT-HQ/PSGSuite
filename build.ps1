@@ -1,7 +1,7 @@
 ﻿[cmdletbinding()]
 param(
     [parameter( Position = 0)]
-    [ValidateSet('Init','Clean','Compile','Import','Test','Full','Deploy','Skip','MkDocs')]
+    [ValidateSet('Init','Clean','Compile','Import','Test','Full','Deploy','Skip','Docs')]
     [string[]]
     $Task = @('Init','Clean','Compile','Import'),
     [parameter()]
@@ -38,7 +38,7 @@ else {
     $env:BuildProjectName = 'PSGSuite'
     $env:BuildScriptPath = $PSScriptRoot
 
-    if ($Task -contains 'MkDocs') {
+    if ($Task -contains 'Docs') {
         $env:NoNugetRestore = $true
     }
     else {

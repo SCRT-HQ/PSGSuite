@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+  * [2.32.1 - 2019-09-14](#2321---2019-09-14)
   * [2.32.0 - 2019-09-12](#2320---2019-09-12)
   * [2.31.1 - 2019-08-30](#2311---2019-08-30)
   * [2.31.0](#2310)
@@ -97,6 +98,11 @@
 
 # PSGSuite - ChangeLog
 
+## 2.32.1 - 2019-09-14
+
+* [Issue #232](https://github.com/scrthq/PSGSuite/issues/232)
+  * Added: `Visibility` parameter on `New-GSCalendarEvent`
+
 ## 2.32.0 - 2019-09-12
 
 * [Issue #229](https://github.com/scrthq/PSGSuite/issues/229)
@@ -114,7 +120,7 @@
   * Updated: `DisableReminder` switch parameter name on `New-GSCalendarEvent` and `Update-GSCalendarEvent` functions to `DisableDefaultReminder` to better align with what that actually effects (default reminder inheritance only, not reminder overrides). The previous parameter name has been set as an alias to maintain backwards compatibility.
   * Added: `RemoveAllReminders` parameter to `Update-GSCalendarEvent` to remove all custom reminders and disable calendar inheritance.
 * [Issue #232](https://github.com/scrthq/PSGSuite/issues/232)
-  * Added: `Visibility` parameter on `New-GSCalendarEvent` and `Update-GSCalendarEvent` to set the visibility of a calendar event.
+  * Added: `Visibility` parameter on `Update-GSCalendarEvent` to set the visibility of a calendar event.
 * Miscellaneous
   * Forced `Type` parameter values to lower on the `Add-GSUser*` helper functions to ensure case senstive field matches whats expected.
   * Updated Google .NET SDKs to latest versions.

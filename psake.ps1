@@ -249,10 +249,10 @@ catch {
     Get-ChildItem $outputModVerDir | Format-Table -Autosize
 } -description 'Compiles module from source'
 
-Task MkDocs -Depends Init {
+Task Docs -Depends Init {
     'platyPS','PSGSuite' | ForEach-Object {
         "    Installing $_ if missing"
-        $_ | Resolve-Module
+        $_ | Resolve-Module -Verbose
         Import-Module $_
     }
     $docPath = Join-Path $PSScriptRoot 'docs'
@@ -304,6 +304,13 @@ Task MkDocs -Depends Init {
             }
         }
     }
+    Set-Location $PSScriptRoot
+    if ($null -eq (python -m mkdocs --version)) {
+        python -m pip install --user mkdocs
+        python -m pip install --user mkdocs-material
+        python -m pip install --user mkdocs-minify-plugin
+    }
+    python -m mkdocs gh-deploy --message "[skip ci] Deploying Docs update @ $(Get-Date) to https://psgsuite.io" --verbose --force --ignore-version
 }
 
 Task Import -Depends Compile {
