@@ -931,6 +931,21 @@
      <changefreq>daily</changefreq>
     </url>
     <url>
+     <loc>https://psgsuite.io/Function Help/Role Assignments/Get-GSAdminRoleAssignment/</loc>
+     <lastmod>2019-09-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://psgsuite.io/Function Help/Role Assignments/New-GSAdminRoleAssignment/</loc>
+     <lastmod>2019-09-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://psgsuite.io/Function Help/Role Assignments/Remove-GSAdminRoleAssignment/</loc>
+     <lastmod>2019-09-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
      <loc>https://psgsuite.io/Function Help/RoleAssignments/Get-GSAdminRoleAssignment/</loc>
      <lastmod>2019-09-15</lastmod>
      <changefreq>daily</changefreq>

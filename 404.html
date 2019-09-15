@@ -71,6 +71,31 @@
     
     
       
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-101420411-4", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
     
     
   </head>
@@ -98,7 +123,7 @@
       <div class="md-flex__cell md-flex__cell--shrink">
         <a href="https://psgsuite.io" title="PSGSuite" class="md-header-nav__button md-logo">
           
-            <i class="md-icon">cloud</i>
+            <i class="md-icon">arrow_forward_ios</i>
           
         </a>
       </div>
@@ -190,7 +215,7 @@
   <label class="md-nav__title md-nav__title--site" for="__drawer">
     <a href="https://psgsuite.io" title="PSGSuite" class="md-nav__button md-logo">
       
-        <i class="md-icon">cloud</i>
+        <i class="md-icon">arrow_forward_ios</i>
       
     </a>
     PSGSuite
@@ -2911,10 +2936,70 @@
       <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-19" type="checkbox" id="nav-5-19">
     
     <label class="md-nav__link" for="nav-5-19">
-      RoleAssignments
+      Role Assignments
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
       <label class="md-nav__title" for="nav-5-19">
+        Role Assignments
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Function Help/Role Assignments/Get-GSAdminRoleAssignment/" title="Get-GSAdminRoleAssignment" class="md-nav__link">
+      Get-GSAdminRoleAssignment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Function Help/Role Assignments/New-GSAdminRoleAssignment/" title="New-GSAdminRoleAssignment" class="md-nav__link">
+      New-GSAdminRoleAssignment
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="Function Help/Role Assignments/Remove-GSAdminRoleAssignment/" title="Remove-GSAdminRoleAssignment" class="md-nav__link">
+      Remove-GSAdminRoleAssignment
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-20" type="checkbox" id="nav-5-20">
+    
+    <label class="md-nav__link" for="nav-5-20">
+      RoleAssignments
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-5-20">
         RoleAssignments
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -2968,13 +3053,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-20" type="checkbox" id="nav-5-20">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-21" type="checkbox" id="nav-5-21">
     
-    <label class="md-nav__link" for="nav-5-20">
+    <label class="md-nav__link" for="nav-5-21">
       Roles
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-5-20">
+      <label class="md-nav__title" for="nav-5-21">
         Roles
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -3040,13 +3125,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-21" type="checkbox" id="nav-5-21">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-22" type="checkbox" id="nav-5-22">
     
-    <label class="md-nav__link" for="nav-5-21">
+    <label class="md-nav__link" for="nav-5-22">
       Schemas
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-5-21">
+      <label class="md-nav__title" for="nav-5-22">
         Schemas
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -3124,13 +3209,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-22" type="checkbox" id="nav-5-22">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-23" type="checkbox" id="nav-5-23">
     
-    <label class="md-nav__link" for="nav-5-22">
+    <label class="md-nav__link" for="nav-5-23">
       Security
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-5-22">
+      <label class="md-nav__title" for="nav-5-23">
         Security
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -3292,13 +3377,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-23" type="checkbox" id="nav-5-23">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-24" type="checkbox" id="nav-5-24">
     
-    <label class="md-nav__link" for="nav-5-23">
+    <label class="md-nav__link" for="nav-5-24">
       Sheets
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-5-23">
+      <label class="md-nav__title" for="nav-5-24">
         Sheets
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -3388,13 +3473,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-24" type="checkbox" id="nav-5-24">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-25" type="checkbox" id="nav-5-25">
     
-    <label class="md-nav__link" for="nav-5-24">
+    <label class="md-nav__link" for="nav-5-25">
       Tasks
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-5-24">
+      <label class="md-nav__title" for="nav-5-25">
         Tasks
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -3532,13 +3617,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-25" type="checkbox" id="nav-5-25">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-26" type="checkbox" id="nav-5-26">
     
-    <label class="md-nav__link" for="nav-5-25">
+    <label class="md-nav__link" for="nav-5-26">
       URL Shortener
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-5-25">
+      <label class="md-nav__title" for="nav-5-26">
         URL Shortener
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
@@ -3580,13 +3665,13 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-26" type="checkbox" id="nav-5-26">
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5-27" type="checkbox" id="nav-5-27">
     
-    <label class="md-nav__link" for="nav-5-26">
+    <label class="md-nav__link" for="nav-5-27">
       Users
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
-      <label class="md-nav__title" for="nav-5-26">
+      <label class="md-nav__title" for="nav-5-27">
         Users
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
