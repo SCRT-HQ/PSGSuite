@@ -52,7 +52,7 @@
 
 ## Documentation
 
-Check out the [Documentation for PSGSuite](https://psgsuite.io/) for help with setting up as well as full function help!
+Check out [PSGSuite.io](https://psgsuite.io/) for help with [initial setup](https://psgsuite.io/Initial%20Setup/) as well as function help!
 
 ## Contributing
 
