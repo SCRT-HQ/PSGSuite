@@ -17,11 +17,14 @@ function Remove-GSCalendarAcl {
 
     .EXAMPLE
     Get-GSCalendar -User joe@domain.com |
-        Get-GSCalendarACL |
+        Get-GSCalendarAcl |
         Where-Object {$_.Role -eq 'Owner'} |
-        Remove-GSCalendarACL
+        Remove-GSCalendarAcl
 
     Gets all the calendars for Joe and finds all ACL rules where
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Calendar/Remove-GSCalendarAcl/
     #>
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = "High")]
     Param

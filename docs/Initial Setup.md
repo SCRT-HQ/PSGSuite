@@ -1,20 +1,6 @@
 # Initial Setup
 
-* [Initial Setup](#initial-setup)
-  * [Prerequisites](#prerequisites)
-  * [Installing the Module](#installing-the-module)
-    * [From the PowerShell Gallery](#from-the-powershell-gallery)
-    * [From the GitHub release page](#from-the-github-release-page)
-    * [Build from the GitHub repo](#build-from-the-github-repo)
-  * [G Suite Users _with_ SuperAdmin access](#g-suite-users-with-superadmin-access)
-    * [Creating the Project, Service Account and P12 Key in Google's Developer Console](#creating-the-project-service-account-and-p12-key-in-googles-developer-console)
-    * [Adding API Client Access in Admin Console](#adding-api-client-access-in-admin-console)
-  * [Free Google Account Users and G Suite Users _without_ SuperAdmin access](#free-google-account-users-and-g-suite-users-without-superadmin-access)
-    * [Creating the Project and Client ID/Secret in Google's Developer Console](#creating-the-project-and-client-idsecret-in-googles-developer-console)
-  * [Creating the PSGSuite Configuration File](#creating-the-psgsuite-configuration-file)
-  * [First-time authentication for free/non-admin accounts](#first-time-authentication-for-freenon-admin-accounts)
-
-***
+Getting started with PSGSuite.
 
 ## Prerequisites
 In order to use this module, you will need the following:

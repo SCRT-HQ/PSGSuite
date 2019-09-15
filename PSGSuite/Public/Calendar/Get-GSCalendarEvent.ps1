@@ -63,6 +63,15 @@ function Get-GSCalendarEvent {
     Get-GSCalendarEventList -TimeMin (Get-Date "01-21-2018 00:00:00") -TimeMax (Get-Date "01-28-2018 23:59:59") -SingleEvents
 
     This gets the single events on the primary calendar of the Admin for the week of Jan 21-28, 2018.
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Calendar/Get-GSCalendarEvent/
+
+    .LINK
+    https://developers.google.com/calendar/v3/reference/events/get
+
+    .LINK
+    https://developers.google.com/calendar/v3/reference/events/list
     #>
     [OutputType('Google.Apis.Calendar.v3.Data.Event')]
     [cmdletbinding(DefaultParameterSetName = "List")]

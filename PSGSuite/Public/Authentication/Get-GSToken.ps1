@@ -18,6 +18,9 @@ function Get-GSToken {
         Authorization = "Bearer $($Token)"
         'GData-Version' = '3.0'
     }
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Authentication/Get-GSToken/
     #>
     Param (
         [parameter(Mandatory = $true)]

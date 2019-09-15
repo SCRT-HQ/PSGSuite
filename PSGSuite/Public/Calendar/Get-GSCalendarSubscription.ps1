@@ -24,6 +24,9 @@ function Get-GSCalendarSubscription {
     Get-GSCalendarSubscription
 
     Gets the AdminEmail user's calendar list
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Calendar/Get-GSCalendarSubscription/
     #>
     [OutputType('Google.Apis.Calendar.v3.Data.CalendarListEntry')]
     [cmdletbinding()]

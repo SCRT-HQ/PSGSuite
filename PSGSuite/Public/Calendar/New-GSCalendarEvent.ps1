@@ -101,6 +101,9 @@ function New-GSCalendarEvent {
     New-GSCalendarEvent "Go to the gym" -StartDate (Get-Date "21:00:00") -EndDate (Get-Date "22:00:00")
 
     Creates an event titled "Go to the gym" for 9-10PM the day the function is ran.
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Calendar/New-GSCalendarEvent/
     #>
     [OutputType('Google.Apis.Calendar.v3.Data.Event')]
     [cmdletbinding(DefaultParameterSetName = "AttendeeEmails")]

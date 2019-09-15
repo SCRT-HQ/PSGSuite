@@ -2,50 +2,6 @@
 
 This section goes into detail on how to manage users, licenses and custom schemas using this module.
 
-* [Managing Users](#managing-users)
-* [User Management](#user-management)
-	* [Getting User Info](#getting-user-info)
-		* [Get-GSUser](#get-gsuser)
-	* [Getting User Photos](#getting-user-photos)
-		* [Get-GSUserPhoto](#get-gsuserphoto)
-	* [Listing Users](#listing-users)
-		* [Get-GSUserList](#get-gsuserlist)
-	* [Creating Users](#creating-users)
-		* [New-GSUser](#new-gsuser)
-	* [Updating Users](#updating-users)
-		* [Update-GSUser](#update-gsuser)
-	* [Removing Users](#removing-users)
-		* [Remove-GSUser](#remove-gsuser)
-	* [Restoring Users](#restoring-users)
-		* [Restore-GSUser](#restore-gsuser)
-* [License Management](#license-management)
-	* [Getting License Info](#getting-license-info)
-		* [Get-GSLicenseInfo](#get-gslicenseinfo)
-	* [Listing Licenses](#listing-licenses)
-		* [Get-GSLicenseList](#get-gslicenselist)
-	* [Removing Licenses](#removing-licenses)
-		* [Remove-GSLicense](#remove-gslicense)
-	* [Setting Licenses](#setting-licenses)
-		* [Set-GSLicense](#set-gslicense)
-	* [Updating Licenses](#updating-licenses)
-		* [Update-GSLicense](#update-gslicense)
-* [Custom Schema Management](#custom-schema-management)
-	* [Getting Custom Schema Info](#getting-custom-schema-info)
-		* [Get-GSUserSchemaInfo](#get-gsuserschemainfo)
-	* [Listing Custom Schemas](#listing-custom-schemas)
-		* [Get-GSUserSchemaList](#get-gsuserschemalist)
-	* [Creating Custom Schemas](#creating-custom-schemas)
-		* [New-GSUserSchema](#new-gsuserschema)
-	* [Removing Custom Schemas](#removing-custom-schemas)
-		* [Remove-GSUserSchema](#remove-gsuserschema)
-	* [Updating Custom Schemas](#updating-custom-schemas)
-		* [Update-GSUserSchema](#update-gsuserschema)
-
-***
-
-
-# User Management
-
 ## Getting User Info
 ### Get-GSUser
 _This function pulls info for a specific user, including orgUnitPath, aliases, custom schema values, etc._

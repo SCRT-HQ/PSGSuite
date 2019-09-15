@@ -29,6 +29,15 @@ function Get-GSCalendarAcl {
     Get-GSCalendarACL -User me -CalendarID "primary"
 
     This gets the ACL on the primary calendar of the AdminUser.
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Calendar/Get-GSCalendarACL/
+
+    .LINK
+    https://developers.google.com/calendar/v3/reference/acl/get
+
+    .LINK
+    https://developers.google.com/calendar/v3/reference/acl/list
     #>
     [OutputType('Google.Apis.Calendar.v3.Data.AclRule')]
     [cmdletbinding(DefaultParameterSetName = 'List')]

@@ -44,6 +44,15 @@ function Get-GSCalendar {
     Get-GSCalendar
 
     Gets the list of calendar subscriptions for the AdminEmail user.
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Calendar/Get-GSCalendar/
+
+    .LINK
+    https://developers.google.com/calendar/v3/reference/calendarList/get
+
+    .LINK
+    https://developers.google.com/calendar/v3/reference/calendarList/list
     #>
     [OutputType('Google.Apis.Calendar.v3.Data.CalendarListEntry')]
     [cmdletbinding(DefaultParameterSetName = "List")]
@@ -97,7 +106,7 @@ function Get-GSCalendar {
                 Get {
                     foreach ($calId in $CalendarId) {
                         try {
-                            $request = $service.CalendarList.Get($calId)
+                            $request = $service.Calendars.Get($calId)
                             Write-Verbose "Getting Calendar Id '$calId' for User '$U'"
                             $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
                         }
@@ -113,7 +122,7 @@ function Get-GSCalendar {
                 }
                 List {
                     try {
-                        $request = $service.CalendarList.List()
+                        $request = $service.Calendars.List()
                         foreach ($key in $PSBoundParameters.Keys | Where-Object {$_ -ne 'CalendarId'}) {
                             if ($request.PSObject.Properties.Name -contains $key) {
                                 $request.$key = $PSBoundParameters[$key]
@@ -124,7 +133,7 @@ function Get-GSCalendar {
                             $PageSize = $Limit
                         }
                         $request.MaxResults = $PageSize
-                        Write-Verbose "Getting Calendar List for user '$U'"
+                        Write-Verbose "Getting Calendars for user '$U'"
                         [int]$i = 1
                         $overLimit = $false
                         do {

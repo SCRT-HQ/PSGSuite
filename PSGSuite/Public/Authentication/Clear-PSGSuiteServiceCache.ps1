@@ -8,6 +8,9 @@ function Clear-PSGSuiteServiceCache {
 
     .EXAMPLE
     Clear-PSGSuiteServiceCache
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Authentication/Clear-PSGSuiteServiceCache/
     #>
     [CmdletBinding()]
     Param ()

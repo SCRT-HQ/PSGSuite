@@ -16,7 +16,7 @@ theme:
   name: 'material'
   language: 'en'
   logo:
-    icon: 'cloud'
+    icon: 'arrow_forward_ios'
   palette:
     primary: 'indigo'
     accent: 'indigo'
@@ -39,9 +39,9 @@ extra:
       link: 'https://linkedin.com/in/scrthq'
 
 # Google Analytics
-#google_analytics:
-#  - 'UA-XXXXXXXX-X'
-#  - 'auto'
+google_analytics:
+  - 'UA-101420411-4'
+  - 'auto'
 
 # Extensions
 markdown_extensions:

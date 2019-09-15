@@ -1,3 +1,7 @@
+---
+title: Home
+---
+
 # PSGSuite
 <div align="center">
   <img src="https://github.com/scrthq/PSGSuite/raw/master/bin/img/psgsuite2.0.0.png" alt="PSGSuite 2.0.0 released!" />
@@ -181,4 +185,3 @@ All other functions are either intact or have an alias included to support backw
   * Updated Google .NET SDKs to latest versions.
   * Updated and corrected a LOT of comment based function help.
   * Added function help tests to validate that functions contain expected help content.
-

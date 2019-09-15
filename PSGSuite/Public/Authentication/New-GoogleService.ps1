@@ -21,6 +21,9 @@ function New-GoogleService {
         ServiceType = 'Google.Apis.Admin.Reports.reports_v1.ReportsService'
     }
     $service = New-GoogleService @serviceParams
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Authentication/New-GoogleService/
     #>
     [CmdletBinding()]
     Param(

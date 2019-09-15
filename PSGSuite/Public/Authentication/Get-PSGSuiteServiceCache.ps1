@@ -17,6 +17,9 @@ function Get-PSGSuiteServiceCache {
 
     .EXAMPLE
     Get-PSGSuiteServiceCache
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Authentication/Get-PSGSuiteServiceCache/
     #>
     [CmdletBinding()]
     Param (

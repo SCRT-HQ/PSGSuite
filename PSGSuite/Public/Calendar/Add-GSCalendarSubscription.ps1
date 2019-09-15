@@ -71,6 +71,12 @@ function Add-GSCalendarSubscription {
     Add-GSCalendarSubscription -User me -CalendarId john.smith@domain.com -Selected -Color Cyan
 
     Adds the calendar 'john.smith@domain.com' to the AdminEmail user's calendar list
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Calendar/Add-GSCalendarSubscription/
+
+    .LINK
+    https://developers.google.com/calendar/v3/reference/calendarList/insert
     #>
     [OutputType('Google.Apis.Calendar.v3.Data.CalendarListEntry')]
     [cmdletbinding()]

@@ -23,6 +23,9 @@ function Remove-GSCalendarEvent {
     Remove-GSCalendarEvent -User user@domain.com -EventID _60q30c1g60o30e1i60o4ac1g60rj8gpl88rj2c1h84s34h9g60s30c1g60o30c1g84o3eg9n8gq32d246gq48d1g64o30c1g60o30c1g60o30c1g60o32c1g60o30c1g8csjihhi6oq3igi28h248ghk6ks4agq161144ga46gr4aci488p0
 
     Removes the specified event from user@domain.com's calendar.
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Calendar/Remove-GSCalendarEvent/
     #>
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = "High")]
     Param
