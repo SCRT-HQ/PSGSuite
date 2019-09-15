@@ -22,14 +22,14 @@
   <a href="https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
     <img src="https://img.shields.io/gitter/room/scrthq/PSGSuite.svg?logo=gitter&style=flat&color=red"
       alt="Gitter - Chat" title="Gitter - Chat" />
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  </a>
+  <br />
+  <br />
   <!-- Codacy -->
   <a href="https://www.codacy.com/app/scrthq/PSGSuite?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scrthq/PSGSuite&amp;utm_campaign=Badge_Grade">
     <img src="https://api.codacy.com/project/badge/Grade/0d5203a1cf1945fe94c46b779eecb7f0"
       alt="Codacy" title="Codacy" />
-  </a>
-  <br />
-  <br />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- PS Gallery -->
   <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
     <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat&logo=powershell&color=blue"
@@ -52,7 +52,7 @@
 
 ## Documentation
 
-Check out the [GitHub wiki for PSGSuite](https://github.com/scrthq/PSGSuite/wiki) for help with setting up as well as full function help!
+Check out the [Documentation for PSGSuite](https://psgsuite.io/) for help with setting up as well as full function help!
 
 ## Contributing
 
