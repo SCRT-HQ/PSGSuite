@@ -1,4 +1,5 @@
 # Managing Users
+
 This section goes into detail on how to manage users, licenses and custom schemas using this module.
 
 * [Managing Users](#managing-users)
