@@ -158,6 +158,12 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.32.2 - 2019-09-15
+
+* [Issue #225](https://github.com/scrthq/PSGSuite/issues/225)
+  * Fixed: NuGet package versions for Google APIs fell back to the version sheet during the most recent version push due to failure to communicate with NuGet to dynamically pull the latest version, resulting in previous enhancements now failing (e.g. Admin SDK rolled back to a 2017 version).
+    * Added more guards and force update situations for the NuGetDependencies.json file during local builds to more concretely guarantee that the NuGet packages needed will be available.
+
 #### 2.32.1 - 2019-09-14
 
 * [Issue #232](https://github.com/scrthq/PSGSuite/issues/232)

@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+  * [2.32.2 - 2019-09-15](#2322---2019-09-15)
   * [2.32.1 - 2019-09-14](#2321---2019-09-14)
   * [2.32.0 - 2019-09-12](#2320---2019-09-12)
   * [2.31.1 - 2019-08-30](#2311---2019-08-30)
@@ -97,6 +98,12 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.32.2 - 2019-09-15
+
+* [Issue #225](https://github.com/scrthq/PSGSuite/issues/225)
+  * Fixed: NuGet package versions for Google APIs fell back to the version sheet during the most recent version push due to failure to communicate with NuGet to dynamically pull the latest version, resulting in previous enhancements now failing (e.g. Admin SDK rolled back to a 2017 version).
+    * Added more guards and force update situations for the NuGetDependencies.json file during local builds to more concretely guarantee that the NuGet packages needed will be available.
 
 ## 2.32.1 - 2019-09-14
 

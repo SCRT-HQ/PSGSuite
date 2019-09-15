@@ -23,6 +23,7 @@ function Install-NuGetDependencies {
     )
     try {
         Import-Module PackageManagement -Force
+        . ([System.IO.Path]::Combine($PSScriptRoot,"UpdateNuGetDependenciesJson.ps1"))
         $dllStgPath = Join-Path $PSScriptRoot "NuGetStaging"
         $packagesToInstall = Get-Content (Join-Path $PSScriptRoot "NuGetDependencies.json") -Raw | ConvertFrom-Json | Sort-Object BaseName
         if (-not (Test-Path $dllStgPath)) {
@@ -35,9 +36,6 @@ function Install-NuGetDependencies {
                 Write-BuildLog "Matched package: $($_.Name)"
                 $nugHash[$_.Name] = $_
             }
-        }
-        if ($nugHash.Keys.Count) {
-            . ([System.IO.Path]::Combine($PSScriptRoot,"UpdateNuGetDependenciesJson.ps1"))
         }
         foreach ($inst in $packagesToInstall) {
             try {
