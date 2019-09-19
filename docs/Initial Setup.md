@@ -51,14 +51,11 @@ _**Bleeding edge fans, contributors, etc**_
 2. Open the cloned directory: `cd PSGSuite`
 3. Build the module: `.\build.ps1`
 
-Building with the default task list will automatically import the module at the end of the build.
+To import the compiled module in a new session, run this from the repo root:
 
-If you'd like to import the compiled module in a new session, you can find it under the BuildOutput folder in the root of the repo.
-
-#### OR
-
-1. Fork the repo to your local
-2. Import the module by loading the PSD1 file via full path or placing the local repo folder somewhere in your `$env:PSMODULEPATH`
+```powershell
+Import-Module ./BuildOutput/PSGSuite -Force
+```
 
 ***
 
