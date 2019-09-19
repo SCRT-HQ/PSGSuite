@@ -57,22 +57,27 @@ else {
         'Install-Module:Repository' = 'PSGallery'
         'Install-Module:Verbose' = $false
     }}
-    Invoke-CommandWithLog {Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false}
-    Invoke-CommandWithLog {Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false}
+    Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false
+    Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false
 
     Add-EnvironmentSummary "Build started"
 
     Set-BuildVariables
 
-    Add-Heading "Setting package feeds"
-
+    Add-Heading "Updating PackageManagement and PowerShellGet modules if needed"
     $modHash = @{
         PackageManagement = '1.4.4'
         PowerShellGet     = '2.2.1'
     }
-    $modHash.GetEnumerator() | ForEach-Object {
-        Install-Module $_.Key -MinimumVersion $_.Value -Repository PSGallery -Force
+    foreach ($mod in $modHash.GetEnumerator()) {
+        if ($null -eq (Get-Module $mod.Key -ListAvailable | Where-Object {[version]$_.Version -ge [version]$mod.Value})) {
+            Install-Module $mod.Key -Repository PSGallery -Force -AllowClobber
+        }
     }
+    Get-Module PackageManagement,PowerShellGet | Remove-Module -Force
+    Import-Module PowerShellGet -Force
+
+    Get-Module PackageManagement,PowerShellGet
 
     Add-Heading "Finalizing build prerequisites"
     if (
