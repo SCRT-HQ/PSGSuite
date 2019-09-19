@@ -17,4 +17,4 @@ stages:
 - template: BuildTestDeployModule/azure-pipelines.yml@templates
   parameters:
     MkDocs: 'True'
-    GitUrl: 'git@github.com:scrthq/PSGSuite.git'
+    GitUrl: 'https://github.com/scrthq/PSGSuite.git'
