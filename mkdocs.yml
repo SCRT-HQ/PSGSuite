@@ -16,10 +16,10 @@ theme:
   name: 'material'
   language: 'en'
   logo:
-    icon: 'arrow_forward_ios'
+    icon: 'keyboard'
   palette:
-    primary: 'indigo'
-    accent: 'indigo'
+    primary: 'blue'
+    accent: 'green'
   font:
     text: 'Roboto'
     code: 'Roboto Mono'
