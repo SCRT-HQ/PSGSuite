@@ -69,25 +69,27 @@ else {
         PackageManagement = '1.4.4'
         PowerShellGet     = '2.2.1'
     }
-    Get-Module PackageManagement,PowerShellGet | Remove-Module -Force
-    foreach ($mod in $modHash.GetEnumerator()) {
-        try {
-            if ($null -eq (Get-Module $mod.Key -ListAvailable | Where-Object {[version]$_.Version -ge [version]$mod.Value})) {
-                Write-BuildLog "Updating module: $($mod.Key)"
-                Install-Module $mod.Key -Repository PSGallery -Force -AllowClobber
+    if ($env:SYSTEM_JOBDISPLAYNAME -eq 'Compile Module') {
+        Get-Module PackageManagement,PowerShellGet | Remove-Module -Force
+        foreach ($mod in $modHash.GetEnumerator()) {
+            try {
+                if ($null -eq (Get-Module $mod.Key -ListAvailable | Where-Object {[version]$_.Version -ge [version]$mod.Value})) {
+                    Write-BuildLog "Updating module: $($mod.Key)"
+                    Install-Module $mod.Key -Repository PSGallery -Force -AllowClobber -ErrorAction SilentlyContinue
+                }
+                else {
+                    Write-BuildLog "$($mod.Key) is already >= $($mod.Value)! Skipping"
+                }
             }
-            else {
-                Write-BuildLog "$($mod.Key) is already >= $($mod.Value)! Skipping"
-            }
-        }
-        catch {
+            catch {
 
+            }
         }
     }
 
     Get-Module PackageManagement,PowerShellGet | Remove-Module -Force
     Import-Module PowerShellGet -Force
-    Get-Module PackageManagement,PowerShellGet | Select-Object Name,Version
+    Get-Module PackageManagement,PowerShellGet | Format-Table Name,Version -AutoSize
 
     Add-Heading "Finalizing build prerequisites"
     if (
