@@ -48,7 +48,7 @@ function Update-GSUserPhoto {
                 $User = "$($User)@$($Script:PSGSuite.Domain)"
             }
             $mimeType = Get-MimeType -File $Path
-            $photoData = [System.Convert]::ToBase64String((Get-Content $Path -Encoding Byte)) | Convert-Base64 -From Base64String -To WebSafeBase64String
+            $photoData = [System.Convert]::ToBase64String(([System.IO.File]::ReadAllBytes($Path))) | Convert-Base64 -From Base64String -To WebSafeBase64String
             $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserPhoto' -Property @{
                 PhotoData = $photoData
                 MimeType = $mimeType

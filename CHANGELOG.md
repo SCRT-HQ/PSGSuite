@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+  * [2.32.3 - 2019-09-18](#2323---2019-09-18)
   * [2.32.2 - 2019-09-15](#2322---2019-09-15)
   * [2.32.1 - 2019-09-14](#2321---2019-09-14)
   * [2.32.0 - 2019-09-12](#2320---2019-09-12)
@@ -98,6 +99,11 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.32.3 - 2019-09-18
+
+* [Issue #234](https://github.com/scrthq/PSGSuite/issues/234)
+  * Fixed: `Update-GSUserPhoto` errors by switching to `[System.IO.File]::ReadAllBytes($path)`.
 
 ## 2.32.2 - 2019-09-15
 

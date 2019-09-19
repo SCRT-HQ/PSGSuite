@@ -158,6 +158,11 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.32.3 - 2019-09-18
+
+* [Issue #234](https://github.com/scrthq/PSGSuite/issues/234)
+  * Fixed: `Update-GSUserPhoto` errors by switching to `[System.IO.File]::ReadAllBytes($path)`.
+
 #### 2.32.2 - 2019-09-15
 
 * [Issue #225](https://github.com/scrthq/PSGSuite/issues/225)

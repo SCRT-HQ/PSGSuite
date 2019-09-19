@@ -51,7 +51,7 @@
     "Name": "Google.Apis.Classroom.v1.dll",
     "BaseName": "Google.Apis.Classroom.v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1712"
+    "LatestVersion": "1.41.1.1713"
   },
   {
     "Name": "Google.Apis.Core.dll",
@@ -69,13 +69,13 @@
     "Name": "Google.Apis.Drive.v3.dll",
     "BaseName": "Google.Apis.Drive.v3",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1705"
+    "LatestVersion": "1.41.1.1708"
   },
   {
     "Name": "Google.Apis.DriveActivity.v2.dll",
     "BaseName": "Google.Apis.DriveActivity.v2",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1710"
+    "LatestVersion": "1.41.1.1713"
   },
   {
     "Name": "Google.Apis.Gmail.v1.dll",
@@ -93,7 +93,7 @@
     "Name": "Google.Apis.HangoutsChat.v1.dll",
     "BaseName": "Google.Apis.HangoutsChat.v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1707"
+    "LatestVersion": "1.41.1.1716"
   },
   {
     "Name": "Google.Apis.Licensing.v1.dll",
@@ -111,7 +111,7 @@
     "Name": "Google.Apis.PeopleService.v1.dll",
     "BaseName": "Google.Apis.PeopleService.v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1713"
+    "LatestVersion": "1.41.1.1715"
   },
   {
     "Name": "Google.Apis.PlatformServices.dll",
@@ -123,7 +123,7 @@
     "Name": "Google.Apis.Script.v1.dll",
     "BaseName": "Google.Apis.Script.v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1710"
+    "LatestVersion": "1.41.1.1714"
   },
   {
     "Name": "Google.Apis.Sheets.v4.dll",
@@ -141,7 +141,7 @@
     "Name": "Google.Apis.Tasks.v1.dll",
     "BaseName": "Google.Apis.Tasks.v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1711"
+    "LatestVersion": "1.41.1.1713"
   },
   {
     "Name": "Google.Apis.Urlshortener.v1.dll",
