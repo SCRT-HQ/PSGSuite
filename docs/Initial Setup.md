@@ -15,10 +15,15 @@ In order to use this module, you will need the following:
 
 ### From the PowerShell Gallery
 
-_**This will be slightly behind the GitHub repo. Please see below for installation instructions from the GitHub repo.** Installing items from the Gallery requires the latest version of the PowerShellGet module, which is available in Windows 10, in Windows Management Framework (WMF) 5.0, or in the MSI-based installer (for PowerShell 3 and 4)_
+Installing items from the Gallery requires the latest version of the PowerShellGet module, which is available in Windows 10, in Windows Management Framework (WMF) 5.0, or in the MSI-based installer (for PowerShell 3 and 4).
+
+**This will be slightly behind the GitHub repo. Please see below for installation instructions from the GitHub repo.**
 
 1. Open Powershell and run the following command:
-    `Install-Module -Name PSGSuite -Scope CurrentUser`
+
+```powershell
+Install-Module -Name PSGSuite -Scope CurrentUser
+```
 
 For more information, please visit the [PSGSuite page on the Powershell Gallery](https://www.powershellgallery.com/packages/PSGSuite)
 
