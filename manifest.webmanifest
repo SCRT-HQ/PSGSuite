@@ -1,0 +1,21 @@
+{
+  "short_name": "PSGSuite",
+  "name": "PSGSuite Docs",
+  "icons": [
+    {
+      "src": "/images/icons-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/icons-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#2196F3",
+  "display": "minimal-ui",
+  "scope": "/",
+  "theme_color": "#2196F3"
+}
