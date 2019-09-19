@@ -27,7 +27,6 @@ Install-Module -Name PSGSuite -Scope CurrentUser
 
 For more information, please visit the [PSGSuite page on the Powershell Gallery](https://www.powershellgallery.com/packages/PSGSuite)
 
-
 ### From the GitHub release page
 
 _**This will be equal to the Powershell Gallery, usually**_
@@ -129,7 +128,7 @@ Import-Module ./BuildOutput/PSGSuite -Force
     * If you have already set up a PSGSuiteConfig, you can retrieve your ServiceAccountClientId by running `(Show-PSGSuiteConfig).ServiceAccountClientId`
 6. Copy / paste the following scopes together on the right field for 'One or more API scopes':
 
-```
+```text
 https://apps-apis.google.com/a/feeds/emailsettings/2.0/,
 https://mail.google.com/,
 https://sites.google.com/feeds,
