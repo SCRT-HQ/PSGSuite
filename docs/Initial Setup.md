@@ -312,14 +312,15 @@ If you are using a `client_secrets.json` for your configuration, you must also c
 3. You should see the command complete successfully at this point.
 
 * Scopes included with `client_secrets.json` auth:
-    * https://www.google.com/m8/feeds
-    * https://mail.google.com
-    * https://www.googleapis.com/auth/gmail.settings.basic
-    * https://www.googleapis.com/auth/gmail.settings.sharing
-    * https://www.googleapis.com/auth/calendar
-    * https://www.googleapis.com/auth/drive
-    * https://www.googleapis.com/auth/tasks
-    * https://www.googleapis.com/auth/tasks.readonly
+    * <https://www.google.com/m8/feeds>
+    * <https://mail.google.com>
+    * <https://www.googleapis.com/auth/gmail.settings.basic>
+    * <https://www.googleapis.com/auth/gmail.settings.sharing>
+    * <https://www.googleapis.com/auth/calendar>
+    * <https://www.googleapis.com/auth/drive>
+    * <https://www.googleapis.com/auth/tasks>
+    * <https://www.googleapis.com/auth/tasks.readonly>
+
 * Screenshots of the PowerShell Core process:
 
 ![image](https://user-images.githubusercontent.com/12724445/50432027-bb2d4900-0894-11e9-8aa7-fe5f22e8cdc6.png)
