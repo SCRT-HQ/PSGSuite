@@ -70,14 +70,23 @@ else {
         PowerShellGet     = '2.2.1'
     }
     foreach ($mod in $modHash.GetEnumerator()) {
-        if ($null -eq (Get-Module $mod.Key -ListAvailable | Where-Object {[version]$_.Version -ge [version]$mod.Value})) {
-            Install-Module $mod.Key -Repository PSGallery -Force -AllowClobber
+        try {
+            if ($null -eq (Get-Module $mod.Key -ListAvailable | Where-Object {[version]$_.Version -ge [version]$mod.Value})) {
+                Write-BuildLog "Updating module: $($mod.Key)"
+                Install-Module $mod.Key -Repository PSGallery -Force -AllowClobber
+            }
+            else {
+                Write-BuildLog "$($mod.Key) is already >= $($mod.Value)! Skipping"
+            }
+        }
+        catch {
+
         }
     }
+
     Get-Module PackageManagement,PowerShellGet | Remove-Module -Force
     Import-Module PowerShellGet -Force
-
-    Get-Module PackageManagement,PowerShellGet
+    Get-Module PackageManagement,PowerShellGet | Select-Object Name,Version
 
     Add-Heading "Finalizing build prerequisites"
     if (

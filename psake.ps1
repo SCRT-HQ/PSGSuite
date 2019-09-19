@@ -112,10 +112,10 @@ task Compile -depends Clean {
     if ("$env:NoNugetRestore" -ne 'True') {
         New-Item -Path "$outputModVerDir\lib" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
         Write-BuildLog "Installing NuGet dependencies..."
-        Invoke-CommandWithLog {Install-NuGetDependencies -Destination $outputModVerDir -AddlSearchString $NuGetSearchStrings -Verbose}
+        Install-NuGetDependencies -Destination $outputModVerDir -AddlSearchString $NuGetSearchStrings -Verbose
     }
     else {
-        Write-BuildLog "Skipping NuGet Restore due to `$env:NoNugetRestore = $env:NoNugetRestore"
+        Write-BuildLog "Skipping NuGet Restore due to `$env:NoNugetRestore = '$env:NoNugetRestore'"
     }
 
     $aliasHashContents = (Get-Content "$sut\Aliases\PSGSuite.Aliases.ps1" -Raw).Trim()
