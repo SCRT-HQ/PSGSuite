@@ -32,7 +32,8 @@ function Install-NuGetDependencies {
         $nugHash = @{}
         foreach ($search in $AddlSearchString) {
             Write-BuildLog "Finding NuGet packages matching SearchString: $search"
-            Find-Package $search -Source nuget.org -AllowPrereleaseVersions:$false -Verbose | Where-Object {$_.Name -in $packagesToInstall.BaseName} | ForEach-Object {
+            Register-PackageSource -Name NuGet -Location https://www.nuget.org/api/v2 -ProviderName NuGet -Force -Trusted -ForceBootstrap
+            PackageManagement\Find-Package $search -Source NuGet -AllowPrereleaseVersions:$false -Verbose | Where-Object {$_.Name -in $packagesToInstall.BaseName} | ForEach-Object {
                 Write-BuildLog "Matched package: $($_.Name)"
                 $nugHash[$_.Name] = $_
             }
