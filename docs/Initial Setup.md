@@ -21,7 +21,7 @@ Installing items from the Gallery requires the latest version of the PowerShellG
 
 1. Open Powershell and run the following command:
 
-```powershell
+```PowerShell tab=
 Install-Module -Name PSGSuite -Scope CurrentUser
 ```
 
@@ -52,7 +52,7 @@ _**Bleeding edge fans, contributors, etc**_
 
 To import the compiled module in a new session, run this from the repo root:
 
-```powershell
+```PowerShell
 Import-Module ./BuildOutput/PSGSuite -Force
 ```
 
@@ -256,19 +256,19 @@ You will also need to take a slightly different route when creating credentials 
 
       _**G Suite SuperAdmins**_
 
-    ```powershell
+    ```PowerShell
     Set-PSGSuiteConfig -ConfigName MyConfig -SetAsDefaultConfig -P12KeyPath $P12KeyPath -AppEmail $AppEmail -AdminEmail $AdminEmail -CustomerID $CustomerID -Domain $Domain -Preference $Preference -ServiceAccountClientID $ServiceAccountClientID
     ```
 
     _**Free account / G Suite standard users**_
 
-    ```powershell
+    ```PowerShell
     Set-PSGSuiteConfig -ConfigName MyConfig -SetAsDefaultConfig -ClientSecretsPath $ClientSecretsPath -AdminEmail $AdminEmail
     ```
 
     Here's another way to set multiple configs at the same time:
 
-    ```powershell
+    ```PowerShell
     @(
         @{
             SetAsDefaultConfig     = $true

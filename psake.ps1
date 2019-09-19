@@ -305,6 +305,7 @@ Task Docs -Depends Init {
         python -m pip install --user mkdocs
         python -m pip install --user mkdocs-material
         python -m pip install --user mkdocs-minify-plugin
+        python -m pip install --user pymdown-extensions
     }
     python -m mkdocs gh-deploy --message "[skip ci] Deploying Docs update @ $(Get-Date) to https://psgsuite.io" --verbose --force --ignore-version | Tee-Object -Variable mkdocs
     if ($errors = ($mkdocs -split "`n") | Where-Object {$_ -match 'Error\s+\-\s+'}) {
