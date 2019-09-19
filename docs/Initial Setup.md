@@ -126,7 +126,7 @@ Import-Module ./BuildOutput/PSGSuite -Force
 4. Click 'Manage API client access'
 5. Take the ServiceAccountClientID you copied to Notepad earlier (e.g. _10264827741861193783987_) and paste it in the left field for 'Client Name'
     * If you have already set up a PSGSuiteConfig, you can retrieve your ServiceAccountClientId by running `(Show-PSGSuiteConfig).ServiceAccountClientId`
-6. Copy / paste the following scopes together on the right field for 'One or more API scopes':
+6. Copy / paste the following scopes together on the field on the right for 'One or more API scopes':
 
 ```text
 https://apps-apis.google.com/a/feeds/emailsettings/2.0/,
