@@ -69,6 +69,7 @@ else {
         PackageManagement = '1.4.4'
         PowerShellGet     = '2.2.1'
     }
+    Get-Module PackageManagement,PowerShellGet | Remove-Module -Force
     foreach ($mod in $modHash.GetEnumerator()) {
         try {
             if ($null -eq (Get-Module $mod.Key -ListAvailable | Where-Object {[version]$_.Version -ge [version]$mod.Value})) {
