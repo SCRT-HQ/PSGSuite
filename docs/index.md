@@ -1,7 +1,3 @@
----
-title: Home
----
-
 # PSGSuite
 <div align="center">
   <img src="https://github.com/scrthq/PSGSuite/raw/master/bin/img/psgsuite2.0.0.png" alt="PSGSuite 2.0.0 released!" />
@@ -26,14 +22,14 @@ title: Home
   <a href="https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
     <img src="https://img.shields.io/gitter/room/scrthq/PSGSuite.svg?logo=gitter&style=flat&color=red"
       alt="Gitter - Chat" title="Gitter - Chat" />
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  </a>
+  <br />
+  <br />
   <!-- Codacy -->
   <a href="https://www.codacy.com/app/scrthq/PSGSuite?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scrthq/PSGSuite&amp;utm_campaign=Badge_Grade">
     <img src="https://api.codacy.com/project/badge/Grade/0d5203a1cf1945fe94c46b779eecb7f0"
       alt="Codacy" title="Codacy" />
-  </a>
-  <br />
-  <br />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- PS Gallery -->
   <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
     <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat&logo=powershell&color=blue"
@@ -56,7 +52,7 @@ title: Home
 
 ## Documentation
 
-Check out the [GitHub wiki for PSGSuite](https://github.com/scrthq/PSGSuite/wiki) for help with setting up as well as full function help!
+Check out [PSGSuite.io](https://psgsuite.io/) for PSGSuite documentation, including [initial setup](https://psgsuite.io/Initial%20Setup/) help as well as function help!
 
 ## Contributing
 
@@ -162,26 +158,43 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.32.3 - 2019-09-18
+
+* [Issue #234](https://github.com/scrthq/PSGSuite/issues/234)
+    * Fixed: `Update-GSUserPhoto` errors by switching to `[System.IO.File]::ReadAllBytes($path)`.
+
+#### 2.32.2 - 2019-09-15
+
+* [Issue #225](https://github.com/scrthq/PSGSuite/issues/225)
+    * Fixed: NuGet package versions for Google APIs fell back to the version sheet during the most recent version push due to failure to communicate with NuGet to dynamically pull the latest version, resulting in previous enhancements now failing (e.g. Admin SDK rolled back to a 2017 version).
+        * Added more guards and force update situations for the NuGetDependencies.json file during local builds to more concretely guarantee that the NuGet packages needed will be available.
+
+#### 2.32.1 - 2019-09-14
+
+* [Issue #232](https://github.com/scrthq/PSGSuite/issues/232)
+    * Added: `Visibility` parameter on `New-GSCalendarEvent`
+
 #### 2.32.0 - 2019-09-12
 
 * [Issue #229](https://github.com/scrthq/PSGSuite/issues/229)
-  * Added: `Update-GSGmailLanguageSettings` and `Get-GSGmailLanguageSettings` functions to update/get a users default language settings in Gmail.
+    * Added: `Update-GSGmailLanguageSettings` and `Get-GSGmailLanguageSettings` functions to update/get a users default language settings in Gmail.
 * [Issue #231](https://github.com/scrthq/PSGSuite/issues/231)
-  * Added: `Update-GSCalenderSubscription` function to updated existing calendar subscriptions.
-  * Removed: Default values for the following parameters on `Add-GSCalendarSubscription` to prevent automatically adding notifications for new CalendarList entries (subscriptions):
-    * `DefaultNotificationType`
-    * `DefaultNotificationMethod`
-    * `DefaultReminderMethod`
-    * `DefaultReminderMinutes`
-  * Added: `Notifications` and `Reminders` parameters to `Add-GSCalenderSubscription` and `Update-GSCalenderSubscription`
-  * Added: `Reminders` parameter to `New-GSCalendarEvent` and `Update-GSCalendarEvent` functions to set custom reminders on calendar events.
-  * Added: `Add-GSCalendarEventReminder` and `Add-GSCalendarNotification` helper functions.
-  * Updated: `DisableReminder` switch parameter name on `New-GSCalendarEvent` and `Update-GSCalendarEvent` functions to `DisableDefaultReminder` to better align with what that actually effects (default reminder inheritance only, not reminder overrides). The previous parameter name has been set as an alias to maintain backwards compatibility.
-  * Added: `RemoveAllReminders` parameter to `Update-GSCalendarEvent` to remove all custom reminders and disable calendar inheritance.
+    * Added: `Update-GSCalenderSubscription` function to updated existing calendar subscriptions.
+    * Removed: Default values for the following parameters on `Add-GSCalendarSubscription` to prevent automatically adding notifications for new CalendarList entries (subscriptions):
+        * `DefaultNotificationType`
+        * `DefaultNotificationMethod`
+        * `DefaultReminderMethod`
+        * `DefaultReminderMinutes`
+    * Added: `Notifications` and `Reminders` parameters to `Add-GSCalenderSubscription` and `Update-GSCalenderSubscription`
+    * Added: `Reminders` parameter to `New-GSCalendarEvent` and `Update-GSCalendarEvent` functions to set custom reminders on calendar events.
+    * Added: `Add-GSCalendarEventReminder` and `Add-GSCalendarNotification` helper functions.
+    * Updated: `DisableReminder` switch parameter name on `New-GSCalendarEvent` and `Update-GSCalendarEvent` functions to `DisableDefaultReminder` to better align with what that actually effects (default reminder inheritance only, not reminder overrides). The previous parameter name has been set as an alias to maintain backwards compatibility.
+    * Added: `RemoveAllReminders` parameter to `Update-GSCalendarEvent` to remove all custom reminders and disable calendar inheritance.
 * [Issue #232](https://github.com/scrthq/PSGSuite/issues/232)
-  * Added: `Visibility` parameter on `New-GSCalendarEvent` and `Update-GSCalendarEvent` to set the visibility of a calendar event.
+    * Added: `Visibility` parameter on `Update-GSCalendarEvent` to set the visibility of a calendar event.
 * Miscellaneous
-  * Forced `Type` parameter values to lower on the `Add-GSUser*` helper functions to ensure case senstive field matches whats expected.
-  * Updated Google .NET SDKs to latest versions.
-  * Updated and corrected a LOT of comment based function help.
-  * Added function help tests to validate that functions contain expected help content.
+    * Forced `Type` parameter values to lower on the `Add-GSUser*` helper functions to ensure case senstive field matches whats expected.
+    * Updated Google .NET SDKs to latest versions.
+    * Updated and corrected a LOT of comment based function help.
+    * Added function help tests to validate that functions contain expected help content.
+

@@ -20,9 +20,9 @@ Removes an Access Control List rule from a calendar.
 Get-GSCalendar -User joe@domain.com |
 ```
 
-Get-GSCalendarACL |
+Get-GSCalendarAcl |
     Where-Object {$_.Role -eq 'Owner'} |
-    Remove-GSCalendarACL
+    Remove-GSCalendarAcl
 
 Gets all the calendars for Joe and finds all ACL rules where
 
@@ -115,3 +115,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://psgsuite.io/Function%20Help/Calendar/Remove-GSCalendarAcl/](https://psgsuite.io/Function%20Help/Calendar/Remove-GSCalendarAcl/)
+

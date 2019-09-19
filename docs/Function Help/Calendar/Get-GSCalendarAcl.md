@@ -123,3 +123,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://psgsuite.io/Function%20Help/Calendar/Get-GSCalendarACL/](https://psgsuite.io/Function%20Help/Calendar/Get-GSCalendarACL/)
+
+[https://developers.google.com/calendar/v3/reference/acl/get](https://developers.google.com/calendar/v3/reference/acl/get)
+
+[https://developers.google.com/calendar/v3/reference/acl/list](https://developers.google.com/calendar/v3/reference/acl/list)
+

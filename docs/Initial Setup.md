@@ -3,14 +3,18 @@
 Getting started with PSGSuite.
 
 ## Prerequisites
+
 In order to use this module, you will need the following:
+
 * PowerShell 4.0+ or PowerShell Core 6+
 * G Suite account (SuperAdmin needed for full functionality of the module)
 
 ***
 
 ## Installing the Module
+
 ### From the PowerShell Gallery
+
 _**This will be slightly behind the GitHub repo. Please see below for installation instructions from the GitHub repo.** Installing items from the Gallery requires the latest version of the PowerShellGet module, which is available in Windows 10, in Windows Management Framework (WMF) 5.0, or in the MSI-based installer (for PowerShell 3 and 4)_
 
 1. Open Powershell and run the following command:
@@ -20,6 +24,7 @@ For more information, please visit the [PSGSuite page on the Powershell Gallery]
 
 
 ### From the GitHub release page
+
 _**This will be equal to the Powershell Gallery, usually**_
 
 **IMPORTANT: You MUST have the module 'Configuration' installed as a prerequisite! Installing the module from the repo source or the release page does not automatically install dependencies!!**
@@ -31,8 +36,8 @@ _**This will be equal to the Powershell Gallery, usually**_
 4. (Optional) Place the module somewhere in your PSModulePath.
     * You can view the paths listed by running the environment variable `$env:PSModulePath`
 
-
 ### Build from the GitHub repo
+
 _**Bleeding edge fans, contributors, etc**_
 
 **IMPORTANT: You MUST have the module 'Configuration' installed as a prerequisite! Installing the module from the repo source or the release page does not automatically install dependencies!!**
@@ -45,7 +50,7 @@ Building with the default task list will automatically import the module at the 
 
 If you'd like to import the compiled module in a new session, you can find it under the BuildOutput folder in the root of the repo.
 
-**OR**
+#### OR
 
 1. Fork the repo to your local
 2. Import the module by loading the PSD1 file via full path or placing the local repo folder somewhere in your `$env:PSMODULEPATH`
@@ -113,6 +118,7 @@ If you'd like to import the compiled module in a new session, you can find it un
 ***
 
 ### Adding API Client Access in Admin Console
+
 1. Open a new tab or window to the [Google Admin Console](https://admin.google.com/)
 2. Go to Security
 3. Expand 'Advanced Settings'
@@ -227,6 +233,7 @@ You will also need to take a slightly different route when creating credentials 
 ***
 
 ## Creating the PSGSuite Configuration File
+
 1. Import the module:
     * Module located in PSModulePath: ```Import-Module PSGSuite```
     * or somewhere else: ```Import-Module C:\Path\To\PSGSuite\PSGSuite.psd1```
@@ -292,29 +299,31 @@ If you are using a `client_secrets.json` for your configuration, you must also c
 
 1. Import the module: `Import-Module PSGSuite`
 2. Run `Get-GSGmailProfile -Verbose` (or any other Gmail, Drive, Calendar, Contacts or Tasks command) to trigger the authentication/authorization process:
-  * If you are using Windows PowerShell, you should see your browser open with a Google login prompt:
-    1. Authenticate using the AdminEmail account configured with `Set-PSGSuiteConfig`.
-    2. Allow PSGSuite to access the below scopes on your account that you desire.
-    3. You should see a message in your browser tab stating the following once complete: `Received verification code. You may now close this window.`
-  * If you are using PowerShell Core (6+), you will be provided a URL to visit to complete authentication/authorization:
-    1. Open your browser and go the the URL provided in the console output.
-    2. Authenticate using the AdminEmail account configured with `Set-PSGSuiteConfig`.
-    3. Allow PSGSuite to access the below scopes on your account that you desire.
-    4. You should see a pop-up in your browser with a code to copy. Select and copy or click the button to the right of the code to copy, then paste the code back in your console where prompted, then hit `Enter`.
-    5. You should see the command complete successfully at this point.
-  * Scopes included with `client_secrets.json` auth:
-      * https://www.google.com/m8/feeds
-      * https://mail.google.com
-      * https://www.googleapis.com/auth/gmail.settings.basic
-      * https://www.googleapis.com/auth/gmail.settings.sharing
-      * https://www.googleapis.com/auth/calendar
-      * https://www.googleapis.com/auth/drive
-      * https://www.googleapis.com/auth/tasks
-      * https://www.googleapis.com/auth/tasks.readonly
-  * Screenshots of the PowerShell Core process:
+    * If you are using Windows PowerShell, you should see your browser open with a Google login prompt:
+        1. Authenticate using the AdminEmail account configured with `Set-PSGSuiteConfig`.
+        2. Allow PSGSuite to access the below scopes on your account that you desire.
+        3. You should see a message in your browser tab stating the following once complete: `Received verification code. You may now close this window.`
 
-    ![image](https://user-images.githubusercontent.com/12724445/50432027-bb2d4900-0894-11e9-8aa7-fe5f22e8cdc6.png)
+    * If you are using PowerShell Core (6+), you will be provided a URL to visit to complete authentication/authorization:
+        1. Open your browser and go the the URL provided in the console output.
+        2. Authenticate using the AdminEmail account configured with `Set-PSGSuiteConfig`.
+        3. Allow PSGSuite to access the below scopes on your account that you desire.
+        4. You should see a pop-up in your browser with a code to copy. Select and copy or click the button to the right of the code to copy, then paste the code back in your console where prompted, then hit `Enter`.
+3. You should see the command complete successfully at this point.
 
-    ![image](https://user-images.githubusercontent.com/12724445/50432132-63dba880-0895-11e9-8c96-ba23bf994757.png)
+* Scopes included with `client_secrets.json` auth:
+    * https://www.google.com/m8/feeds
+    * https://mail.google.com
+    * https://www.googleapis.com/auth/gmail.settings.basic
+    * https://www.googleapis.com/auth/gmail.settings.sharing
+    * https://www.googleapis.com/auth/calendar
+    * https://www.googleapis.com/auth/drive
+    * https://www.googleapis.com/auth/tasks
+    * https://www.googleapis.com/auth/tasks.readonly
+* Screenshots of the PowerShell Core process:
 
-    ![image](https://user-images.githubusercontent.com/12724445/50432170-99809180-0895-11e9-87db-866450e7f6bf.png)
+![image](https://user-images.githubusercontent.com/12724445/50432027-bb2d4900-0894-11e9-8aa7-fe5f22e8cdc6.png)
+
+![image](https://user-images.githubusercontent.com/12724445/50432132-63dba880-0895-11e9-8c96-ba23bf994757.png)
+
+![image](https://user-images.githubusercontent.com/12724445/50432170-99809180-0895-11e9-87db-866450e7f6bf.png)

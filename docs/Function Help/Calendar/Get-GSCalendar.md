@@ -186,3 +186,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://psgsuite.io/Function%20Help/Calendar/Get-GSCalendar/](https://psgsuite.io/Function%20Help/Calendar/Get-GSCalendar/)
+
+[https://developers.google.com/calendar/v3/reference/calendarList/get](https://developers.google.com/calendar/v3/reference/calendarList/get)
+
+[https://developers.google.com/calendar/v3/reference/calendarList/list](https://developers.google.com/calendar/v3/reference/calendarList/list)
+

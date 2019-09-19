@@ -69,3 +69,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://psgsuite.io/Function%20Help/Authentication/Get-GSToken/](https://psgsuite.io/Function%20Help/Authentication/Get-GSToken/)
+

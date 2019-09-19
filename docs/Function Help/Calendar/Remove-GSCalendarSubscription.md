@@ -96,3 +96,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://psgsuite.io/Function%20Help/Calendar/Remove-GSCalendarSubscription/](https://psgsuite.io/Function%20Help/Calendar/Remove-GSCalendarSubscription/)
+

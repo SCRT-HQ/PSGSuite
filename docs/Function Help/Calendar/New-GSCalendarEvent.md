@@ -8,21 +8,21 @@ Creates a new calendar event
 ### AttendeeEmails (Default)
 ```
 New-GSCalendarEvent [-Summary] <String> [-Description <String>] [-Id <String>] [-User <String[]>]
- [-CalendarID <String[]>] [-AttendeeEmails <String[]>] [-Location <String>] [-EventColor <String>]
- [-Reminders <EventReminder[]>] [-DisableDefaultReminder] [-LocalStartDateTime <DateTime>]
- [-LocalEndDateTime <DateTime>] [-StartDate <String>] [-EndDate <String>] [-UTCStartDateTime <String>]
- [-UTCEndDateTime <String>] [-PrivateExtendedProperties <Hashtable>] [-SharedExtendedProperties <Hashtable>]
- [-ExtendedProperties <ExtendedPropertiesData>] [<CommonParameters>]
+ [-CalendarID <String[]>] [-AttendeeEmails <String[]>] [-Location <String>] [-Visibility <String>]
+ [-EventColor <String>] [-Reminders <EventReminder[]>] [-DisableDefaultReminder]
+ [-LocalStartDateTime <DateTime>] [-LocalEndDateTime <DateTime>] [-StartDate <String>] [-EndDate <String>]
+ [-UTCStartDateTime <String>] [-UTCEndDateTime <String>] [-PrivateExtendedProperties <Hashtable>]
+ [-SharedExtendedProperties <Hashtable>] [-ExtendedProperties <ExtendedPropertiesData>] [<CommonParameters>]
 ```
 
 ### AttendeeObjects
 ```
 New-GSCalendarEvent [-Summary] <String> [-Description <String>] [-Id <String>] [-User <String[]>]
- [-CalendarID <String[]>] [-Attendees <EventAttendee[]>] [-Location <String>] [-EventColor <String>]
- [-Reminders <EventReminder[]>] [-DisableDefaultReminder] [-LocalStartDateTime <DateTime>]
- [-LocalEndDateTime <DateTime>] [-StartDate <String>] [-EndDate <String>] [-UTCStartDateTime <String>]
- [-UTCEndDateTime <String>] [-PrivateExtendedProperties <Hashtable>] [-SharedExtendedProperties <Hashtable>]
- [-ExtendedProperties <ExtendedPropertiesData>] [<CommonParameters>]
+ [-CalendarID <String[]>] [-Attendees <EventAttendee[]>] [-Location <String>] [-Visibility <String>]
+ [-EventColor <String>] [-Reminders <EventReminder[]>] [-DisableDefaultReminder]
+ [-LocalStartDateTime <DateTime>] [-LocalEndDateTime <DateTime>] [-StartDate <String>] [-EndDate <String>]
+ [-UTCStartDateTime <String>] [-UTCEndDateTime <String>] [-PrivateExtendedProperties <Hashtable>]
+ [-SharedExtendedProperties <Hashtable>] [-ExtendedProperties <ExtendedPropertiesData>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -376,6 +376,29 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Visibility
+Visibility of the event.
+
+Possible values are:
+* "default" - Uses the default visibility for events on the calendar.
+This is the default value.
+* "public" - The event is public and event details are visible to all readers of the calendar.
+* "private" - The event is private and only event attendees may view event details.
+* "confidential" - The event is private.
+This value is provided for compatibility reasons.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
@@ -387,3 +410,6 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://psgsuite.io/Function%20Help/Calendar/New-GSCalendarEvent/](https://psgsuite.io/Function%20Help/Calendar/New-GSCalendarEvent/)
+

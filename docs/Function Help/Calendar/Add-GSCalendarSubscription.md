@@ -268,3 +268,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[https://psgsuite.io/Function%20Help/Calendar/Add-GSCalendarSubscription/](https://psgsuite.io/Function%20Help/Calendar/Add-GSCalendarSubscription/)
+
+[https://developers.google.com/calendar/v3/reference/calendarList/insert](https://developers.google.com/calendar/v3/reference/calendarList/insert)
+
