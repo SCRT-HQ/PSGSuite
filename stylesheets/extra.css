@@ -32,7 +32,7 @@
 }
 
 .superfences-tabs input:nth-child(n+1):checked + label {
-    color: #FF5252;
+    color: #2196F3;
 }
 
 .superfences-tabs input:nth-child(n+1):checked + label + .superfences-content {
