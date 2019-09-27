@@ -183,7 +183,7 @@ Add-MetadataConverter -Converters @{
         elseif (`$Global:PSGSuiteKey -is [System.Security.SecureString]) {
             `$encParams["SecureKey"] = `$Global:PSGSuiteKey
         }
-        'Secure "{0}"' -f (ConvertFrom-SecureString `$_ @encParams)
+        'ConvertTo-SecureString "{0}"' -f (ConvertFrom-SecureString `$_ @encParams)
     }
     "Secure" = {
         param([string]`$String)
@@ -196,7 +196,19 @@ Add-MetadataConverter -Converters @{
         }
         ConvertTo-SecureString `$String @encParams
     }
+    "ConvertTo-SecureString" = {
+        param([string]`$String)
+        `$encParams = @{}
+        if (`$Global:PSGSuiteKey -is [System.Byte[]]) {
+            `$encParams["Key"] = `$Global:PSGSuiteKey
+        }
+        elseif (`$Global:PSGSuiteKey -is [System.Security.SecureString]) {
+            `$encParams["SecureKey"] = `$Global:PSGSuiteKey
+        }
+        ConvertTo-SecureString `$String @encParams
+    }
 }
+
 try {
     `$confParams = @{
         Scope = `$ConfigScope
