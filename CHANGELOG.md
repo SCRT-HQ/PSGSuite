@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+    * [2.33.0 - 2019-09-26](#2330---2019-09-26)
     * [2.32.3 - 2019-09-18](#2323---2019-09-18)
     * [2.32.2 - 2019-09-15](#2322---2019-09-15)
     * [2.32.1 - 2019-09-14](#2321---2019-09-14)
@@ -99,6 +100,11 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.33.0 - 2019-09-26
+
+* [Issue #236](https://github.com/scrthq/PSGSuite/issues/236)
+    * Fixed: Custom converter for Configuration metadata defaults to `ConvertTo-SecureString` as the preferred function instead of the custom `Secure`. `Secure` is still supported for backwards compatibility.
 
 ## 2.32.3 - 2019-09-18
 

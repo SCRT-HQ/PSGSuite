@@ -158,42 +158,7 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-#### 2.32.3 - 2019-09-18
+#### 2.33.0 - 2019-09-26
 
-* [Issue #234](https://github.com/scrthq/PSGSuite/issues/234)
-    * Fixed: `Update-GSUserPhoto` errors by switching to `[System.IO.File]::ReadAllBytes($path)`.
-
-#### 2.32.2 - 2019-09-15
-
-* [Issue #225](https://github.com/scrthq/PSGSuite/issues/225)
-    * Fixed: NuGet package versions for Google APIs fell back to the version sheet during the most recent version push due to failure to communicate with NuGet to dynamically pull the latest version, resulting in previous enhancements now failing (e.g. Admin SDK rolled back to a 2017 version).
-        * Added more guards and force update situations for the NuGetDependencies.json file during local builds to more concretely guarantee that the NuGet packages needed will be available.
-
-#### 2.32.1 - 2019-09-14
-
-* [Issue #232](https://github.com/scrthq/PSGSuite/issues/232)
-    * Added: `Visibility` parameter on `New-GSCalendarEvent`
-
-#### 2.32.0 - 2019-09-12
-
-* [Issue #229](https://github.com/scrthq/PSGSuite/issues/229)
-    * Added: `Update-GSGmailLanguageSettings` and `Get-GSGmailLanguageSettings` functions to update/get a users default language settings in Gmail.
-* [Issue #231](https://github.com/scrthq/PSGSuite/issues/231)
-    * Added: `Update-GSCalenderSubscription` function to updated existing calendar subscriptions.
-    * Removed: Default values for the following parameters on `Add-GSCalendarSubscription` to prevent automatically adding notifications for new CalendarList entries (subscriptions):
-        * `DefaultNotificationType`
-        * `DefaultNotificationMethod`
-        * `DefaultReminderMethod`
-        * `DefaultReminderMinutes`
-    * Added: `Notifications` and `Reminders` parameters to `Add-GSCalenderSubscription` and `Update-GSCalenderSubscription`
-    * Added: `Reminders` parameter to `New-GSCalendarEvent` and `Update-GSCalendarEvent` functions to set custom reminders on calendar events.
-    * Added: `Add-GSCalendarEventReminder` and `Add-GSCalendarNotification` helper functions.
-    * Updated: `DisableReminder` switch parameter name on `New-GSCalendarEvent` and `Update-GSCalendarEvent` functions to `DisableDefaultReminder` to better align with what that actually effects (default reminder inheritance only, not reminder overrides). The previous parameter name has been set as an alias to maintain backwards compatibility.
-    * Added: `RemoveAllReminders` parameter to `Update-GSCalendarEvent` to remove all custom reminders and disable calendar inheritance.
-* [Issue #232](https://github.com/scrthq/PSGSuite/issues/232)
-    * Added: `Visibility` parameter on `Update-GSCalendarEvent` to set the visibility of a calendar event.
-* Miscellaneous
-    * Forced `Type` parameter values to lower on the `Add-GSUser*` helper functions to ensure case senstive field matches whats expected.
-    * Updated Google .NET SDKs to latest versions.
-    * Updated and corrected a LOT of comment based function help.
-    * Added function help tests to validate that functions contain expected help content.
+* [Issue #236](https://github.com/scrthq/PSGSuite/issues/236)
+    * Fixed: Custom converter for Configuration metadata defaults to `ConvertTo-SecureString` as the preferred function instead of the custom `Secure`. `Secure` is still supported for backwards compatibility.
