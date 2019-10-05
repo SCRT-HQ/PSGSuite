@@ -79,7 +79,7 @@ else {
             MinimumVersion = $Dependencies[$module]
         }
     }
-    Import-PowerShellDataFile ([System.IO.Path]::Combine($PSScriptRoot,$ModuleName,"$ModuleName.psd1")) | Select-Object -ExpandProperty RequiredModules | ForEach-Object {
+    (Import-PowerShellDataFile ([System.IO.Path]::Combine($PSScriptRoot,$ModuleName,"$ModuleName.psd1"))).RequiredModules | ForEach-Object {
         $item = $_
         if ($item -is [hashtable] -and $Dependencies.Keys -notcontains $item.ModuleName) {
             Write-BuildLog "Adding new dependency from PSD1: $($item.ModuleName)"
