@@ -18,7 +18,7 @@ $Dependencies = @{
     Configuration     = '1.3.1'
     psake             = '4.9.0'
 }
-if ($env:SYSTEM_STAGENAME -eq 'Compile Module') {
+if ($env:SYSTEM_STAGENAME -eq 'Build') {
     $Dependencies['PowerShellGet'] = '2.2.1'
 }
 $update = @{}
