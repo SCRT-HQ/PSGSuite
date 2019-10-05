@@ -102,15 +102,6 @@ else {
     catch {
         throw
     }
-    foreach ($item in $moduleDependencies) {
-        Write-BuildLog "[$($item['Name'])] Resolving and updating if needed"
-        try {
-            $item['Name'] | Resolve-Module -UpdateModules -Verbose
-        }
-        catch {
-            Write-BuildError "[$($item['Name'])] Error resolving module: $_"
-        }
-    }
 
     Add-Heading "Finalizing build prerequisites"
     if (
