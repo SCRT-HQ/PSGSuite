@@ -151,7 +151,7 @@ else {
                 $item.Name | Resolve-Module -UpdateModules -Verbose
             }
             catch {
-                Write-BuildWarning "[$($item.Name)] Error resolving module: $($Error[0].Exception.Message)"
+                Write-BuildWarning "[$($item.Name)] Error resolving module"
             }
         }
         Write-BuildLog "Modules successfully resolved"
