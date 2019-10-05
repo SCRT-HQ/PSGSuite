@@ -155,12 +155,12 @@ else {
         #>
         Write-BuildLog "Resolving necessary modules"
         foreach ($item in $moduleDependencies) {
-            Write-BuildLog "Working on: [$($item['Name'])]"
+            Write-BuildLog "Working on: [$($item.Name)]"
             try {
-                $item['Name'] | Resolve-Module -UpdateModules -Verbose
+                $item.Name | Resolve-Module -UpdateModules -Verbose
             }
             catch {
-                Write-BuildError "[$($item['Name'])] Error resolving module: $_"
+                Write-BuildError "[$($item.Name)] Error resolving module: $_"
             }
         }
         Write-BuildLog "Modules successfully resolved"
