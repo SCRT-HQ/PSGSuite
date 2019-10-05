@@ -16,7 +16,6 @@ $env:_BuildStart = Get-Date -Format 'o'
 $ModuleName = 'PSGSuite'
 $Dependencies = @{
     Configuration     = '1.3.1'
-    PackageManagement = '1.4.4'
     PowerShellGet     = '2.2.1'
     psake             = '4.9.0'
 }
