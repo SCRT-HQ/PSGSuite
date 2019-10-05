@@ -145,16 +145,8 @@ else {
         Import-Module 'BuildHelpers' -RequiredVersion 2.0.1
         #>
         Write-BuildLog "Resolving necessary modules"
-        foreach ($item in $moduleDependencies) {
-            Write-BuildLog "Working on: [$($item.Name)]"
-            try {
-                $item.Name | Resolve-Module -UpdateModules -Verbose
-            }
-            catch {
-                Write-BuildWarning "[$($item.Name)] Error resolving module"
-            }
-        }
-        Write-BuildLog "Modules successfully resolved"
+        $moduleDependencies.Name | Resolve-Module -UpdateModules -Verbose
+        Write-BuildLog "Modules resolved"
         if ($Task -eq 'TestOnly') {
             $global:ExcludeTag = @('Module')
         }
