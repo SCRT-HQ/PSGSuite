@@ -16,10 +16,11 @@ $env:_BuildStart = Get-Date -Format 'o'
 $ModuleName = 'PSGSuite'
 $Dependencies = @{
     Configuration     = '1.3.1'
-    PowerShellGet     = '2.2.1'
     psake             = '4.9.0'
 }
-
+if ($env:SYSTEM_STAGENAME -eq 'Compile Module') {
+    $Dependencies['PowerShellGet'] = '2.2.1'
+}
 $update = @{}
 $verbose = @{}
 if ($PSBoundParameters.ContainsKey('UpdateModules')) {
