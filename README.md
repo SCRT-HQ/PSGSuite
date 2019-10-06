@@ -161,7 +161,7 @@ All other functions are either intact or have an alias included to support backw
 #### 2.33.1 - 2019-10-06
 
 * [Issue #235](https://github.com/scrthq/PSGSuite/issues/235)
-    * Removed: `Name` parameter from `Start-GSDriveFileUpload` as it was unused in the function and doesn't make sense when uploading an array of files.
+    * Removed: `Name` parameter from `Start-GSDriveFileUpload` as it was unused in the function and doesnt make sense when uploading an array of files.
 * [Issue #238](https://github.com/scrthq/PSGSuite/issues/238)
     * Added: `Get-GSDataTransfer` to Get/List current Data Transfers
 * [Issue #239](https://github.com/scrthq/PSGSuite/issues/239)
