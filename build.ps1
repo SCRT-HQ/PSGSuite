@@ -13,7 +13,14 @@ param(
     [switch]$Help
 )
 $env:_BuildStart = Get-Date -Format 'o'
-
+$ModuleName = 'PSGSuite'
+$Dependencies = @{
+    Configuration     = '1.3.1'
+    psake             = '4.9.0'
+}
+if ($env:SYSTEM_STAGENAME -eq 'Build') {
+    $Dependencies['PowerShellGet'] = '2.2.1'
+}
 $update = @{}
 $verbose = @{}
 if ($PSBoundParameters.ContainsKey('UpdateModules')) {
@@ -35,7 +42,8 @@ if ($Help) {
         Format-Table -Property Name, Description, Alias, DependsOn
 }
 else {
-    $env:BuildProjectName = 'PSGSuite'
+
+    $env:BuildProjectName = $ModuleName
     $env:BuildScriptPath = $PSScriptRoot
 
     if ($Task -contains 'Docs') {
@@ -45,7 +53,7 @@ else {
         $env:NoNugetRestore = $NoRestore
     }
 
-    Invoke-CommandWithLog {$global:PSDefaultParameterValues = @{
+    $global:PSDefaultParameterValues = @{
         '*-Module:Verbose' = $false
         'Import-Module:ErrorAction' = 'Stop'
         'Import-Module:Force' = $true
@@ -56,40 +64,45 @@ else {
         'Install-Module:Scope' = 'CurrentUser'
         'Install-Module:Repository' = 'PSGallery'
         'Install-Module:Verbose' = $false
-    }}
+    }
     Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false
     Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false
 
     Add-EnvironmentSummary "Build started"
-
     Set-BuildVariables
 
-    Add-Heading "Updating PackageManagement and PowerShellGet modules if needed"
-    $modHash = @{
-        PackageManagement = '1.4.4'
-        PowerShellGet     = '2.2.1'
+    Add-Heading "Pulling module and build dependencies"
+    [hashtable[]]$moduleDependencies = @()
+    foreach ($module in $Dependencies.Keys) {
+        $moduleDependencies += @{
+            Name           = $module
+            MinimumVersion = $Dependencies[$module]
+        }
     }
-    if ($env:SYSTEM_JOBDISPLAYNAME -eq 'Compile Module') {
-        Get-Module PackageManagement,PowerShellGet | Remove-Module -Force
-        foreach ($mod in $modHash.GetEnumerator()) {
-            try {
-                if ($null -eq (Get-Module $mod.Key -ListAvailable | Where-Object {[version]$_.Version -ge [version]$mod.Value})) {
-                    Write-BuildLog "Updating module: $($mod.Key)"
-                    Install-Module $mod.Key -Repository PSGallery -Force -AllowClobber -ErrorAction SilentlyContinue
-                }
-                else {
-                    Write-BuildLog "$($mod.Key) is already >= $($mod.Value)! Skipping"
-                }
+    (Import-PowerShellDataFile ([System.IO.Path]::Combine($PSScriptRoot,$ModuleName,"$ModuleName.psd1"))).RequiredModules | ForEach-Object {
+        $item = $_
+        if ($item -is [hashtable] -and $Dependencies.Keys -notcontains $item.ModuleName) {
+            Write-BuildLog "Adding new dependency from PSD1: $($item.ModuleName)"
+            $hash = @{
+                Name = $item.ModuleName
             }
-            catch {
-
+            if ($item.ContainsKey('ModuleVersion')) {
+                $hash['MinimumVersion'] = $item.ModuleVersion
+            }
+            $moduleDependencies += $hash
+        }
+        elseif ($item -is [string] -and $Dependencies.Keys -notcontains $item) {
+            $moduleDependencies += @{
+                Name = $item
             }
         }
     }
-
-    Get-Module PackageManagement,PowerShellGet | Remove-Module -Force
-    Import-Module PowerShellGet -Force
-    Get-Module PackageManagement,PowerShellGet | Format-Table Name,Version -AutoSize
+    try {
+        $null = Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false -ErrorAction Stop
+    }
+    catch {
+        throw
+    }
 
     Add-Heading "Finalizing build prerequisites"
     if (
@@ -133,8 +146,8 @@ else {
         Import-Module 'BuildHelpers' -RequiredVersion 2.0.1
         #>
         Write-BuildLog "Resolving necessary modules"
-        'psake' | Resolve-Module @update -Verbose
-        Write-BuildLog "Modules successfully resolved"
+        $moduleDependencies.Name | Resolve-Module -UpdateModules -Verbose
+        Write-BuildLog "Modules resolved"
         if ($Task -eq 'TestOnly') {
             $global:ExcludeTag = @('Module')
         }

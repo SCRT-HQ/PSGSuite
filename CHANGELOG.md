@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+    * [2.33.1 - 2019-10-06](#2331---2019-10-06)
     * [2.33.0 - 2019-09-26](#2330---2019-09-26)
     * [2.32.3 - 2019-09-18](#2323---2019-09-18)
     * [2.32.2 - 2019-09-15](#2322---2019-09-15)
@@ -100,6 +101,21 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.33.1 - 2019-10-06
+
+* [Issue #235](https://github.com/scrthq/PSGSuite/issues/235)
+    * Removed: `Name` parameter from `Start-GSDriveFileUpload` as it was unused in the function and doesnt make sense when uploading an array of files.
+* [Issue #238](https://github.com/scrthq/PSGSuite/issues/238)
+    * Added: `Get-GSDataTransfer` to Get/List current Data Transfers
+* [Issue #239](https://github.com/scrthq/PSGSuite/issues/239)
+    * Removed: `Update-GSResource` `Id` parameter as it was non-applicable (duplicate of `ResourceId` and not writable per API docs)
+    * Cleaned up function help and examples to match changes
+* [Issue #240](https://github.com/scrthq/PSGSuite/issues/240)
+    * Fixed: `Get-GSCalendar` now properly resolves single calendar metadata retrieval and passes List requests to `Get-GSCalendarSubscription` since the `Calendars` service does not support List requests.
+* Miscellaneous
+    * Updated Google .NET SDKs to latest versions
+    * Cleaned up build.ps1 script
 
 ## 2.33.0 - 2019-09-26
 

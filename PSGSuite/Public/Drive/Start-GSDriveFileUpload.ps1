@@ -9,11 +9,6 @@ function Start-GSDriveFileUpload {
     .PARAMETER Path
     The path of the file or folder to upload
 
-    .PARAMETER Name
-    The new name of the file once uploaded
-
-    Defaults to the existing name of the file or folder
-
     .PARAMETER Description
     The description of the file or folder in Drive
 
@@ -52,9 +47,6 @@ function Start-GSDriveFileUpload {
         [ValidateScript( {Test-Path $_})]
         [String[]]
         $Path,
-        [parameter(Mandatory = $false)]
-        [String]
-        $Name,
         [parameter(Mandatory = $false)]
         [String]
         $Description,
@@ -111,10 +103,14 @@ function Start-GSDriveFileUpload {
                         Type    = 'DriveFolder'
                         Verbose = $false
                     }
+                    $parentVerbose = $null
                     if ($PSBoundParameters.Keys -contains 'Parents') {
                         $newFolPerms['Parents'] = $PSBoundParameters['Parents']
+                        if ($par = Get-GSDriveFileInfo -FileId $PSBoundParameters['Parents'] -User $User -Verbose:$false -ErrorAction Stop) {
+                            $parentVerbose = " under parent folder '$($par.Name -join ',')'"
+                        }
                     }
-                    Write-Verbose "Creating new Drive folder '$($details.Name)'"
+                    Write-Verbose "Creating new Drive folder '$($details.Name)'$parentVerbose"
                     $id = New-GSDriveFile @newFolPerms | Select-Object -ExpandProperty Id
                     $folIdHash[$details.FullName.TrimEnd('\').TrimEnd('/')] = $id
                     if ($Recurse) {
