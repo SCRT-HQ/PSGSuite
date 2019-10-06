@@ -2,44 +2,41 @@ function Update-GSResource {
     <#
     .SYNOPSIS
     Updates a Calendar Resource
-    
+
     .DESCRIPTION
     Updates a Calendar Resource
-    
+
     .PARAMETER ResourceId
     The unique Id of the Resource Calendar that you would like to update
-    
+
     .PARAMETER BuildingId
     If updating a Resource Building, the unique Id of the building you would like to update
 
     If updating a Resource Calendar, the new Building Id for the resource
-    
+
     .PARAMETER FeatureKey
     The unique key of the Feature you would like to update
-    
+
     .PARAMETER Name
     The new name of the resource
-    
-    .PARAMETER Id
-    The unique ID for the calendar resource.
-    
+
     .PARAMETER Description
     Description of the resource, visible only to admins.
-    
+
     .PARAMETER Capacity
     Capacity of a resource, number of seats in a room.
-    
+
     .PARAMETER FloorName
     Name of the floor a resource is located on (Calendars Resource type)
-    
+
     .PARAMETER FloorNames
     The names of the floors in the building (Buildings Resource type)
-    
+
     .PARAMETER FloorSection
     Name of the section within a floor a resource is located in.
-    
+
     .PARAMETER Category
-    The new category of the calendar resource. Either CONFERENCE_ROOM or OTHER. Legacy data is set to CATEGORY_UNKNOWN. 
+    The new category of the calendar resource. Either CONFERENCE_ROOM or OTHER. Legacy data is set to CATEGORY_UNKNOWN.
 
     Acceptable values are:
     * "CATEGORY_UNKNOWN"
@@ -47,31 +44,31 @@ function Update-GSResource {
     * "OTHER"
 
     Defaults to 'CATEGORY_UNKNOWN' if creating a Calendar Resource
-    
+
     .PARAMETER ResourceType
     The type of the calendar resource, intended for non-room resources.
-    
+
     .PARAMETER UserVisibleDescription
     Description of the resource, visible to users and admins.
-    
+
     .PARAMETER Resource
-    The resource type you would like to create
+    The resource type you would like to update
 
     Available values are:
     * "Calendars": create a Resource Calendar or legacy resource type
     * "Buildings": create a Resource Building
     * "Features": create a Resource Feature
-    
-    .EXAMPLE
-    Update-GSResource -ResourceId Train01 -Id TrainingRoom01
 
-    Updates the resource Id 'Train01' to the new Id 'TrainingRoom01'
+    .EXAMPLE
+    Update-GSResource -ResourceId Train01 -Name 'Corp Training Room'
+
+    Updates the calendar resource with ID 'Train01' to the new name 'Corp Training Room'
     #>
     [CmdletBinding()]
     Param
     (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true,ParameterSetName = 'Calendars')]
-        [Alias('CalendarResourceId')]
+        [Alias('CalendarResourceId','Id')]
         [String]
         $ResourceId,
         [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true,ParameterSetName = 'Buildings')]
@@ -84,9 +81,6 @@ function Update-GSResource {
         [parameter(Mandatory = $false,Position = 0)]
         [String]
         $Name,
-        [parameter(Mandatory = $false,ParameterSetName = 'Calendars')]
-        [String]
-        $Id,
         [parameter(Mandatory = $false,ParameterSetName = 'Calendars')]
         [parameter(Mandatory = $false,ParameterSetName = 'Buildings')]
         [String]
@@ -118,7 +112,7 @@ function Update-GSResource {
         [String]
         $Resource
     )
-    Begin {
+    Process {
         $resType = if ($MyInvocation.InvocationName -eq 'Update-GSCalendarResource') {
             'Calendars'
         }
@@ -136,8 +130,6 @@ function Update-GSResource {
         if ($PSBoundParameters -notcontains 'Category' -and $PSCmdlet.ParameterSetName -eq 'Calendars') {
             $PSBoundParameters['Category'] = 'CATEGORY_UNKNOWN'
         }
-    }
-    Process {
         try {
             Write-Verbose "Creating Resource $resType '$Name'"
             $body = New-Object "$(switch ($resType) {
@@ -155,15 +147,6 @@ function Update-GSResource {
                 switch ($key) {
                     Category {
                         $body.ResourceCategory = $PSBoundParameters[$key]
-                    }
-                    Id {
-                        if ($resType -eq 'Calendars') {
-                            $body.ResourceId = $PSBoundParameters[$key]
-                        }
-                        else {
-                            $body.$key = $PSBoundParameters[$key]
-                        }
-                        
                     }
                     Name {
                         if ($resType -eq 'Calendars') {

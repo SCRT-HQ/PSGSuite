@@ -1,10 +1,10 @@
 function Get-GSCalendar {
     <#
     .SYNOPSIS
-    Gets the calendars for a user
+    Returns metadata for a calendar. If no calendar ID is specified, returns the list of calendar subscriptions via Get-GSCalendarSubscription
 
     .DESCRIPTION
-    Gets the calendars for a user
+    Returns metadata for a calendar. If no calendar ID is specified, returns the list of calendar subscriptions via Get-GSCalendarSubscription
 
     .PARAMETER CalendarId
     The Id of the calendar you would like to get.
@@ -49,19 +49,19 @@ function Get-GSCalendar {
     https://psgsuite.io/Function%20Help/Calendar/Get-GSCalendar/
 
     .LINK
-    https://developers.google.com/calendar/v3/reference/calendarList/get
+    https://developers.google.com/calendar/v3/reference/calendars/get
 
     .LINK
     https://developers.google.com/calendar/v3/reference/calendarList/list
     #>
-    [OutputType('Google.Apis.Calendar.v3.Data.CalendarListEntry')]
+    [OutputType('Google.Apis.Calendar.v3.Data.Calendar')]
     [cmdletbinding(DefaultParameterSetName = "List")]
-    Param
-    (
-        [parameter(Mandatory = $true,Position = 0,ParameterSetName = "Get")]
+    Param (
+        [parameter(Mandatory,Position = 0,ValueFromPipelineByPropertyName,ParameterSetName = "Get")]
+        [Alias('Id')]
         [String[]]
         $CalendarId,
-        [parameter(Mandatory = $false,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
+        [parameter(ValueFromPipelineByPropertyName)]
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [String[]]
@@ -89,21 +89,21 @@ function Get-GSCalendar {
         $SyncToken
     )
     Process {
-        foreach ($U in $User) {
-            if ($U -ceq 'me') {
-                $U = $Script:PSGSuite.AdminEmail
-            }
-            elseif ($U -notlike "*@*.*") {
-                $U = "$($U)@$($Script:PSGSuite.Domain)"
-            }
-            $serviceParams = @{
-                Scope       = 'https://www.googleapis.com/auth/calendar'
-                ServiceType = 'Google.Apis.Calendar.v3.CalendarService'
-                User        = $U
-            }
-            $service = New-GoogleService @serviceParams
-            switch ($PSCmdlet.ParameterSetName) {
-                Get {
+        switch ($PSCmdlet.ParameterSetName) {
+            Get {
+                foreach ($U in $User) {
+                    if ($U -ceq 'me') {
+                        $U = $Script:PSGSuite.AdminEmail
+                    }
+                    elseif ($U -notlike "*@*.*") {
+                        $U = "$($U)@$($Script:PSGSuite.Domain)"
+                    }
+                    $serviceParams = @{
+                        Scope       = 'https://www.googleapis.com/auth/calendar'
+                        ServiceType = 'Google.Apis.Calendar.v3.CalendarService'
+                        User        = $U
+                    }
+                    $service = New-GoogleService @serviceParams
                     foreach ($calId in $CalendarId) {
                         try {
                             $request = $service.Calendars.Get($calId)
@@ -120,52 +120,9 @@ function Get-GSCalendar {
                         }
                     }
                 }
-                List {
-                    try {
-                        $request = $service.Calendars.List()
-                        foreach ($key in $PSBoundParameters.Keys | Where-Object {$_ -ne 'CalendarId'}) {
-                            if ($request.PSObject.Properties.Name -contains $key) {
-                                $request.$key = $PSBoundParameters[$key]
-                            }
-                        }
-                        if ($Limit -gt 0 -and $PageSize -gt $Limit) {
-                            Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
-                            $PageSize = $Limit
-                        }
-                        $request.MaxResults = $PageSize
-                        Write-Verbose "Getting Calendars for user '$U'"
-                        [int]$i = 1
-                        $overLimit = $false
-                        do {
-                            $result = $request.Execute()
-                            $result.Items | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
-                            if ($result.NextPageToken) {
-                                $request.PageToken = $result.NextPageToken
-                            }
-                            [int]$retrieved = ($i + $result.Items.Count) - 1
-                            Write-Verbose "Retrieved $retrieved Calendars..."
-                            if ($Limit -gt 0 -and $retrieved -eq $Limit) {
-                                Write-Verbose "Limit reached: $Limit"
-                                $overLimit = $true
-                            }
-                            elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
-                                $newPS = $Limit - $retrieved
-                                Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
-                                $request.MaxResults = $newPS
-                            }
-                            [int]$i = $i + $result.Items.Count
-                        }
-                        until ($overLimit -or !$result.NextPageToken)
-                    }
-                    catch {
-                        if ($ErrorActionPreference -eq 'Stop') {
-                            $PSCmdlet.ThrowTerminatingError($_)
-                        }
-                        else {
-                            Write-Error $_
-                        }
-                    }
-                }
+            }
+            List {
+                Get-GSCalendarSubscription @PSBoundParameters
             }
         }
     }
