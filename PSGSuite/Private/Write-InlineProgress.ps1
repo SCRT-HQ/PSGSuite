@@ -116,7 +116,14 @@ function Write-InlineProgress {
                 Remove-Variable -Name 'lastProgressString' -Scope 'Script' -ErrorAction SilentlyContinue
                 [console]::WriteLine()
             }
-            [console]::CursorVisible = $true
+            try {
+                [System.Console]::CursorVisible = $true
+            }
+            catch {
+                if ($Error[0].Exception.Message -eq 'Exception setting "CursorVisible": "The handle is invalid."') {
+                    $Global:Error.Remove($Global:Error[0])
+                }
+            }
         }
         else {
             if ($Completed) {
@@ -135,7 +142,14 @@ function Write-InlineProgress {
 
             $cursorPosition = $host.UI.RawUI.CursorPosition
             #$cursorPositionY = $host.UI.RawUI.CursorPosition.Y
-            [console]::CursorVisible=$false
+            try {
+                [System.Console]::CursorVisible = $false
+            }
+            catch {
+                if ($Error[0].Exception.Message -eq 'Exception setting "CursorVisible": "The handle is invalid."') {
+                    $Global:Error.Remove($Global:Error[0])
+                }
+            }
             $windowWidth = [console]::WindowWidth
 
             # if screen is very small, don't display the percent
@@ -231,7 +245,14 @@ function Write-InlineProgress {
             if ($Completed) {
                 # do some clean-up and jump to the next line
                 Remove-Variable -Name 'lastProgressString' -Scope 'Script' -ErrorAction SilentlyContinue
-                [console]::CursorVisible = $true
+                try {
+                    [System.Console]::CursorVisible = $true
+                }
+                catch {
+                    if ($Error[0].Exception.Message -eq 'Exception setting "CursorVisible": "The handle is invalid."') {
+                        $Global:Error.Remove($Global:Error[0])
+                    }
+                }
                 [console]::WriteLine()
             }
         }

@@ -100,13 +100,22 @@ task Compile -depends Clean {
     Write-BuildLog 'Creating psm1...'
     $psm1 = Copy-Item -Path (Join-Path -Path $sut -ChildPath 'PSGSuite.psm1') -Destination (Join-Path -Path $outputModVerDir -ChildPath "$($ENV:BHProjectName).psm1") -PassThru
 
-    Get-ChildItem -Path (Join-Path -Path $sut -ChildPath 'Private') -Recurse -File | ForEach-Object {
-        "$(Get-Content $_.FullName -Raw)`n" | Add-Content -Path $psm1 -Encoding UTF8
+    foreach ($scope in @('Private','Public')) {
+        Write-BuildLog "Copying contents from files in source folder to PSM1: $($scope)"
+        $gciPath = Join-Path $sut $scope
+        if (Test-Path $gciPath) {
+            Get-ChildItem -Path $gciPath -Filter "*.ps1" -Recurse -File | ForEach-Object {
+                Write-BuildLog "Working on: $scope$([System.IO.Path]::DirectorySeparatorChar)$($_.FullName.Replace("$gciPath$([System.IO.Path]::DirectorySeparatorChar)",'') -replace '\.ps1$')"
+                [System.IO.File]::AppendAllText($psm1,("$([System.IO.File]::ReadAllText($_.FullName))`n"))
+                if ($scope -eq 'Public') {
+                    $functionsToExport += $_.BaseName
+                    [System.IO.File]::AppendAllText($psm1,("Export-ModuleMember -Function '$($_.BaseName)'`n"))
+                }
+            }
+        }
     }
-    Get-ChildItem -Path (Join-Path -Path $sut -ChildPath 'Public') -Recurse -File | ForEach-Object {
-        "$(Get-Content $_.FullName -Raw)`nExport-ModuleMember -Function '$($_.BaseName)'`n" | Add-Content -Path $psm1 -Encoding UTF8
-        $functionsToExport += $_.BaseName
-    }
+
+
     Invoke-CommandWithLog {Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue -Force -Verbose:$false}
 
     if ("$env:NoNugetRestore" -ne 'True') {

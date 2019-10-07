@@ -79,6 +79,9 @@ function Start-GSDriveFileUpload {
         $throttleCount = 0
         $totalThrottleCount = 0
         $totalFiles = 0
+        $successParam = @{
+            Successful = $false
+        }
     }
     Process {
         if ($User -ceq 'me') {
@@ -217,8 +220,13 @@ function Start-GSDriveFileUpload {
             }
         }
         finally {
-            if ($Host.Name -and $Host.Name -notlike "Windows*PowerShell*ISE*") {
+            try {
                 [System.Console]::CursorVisible = $true
+            }
+            catch {
+                if ($Error[0].Exception.Message -eq 'Exception setting "CursorVisible": "The handle is invalid."') {
+                    $Global:Error.Remove($Global:Error[0])
+                }
             }
         }
     }
@@ -233,6 +241,7 @@ function Start-GSDriveFileUpload {
                 $failedFiles = $fullStatusList | Where-Object {$_.Status -eq "Failed"}
                 if (!$failedFiles) {
                     Write-Verbose "All files uploaded to Google Drive successfully! Total time: $("{0:c}" -f ((Get-Date) - $start) -replace "\..*")"
+                    $successParam['Successful'] = $true
                 }
                 elseif ($RetryCount) {
                     $totalRetries = 0
@@ -312,6 +321,7 @@ function Start-GSDriveFileUpload {
                     }
                     elseif (!$failedFiles) {
                         Write-Verbose "All files uploaded to Google Drive successfully! Total time: $("{0:c}" -f ((Get-Date) - $start) -replace "\..*")"
+                        $successParam['Successful'] = $true
                     }
                 }
             }
@@ -327,7 +337,7 @@ function Start-GSDriveFileUpload {
                 if ($Host.Name -and $Host.Name -notlike "Windows*PowerShell*ISE*") {
                     [System.Console]::CursorVisible = $true
                 }
-                Stop-GSDriveFileUpload
+                Stop-GSDriveFileUpload @successParam
             }
         }
     }
