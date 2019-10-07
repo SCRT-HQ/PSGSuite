@@ -91,7 +91,7 @@ task Compile -depends Clean {
     $functionsToExport = @()
     $sutLib = [System.IO.Path]::Combine($sut,'lib')
     $aliasesToExport = (. $sut\Aliases\PSGSuite.Aliases.ps1).Keys
-    if ("$env:NoNugetRestore" -ne 'True') {
+    if (-not (Test-Path $outputModVerDir)) {
         $modDir = New-Item -Path $outputModDir -ItemType Directory -ErrorAction SilentlyContinue
         New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
     }
@@ -100,13 +100,22 @@ task Compile -depends Clean {
     Write-BuildLog 'Creating psm1...'
     $psm1 = Copy-Item -Path (Join-Path -Path $sut -ChildPath 'PSGSuite.psm1') -Destination (Join-Path -Path $outputModVerDir -ChildPath "$($ENV:BHProjectName).psm1") -PassThru
 
-    Get-ChildItem -Path (Join-Path -Path $sut -ChildPath 'Private') -Recurse -File | ForEach-Object {
-        "$(Get-Content $_.FullName -Raw)`n" | Add-Content -Path $psm1 -Encoding UTF8
+    foreach ($scope in @('Private','Public')) {
+        Write-BuildLog "Copying contents from files in source folder to PSM1: $($scope)"
+        $gciPath = Join-Path $sut $scope
+        if (Test-Path $gciPath) {
+            Get-ChildItem -Path $gciPath -Filter "*.ps1" -Recurse -File | ForEach-Object {
+                Write-BuildLog "Working on: $scope$([System.IO.Path]::DirectorySeparatorChar)$($_.FullName.Replace("$gciPath$([System.IO.Path]::DirectorySeparatorChar)",'') -replace '\.ps1$')"
+                [System.IO.File]::AppendAllText($psm1,("$([System.IO.File]::ReadAllText($_.FullName))`n"))
+                if ($scope -eq 'Public') {
+                    $functionsToExport += $_.BaseName
+                    [System.IO.File]::AppendAllText($psm1,("Export-ModuleMember -Function '$($_.BaseName)'`n"))
+                }
+            }
+        }
     }
-    Get-ChildItem -Path (Join-Path -Path $sut -ChildPath 'Public') -Recurse -File | ForEach-Object {
-        "$(Get-Content $_.FullName -Raw)`nExport-ModuleMember -Function '$($_.BaseName)'`n" | Add-Content -Path $psm1 -Encoding UTF8
-        $functionsToExport += $_.BaseName
-    }
+
+
     Invoke-CommandWithLog {Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue -Force -Verbose:$false}
 
     if ("$env:NoNugetRestore" -ne 'True') {
@@ -331,10 +340,7 @@ Task Import -Depends Compile {
 } -description 'Imports the newly compiled module'
 
 $pesterScriptBlock = {
-    'Pester' | Foreach-Object {
-        Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Confirm:$false -ErrorAction Stop -Force
-        Import-Module -Name $_ -Verbose:$false -ErrorAction Stop -Force
-    }
+    'Pester' | Resolve-Module -UpdateModules -Verbose
     Push-Location
     Set-Location -PassThru $outputModDir
     if (-not $ENV:BHProjectPath) {
@@ -368,8 +374,8 @@ $pesterScriptBlock = {
     $testResults = Invoke-Pester @pesterParams
     '    Pester invocation complete!'
     if ($testResults.FailedCount -gt 0) {
-        $testResults | Format-List
-        Write-Error -Message 'One or more Pester tests failed. Build cannot continue!'
+        $testResults.TestResult | Where-Object {-not $_.Passed} | Format-List
+        Write-BuildError -Message 'One or more Pester tests failed. Build cannot continue!'
     }
     Pop-Location
     $env:PSModulePath = $origModulePath

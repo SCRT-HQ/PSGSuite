@@ -158,6 +158,14 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.33.2 - 2019-10-06
+
+* [Issue #242](https://github.com/scrthq/PSGSuite/issues/242)
+    * Fixed: Error handling around `[System.Console]::CursorVisible` on `Start-GSDriveFileUpload`, `Wait-GSDriveFileUpload` and `Write-InlineProgress`
+    * Cleaned up verbose handling on `Stop-GSDriveFileUpload` due to file uploads showing as Failed even though they were successful.
+* Miscellaneous
+    * Updated build.ps1 script for better verbose output
+
 #### 2.33.1 - 2019-10-06
 
 * [Issue #235](https://github.com/scrthq/PSGSuite/issues/235)

@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+    * [2.33.2 - 2019-10-06](#2332---2019-10-06)
     * [2.33.1 - 2019-10-06](#2331---2019-10-06)
     * [2.33.0 - 2019-09-26](#2330---2019-09-26)
     * [2.32.3 - 2019-09-18](#2323---2019-09-18)
@@ -101,6 +102,14 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.33.2 - 2019-10-06
+
+* [Issue #242](https://github.com/scrthq/PSGSuite/issues/242)
+    * Fixed: Error handling around `[System.Console]::CursorVisible` on `Start-GSDriveFileUpload`, `Wait-GSDriveFileUpload` and `Write-InlineProgress`
+    * Cleaned up verbose handling on `Stop-GSDriveFileUpload` due to file uploads showing as Failed even though they were successful.
+* Miscellaneous
+    * Updated build.ps1 script for better verbose output
 
 ## 2.33.1 - 2019-10-06
 
