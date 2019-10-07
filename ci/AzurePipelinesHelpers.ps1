@@ -232,12 +232,12 @@ Set-Alias -Name Summary -Value Add-EnvironmentSummary -Force
 function Write-BuildWarning {
     param(
         [parameter(Mandatory,Position = 0,ValueFromRemainingArguments,ValueFromPipeline)]
-        [System.Object]
+        [System.String]
         $Message
     )
     Process {
         Write-Warning $Message
-        if ($IsCI) {
+        if ((Test-Path Env:\TF_BUILD)) {
             Write-Host "##vso[task.logissue type=warning;]$Message"
         }
         else {
@@ -248,14 +248,14 @@ function Write-BuildWarning {
 function Write-BuildError {
     param(
         [parameter(Mandatory,Position = 0,ValueFromRemainingArguments,ValueFromPipeline)]
-        [System.Object]
+        [System.String]
         $Message
     )
     Process {
-        Write-Error $Message
-        if ($IsCI) {
+        if ((Test-Path Env:\TF_BUILD)) {
             Write-Host "##vso[task.logissue type=error;]$Message"
         }
+        throw $Message
     }
 }
 
@@ -388,14 +388,14 @@ function Set-EnvironmentVariable {
     )
     $fullVal = $Value -join " "
     Set-Item -Path Env:\$Name -Value $fullVal -Force
-    if ($IsCI) {
+    if ((Test-Path Env:\TF_BUILD)) {
         "##vso[task.setvariable variable=$Name]$fullVal" | Write-Host
     }
 }
 Set-Alias -Name SetEnv -Value Set-EnvironmentVariable -Force
 
 function Set-BuildVariables {
-    $gitVars = if ($IsCI) {
+    $gitVars = if ((Test-Path Env:\TF_BUILD)) {
         @{
             BHBranchName = $env:BUILD_SOURCEBRANCHNAME
             BHPSModuleManifest = "$env:BuildScriptPath\$env:BuildProjectName\$env:BuildProjectName.psd1"

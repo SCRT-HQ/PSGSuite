@@ -91,7 +91,7 @@ task Compile -depends Clean {
     $functionsToExport = @()
     $sutLib = [System.IO.Path]::Combine($sut,'lib')
     $aliasesToExport = (. $sut\Aliases\PSGSuite.Aliases.ps1).Keys
-    if ("$env:NoNugetRestore" -ne 'True') {
+    if (-not (Test-Path $outputModVerDir)) {
         $modDir = New-Item -Path $outputModDir -ItemType Directory -ErrorAction SilentlyContinue
         New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
     }
@@ -340,10 +340,7 @@ Task Import -Depends Compile {
 } -description 'Imports the newly compiled module'
 
 $pesterScriptBlock = {
-    'Pester' | Foreach-Object {
-        Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Confirm:$false -ErrorAction Stop -Force
-        Import-Module -Name $_ -Verbose:$false -ErrorAction Stop -Force
-    }
+    'Pester' | Resolve-Module
     Push-Location
     Set-Location -PassThru $outputModDir
     if (-not $ENV:BHProjectPath) {
@@ -377,8 +374,8 @@ $pesterScriptBlock = {
     $testResults = Invoke-Pester @pesterParams
     '    Pester invocation complete!'
     if ($testResults.FailedCount -gt 0) {
-        $testResults | Format-List
-        Write-Error -Message 'One or more Pester tests failed. Build cannot continue!'
+        $testResults.TestResult | Where-Object {-not $_.Passed} | Format-List
+        Write-BuildError -Message 'One or more Pester tests failed. Build cannot continue!'
     }
     Pop-Location
     $env:PSModulePath = $origModulePath

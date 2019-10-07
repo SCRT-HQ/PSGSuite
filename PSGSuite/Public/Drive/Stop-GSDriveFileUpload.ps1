@@ -6,6 +6,9 @@ function Stop-GSDriveFileUpload {
     .DESCRIPTION
     Stops all Drive file uploads in progress and disposes of all streams.
 
+    .PARAMETER Successful
+    If $true, hides any failed task verbose output
+
     .EXAMPLE
     Stop-GSDriveFileUpload
 
