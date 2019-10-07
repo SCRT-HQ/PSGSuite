@@ -335,7 +335,14 @@ function Start-GSDriveFileUpload {
             }
             finally {
                 if ($Host.Name -and $Host.Name -notlike "Windows*PowerShell*ISE*") {
-                    [System.Console]::CursorVisible = $true
+                    try {
+                        [System.Console]::CursorVisible = $true
+                    }
+                    catch {
+                        if ($Error[0].Exception.Message -eq 'Exception setting "CursorVisible": "The handle is invalid."') {
+                            $Global:Error.Remove($Global:Error[0])
+                        }
+                    }
                 }
                 Stop-GSDriveFileUpload @successParam
             }

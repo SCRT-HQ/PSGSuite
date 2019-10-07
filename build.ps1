@@ -137,14 +137,6 @@ else {
             "    + NuGet API key is not null        : $($null -ne $env:NugetApiKey)`n" +
             "    + Commit message matches '!deploy' : $($env:BUILD_SOURCEVERSIONMESSAGE -match '!deploy') [$env:BUILD_SOURCEVERSIONMESSAGE]"| Write-Host -ForegroundColor Green
         }
-        <#
-        if (-not (Get-Module BuildHelpers -ListAvailable | Where-Object {$_.Version -eq '2.0.1'})) {
-            Write-Verbose "Installing BuildHelpers v2.0.1" -Verbose
-            Install-Module 'BuildHelpers' -RequiredVersion 2.0.1 -Scope CurrentUser -Repository PSGallery -AllowClobber -SkipPublisherCheck -Force
-        }
-        Write-Verbose "Importing BuildHelpers v2.0.1" -Verbose
-        Import-Module 'BuildHelpers' -RequiredVersion 2.0.1
-        #>
         Write-BuildLog "Resolving necessary modules"
         $moduleDependencies.Name | Resolve-Module -UpdateModules -Verbose
         Write-BuildLog "Modules resolved"

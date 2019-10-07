@@ -340,7 +340,7 @@ Task Import -Depends Compile {
 } -description 'Imports the newly compiled module'
 
 $pesterScriptBlock = {
-    'Pester' | Resolve-Module
+    'Pester' | Resolve-Module -UpdateModules -Verbose
     Push-Location
     Set-Location -PassThru $outputModDir
     if (-not $ENV:BHProjectPath) {
