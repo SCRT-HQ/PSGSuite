@@ -97,6 +97,11 @@ function New-GSCalendarEvent {
 
     This is useful for copying another events ExtendedProperties over when creating a new event.
 
+    .PARAMETER CreateMeetEvent
+    Create a Google Meet conference event while creating the calendar event.
+
+    This is useful for creating a Google Meet URL which you can send to people for video conferences.
+
     .EXAMPLE
     New-GSCalendarEvent "Go to the gym" -StartDate (Get-Date "21:00:00") -EndDate (Get-Date "22:00:00")
 
@@ -178,7 +183,8 @@ function New-GSCalendarEvent {
         $SharedExtendedProperties,
         [parameter(Mandatory = $false)]
         [Google.Apis.Calendar.v3.Data.Event+ExtendedPropertiesData]
-        $ExtendedProperties
+        $ExtendedProperties,
+        [switch]$CreateMeetEvent
     )
     Begin {
         $colorHash = @{
@@ -309,8 +315,23 @@ function New-GSCalendarEvent {
                     }
                 }
                 foreach ($calId in $CalendarID) {
-                    Write-Verbose "Creating Calendar Event '$($Summary)' on calendar '$calId' for user '$U'"
+                    if ($CreateMeetEvent) {
+                        $createRequest = New-Object 'Google.Apis.Calendar.v3.Data.CreateConferenceRequest'
+                        $createRequest.RequestId = [guid]::NewGuid().ToString().Replace('-','')
+                        $confData = New-Object 'Google.Apis.Calendar.v3.Data.ConferenceData'
+                        $confData.CreateRequest = $createRequest
+                        $body.ConferenceData = $confData
+                        Write-Verbose "Creating Calendar Event '$($Summary)' with Meet conferencing on calendar '$calId' for user '$U'"
+                    } else {
+                        Write-Verbose "Creating Calendar Event '$($Summary)' on calendar '$calId' for user '$U'"
+                    }
+
                     $request = $service.Events.Insert($body,$calId)
+
+                    if ($CreateMeetEvent) {
+                        $request.ConferenceDataVersion = 1
+                    }
+
                     $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $calId -PassThru
                 }
             }

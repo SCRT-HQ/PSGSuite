@@ -158,6 +158,11 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.40.0 - 2019-10-31
+
+* [Issue #245](https://github.com/scrthq/PSGSuite/issues/245)
+    * Added: Optional `-CreateMeetEvent` switch parameter to `New-GSCalendarEvent` to create a Google Meet conference and attach it to the calendar event.
+
 #### 2.33.2 - 2019-10-06
 
 * [Issue #242](https://github.com/scrthq/PSGSuite/issues/242)
