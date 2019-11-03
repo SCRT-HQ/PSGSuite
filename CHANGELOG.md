@@ -1,5 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
-    * [2.40.0 - 2019-10-31](#2400---2019-10-31)
+    * [2.34.0 - 2019-11-02](#2340---2019-11-02)
     * [2.33.2 - 2019-10-06](#2332---2019-10-06)
     * [2.33.1 - 2019-10-06](#2331---2019-10-06)
     * [2.33.0 - 2019-09-26](#2330---2019-09-26)
@@ -104,9 +104,9 @@
 
 # PSGSuite - ChangeLog
 
-## 2.40.0 - 2019-10-31
+## 2.34.0 - 2019-11-02
 
-* [Issue #245](https://github.com/scrthq/PSGSuite/issues/245)
+* [Issue #245](https://github.com/scrthq/PSGSuite/issues/245) + [PR #246](https://github.com/scrthq/PSGSuite/pull/246) - _Thank you, [@devblackops](https://github.com/devblackops)!_
     * Added: Optional `-CreateMeetEvent` switch parameter to `New-GSCalendarEvent` to create a Google Meet conference and attach it to the calendar event.
 
 ## 2.33.2 - 2019-10-06

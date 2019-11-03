@@ -48,7 +48,7 @@
     ProcessorArchitecture = 'None'
 
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules       = @(@{ModuleName = "Configuration"; ModuleVersion = "1.2.0"})
+    RequiredModules       = @(@{ModuleName = "Configuration"; ModuleVersion = "1.3.1" })
 
     # Assemblies that must be loaded prior to importing this module
     RequiredAssemblies    = @()
