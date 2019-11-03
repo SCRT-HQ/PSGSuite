@@ -97,6 +97,11 @@ function New-GSCalendarEvent {
 
     This is useful for copying another events ExtendedProperties over when creating a new event.
 
+    .PARAMETER CreateMeetEvent
+    Create a Google Meet conference event while creating the calendar event.
+
+    This is useful for creating a Google Meet URL which you can send to people for video conferences.
+
     .EXAMPLE
     New-GSCalendarEvent "Go to the gym" -StartDate (Get-Date "21:00:00") -EndDate (Get-Date "22:00:00")
 
@@ -109,76 +114,84 @@ function New-GSCalendarEvent {
     [cmdletbinding(DefaultParameterSetName = "AttendeeEmails")]
     Param
     (
-        [parameter(Mandatory = $true,Position = 0)]
+        [parameter(Mandatory,Position = 0)]
         [String]
         $Summary,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [String]
         $Description,
-        [parameter(Mandatory = $false)]
-        [ValidateScript({if ($_ -match '^[0-9a-v]+$'){$true}else{throw "The characters allowed in the ID are only those used in base32hex encoding, i.e. lowercase letters a-v and digits 0-9"}})]
+        [parameter()]
+        [ValidateScript( { if ($_ -match '^[0-9a-v]+$') {
+                    $true
+                }
+                else {
+                    throw "The characters allowed in the ID are only those used in base32hex encoding, i.e. lowercase letters a-v and digits 0-9"
+                } })]
         [ValidateLength(5,1024)]
         [String]
         $Id,
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [parameter(ValueFromPipelineByPropertyName)]
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [parameter(ValueFromPipelineByPropertyName)]
         [String[]]
         $CalendarID = "primary",
-        [parameter(Mandatory = $false,ParameterSetName = "AttendeeEmails")]
+        [parameter(ParameterSetName = "AttendeeEmails")]
         [String[]]
         $AttendeeEmails,
-        [parameter(Mandatory = $false,ParameterSetName = "AttendeeObjects")]
+        [parameter(ParameterSetName = "AttendeeObjects")]
         [Google.Apis.Calendar.v3.Data.EventAttendee[]]
         $Attendees,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [String]
         $Location,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [ValidateSet('default','public','private','confidential')]
         [String]
         $Visibility,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [ValidateSet("Periwinkle","Seafoam","Lavender","Coral","Goldenrod","Beige","Cyan","Grey","Blue","Green","Red")]
         [String]
         $EventColor,
         [parameter()]
         [Google.Apis.Calendar.v3.Data.EventReminder[]]
         $Reminders,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [Alias('DisableReminder')]
         [Switch]
         $DisableDefaultReminder,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [DateTime]
         $LocalStartDateTime = (Get-Date),
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [DateTime]
         $LocalEndDateTime = (Get-Date).AddMinutes(30),
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [String]
         $StartDate,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [String]
         $EndDate,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [String]
         $UTCStartDateTime,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [String]
         $UTCEndDateTime,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [Hashtable]
         $PrivateExtendedProperties,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [Hashtable]
         $SharedExtendedProperties,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [Google.Apis.Calendar.v3.Data.Event+ExtendedPropertiesData]
-        $ExtendedProperties
+        $ExtendedProperties,
+        [parameter()]
+        [switch]
+        $CreateMeetEvent
     )
     Begin {
         $colorHash = @{
@@ -229,7 +242,7 @@ function New-GSCalendarEvent {
                             if (-not $ExtendedProperties) {
                                 $ExtendedProperties = New-Object 'Google.Apis.Calendar.v3.Data.Event+ExtendedPropertiesData' -Property @{
                                     Private__ = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
-                                    Shared = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
+                                    Shared    = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
                                 }
                             }
                             elseif (-not $ExtendedProperties.Private__) {
@@ -243,7 +256,7 @@ function New-GSCalendarEvent {
                             if (-not $ExtendedProperties) {
                                 $ExtendedProperties = New-Object 'Google.Apis.Calendar.v3.Data.Event+ExtendedPropertiesData' -Property @{
                                     Private__ = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
-                                    Shared = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
+                                    Shared    = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
                                 }
                             }
                             elseif (-not $ExtendedProperties.Shared) {
@@ -308,9 +321,21 @@ function New-GSCalendarEvent {
                         DateTime = $LocalEndDateTime
                     }
                 }
+                $verbMsg = $null
+                if ($CreateMeetEvent) {
+                    $createRequest = New-Object 'Google.Apis.Calendar.v3.Data.CreateConferenceRequest'
+                    $createRequest.RequestId = (New-Guid).ToString('n')
+                    $confData = New-Object 'Google.Apis.Calendar.v3.Data.ConferenceData'
+                    $confData.CreateRequest = $createRequest
+                    $body.ConferenceData = $confData
+                    $verbMsg = ' with Meet conferencing'
+                }
                 foreach ($calId in $CalendarID) {
-                    Write-Verbose "Creating Calendar Event '$($Summary)' on calendar '$calId' for user '$U'"
+                    Write-Verbose "Creating Calendar Event '$($Summary)'$($verbMsg) on calendar '$calId' for user '$U'"
                     $request = $service.Events.Insert($body,$calId)
+                    if ($CreateMeetEvent) {
+                        $request.ConferenceDataVersion = 1
+                    }
                     $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $calId -PassThru
                 }
             }
