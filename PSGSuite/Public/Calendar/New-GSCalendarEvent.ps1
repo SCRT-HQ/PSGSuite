@@ -321,18 +321,17 @@ function New-GSCalendarEvent {
                         DateTime = $LocalEndDateTime
                     }
                 }
+                $verbMsg = $null
+                if ($CreateMeetEvent) {
+                    $createRequest = New-Object 'Google.Apis.Calendar.v3.Data.CreateConferenceRequest'
+                    $createRequest.RequestId = (New-Guid).ToString('n')
+                    $confData = New-Object 'Google.Apis.Calendar.v3.Data.ConferenceData'
+                    $confData.CreateRequest = $createRequest
+                    $body.ConferenceData = $confData
+                    $verbMsg = ' with Meet conferencing'
+                }
                 foreach ($calId in $CalendarID) {
-                    if ($CreateMeetEvent) {
-                        $createRequest = New-Object 'Google.Apis.Calendar.v3.Data.CreateConferenceRequest'
-                        $createRequest.RequestId = (New-Guid).ToString('n')
-                        $confData = New-Object 'Google.Apis.Calendar.v3.Data.ConferenceData'
-                        $confData.CreateRequest = $createRequest
-                        $body.ConferenceData = $confData
-                        Write-Verbose "Creating Calendar Event '$($Summary)' with Meet conferencing on calendar '$calId' for user '$U'"
-                    }
-                    else {
-                        Write-Verbose "Creating Calendar Event '$($Summary)' on calendar '$calId' for user '$U'"
-                    }
+                    Write-Verbose "Creating Calendar Event '$($Summary)'$($verbMsg) on calendar '$calId' for user '$U'"
                     $request = $service.Events.Insert($body,$calId)
                     if ($CreateMeetEvent) {
                         $request.ConferenceDataVersion = 1
