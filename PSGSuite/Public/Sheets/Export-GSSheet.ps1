@@ -184,7 +184,7 @@ function Export-GSSheet {
                 Write-Verbose "New spreadsheet ID: $SpreadsheetId"
             }
             else {
-                $sheet = Get-GSSheetInfo -SpreadsheetId $SpreadsheetId -User $User -Verbose:$false
+                $sheet = Get-GSSheetInfo -SpreadsheetId $SpreadsheetId -User $User -IncludeGridData:$false -Verbose:$false
                 $SpreadsheetUrl = $sheet.SpreadsheetUrl
             }
             if ($SheetName) {
