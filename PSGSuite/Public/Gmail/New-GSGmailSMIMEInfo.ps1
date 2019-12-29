@@ -60,12 +60,7 @@ function New-GSGmailSMIMEInfo {
         $User
     )
     Process {
-        if ($User -ceq 'me') {
-            $User = $Script:PSGSuite.AdminEmail
-        }
-        elseif ($User -notlike "*@*.*") {
-            $User = "$($User)@$($Script:PSGSuite.Domain)"
-        }
+        Resolve-Email ([Ref]$User)
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/gmail.settings.basic'
             ServiceType = 'Google.Apis.Gmail.v1.GmailService'
@@ -77,12 +72,13 @@ function New-GSGmailSMIMEInfo {
             foreach ($key in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {
                 switch ($key) {
                     EncryptedKeyPassword {
-                        $body.$key = (New-Object PSCredential "user",$PSBoundParameters[$key]).GetNetworkCredential().Password
+                        $pw = (New-Object PSCredential "user",$PSBoundParameters[$key]).GetNetworkCredential().Password
+                        $body.EncryptedKeyPassword = $pw
                     }
                     Pkcs12 {
-                        ###$p12String = Convert-Base64 -From NormalString -To WebSafeBase64String -String "$([System.IO.File]::ReadAllText((Resolve-Path $PSBoundParameters[$key]).Path))"
-                        ###$body.$key = $p12String
-                        $body.$key = [string]([System.IO.File]::ReadAllBytes((Resolve-Path $PSBoundParameters[$key]).Path))
+                        $pkcs12Content = [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes($Pkcs12))
+                        $urlSafePkcs12Content = $pkcs12Content.Replace('+', '-').Replace('/', '_')
+                        $body.Pkcs12 = $urlSafePkcs12Content
                     }
                     Default {
                         $body.$key = $PSBoundParameters[$key]
@@ -90,7 +86,6 @@ function New-GSGmailSMIMEInfo {
                 }
             }
             Write-Verbose "Adding new S/MIME of SendAsEmail '$SendAsEmail' for user '$User' using Certificate '$Pkcs12'"
-            Write-Verbose "Pkcs12: $($body.Pkcs12)"
             $request = $service.Users.Settings.SendAs.SmimeInfo.Insert($body,$User,$SendAsEmail)
             $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }

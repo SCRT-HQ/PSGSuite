@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+    * [2.35.1 - 2019-12-29](#2351---2019-12-29)
     * [2.35.0 - 2019-12-29](#2350---2019-12-29)
     * [2.34.0 - 2019-11-02](#2340---2019-11-02)
     * [2.33.2 - 2019-10-06](#2332---2019-10-06)
@@ -104,6 +105,11 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.35.1 - 2019-12-29
+
+* [Issue #57](https://github.com/scrthq/PSGSuite/issues/57)
+    * Updated `New-GSGmailSMIMEInfo` to cast `Pkcs12` to URLSafeBase64 *without* removing the trailing padding `=`, based on GAMs process in Python. Confirmed replication of the resultant value being sent from GAM in PowerShell, ready to validate.
 
 ## 2.35.0 - 2019-12-29
 
