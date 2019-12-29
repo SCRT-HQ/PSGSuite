@@ -1071,6 +1071,11 @@
      <changefreq>daily</changefreq>
     </url>
     <url>
+     <loc>https://psgsuite.io/Function Help/Sheets/Add-GSSheetValues/</loc>
+     <lastmod>2019-12-29</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
      <loc>https://psgsuite.io/Function Help/Sheets/Clear-GSSheet/</loc>
      <lastmod>2019-12-29</lastmod>
      <changefreq>daily</changefreq>
@@ -1172,6 +1177,11 @@
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Users/Get-GSUserPhoto/</loc>
+     <lastmod>2019-12-29</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    <url>
+     <loc>https://psgsuite.io/Function Help/Users/Invoke-GSUserOffboarding/</loc>
      <lastmod>2019-12-29</lastmod>
      <changefreq>daily</changefreq>
     </url>
