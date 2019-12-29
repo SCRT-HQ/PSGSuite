@@ -233,7 +233,7 @@ function Set-PSGSuiteConfig {
         if ($_p12Key) {
             $configHash["$ConfigName"]['P12Key'] = $_p12Key
         }
-        $configHash["$ConfigName"]['ConfigPath'] = (Join-Path $(Get-Module PSGSuite | Get-StoragePath -Scope $Script:ConfigScope) "Configuration.psd1")
+        $configHash["$ConfigName"]['ConfigPath'] = (Join-Path $(Get-Module PSGSuite | Get-ConfigurationPath -Scope $Script:ConfigScope) "Configuration.psd1")
         $configHash | Export-Configuration -CompanyName 'SCRT HQ' -Name 'PSGSuite' -Scope $script:ConfigScope
         if (!$NoImport) {
             Get-PSGSuiteConfig -ConfigName $ConfigName -Verbose:$false

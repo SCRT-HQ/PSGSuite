@@ -49,15 +49,11 @@ function Add-GSGroupMember {
     }
     Process {
         try {
-            if ($Identity -notlike "*@*.*") {
-                $Identity = "$($Identity)@$($Script:PSGSuite.Domain)"
-            }
+            Resolve-Email ([ref]$Identity) -IsGroup
             $groupObj = Get-GSGroup -Group $Identity -Verbose:$false
             foreach ($U in $Member) {
                 try {
-                    if ($U -notlike "*@*.*") {
-                        $U = "$($U)@$($Script:PSGSuite.Domain)"
-                    }
+                    Resolve-Email ([ref]$U)
                     Write-Verbose "Adding '$U' as a $Role of group '$Identity'"
                     $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.Member'
                     $body.Email = $U

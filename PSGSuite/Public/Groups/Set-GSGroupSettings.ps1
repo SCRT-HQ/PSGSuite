@@ -290,9 +290,7 @@ function Set-GSGroupSettings {
     Process {
         try {
             foreach ($G in $Identity) {
-                if ($G -notlike "*@*.*") {
-                    $G = "$($G)@$($Script:PSGSuite.Domain)"
-                }
+                Resolve-Email ([ref]$G) -IsGroup
                 Write-Verbose "Updating settings for group '$G'"
                 $body = New-Object 'Google.Apis.Groupssettings.v1.Data.Groups'
                 foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {

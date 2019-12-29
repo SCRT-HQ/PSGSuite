@@ -21,8 +21,7 @@ function Test-GSGroupMembership {
     #>
     [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.MembersHasMember')]
     [cmdletbinding()]
-    Param
-    (
+    Param (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
         [Alias('GroupEmail','Group','Email')]
         [String]
@@ -41,9 +40,10 @@ function Test-GSGroupMembership {
         $service = New-GoogleService @serviceParams
     }
     Process {
+        Resolve-Email ([ref]$Identity) -IsGroup
         foreach ($mem in $Member) {
             try {
-                Resolve-Email ([ref]$Identity),([ref]$mem)
+                Resolve-Email ([ref]$mem)
                 Write-Verbose "Checking if group '$Identity' has member '$mem'"
                 $request = $service.Members.HasMember($Identity,$mem)
                 $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Group' -Value $Identity -Force -PassThru | Add-Member -MemberType NoteProperty -Name 'Member' -Value $mem -Force -PassThru

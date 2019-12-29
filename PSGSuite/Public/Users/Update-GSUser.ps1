@@ -102,6 +102,9 @@ function Update-GSUser {
 
     Requires confirmation.
 
+    .PARAMETER Archived
+    If true, the user will be assigned an Archived User license. If you do not have sufficient Archived User licenses, you will receive a 500 error with reason of "INSUFFICIENT_ARCHIVED_USER_LICENSES".
+
     .PARAMETER CustomSchemas
     Custom user attribute values to add to the user's account. This parameter only accepts a hashtable where the keys are Schema Names and the value for each key is another hashtable, i.e.:
 
@@ -207,11 +210,14 @@ function Update-GSUser {
         [Switch]
         $IsAdmin,
         [parameter(Mandatory = $false)]
+        [Switch]
+        $Archived,
+        [parameter(Mandatory = $false)]
         [ValidateScript( {
                 $hash = $_
                 foreach ($schemaName in $hash.Keys) {
                     if ($hash[$schemaName].GetType().Name -ne 'Hashtable') {
-                        throw "The CustomSchemas parameter only accepts a hashtable where the value of the top-level keys must also be a hashtable. The key '$schemaName' has a value of type '$($hash[$schemaName].GetType().Name)'"
+                        throw "The CustomSchemas parameter only accepts a hashtable where the value of the top-level values must also be a hashtable. The key '$schemaName' has a value of type '$($hash[$schemaName].GetType().Name)'"
                         $valid = $false
                     }
                     else {

@@ -49,21 +49,16 @@ function Add-GSPrincipalGroupMembership {
     }
     Process {
         try {
-            if ($Identity -notlike "*@*.*") {
-                $Identity = "$($Identity)@$($Script:PSGSuite.Domain)"
-            }
+            Resolve-Email ([ref]$Identity)
             try {
                 foreach ($U in $MemberOf) {
                     $groupObj = Get-GSGroup -Group $U -Verbose:$false
-                    if ($U -notlike "*@*.*") {
-                        $U = "$($U)@$($Script:PSGSuite.Domain)"
-                    }
-                    Write-Verbose "Adding '$Identity' as a $Role of group '$U'"
+                    Write-Verbose "Adding '$Identity' as a $Role of group '$($groupObj.Email)'"
                     $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.Member'
                     $body.Email = $Identity
                     $body.Role = $Role
                     $request = $service.Members.Insert($body,$groupObj.Id)
-                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Group' -Value $U -PassThru
+                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Group' -Value $groupObj.Email -PassThru
                 }
             }
             catch {

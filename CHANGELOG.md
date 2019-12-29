@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+    * [2.35.0 - 2019-12-29](#2350---2019-12-29)
     * [2.34.0 - 2019-11-02](#2340---2019-11-02)
     * [2.33.2 - 2019-10-06](#2332---2019-10-06)
     * [2.33.1 - 2019-10-06](#2331---2019-10-06)
@@ -103,6 +104,21 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.35.0 - 2019-12-29
+
+* [Issue #216](https://github.com/scrthq/PSGSuite/issues/216) - _Thank you, [@WJurecki](https://github.com/WJurecki)!_
+    * Added `Add-GSSheetValues` to use the native `Append()` method instead of `BatchUpdate()` to prevent needing to calculate the last row like you do with `Export-GSSheet`. Since the input for this method has additional options and the output differs from what `Export-GSSheet` outputs, this has been moved to a unique function to prevent introducing breaking changes to `Export-GSSheet`.
+* [Issue #221](https://github.com/scrthq/PSGSuite/issues/221)
+    * Added: `Invoke-GSUserOffboarding` function to wrap common offboarding tasks for ease of access management automation.
+* [Issue #248](https://github.com/scrthq/PSGSuite/issues/248)
+    * Fixed `Get-GSSheetInfo` so it no longer defaults `-IncludeGridData` to `$true` if not specified in `$PSBoundParameters`.
+* [Issue #249](https://github.com/scrthq/PSGSuite/issues/249)
+    * Updated private function `Resolve-Email` with new `IsGroup` switch, then cleaned up all `*-GSGroup*` functions to use it so that Group ID's are respected based on RegEx match.
+* [Issue #252](https://github.com/scrthq/PSGSuite/issues/252)
+    * Added: `Archived` parameter to `Update-GSUser` to enable setting of Archived User licenses.
+* Miscellaneous
+    * Swapped instances of `Get-StoragePath` for `Get-ConfigurationPath` in `Import-SpecificConfiguration` and `Set-PSGSuiteConfig` to avoid alias related issues with PowerShell 4.0
 
 ## 2.34.0 - 2019-11-02
 
