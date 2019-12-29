@@ -7,7 +7,7 @@ function Get-GSGroupMember {
     Gets the group member list of a target group. Designed for parity with Get-ADGroupMember
 
     .PARAMETER Identity
-    The email or GroupID of the target group
+    The email or unique ID of the target group
 
     .PARAMETER Member
     If specified, returns only the information for this member of the target group
@@ -63,13 +63,9 @@ function Get-GSGroupMember {
             Get {
                 foreach ($I in $Identity) {
                     try {
-                        if ($I -notlike "*@*.*") {
-                            $I = "$($I)@$($Script:PSGSuite.Domain)"
-                        }
+                        Resolve-Email ([ref]$I) -IsGroup
                         foreach ($G in $Member) {
-                            if ($G -notlike "*@*.*") {
-                                $G = "$($G)@$($Script:PSGSuite.Domain)"
-                            }
+                            Resolve-Email ([ref]$G)
                             Write-Verbose "Getting member '$G' of group '$I'"
                             $request = $service.Members.Get($I,$G)
                             $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Group' -Value $I -PassThru
@@ -88,9 +84,7 @@ function Get-GSGroupMember {
             List {
                 foreach ($Id in $Identity) {
                     try {
-                        if ($Id -notlike "*@*.*") {
-                            $Id = "$($Id)@$($Script:PSGSuite.Domain)"
-                        }
+                        Resolve-Email ([ref]$Id) -IsGroup
                         $request = $service.Members.List($Id)
                         if ($Limit -gt 0 -and $PageSize -gt $Limit) {
                             Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)

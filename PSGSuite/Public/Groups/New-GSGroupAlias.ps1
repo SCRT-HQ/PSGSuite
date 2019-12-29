@@ -6,26 +6,24 @@ function New-GSGroupAlias {
     .DESCRIPTION
     Creates a new alias for a G Suite group
 
-    .PARAMETER Group
+    .PARAMETER Identity
     The group to create the alias for
 
     .PARAMETER Alias
     The alias or list of aliases to create for the group
 
     .EXAMPLE
-    New-GSGroupAlias -Group humanresources@domain.com -Alias 'hr@domain.com','hrhelp@domain.com'
+    New-GSGroupAlias -Identity humanresources@domain.com -Alias 'hr@domain.com','hrhelp@domain.com'
 
     Creates 2 new aliases for group Human Resources as 'hr@domain.com' and 'hrhelp@domain.com'
     #>
     [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Alias')]
     [cmdletbinding()]
-    Param
-    (
+    Param (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
-        [Alias("Email")]
-        [ValidateNotNullOrEmpty()]
+        [Alias('GroupEmail','Group','Email')]
         [String]
-        $Group,
+        $Identity,
         [parameter(Mandatory = $true,Position = 1)]
         [String[]]
         $Alias
@@ -38,18 +36,14 @@ function New-GSGroupAlias {
         $service = New-GoogleService @serviceParams
     }
     Process {
+        Resolve-Email ([ref]$Identity) -IsGroup
         foreach ($A in $Alias) {
             try {
-                if ($Group -notlike "*@*.*") {
-                    $Group = "$($Group)@$($Script:PSGSuite.Domain)"
-                }
-                if ($A -notlike "*@*.*") {
-                    $A = "$($A)@$($Script:PSGSuite.Domain)"
-                }
-                Write-Verbose "Creating alias '$A' for Group '$Group'"
+                Resolve-Email ([ref]$A)
+                Write-Verbose "Creating alias '$A' for Group '$Identity'"
                 $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.Alias'
                 $body.AliasValue = $A
-                $request = $service.Groups.Aliases.Insert($body,$Group)
+                $request = $service.Groups.Aliases.Insert($body,$Identity)
                 $request.Execute()
             }
             catch {

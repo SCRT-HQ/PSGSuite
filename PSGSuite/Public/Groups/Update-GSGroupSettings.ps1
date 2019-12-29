@@ -307,8 +307,10 @@ function Update-GSGroupSettings {
     Process {
         try {
             foreach ($G in $Identity) {
-                if ($G -notlike "*@*.*") {
-                    $G = "$($G)@$($Script:PSGSuite.Domain)"
+                Resolve-Email ([ref]$G) -IsGroup
+                if ($G -notmatch '^[\w.%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$') {
+                    Write-Verbose "Getting Group Email for ID '$G' as the Group Settings API only accepts Group Email addresses."
+                    $G = Get-GSGroup -Identity $G -Verbose:$false | Select-Object -ExpandProperty Email
                 }
                 Write-Verbose "Updating settings for group '$G'"
                 $body = New-Object 'Google.Apis.Groupssettings.v1.Data.Groups'

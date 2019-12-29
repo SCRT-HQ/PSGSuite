@@ -6,8 +6,8 @@
     .DESCRIPTION
     Gets the specified group's information. Returns the full group list if -Group is excluded. Designed for parity with Get-ADGroup (although Google's API is unable to 'Filter' for groups)
 
-    .PARAMETER Group
-    The list of groups you would like to retrieve info for. If excluded, returns the group list instead
+    .PARAMETER Identity
+    The group or list of groups you would like to retrieve info for. If excluded, returns the group list instead
 
     .PARAMETER Filter
     Query string search. Complete documentation is at https://developers.google.com/admin-sdk/directory/v1/guides/search-groups
@@ -54,10 +54,10 @@
     Param
     (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true,ParameterSetName = "Get")]
-        [Alias("Email")]
+        [Alias("Email","Group","GroupEmail")]
         [ValidateNotNullOrEmpty()]
         [String[]]
-        $Group,
+        $Identity,
         [parameter(Mandatory = $false,ParameterSetName = "ListFilter")]
         [Alias('Query')]
         [string]
@@ -94,9 +94,9 @@
     Process {
         switch -Regex ($PSCmdlet.ParameterSetName) {
             Get {
-                foreach ($G in $Group) {
+                foreach ($G in $Identity) {
                     try {
-                        Resolve-Email ([ref]$G)
+                        Resolve-Email ([ref]$G) -IsGroup
                         Write-Verbose "Getting group '$G'"
                         $request = $service.Groups.Get($G)
                         if ($Fields) {

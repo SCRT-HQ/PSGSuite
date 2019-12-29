@@ -6,8 +6,8 @@ function Update-GSGroupMember {
     .DESCRIPTION
     Updates a group member's role and/or delivery preference
 
-    .PARAMETER GroupEmail
-    The email or GroupID of the group to update members of
+    .PARAMETER Identity
+    The email or unique ID of the group to update members of
 
     .PARAMETER Member
     The member email or list of member emails that you would like to update
@@ -37,23 +37,22 @@ function Update-GSGroupMember {
     #>
     [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Member')]
     [cmdletbinding()]
-    Param
-    (
-        [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
-        [Alias('Group')]
+    Param (
+        [parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Alias('GroupEmail', 'Group')]
         [String]
-        $GroupEmail,
-        [parameter(Mandatory = $true,Position = 1,ValueFromPipelineByPropertyName = $true)]
-        [Alias("PrimaryEmail","UserKey","Mail","User","UserEmail","Email","Members")]
+        $Identity,
+        [parameter(Mandatory = $true, Position = 1, ValueFromPipelineByPropertyName = $true)]
+        [Alias("PrimaryEmail", "UserKey", "Mail", "User", "UserEmail", "Email", "Members")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $Member,
         [parameter(Mandatory = $false)]
-        [ValidateSet("MEMBER","MANAGER","OWNER")]
+        [ValidateSet("MEMBER", "MANAGER", "OWNER")]
         [String]
         $Role,
         [parameter(Mandatory = $false)]
-        [ValidateSet("ALL_MAIL","DAILY","DIGEST","DISABLED","NONE")]
+        [ValidateSet("ALL_MAIL", "DAILY", "DIGEST", "DISABLED", "NONE")]
         [String]
         $DeliverySettings
     )
@@ -65,27 +64,20 @@ function Update-GSGroupMember {
         $service = New-GoogleService @serviceParams
     }
     Process {
-        try {
-            if ($GroupEmail -notlike "*@*.*") {
-                $GroupEmail = "$($GroupEmail)@$($Script:PSGSuite.Domain)"
-            }
-            #$groupObj = Get-GSGroup -Group $Identity -Verbose:$false
+        Resolve-Email ([ref]$Identity) -IsGroup
+        foreach ($U in $Member) {
             try {
-                foreach ($U in $Member) {
-                    if ($U -notlike "*@*.*") {
-                        $U = "$($U)@$($Script:PSGSuite.Domain)"
-                    }
-                    Write-Verbose "Updating member '$U' of group '$GroupEmail'"
-                    $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.Member'
-                    if ($PSBoundParameters.Keys -contains 'DeliverySettings') {
-                        $body.DeliverySettings = $PSBoundParameters['DeliverySettings']
-                    }
-                    if ($PSBoundParameters.Keys -contains 'Role') {
-                        $body.Role = $PSBoundParameters['Role']
-                    }
-                    $request = $service.Members.Patch($body,$GroupEmail,$U)
-                    $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Group' -Value $GroupEmail -PassThru
+                Resolve-Email ([ref]$U)
+                Write-Verbose "Updating member '$U' of group '$Identity'"
+                $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.Member'
+                if ($PSBoundParameters.Keys -contains 'DeliverySettings') {
+                    $body.DeliverySettings = $PSBoundParameters['DeliverySettings']
                 }
+                if ($PSBoundParameters.Keys -contains 'Role') {
+                    $body.Role = $PSBoundParameters['Role']
+                }
+                $request = $service.Members.Patch($body, $Identity, $U)
+                $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Group' -Value $Identity -PassThru
             }
             catch {
                 if ($ErrorActionPreference -eq 'Stop') {
@@ -94,14 +86,6 @@ function Update-GSGroupMember {
                 else {
                     Write-Error $_
                 }
-            }
-        }
-        catch {
-            if ($ErrorActionPreference -eq 'Stop') {
-                $PSCmdlet.ThrowTerminatingError($_)
-            }
-            else {
-                Write-Error $_
             }
         }
     }

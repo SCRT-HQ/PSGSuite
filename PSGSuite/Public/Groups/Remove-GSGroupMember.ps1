@@ -38,14 +38,10 @@ function Remove-GSGroupMember {
         $service = New-GoogleService @serviceParams
     }
     Process {
-        if ($Identity -notlike "*@*.*") {
-            $Identity = "$($Identity)@$($Script:PSGSuite.Domain)"
-        }
+        Resolve-Email ([ref]$Identity) -IsGroup
         foreach ($G in $Member) {
             try {
-                if ($G -notlike "*@*.*") {
-                    $G = "$($G)@$($Script:PSGSuite.Domain)"
-                }
+                Resolve-Email ([ref]$G)
                 if ($PSCmdlet.ShouldProcess("Removing member '$G' from group '$Identity'")) {
                     Write-Verbose "Removing member '$G' from group '$Identity'"
                     $request = $service.Members.Delete($Identity,$G)
