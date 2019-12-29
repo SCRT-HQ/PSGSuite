@@ -38,6 +38,7 @@ function Invoke-GSUserOffboarding {
     .NOTES
     Pull requests welcome for functionality enhancements!
     #>
+    [OutputType('System.String')]
     [CmdletBinding(SupportsShouldProcess,ConfirmImpact = "High")]
     Param(
         [Parameter(Mandatory,Position = 0,ValueFromPipeline,ValueFromPipelineByPropertyName)]
