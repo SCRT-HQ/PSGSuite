@@ -65,6 +65,8 @@ function Get-PSGSuiteConfig {
             @{l = 'ConfigName';e = {$choice}},
             @{l = 'P12KeyPath';e = {Decrypt $_.P12KeyPath}},
             'P12Key',
+            @{l = 'P12KeyPassword';e = {Decrypt $_.P12KeyPassword}},
+            'P12KeyObject',
             @{l = 'ClientSecretsPath';e = {Decrypt $_.ClientSecretsPath}},
             @{l = 'ClientSecrets';e = {Decrypt $_.ClientSecrets}},
             @{l = 'AppEmail';e = {Decrypt $_.AppEmail}},

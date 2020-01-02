@@ -55,19 +55,31 @@ function New-GoogleService {
             $script:_PSGSuiteSessions[$sessionKey] | Select-Object -ExpandProperty Service
         }
         else {
-            if ($script:PSGSuite.P12KeyPath -or $script:PSGSuite.P12Key) {
+            if ($script:PSGSuite.P12KeyPath -or $script:PSGSuite.P12Key -or $script:PSGSuite.P12KeyObject) {
                 try {
                     Write-Verbose "Building ServiceAccountCredential from P12Key as user '$User'"
-                    if (-not $script:PSGSuite.P12Key) {
-                        $script:PSGSuite.P12Key = ([System.IO.File]::ReadAllBytes($script:PSGSuite.P12KeyPath))
-                        Set-PSGSuiteConfig -ConfigName $script:PSGSuite.ConfigName -P12Key $script:PSGSuite.P12Key -Verbose:$false
+                    if ($script:PSGSuite.P12KeyPath -or $script:PSGSuite.P12Key) {
+                        if (-not $script:PSGSuite.P12Key) {
+                            $script:PSGSuite.P12Key = ([System.IO.File]::ReadAllBytes($script:PSGSuite.P12KeyPath))
+                            Set-PSGSuiteConfig -ConfigName $script:PSGSuite.ConfigName -P12Key $script:PSGSuite.P12Key -Verbose:$false
+                        }
+                        if ($script:PSGSuite.P12KeyPassword) {
+                            $P12KeyPassword = $script:PSGSuite.P12KeyPassword
+                        }
+                        else {
+                            $P12KeyPassword = "notasecret"
+                        }
+                        $certificate = New-Object 'System.Security.Cryptography.X509Certificates.X509Certificate2' -ArgumentList ([System.Byte[]]$script:PSGSuite.P12Key),$P12KeyPassword,([System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
                     }
-                    $certificate = New-Object 'System.Security.Cryptography.X509Certificates.X509Certificate2' -ArgumentList ([System.Byte[]]$script:PSGSuite.P12Key),"notasecret",([System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)
+                    else {
+                        $certificate = $script:PSGSuite.P12KeyObject
+                    }
                     $credential = New-Object 'Google.Apis.Auth.OAuth2.ServiceAccountCredential' (New-Object 'Google.Apis.Auth.OAuth2.ServiceAccountCredential+Initializer' $script:PSGSuite.AppEmail -Property @{
                             User   = $User
                             Scopes = [string[]]$Scope
                         }
                     ).FromCertificate($certificate)
+
                 }
                 catch {
                     $PSCmdlet.ThrowTerminatingError($_)
