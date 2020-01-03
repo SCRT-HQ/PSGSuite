@@ -57,6 +57,9 @@ function Get-PSGSuiteConfig {
                     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
                         $String))
             }
+            elseif ($String -is [ScriptBlock]) {
+                $String.InvokeReturnAsIs()
+            }
             else {
                 $String
             }
