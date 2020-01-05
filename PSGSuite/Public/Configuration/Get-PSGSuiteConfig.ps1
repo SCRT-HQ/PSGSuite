@@ -70,14 +70,30 @@ function Get-PSGSuiteConfig {
             'P12Key',
             @{l = 'P12KeyPassword';e = {Decrypt $_.P12KeyPassword}},
             @{l = 'P12KeyObject';e = {Decrypt $_.P12KeyObject}},
+            @{l = 'JSONServiceAccountKeyPath';e = {Decrypt $_.JSONServiceAccountKeyPath}},
+            @{l = 'JSONServiceAccountKey';e = {Decrypt $_.JSONServiceAccountKey}},
             @{l = 'ClientSecretsPath';e = {Decrypt $_.ClientSecretsPath}},
             @{l = 'ClientSecrets';e = {Decrypt $_.ClientSecrets}},
-            @{l = 'AppEmail';e = {Decrypt $_.AppEmail}},
+            @{l = 'AppEmail';e = {
+                if ($_.JSONServiceAccountKey) {
+                    ($_.JSONServiceAccountKey | ConvertFrom-Json).client_email
+                }
+                else {
+                    Decrypt $_.AppEmail
+                }
+            }},
             @{l = 'AdminEmail';e = {Decrypt $_.AdminEmail}},
             @{l = 'CustomerID';e = {Decrypt $_.CustomerID}},
             @{l = 'Domain';e = {Decrypt $_.Domain}},
             @{l = 'Preference';e = {Decrypt $_.Preference}},
-            @{l = 'ServiceAccountClientID';e = {Decrypt $_.ServiceAccountClientID}},
+            @{l = 'ServiceAccountClientID';e = {
+                if ($_.JSONServiceAccountKey) {
+                    ($_.JSONServiceAccountKey | ConvertFrom-Json).client_id
+                }
+                else {
+                    Decrypt $_.ServiceAccountClientID
+                }
+            }},
             @{l = 'Chat';e = {
                 $dict = @{
                     Webhooks = @{}
