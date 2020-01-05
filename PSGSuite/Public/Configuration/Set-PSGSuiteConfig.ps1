@@ -25,10 +25,10 @@ function Set-PSGSuiteConfig {
     The string contents of the Serivce Account JSON file downloaded from the Google Developer's Console.
 
     .PARAMETER ClientSecretsPath
-    The path to the Client Secrets JSON file downloaded from the Google Developer's Console. Using the ClientSecrets JSON will prompt the user to complete OAuth2 authentication in their browser on the first run and store the retrieved Refresh and Access tokens in the user's home directory. The config will auto-update with this value after running any command, if ClientSecretsPath is filled and this value is not already present. If P12KeyPath is also specified, ClientSecretsPath will be ignored.
+    The path to the Client Secrets JSON file downloaded from the Google Developer's Console. Using the ClientSecrets JSON will prompt the user to complete OAuth2 authentication in their browser on the first run and store the retrieved Refresh and Access tokens in the user's home directory. The config will auto-update with this value after running any command, if ClientSecretsPath is filled and this value is not already present. If JSONServiceAccountKeyPath or P12KeyPath is also specified, ClientSecretsPath will be ignored.
 
     .PARAMETER ClientSecrets
-    The string contents of the Client Secrets JSON file downloaded from the Google Developer's Console. Using the ClientSecrets JSON will prompt the user to complete OAuth2 authentication in their browser on the first run and store the retrieved Refresh and Access tokens in the user's home directory. If P12KeyPath is also specified, ClientSecrets will be ignored.
+    The string contents of the Client Secrets JSON file downloaded from the Google Developer's Console. Using the ClientSecrets JSON will prompt the user to complete OAuth2 authentication in their browser on the first run and store the retrieved Refresh and Access tokens in the user's home directory. If JSONServiceAccountKeyPath or P12KeyPath is also specified, ClientSecrets will be ignored.
 
     .PARAMETER AppEmail
     The application email from the Google Developer's Console. This typically looks like the following:

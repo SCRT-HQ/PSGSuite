@@ -55,7 +55,26 @@ function New-GoogleService {
             $script:_PSGSuiteSessions[$sessionKey] | Select-Object -ExpandProperty Service
         }
         else {
-            if ($script:PSGSuite.P12KeyPath -or $script:PSGSuite.P12Key -or $script:PSGSuite.P12KeyObject) {
+            if ($script:PSGSuite.JSONServiceAccountKey -or $script:PSGSuite.JSONServiceAccountKeyPath) {
+                Write-Verbose "Building ServiceAccountCredential from JSONServiceAccountKey as user '$User'"
+                try {
+                    if (-not $script:PSGSuite.JSONServiceAccountKey) {
+                        $script:PSGSuite.JSONServiceAccountKey = ([System.IO.File]::ReadAllBytes($script:PSGSuite.JSONServiceAccountKeyPath))
+                        Set-PSGSuiteConfig -ConfigName $script:PSGSuite.ConfigName -JSONServiceAccountKey $script:PSGSuite.JSONServiceAccountKey -Verbose:$false
+                    }
+                    $stream = New-Object System.IO.MemoryStream $([System.Text.Encoding]::ASCII.GetBytes($script:PSGSuite.JSONServiceAccountKey)), $null
+                    $credential = ([Google.Apis.Auth.OAuth2.GoogleCredential]::FromStream($stream)).CreateWithUser($User).CreateScoped($Scope).UnderlyingCredential
+                }
+                catch {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                }
+                finally {
+                    if ($stream) {
+                        $stream.Close()
+                    }
+                }
+            }
+            elseif ($script:PSGSuite.P12KeyPath -or $script:PSGSuite.P12Key -or $script:PSGSuite.P12KeyObject) {
                 try {
                     Write-Verbose "Building ServiceAccountCredential from P12Key as user '$User'"
                     if ($script:PSGSuite.P12KeyPath -or $script:PSGSuite.P12Key) {
@@ -128,7 +147,7 @@ function New-GoogleService {
                 }
             }
             else {
-                $PSCmdlet.ThrowTerminatingError((ThrowTerm "The current config '$($script:PSGSuite.ConfigName)' does not contain a P12KeyPath or a ClientSecretsPath! PSGSuite is unable to build a credential object for the service without a path to a credential file! Please update the configuration to include a path at least one of the two credential types."))
+                $PSCmdlet.ThrowTerminatingError((ThrowTerm "The current config '$($script:PSGSuite.ConfigName)' does not contain a JSONServiceAccountKeyPath, P12KeyPath, or ClientSecretsPath! PSGSuite is unable to build a credential object for the service without a path to a credential file! Please update the configuration to include a path at least one of the three credential types."))
             }
             $svc = New-Object "$ServiceType" (New-Object 'Google.Apis.Services.BaseClientService+Initializer' -Property @{
                     HttpClientInitializer = $credential
