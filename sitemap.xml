@@ -2,1232 +2,1232 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>https://psgsuite.io/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Initial Setup/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Multiple Configurations/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Examples/Managing Users/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Authentication/Clear-PSGSuiteServiceCache/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Authentication/Get-GSToken/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Authentication/Get-PSGSuiteServiceCache/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Authentication/New-GoogleService/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Calendar/Add-GSCalendarSubscription/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Calendar/Get-GSCalendar/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Calendar/Get-GSCalendarAcl/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Calendar/Get-GSCalendarEvent/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Calendar/Get-GSCalendarSubscription/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Calendar/New-GSCalendarAcl/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Calendar/New-GSCalendarEvent/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Calendar/Remove-GSCalendarAcl/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Calendar/Remove-GSCalendarEvent/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Calendar/Remove-GSCalendarSubscription/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Calendar/Update-GSCalendarEvent/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Calendar/Update-GSCalendarSubscription/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Chat/Get-GSChatMember/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Chat/Get-GSChatMessage/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Chat/Get-GSChatSpace/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Chat/Remove-GSChatMessage/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Chat/Send-GSChatMessage/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Chat/Update-GSChatMessage/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Add-GSCourseParticipant/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Confirm-GSCourseInvitation/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Get-GSClassroomUserProfile/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Get-GSCourse/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Get-GSCourseAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Get-GSCourseInvitation/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Get-GSCourseParticipant/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Get-GSStudentGuardian/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Get-GSStudentGuardianInvitation/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/New-GSCourse/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/New-GSCourseAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/New-GSCourseInvitation/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/New-GSStudentGuardianInvitation/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Remove-GSCourse/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Remove-GSCourseAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Remove-GSCourseInvitation/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Remove-GSCourseParticipant/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Remove-GSStudentGuardian/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Revoke-GSStudentGuardianInvitation/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Classroom/Update-GSCourse/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Configuration/Export-PSGSuiteConfig/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Configuration/Get-GSChatConfig/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Configuration/Get-PSGSuiteConfig/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Configuration/Import-PSGSuiteConfig/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Configuration/Set-PSGSuiteConfig/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Configuration/Show-PSGSuiteConfig/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Configuration/Switch-PSGSuiteConfig/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Contacts/Get-GSContactList/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Contacts/Remove-GSContact/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Customers/Get-GSCustomer/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Customers/Update-GSCustomer/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Data Transfer/Get-GSDataTransfer/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Data Transfer/Get-GSDataTransferApplication/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Data Transfer/Start-GSDataTransfer/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Delegation/Add-GSGmailDelegate/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Delegation/Get-GSGmailDelegate/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Delegation/Remove-GSGmailDelegate/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Domains/Get-GSDomain/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Domains/Get-GSDomainAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Domains/New-GSDomain/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Domains/New-GSDomainAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Domains/Remove-GSDomain/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Domains/Remove-GSDomainAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Add-GSDocContent/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Add-GSDrivePermission/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Copy-GSDriveFile/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Export-GSDriveFile/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Get-GSDocContent/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Get-GSDrive/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Get-GSDriveFile/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Get-GSDriveFileList/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Get-GSDriveFileUploadStatus/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Get-GSDriveFolderSize/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Get-GSDrivePermission/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Get-GSDriveProfile/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Get-GSDriveRevision/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Hide-GSDrive/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/New-GSDrive/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/New-GSDriveFile/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Remove-GSDrive/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Remove-GSDriveFile/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Remove-GSDrivePermission/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Remove-GSDriveRevision/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Set-GSDocContent/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Show-GSDrive/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Start-GSDriveFileUpload/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Stop-GSDriveFileUpload/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Update-GSDrive/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Update-GSDriveFile/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Update-GSDriveRevision/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Drive/Watch-GSDriveUpload/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Add-GSGmailFilter/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Add-GSGmailForwardingAddress/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Get-GSGmailAutoForwardingSettings/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Get-GSGmailFilter/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Get-GSGmailForwardingAddress/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Get-GSGmailImapSettings/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Get-GSGmailLabel/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Get-GSGmailLanguageSettings/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Get-GSGmailMessage/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Get-GSGmailMessageList/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Get-GSGmailPopSettings/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Get-GSGmailProfile/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Get-GSGmailSMIMEInfo/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Get-GSGmailSendAsAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Get-GSGmailVacationSettings/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/New-GSGmailLabel/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/New-GSGmailSMIMEInfo/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/New-GSGmailSendAsAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Remove-GSGmailFilter/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Remove-GSGmailLabel/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Remove-GSGmailMessage/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Remove-GSGmailSMIMEInfo/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Remove-GSGmailSendAsAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Restore-GSGmailMessage/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Send-GSGmailSendAsConfirmation/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Send-GmailMessage/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Update-GSGmailAutoForwardingSettings/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Update-GSGmailImapSettings/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Update-GSGmailLabel/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Update-GSGmailLanguageSettings/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Update-GSGmailMessageLabels/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Update-GSGmailPopSettings/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Update-GSGmailSendAsAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Update-GSGmailSignature/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Gmail/Update-GSGmailVacationSettings/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/Add-GSGroupMember/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/Add-GSPrincipalGroupMembership/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/Get-GSGroup/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/Get-GSGroupAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/Get-GSGroupMember/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/Get-GSGroupSettings/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/New-GSGroup/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/New-GSGroupAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/Remove-GSGroup/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/Remove-GSGroupAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/Remove-GSGroupMember/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/Remove-GSPrincipalGroupMembership/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/Set-GSGroupSettings/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/Test-GSGroupMembership/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/Update-GSGroupMember/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Groups/Update-GSGroupSettings/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSCalendarEventReminder/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSCalendarNotification/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSChatButton/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSChatCard/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSChatCardAction/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSChatCardSection/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSChatImage/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSChatKeyValue/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSChatOnClick/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSChatTextParagraph/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSCustomerPostalAddress/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSEventAttendee/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSGmailSmtpMsa/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSUserAddress/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSUserEmail/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSUserExternalId/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSUserIm/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSUserLocation/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSUserOrganization/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSUserPhone/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSUserRelation/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Add-GSUserSchemaField/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Block-CoreCLREncryptionWarning/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Compare-ModuleVersion/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Helpers/Unblock-CoreCLREncryptionWarning/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Licensing/Get-GSUserLicense/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Licensing/Remove-GSUserLicense/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Licensing/Set-GSUserLicense/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Licensing/Update-GSUserLicense/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Org Units/Get-GSOrganizationalUnit/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Org Units/New-GSOrganizationalUnit/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Org Units/Remove-GSOrganizationalUnit/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Org Units/Update-GSOrganizationalUnit/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Reports/Get-GSActivityReport/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Reports/Get-GSUsageReport/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Resources/Get-GSResource/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Resources/New-GSResource/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Resources/Remove-GSResource/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Resources/Update-GSResource/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Role Assignments/Get-GSAdminRoleAssignment/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Role Assignments/New-GSAdminRoleAssignment/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Role Assignments/Remove-GSAdminRoleAssignment/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/RoleAssignments/Get-GSAdminRoleAssignment/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/RoleAssignments/New-GSAdminRoleAssignment/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/RoleAssignments/Remove-GSAdminRoleAssignment/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Roles/Get-GSAdminRole/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Roles/New-GSAdminRole/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Roles/Remove-GSAdminRole/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Roles/Update-GSAdminRole/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Schemas/Get-GSUserSchema/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Schemas/New-GSUserSchema/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Schemas/Remove-GSUserSchema/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Schemas/Set-GSUserSchema/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Schemas/Update-GSUserSchema/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Security/Get-GSChromeOSDevice/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Security/Get-GSMobileDevice/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Security/Get-GSUserASP/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Security/Get-GSUserToken/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Security/Get-GSUserVerificationCodes/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Security/New-GSUserVerificationCodes/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Security/Remove-GSMobileDevice/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Security/Remove-GSUserASP/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Security/Remove-GSUserToken/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Security/Revoke-GSUserVerificationCodes/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Security/Update-GSChromeOSDevice/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Security/Update-GSMobileDevice/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Sheets/Add-GSSheetValues/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Sheets/Clear-GSSheet/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Sheets/Copy-GSSheet/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Sheets/Export-GSSheet/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Sheets/Get-GSSheetInfo/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Sheets/Import-GSSheet/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Sheets/New-GSSheet/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Tasks/Clear-GSTasklist/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Tasks/Get-GSTask/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Tasks/Get-GSTasklist/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Tasks/Move-GSTask/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Tasks/New-GSTask/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Tasks/New-GSTasklist/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Tasks/Remove-GSTask/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Tasks/Remove-GSTasklist/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Tasks/Update-GSTask/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Tasks/Update-GSTasklist/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/URL Shortener/Get-GSShortUrl/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/URL Shortener/New-GSShortUrl/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Users/Get-GSUser/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Users/Get-GSUserAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Users/Get-GSUserPhoto/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Users/Invoke-GSUserOffboarding/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Users/New-GSUser/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Users/New-GSUserAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Users/Remove-GSUser/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Users/Remove-GSUserAlias/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Users/Remove-GSUserPhoto/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Users/Restore-GSUser/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Users/Sync-GSUserCache/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Users/Update-GSUser/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://psgsuite.io/Function Help/Users/Update-GSUserPhoto/</loc>
-     <lastmod>2019-12-29</lastmod>
+     <lastmod>2020-01-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
