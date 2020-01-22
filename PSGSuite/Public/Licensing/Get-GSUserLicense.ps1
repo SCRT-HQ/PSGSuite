@@ -37,13 +37,13 @@ function Get-GSUserLicense {
         $User,
         [parameter(Mandatory = $false)]
         [Alias("SkuId")]
-        [ValidateSet("Cloud-Identity","Cloud-Identity-Premium","Drive-Enterprise","G-Suite-Enterprise","Google-Apps-Unlimited","Google-Apps-For-Business","Google-Apps-For-Postini","Google-Apps-Lite","Google-Drive-storage-20GB","Google-Drive-storage-50GB","Google-Drive-storage-200GB","Google-Drive-storage-400GB","Google-Drive-storage-1TB","Google-Drive-storage-2TB","Google-Drive-storage-4TB","Google-Drive-storage-8TB","Google-Drive-storage-16TB","Google-Vault","Google-Vault-Former-Employee","1010020020","1010060001","1010010001","1010050001")]
+        [ValidateSet("Cloud-Identity","Cloud-Identity-Premium","Drive-Enterprise","G-Suite-Enterprise","Google-Apps-Unlimited","Google-Apps-For-Business","Google-Apps-For-Postini","Google-Apps-Lite","Google-Drive-storage-20GB","Google-Drive-storage-50GB","Google-Drive-storage-200GB","Google-Drive-storage-400GB","Google-Drive-storage-1TB","Google-Drive-storage-2TB","Google-Drive-storage-4TB","Google-Drive-storage-8TB","Google-Drive-storage-16TB","Google-Vault","Google-Vault-Former-Employee","1010020020","1010060001","1010010001","1010050001", "1010310002", "1010310003")]
         [string]
         $License,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
-        [ValidateSet("Google-Apps","Google-Drive-storage","Google-Vault","Cloud-Identity","Cloud-Identity-Premium")]
+        [ValidateSet("Google-Apps","Google-Drive-storage","Google-Vault","Cloud-Identity","Cloud-Identity-Premium","G-Suite-Enterprise-for-Education")]
         [string[]]
-        $ProductID = @("Google-Apps","Google-Drive-storage","Google-Vault","Cloud-Identity","Cloud-Identity-Premium"),
+        $ProductID = @("Google-Apps","Google-Drive-storage","Google-Vault","Cloud-Identity","Cloud-Identity-Premium","G-Suite-Enterprise-for-Education"),
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [Alias("MaxResults")]
         [ValidateRange(1,1000)]
@@ -83,6 +83,8 @@ function Get-GSUserLicense {
             'Google-Drive-storage-4TB'     = 'Google-Drive-storage'
             'Google-Drive-storage-8TB'     = 'Google-Drive-storage'
             'Google-Drive-storage-16TB'    = 'Google-Drive-storage'
+            '1010310002'                   = '101031'       # G-Suite-Enterprise-for-Education
+            '1010310003'                   = '101031'       # G-Suite-Enterprise-for-Education (Student)
         }
     }
     Process {
@@ -117,7 +119,7 @@ function Get-GSUserLicense {
                             $request.Execute()
                         }
                         else {
-                            foreach ($license in (@("G-Suite-Enterprise","Google-Apps-Unlimited","Google-Apps-For-Business","Google-Vault","Google-Vault-Former-Employee","Cloud-Identity","Cloud-Identity-Premium","Drive-Enterprise","Google-Apps-For-Postini","Google-Apps-Lite","Google-Drive-storage-20GB","Google-Drive-storage-50GB","Google-Drive-storage-200GB","Google-Drive-storage-400GB","Google-Drive-storage-1TB","Google-Drive-storage-2TB","Google-Drive-storage-4TB","Google-Drive-storage-8TB","Google-Drive-storage-16TB") | Sort-Object)) {
+                            foreach ($license in (@("G-Suite-Enterprise","Google-Apps-Unlimited","Google-Apps-For-Business","Google-Vault","Google-Vault-Former-Employee","Cloud-Identity","Cloud-Identity-Premium","Drive-Enterprise","Google-Apps-For-Postini","Google-Apps-Lite","Google-Drive-storage-20GB","Google-Drive-storage-50GB","Google-Drive-storage-200GB","Google-Drive-storage-400GB","Google-Drive-storage-1TB","Google-Drive-storage-2TB","Google-Drive-storage-4TB","Google-Drive-storage-8TB","Google-Drive-storage-16TB","G-Suite-Enterprise-for-Education","G-Suite-Enterprise-for-Education-Student") | Sort-Object)) {
                                 Write-Verbose "Getting License SKU '$License' for User '$U'"
                                 switch ($License) {
                                     "G-Suite-Enterprise" {
@@ -168,6 +170,9 @@ function Get-GSUserLicense {
                                     }
                                     "Cloud-Identity-Premium" {
                                         $prodId = "101005"
+                                    }
+                                    "G-Suite-Enterprise-for-Education" {
+                                        $prodId = "101031"
                                     }
                                 }
                                 if ($License) {
