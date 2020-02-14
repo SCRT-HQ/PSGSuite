@@ -23,14 +23,14 @@ function Remove-GSDriveFile {
     Deletes the file with ID 1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976 from the user user@domain.com's Drive
     
     .EXAMPLE
-    Get-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -User user@domain.com | Remove-GSDriveFile
+    Get-GSDriveFileList -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -User user@domain.com | Remove-GSDriveFile
 
     Get the file with ID 1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976 from the user user@domain.com's Drive and pipeline
     #>
     [cmdletbinding(SupportsShouldProcess = $true, ConfirmImpact = "High")]
     Param
     (
-        [parameter(Position = 0, ParameterSetName = "FileIdSet")]
+        [parameter(Mandatory = $true, Position = 0, ParameterSetName = "FileIdSet")]
         [String[]]
         $FileId,
         [parameter(ValueFromPipeline = $true, ParameterSetName = "FileObjectSet")]
@@ -97,7 +97,6 @@ function Remove-GSDriveFile {
         
         foreach ($obj in $InputObject) {
             deleteUserFile -User $User -FileId $obj.Id
-        }
-        
+        }       
     }
 }
