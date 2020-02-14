@@ -36,8 +36,7 @@ function Remove-GSDriveFile {
         [parameter(ValueFromPipeline = $true, ParameterSetName = "FileObjectSet")]
         [Google.Apis.Drive.v3.Data.File[]]
         $InputObject,        
-        [parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = "FileIdSet")]
-        [parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = "FileObjectSet")]
+        [parameter(ValueFromPipelineByPropertyName = $true)]
         [Alias('Owner', 'PrimaryEmail', 'UserKey', 'Mail')]
         [string]
         $User = $Script:PSGSuite.AdminEmail        
