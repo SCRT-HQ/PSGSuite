@@ -23,7 +23,7 @@ function Remove-GSDriveFile {
     Deletes the file with ID 1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976 from the user user@domain.com's Drive
     
     .EXAMPLE
-    Get-GSDriveFileList -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -User user@domain.com | Remove-GSDriveFile
+    Get-GSDriveFileList -ParentFolderId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -User user@domain.com | Remove-GSDriveFile
 
     Get the file with ID 1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976 from the user user@domain.com's Drive and pipeline
     #>
