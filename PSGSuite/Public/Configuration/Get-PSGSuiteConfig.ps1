@@ -57,6 +57,9 @@ function Get-PSGSuiteConfig {
                     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
                         $String))
             }
+            elseif ($String -is [ScriptBlock]) {
+                $String.InvokeReturnAsIs()
+            }
             else {
                 $String
             }
@@ -65,14 +68,30 @@ function Get-PSGSuiteConfig {
             @{l = 'ConfigName';e = {$choice}},
             @{l = 'P12KeyPath';e = {Decrypt $_.P12KeyPath}},
             'P12Key',
+            @{l = 'P12KeyPassword';e = {Decrypt $_.P12KeyPassword}},
+            @{l = 'P12KeyObject';e = {Decrypt $_.P12KeyObject}},
             @{l = 'ClientSecretsPath';e = {Decrypt $_.ClientSecretsPath}},
             @{l = 'ClientSecrets';e = {Decrypt $_.ClientSecrets}},
-            @{l = 'AppEmail';e = {Decrypt $_.AppEmail}},
+            @{l = 'AppEmail';e = {
+                if ($_.AppEmail) {
+                    Decrypt $_.ServiceAccountClientID
+                }
+                elseif ($_.ClientSecrets) {
+                    (Decrypt $_.ClientSecrets | ConvertFrom-Json).client_email
+                }
+            }},
             @{l = 'AdminEmail';e = {Decrypt $_.AdminEmail}},
             @{l = 'CustomerID';e = {Decrypt $_.CustomerID}},
             @{l = 'Domain';e = {Decrypt $_.Domain}},
             @{l = 'Preference';e = {Decrypt $_.Preference}},
-            @{l = 'ServiceAccountClientID';e = {Decrypt $_.ServiceAccountClientID}},
+            @{l = 'ServiceAccountClientID';e = {
+                if ($_.ServiceAccountClientID) {
+                    Decrypt $_.ServiceAccountClientID
+                }
+                elseif ($_.ClientSecrets) {
+                    (Decrypt $_.ClientSecrets | ConvertFrom-Json).client_id
+                }
+            }},
             @{l = 'Chat';e = {
                 $dict = @{
                     Webhooks = @{}

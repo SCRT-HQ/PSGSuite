@@ -15,11 +15,14 @@ function Set-PSGSuiteConfig {
     .PARAMETER P12Key
     The P12Key in byte array format. If the actual P12Key is present on the config, the P12KeyPath is not needed. The config will auto-update with this value after running any command, if P12KeyPath is filled and this value is not already present.
 
+    .PARAMETER P12KeyPassword
+    The password for the P12 Key file. If not specified the default of 'notasecret' will be used and this config value will not be set. This is only needed in the case where the P12 file has been manually rexported with a custom password
+
     .PARAMETER ClientSecretsPath
-    The path to the Client Secrets JSON file downloaded from the Google Developer's Console. Using the ClientSecrets JSON will prompt the user to complete OAuth2 authentication in their browser on the first run and store the retrieved Refresh and Access tokens in the user's home directory. The config will auto-update with this value after running any command, if ClientSecretsPath is filled and this value is not already present. If P12KeyPath is also specified, ClientSecretsPath will be ignored.
+    The path to the Client Secrets JSON file downloaded from the Google Developer's Console. Using the ClientSecrets JSON will prompt the user to complete OAuth2 authentication in their browser on the first run and store the retrieved Refresh and Access tokens in the user's home directory. The config will auto-update with this value after running any command, if ClientSecretsPath is filled and this value is not already present. If JSONServiceAccountKeyPath or P12KeyPath is also specified, ClientSecretsPath will be ignored.
 
     .PARAMETER ClientSecrets
-    The string contents of the Client Secrets JSON file downloaded from the Google Developer's Console. Using the ClientSecrets JSON will prompt the user to complete OAuth2 authentication in their browser on the first run and store the retrieved Refresh and Access tokens in the user's home directory. If P12KeyPath is also specified, ClientSecrets will be ignored.
+    The string contents of the Client Secrets JSON file downloaded from the Google Developer's Console. Using the ClientSecrets JSON will prompt the user to complete OAuth2 authentication in their browser on the first run and store the retrieved Refresh and Access tokens in the user's home directory. If JSONServiceAccountKeyPath or P12KeyPath is also specified, ClientSecrets will be ignored.
 
     .PARAMETER AppEmail
     The application email from the Google Developer's Console. This typically looks like the following:
@@ -95,6 +98,9 @@ function Set-PSGSuiteConfig {
         [Byte[]]
         $P12Key,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [SecureString]
+        $P12KeyPassword,
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [string]
         $ClientSecretsPath,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
@@ -145,6 +151,9 @@ function Set-PSGSuiteConfig {
             elseif ($string -is [System.String] -and $String -notlike '') {
                 ConvertTo-SecureString -String $string -AsPlainText -Force
             }
+            elseif ($string -is [System.Management.Automation.ScriptBlock]) {
+                $string
+            }
         }
     }
     Process {
@@ -164,7 +173,7 @@ function Set-PSGSuiteConfig {
             }
         }
         Write-Verbose "Setting config name '$ConfigName'"
-        $configParams = @('P12Key','P12KeyPath','ClientSecretsPath','ClientSecrets','AppEmail','AdminEmail','CustomerID','Domain','Preference','ServiceAccountClientID','Webhook','Space')
+        $configParams = @('P12Key','P12KeyPath','P12KeyPassword','ClientSecretsPath','ClientSecrets','AppEmail','AdminEmail','CustomerID','Domain','Preference','ServiceAccountClientID','Webhook','Space')
         if ($SetAsDefaultConfig -or !$configHash["DefaultConfig"]) {
             $configHash["DefaultConfig"] = $ConfigName
         }
@@ -189,6 +198,9 @@ function Set-PSGSuiteConfig {
                         $configHash["$ConfigName"][$key] = (Encrypt $PSBoundParameters[$key])
                         $configHash["$ConfigName"]['P12Key'] = ([System.IO.File]::ReadAllBytes($PSBoundParameters[$key]))
                     }
+                }
+                P12KeyPassword {
+                    $configHash["$ConfigName"][$key] = $PSBoundParameters[$key]
                 }
                 ClientSecretsPath {
                     if (-not [System.String]::IsNullOrWhiteSpace($PSBoundParameters[$key].Trim())) {
