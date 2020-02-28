@@ -1,4 +1,4 @@
-if ($items = Get-ChildItem (Resolve-Path $PSScriptRoot\..\BuildOutput\PSGSuite\*\lib\net45 -ErrorAction SilentlyContinue).Path -Filter '*.dll') {
+if ($items = Get-ChildItem (Resolve-Path $PSScriptRoot\..\BuildOutput\PSGSuite\*\lib\net45 -ErrorAction SilentlyContinue).Path -Filter '*.dll' | Where-Object {$_.BaseName -ne 'Google.Apis.Auth.PlatformServices'}) {
     $items |
     #Where-Object |
     Sort-Object BaseName |
@@ -17,21 +17,11 @@ if ($items = Get-ChildItem (Resolve-Path $PSScriptRoot\..\BuildOutput\PSGSuite\*
         @{
             N='Target'
             E={
-                if ($_.BaseName -match 'Google') {
-                    'Latest'
+                if ($_.BaseName -match 'BouncyCastle.Crypto') {
+                    '1.8.1'
                 }
                 else {
-                    switch ($_.BaseName) {
-                        'BouncyCastle.Crypto' {
-                            '1.8.1'
-                        }
-                        'MimeKit' {
-                            '1.10.1.0'
-                        }
-                        'Newtonsoft.Json' {
-                            '10.0.3'
-                        }
-                    }
+                    'Latest'
                 }
             }
         },
