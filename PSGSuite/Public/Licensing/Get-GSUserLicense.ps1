@@ -12,7 +12,7 @@ function Get-GSUserLicense {
     .PARAMETER License
     The license SKU to retrieve information for. If excluded, searches all license SKUs
 
-    .PARAMETER ProductID
+    .PARAMETER ProductId
     The product Id to list licenses for
 
     .PARAMETER PageSize
@@ -30,61 +30,65 @@ function Get-GSUserLicense {
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (
-        [parameter(Mandatory = $false,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true,ParameterSetName = "Get")]
-        [Alias("PrimaryEmail","UserKey","Mail")]
+        [parameter(Mandatory = $false, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = "Get")]
+        [Alias("PrimaryEmail", "UserKey", "Mail")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $User,
-        [parameter(Mandatory = $false)]
-        [Alias("SkuId")]
-        [ValidateSet("Cloud-Identity","Cloud-Identity-Premium","Drive-Enterprise","G-Suite-Enterprise","Google-Apps-Unlimited","Google-Apps-For-Business","Google-Apps-For-Postini","Google-Apps-Lite","Google-Drive-storage-20GB","Google-Drive-storage-50GB","Google-Drive-storage-200GB","Google-Drive-storage-400GB","Google-Drive-storage-1TB","Google-Drive-storage-2TB","Google-Drive-storage-4TB","Google-Drive-storage-8TB","Google-Drive-storage-16TB","Google-Vault","Google-Vault-Former-Employee","1010020020","1010060001","1010010001","1010050001", "1010310002", "1010310003")]
-        [string]
-        $License,
-        [parameter(Mandatory = $false,ParameterSetName = "List")]
-        [ValidateSet("Google-Apps","Google-Drive-storage","Google-Vault","Cloud-Identity","Cloud-Identity-Premium","G-Suite-Enterprise-for-Education")]
-        [string[]]
-        $ProductID = @("Google-Apps","Google-Drive-storage","Google-Vault","Cloud-Identity","Cloud-Identity-Premium","G-Suite-Enterprise-for-Education"),
-        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        [parameter(Mandatory = $false, ParameterSetName = "List")]
         [Alias("MaxResults")]
-        [ValidateRange(1,1000)]
+        [ValidateRange(1, 1000)]
         [Int]
         $PageSize = 1000,
-        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        [parameter(Mandatory = $false, ParameterSetName = "List")]
         [Alias('First')]
         [Int]
         $Limit = 0
     )
+    DynamicParam {
+        $paramDictionary = New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
+
+        # License
+        $_licenses = (Get-LicenseSkuHash).Keys | Sort-Object -Unique
+        $attributeCollection = New-Object System.Collections.ObjectModel.Collection[System.Attribute]
+        $attribute = New-Object System.Management.Automation.ParameterAttribute
+        $attribute.Mandatory = $false
+        $attributeCollection.Add($attribute)
+        $attribute = New-Object System.Management.Automation.AliasAttribute('SkuId')
+        $attributeCollection.Add($attribute)
+        $attribute = New-Object System.Management.Automation.ValidateSetAttribute($_licenses)
+        $attributeCollection.Add($attribute)
+        $Name = 'License'
+        $dynParam = New-Object System.Management.Automation.RuntimeDefinedParameter($Name, [string], $attributeCollection)
+        $paramDictionary.Add($Name, $dynParam)
+
+        # ProductId
+        $_products = (Get-LicenseProductHash).Keys | Sort-Object -Unique
+        $attributeCollection = New-Object System.Collections.ObjectModel.Collection[System.Attribute]
+        $attribute = New-Object System.Management.Automation.ParameterAttribute
+        $attribute.Mandatory = $false
+        $attribute.ParameterSetName = 'List'
+        $attributeCollection.Add($attribute)
+        $attribute = New-Object System.Management.Automation.ValidateSetAttribute($_products)
+        $attributeCollection.Add($attribute)
+        $Name = 'ProductId'
+        $dynParam = New-Object System.Management.Automation.RuntimeDefinedParameter($Name, [string[]], $attributeCollection)
+        $paramDictionary.Add($Name, $dynParam)
+        # return the collection of dynamic parameters
+        return $paramDictionary
+    }
     Begin {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/apps.licensing'
             ServiceType = 'Google.Apis.Licensing.v1.LicensingService'
         }
         $service = New-GoogleService @serviceParams
-        $productHash = @{
-            'Cloud-Identity'               = '101001'       # Cloud-Identity
-            '1010010001'                   = '101001'       # Cloud-Identity
-            'Cloud-Identity-Premium'       = '101005'       # Cloud-Identity-Premium
-            '1010050001'                   = '101005'       # Cloud-Identity-Premium
-            '1010020020'                   = 'Google-Apps'  # G-Suite-Enterprise
-            '1010060001'                   = 'Google-Apps'  # Drive-Enterprise
-            'G-Suite-Enterprise'           = 'Google-Apps'
-            'Google-Apps-Unlimited'        = 'Google-Apps'
-            'Google-Apps-For-Business'     = 'Google-Apps'
-            'Google-Apps-For-Postini'      = 'Google-Apps'
-            'Google-Apps-Lite'             = 'Google-Apps'
-            'Google-Vault'                 = 'Google-Vault'
-            'Google-Vault-Former-Employee' = 'Google-Vault'
-            'Google-Drive-storage-20GB'    = 'Google-Drive-storage'
-            'Google-Drive-storage-50GB'    = 'Google-Drive-storage'
-            'Google-Drive-storage-200GB'   = 'Google-Drive-storage'
-            'Google-Drive-storage-400GB'   = 'Google-Drive-storage'
-            'Google-Drive-storage-1TB'     = 'Google-Drive-storage'
-            'Google-Drive-storage-2TB'     = 'Google-Drive-storage'
-            'Google-Drive-storage-4TB'     = 'Google-Drive-storage'
-            'Google-Drive-storage-8TB'     = 'Google-Drive-storage'
-            'Google-Drive-storage-16TB'    = 'Google-Drive-storage'
-            '1010310002'                   = '101031'       # G-Suite-Enterprise-for-Education
-            '1010310003'                   = '101031'       # G-Suite-Enterprise-for-Education (Student)
+        $License = $PSBoundParameters['License']
+        $ProductId = if ($PSBoundParameters.ContainsKey('ProductId')) {
+            $PSBoundParameters['ProductId']
+        }
+        else {
+            (Get-LicenseProductFromDisplayName).Keys | Where-Object {$_ -ne 'Cloud-Identity'} | Sort-Object
         }
     }
     Process {
@@ -93,50 +97,19 @@ function Get-GSUserLicense {
                 Get {
                     foreach ($U in $User) {
                         $response = $null
-                        if ($U -ceq 'me') {
-                            $U = $Script:PSGSuite.AdminEmail
-                        }
-                        elseif ($U -notlike "*@*.*") {
-                            $U = "$($U)@$($Script:PSGSuite.Domain)"
-                        }
+                        Resolve-Email ([ref]$U)
                         if ($PSBoundParameters.ContainsKey('License')) {
                             Write-Verbose "Getting License SKU '$License' for User '$U'"
-                            switch ($License) {
-                                "G-Suite-Enterprise" {
-                                    $License = "1010020020"
-                                }
-                                "Drive-Enterprise" {
-                                    $License = "1010060001"
-                                }
-                                "Cloud-Identity" {
-                                    $License = "1010010001"
-                                }
-                                "Cloud-Identity-Premium" {
-                                    $License = "1010050001"
-                                }
-                            }
-                            $request = $service.LicenseAssignments.Get($productHash[$License],$License,$U)
+                            $License = Get-LicenseSkuFromDisplayName $License
+                            $request = $service.LicenseAssignments.Get((Get-LicenseSkuToProductHash $License), $License, $U)
                             $request.Execute()
                         }
                         else {
-                            foreach ($license in (@("G-Suite-Enterprise","Google-Apps-Unlimited","Google-Apps-For-Business","Google-Vault","Google-Vault-Former-Employee","Cloud-Identity","Cloud-Identity-Premium","Drive-Enterprise","Google-Apps-For-Postini","Google-Apps-Lite","Google-Drive-storage-20GB","Google-Drive-storage-50GB","Google-Drive-storage-200GB","Google-Drive-storage-400GB","Google-Drive-storage-1TB","Google-Drive-storage-2TB","Google-Drive-storage-4TB","Google-Drive-storage-8TB","Google-Drive-storage-16TB","G-Suite-Enterprise-for-Education","G-Suite-Enterprise-for-Education-Student") | Sort-Object)) {
+                            foreach ($License in (Get-LicenseSkuFromDisplayName).Keys | Sort-Object) {
                                 Write-Verbose "Getting License SKU '$License' for User '$U'"
-                                switch ($License) {
-                                    "G-Suite-Enterprise" {
-                                        $License = "1010020020"
-                                    }
-                                    "Drive-Enterprise" {
-                                        $License = "1010060001"
-                                    }
-                                    "Cloud-Identity" {
-                                        $License = "1010010001"
-                                    }
-                                    "Cloud-Identity-Premium" {
-                                        $License = "1010050001"
-                                    }
-                                }
+                                $License = Get-LicenseSkuFromDisplayName $License
                                 try {
-                                    $request = $service.LicenseAssignments.Get($productHash[$License],$License,$U)
+                                    $request = $service.LicenseAssignments.Get((Get-LicenseSkuToProductHash $License), $License, $U)
                                     $response = $request.Execute()
                                 }
                                 catch {
@@ -156,47 +129,26 @@ function Get-GSUserLicense {
                 }
                 List {
                     if ($License) {
-                        $ProductID = $productHash[$License]
+                        $ProductID = Get-LicenseSkuToProductHash $License
                     }
                     $total = 0
-                    try {
-                        $overLimit = $false
-                        foreach ($prodId in $ProductID) {
+                    $overLimit = $false
+                    foreach ($prodId in $ProductID) {
+                        $origProdId = $prodId
+                        try {
                             if (-not $overLimit) {
-                                Write-Verbose "Retrieving licenses for product '$prodId'"
-                                switch ($prodId) {
-                                    "Cloud-Identity" {
-                                        $prodId = "101001"
-                                    }
-                                    "Cloud-Identity-Premium" {
-                                        $prodId = "101005"
-                                    }
-                                    "G-Suite-Enterprise-for-Education" {
-                                        $prodId = "101031"
-                                    }
-                                }
+                                Write-Verbose "Retrieving licenses for product '$origProdId'"
+                                $prodId = Get-LicenseProductHash $prodId
                                 if ($License) {
-                                    switch ($License) {
-                                        "G-Suite-Enterprise" {
-                                            $License = "1010020020"
-                                        }
-                                        "Drive-Enterprise" {
-                                            $License = "1010060001"
-                                        }
-                                        "Cloud-Identity" {
-                                            $License = "1010010001"
-                                        }
-                                        "Cloud-Identity-Premium" {
-                                            $License = "1010050001"
-                                        }
-                                    }
-                                    $request = $service.LicenseAssignments.ListForProductAndSku($prodId,$License,$Script:PSGSuite.Domain)
+                                    $origLicense = $License
+                                    $License = Get-LicenseSkuFromDisplayName $License
+                                    $request = $service.LicenseAssignments.ListForProductAndSku($prodId, $License, $Script:PSGSuite.Domain)
                                 }
                                 else {
-                                    $request = $service.LicenseAssignments.ListForProduct($prodId,$Script:PSGSuite.Domain)
+                                    $request = $service.LicenseAssignments.ListForProduct($prodId, $Script:PSGSuite.Domain)
                                 }
                                 if ($Limit -gt 0 -and $PageSize -gt $Limit) {
-                                    Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                                    Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize, $Limit)
                                     $PageSize = $Limit
                                 }
                                 $request.MaxResults = $PageSize
@@ -209,10 +161,10 @@ function Get-GSUserLicense {
                                     $request.PageToken = $result.NextPageToken
                                     [int]$retrieved = ($i + $result.Items.Count) - 1
                                     if ($License) {
-                                        Write-Verbose "Retrieved $retrieved licenses for product '$prodId' & sku '$License'..."
+                                        Write-Verbose "Retrieved $retrieved licenses for product '$origProdId' & sku '$origLicense'..."
                                     }
                                     else {
-                                        Write-Verbose "Retrieved $retrieved licenses for product '$prodId'..."
+                                        Write-Verbose "Retrieved $retrieved licenses for product '$origProdId'..."
                                     }
                                     if ($Limit -gt 0 -and $total -eq $Limit) {
                                         Write-Verbose "Limit reached: $Limit"
@@ -220,7 +172,7 @@ function Get-GSUserLicense {
                                     }
                                     elseif ($Limit -gt 0 -and ($total + $PageSize) -gt $Limit) {
                                         $newPS = $Limit - $total
-                                        Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                                        Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize, $newPS)
                                         $request.MaxResults = $newPS
                                     }
                                     [int]$i = $i + $result.Items.Count
@@ -228,16 +180,21 @@ function Get-GSUserLicense {
                                 until ($overLimit -or !$result.NextPageToken)
                             }
                         }
-                        Write-Verbose "Retrieved $total total licenses"
-                    }
-                    catch {
-                        if ($ErrorActionPreference -eq 'Stop') {
-                            $PSCmdlet.ThrowTerminatingError($_)
+                        catch {
+                            if ($_.Exception.Message -notmatch 'Invalid productId') {
+                                if ($ErrorActionPreference -eq 'Stop') {
+                                    $PSCmdlet.ThrowTerminatingError($_)
+                                }
+                                else {
+                                    Write-Error $_
+                                }
+                            }
+                            else {
+                                Write-Verbose "Retrieved $retrieved licenses for product '$origProdId'..."
+                            }
                         }
-                        else {
-                            Write-Error $_
-                        }
                     }
+                    Write-Verbose "Retrieved $total total licenses"
                 }
             }
         }

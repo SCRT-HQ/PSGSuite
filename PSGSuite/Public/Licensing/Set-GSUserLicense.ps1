@@ -25,55 +25,46 @@ function Set-GSUserLicense {
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [String[]]
-        $User,
-        [parameter(Mandatory = $true,Position = 1)]
-        [Alias("SkuId")]
-        [ValidateSet("Cloud-Identity","Cloud-Identity-Premium","Drive-Enterprise","G-Suite-Enterprise","Google-Apps-Unlimited","Google-Apps-For-Business","Google-Apps-For-Postini","Google-Apps-Lite","Google-Drive-storage-20GB","Google-Drive-storage-50GB","Google-Drive-storage-200GB","Google-Drive-storage-400GB","Google-Drive-storage-1TB","Google-Drive-storage-2TB","Google-Drive-storage-4TB","Google-Drive-storage-8TB","Google-Drive-storage-16TB","Google-Vault","Google-Vault-Former-Employee","1010020020","1010060001","1010010001","1010050001", "1010310002", "1010310003")]
-        [string]
-        $License
+        $User
     )
+    DynamicParam {
+        $paramDictionary = New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
+
+        # License
+        $_licenses = (Get-LicenseSkuHash).Keys | Sort-Object -Unique
+        $attributeCollection = New-Object System.Collections.ObjectModel.Collection[System.Attribute]
+        $attribute = New-Object System.Management.Automation.ParameterAttribute
+        $attribute.Mandatory = $true
+        $attribute.Position = 1
+        $attributeCollection.Add($attribute)
+        $attribute = New-Object System.Management.Automation.AliasAttribute('SkuId')
+        $attributeCollection.Add($attribute)
+        $attribute = New-Object System.Management.Automation.ValidateSetAttribute($_licenses)
+        $attributeCollection.Add($attribute)
+        $Name = 'License'
+        $dynParam = New-Object System.Management.Automation.RuntimeDefinedParameter($Name, [string], $attributeCollection)
+        $paramDictionary.Add($Name, $dynParam)
+
+        return $paramDictionary
+    }
     Begin {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/apps.licensing'
             ServiceType = 'Google.Apis.Licensing.v1.LicensingService'
         }
         $service = New-GoogleService @serviceParams
-        $productHash = @{
-            '1010020020'                   = 'Google-Apps'
-            'G-Suite-Enterprise'           = 'Google-Apps'
-            'Google-Apps-Unlimited'        = 'Google-Apps'
-            'Google-Apps-For-Business'     = 'Google-Apps'
-            'Google-Apps-For-Postini'      = 'Google-Apps'
-            'Google-Apps-Lite'             = 'Google-Apps'
-            'Google-Vault'                 = 'Google-Vault'
-            'Google-Vault-Former-Employee' = 'Google-Vault'
-            'Google-Drive-storage-20GB'    = 'Google-Drive-storage'
-            'Google-Drive-storage-50GB'    = 'Google-Drive-storage'
-            'Google-Drive-storage-200GB'   = 'Google-Drive-storage'
-            'Google-Drive-storage-400GB'   = 'Google-Drive-storage'
-            'Google-Drive-storage-1TB'     = 'Google-Drive-storage'
-            'Google-Drive-storage-2TB'     = 'Google-Drive-storage'
-            'Google-Drive-storage-4TB'     = 'Google-Drive-storage'
-            'Google-Drive-storage-8TB'     = 'Google-Drive-storage'
-            'Google-Drive-storage-16TB'    = 'Google-Drive-storage'
-            '1010310002'                   = '101031'       # G-Suite-Enterprise-for-Education
-            '1010310003'                   = '101031'       # G-Suite-Enterprise-for-Education (Student)
-        }
+        $License = $PSBoundParameters['License']
     }
     Process {
         try {
             foreach ($U in $User) {
-                if ($U -notlike "*@*.*") {
-                    $U = "$($U)@$($Script:PSGSuite.Domain)"
-                }
+                Resolve-Email ([ref]$U)
                 Write-Verbose "Setting license for $U to $License"
-                if ($License -eq "G-Suite-Enterprise") {
-                    $License = "1010020020"
-                }
+                $License = Get-LicenseSkuFromDisplayName $License
                 $body = New-Object 'Google.Apis.Licensing.v1.Data.LicenseAssignmentInsert' -Property @{
                     UserId = $U
                 }
-                $request = $service.LicenseAssignments.Insert($body,$productHash[$License],$License)
+                $request = $service.LicenseAssignments.Insert($body,(Get-LicenseSkuToProductHash $License),$License)
                 $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru
             }
         }
