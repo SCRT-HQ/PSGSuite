@@ -9,9 +9,6 @@ function Remove-GSDriveFile {
     .PARAMETER FileId
     The unique Id(s) of the file(s) to delete
 
-    .PARAMETER InputObject
-    The Drive file object(s) to delete
-
     .PARAMETER User
     The email or unique Id of the owner of the Drive file
 
@@ -21,56 +18,32 @@ function Remove-GSDriveFile {
     Remove-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -User user@domain.com
 
     Deletes the file with ID 1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976 from the user user@domain.com's Drive
-    
+
     .EXAMPLE
     Get-GSDriveFileList -ParentFolderId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -User user@domain.com | Remove-GSDriveFile
 
     Get the file with ID 1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976 from the user user@domain.com's Drive and pipeline
     #>
     [cmdletbinding(SupportsShouldProcess = $true, ConfirmImpact = "High")]
-    Param
-    (
-        [parameter(Mandatory = $true, Position = 0, ParameterSetName = "FileIdSet")]
+    Param(
+        [parameter(Mandatory,ValueFromPipelineByPropertyName,Position = 0)]
+        [Alias('Id')]
         [String[]]
         $FileId,
-        [parameter(ValueFromPipeline = $true, ParameterSetName = "FileObjectSet")]
-        [Google.Apis.Drive.v3.Data.File[]]
-        $InputObject,        
-        [parameter(ValueFromPipelineByPropertyName = $true)]
+        [parameter(ValueFromPipelineByPropertyName,Position = 1)]
         [Alias('Owner', 'PrimaryEmail', 'UserKey', 'Mail')]
         [string]
-        $User = $Script:PSGSuite.AdminEmail        
+        $User = $Script:PSGSuite.AdminEmail
     )
-    
-    Begin {
-        if ($User -ceq 'me') {
-            $User = $Script:PSGSuite.AdminEmail
-        }
-        elseif ($User -notlike "*@*.*") {
-            $User = "$($User)@$($Script:PSGSuite.Domain)"
-        }
-        
+    Process {
+        Resolve-Email ([ref]$User)
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/drive'
             ServiceType = 'Google.Apis.Drive.v3.DriveService'
             User        = $User
         }
-        
-        $service = New-GoogleService @serviceParams    
-    }
-    
-    Process {
-        function deleteUserFile {
-            Param
-            (
-                [parameter(Mandatory = $true, Position = 0)]
-                [String]
-                $User,            
-                [parameter(Mandatory = $true, Position = 1)]
-                [String]
-                $FileId
-            )
-            
+        $service = New-GoogleService @serviceParams
+        foreach ($file in $FileId) {
             try {
                 if ($PSCmdlet.ShouldProcess("Deleting File Id '$FileId' from user '$User'")) {
                     Write-Verbose "Deleting File Id '$FileId' from user '$User'"
@@ -89,13 +62,5 @@ function Remove-GSDriveFile {
                 }
             }
         }
-        
-        foreach ($file in $FileId) {
-            deleteUserFile -User $User -FileId $file
-        }
-        
-        foreach ($obj in $InputObject) {
-            deleteUserFile -User $User -FileId $obj.Id
-        }       
     }
 }
