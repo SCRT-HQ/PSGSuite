@@ -158,7 +158,22 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-#### 2.34.0 - 2019-11-02
+#### 2.36.0 - 2020-02-28
 
-* [Issue #245](https://github.com/scrthq/PSGSuite/issues/245) + [PR #246](https://github.com/scrthq/PSGSuite/pull/246) - _Thank you, [@devblackops](https://github.com/devblackops)!_
-    * Added: Optional `-CreateMeetEvent` switch parameter to `New-GSCalendarEvent` to create a Google Meet conference and attach it to the calendar event.
+* [PR #255](https://github.com/scrthq/PSGSuite/pull/255) - _Thanks, [@FISHMANPET](https://github.com/FISHMANPET)!_
+    * Added support for `[ScriptBlock]` values on the config, allowing you to provide a script to run that will pull in a configuration value (vs embedded the value directly on the config)
+* [PR #255](https://github.com/scrthq/PSGSuite/pull/260) - _Thanks, [@vaskotoo](https://github.com/vaskotoo)!_
+    * Added support for an array of Users on `Get-GSGmailMessageList`
+* [PR #261](https://github.com/scrthq/PSGSuite/issues/261) - _Thanks, [@Foggy2](https://github.com/Foggy2)!_
+    * Added support for all license types including undocumented ones.
+    * Closed out [Issue #252](https://github.com/scrthq/PSGSuite/issues/252) as well.
+* [PR #262](https://github.com/scrthq/PSGSuite/issues/262) - _Thanks, [@nwls-hermesj](https://github.com/nwls-hermesj)!_
+    * Added support for pipeline input of Drive file objects to `Remove-GSDriveFile`.
+* [Issue #256](https://github.com/scrthq/PSGSuite/issues/256)
+    * Cleaned up docs on `Send-GSChatMessage`.
+* [Issue #258](https://github.com/scrthq/PSGSuite/issues/258)
+    * Removed URL Shortener functions due to Google deprecation.
+* [Issue #263](https://github.com/scrthq/PSGSuite/issues/263)
+    * Fixed `[SecureString]` decryption on Unix machines running PowerShell 7
+* Miscellaneous
+    * Removed the Tasks API functions. Google has not pushed an update to the Tasks .NET SDK in over 2 months, so it is now behind the current release versions of the core Google.Apis assemblies, resulting in failure to import.
