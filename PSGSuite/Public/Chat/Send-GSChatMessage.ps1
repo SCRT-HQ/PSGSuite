@@ -54,9 +54,6 @@ function Send-GSChatMessage {
     You can safely store an encrypted dictionary of Webhooks in the PSGSuite Config by passing a hashtable to the `-Webhook` parameter, i.e.:
         Set-PSGSuiteConfig -Webhook @{JobReports = 'https://chat.googleapis.com/v1/spaces/xxxxxxxxxx/messages?key=xxxxxxxxxxxxxxxxxx&token=xxxxxxxxxxxxxxxxxx'}
 
-    To retrieve a stored Webhook, you can use `Get-GSChatWebhook`, i.e.:
-        Send-GSChatMessage -Text "Post job report:" -Cards $cards -Webhook (Get-GSChatWebhook JobReports)
-
     .PARAMETER MessageSegment
     Any Chat message segment objects created with functions named `Add-GSChat*` passed through the pipeline or added directly to this parameter as values.
 
@@ -66,7 +63,7 @@ function Send-GSChatMessage {
     If $true, returns the message body.
 
     .EXAMPLE
-    Send-GSChatMessage -Text "Post job report:" -Cards $cards -Webhook (Get-GSChatWebhook JobReports)
+    Send-GSChatMessage -Text "Post job report:" -Cards $cards -Webhook JobReports
 
     Sends a simple Chat message using the JobReports webhook
 

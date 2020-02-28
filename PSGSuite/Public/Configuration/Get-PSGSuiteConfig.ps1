@@ -53,9 +53,11 @@ function Get-PSGSuiteConfig {
         function Decrypt {
             param($String)
             if ($String -is [System.Security.SecureString]) {
-                [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
+                [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR(
                     [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
-                        $String))
+                        $String
+                    )
+                )
             }
             elseif ($String -is [ScriptBlock]) {
                 $String.InvokeReturnAsIs()

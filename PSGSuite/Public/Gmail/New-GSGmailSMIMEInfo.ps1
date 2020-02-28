@@ -30,21 +30,21 @@ function New-GSGmailSMIMEInfo {
     [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [string]
         $SendAsEmail,
         [parameter(Mandatory = $true)]
-        [ValidateScript({
-            if (!(Test-Path $_)) {
-                throw "Please enter a valid file path."
-            }
-            elseif ($_ -notlike "*.pfx" -and $_ -notlike "*.p12") {
-                throw "Pkcs12 must be a .pfx or .p12 file"
-            }
-            else {
-                $true
-            }
-        })]
+        [ValidateScript( {
+                if (!(Test-Path $_)) {
+                    throw "Please enter a valid file path."
+                }
+                elseif ($_ -notlike "*.pfx" -and $_ -notlike "*.p12") {
+                    throw "Pkcs12 must be a .pfx or .p12 file"
+                }
+                else {
+                    $true
+                }
+            })]
         [string]
         $Pkcs12,
         [parameter(Mandatory = $false)]
@@ -53,8 +53,8 @@ function New-GSGmailSMIMEInfo {
         [parameter(Mandatory = $false)]
         [Switch]
         $IsDefault,
-        [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
-        [Alias("PrimaryEmail","UserKey","Mail")]
+        [parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [Alias("PrimaryEmail", "UserKey", "Mail")]
         [ValidateNotNullOrEmpty()]
         [string]
         $User
@@ -62,17 +62,20 @@ function New-GSGmailSMIMEInfo {
     Process {
         Resolve-Email ([Ref]$User)
         $serviceParams = @{
-            Scope       = 'https://www.googleapis.com/auth/gmail.settings.basic'
+            Scope       = @(
+                'https://www.googleapis.com/auth/gmail.settings.basic'
+                'https://www.googleapis.com/auth/gmail.settings.sharing'
+            )
             ServiceType = 'Google.Apis.Gmail.v1.GmailService'
             User        = $User
         }
         $service = New-GoogleService @serviceParams
         try {
             $body = New-Object 'Google.Apis.Gmail.v1.Data.SmimeInfo'
-            foreach ($key in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {
+            foreach ($key in $PSBoundParameters.Keys | Where-Object { $body.PSObject.Properties.Name -contains $_ }) {
                 switch ($key) {
                     EncryptedKeyPassword {
-                        $pw = (New-Object PSCredential "user",$PSBoundParameters[$key]).GetNetworkCredential().Password
+                        $pw = (New-Object PSCredential "user", $PSBoundParameters[$key]).GetNetworkCredential().Password
                         $body.EncryptedKeyPassword = $pw
                     }
                     Pkcs12 {
@@ -86,7 +89,7 @@ function New-GSGmailSMIMEInfo {
                 }
             }
             Write-Verbose "Adding new S/MIME of SendAsEmail '$SendAsEmail' for user '$User' using Certificate '$Pkcs12'"
-            $request = $service.Users.Settings.SendAs.SmimeInfo.Insert($body,$User,$SendAsEmail)
+            $request = $service.Users.Settings.SendAs.SmimeInfo.Insert($body, $User, $SendAsEmail)
             $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
         catch {

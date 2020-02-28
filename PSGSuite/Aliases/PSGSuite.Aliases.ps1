@@ -21,7 +21,6 @@
     'Get-GSOrgUnitList'                 = 'Get-GSOrganizationalUnit'
     'Get-GSOU'                          = 'Get-GSOrganizationalUnit'
     'Get-GSResourceList'                = 'Get-GSResource'
-    'Get-GSShortURLInfo'                = 'Get-GSShortURL'
     'Get-GSTeamDrive'                   = 'Get-GSDrive'
     'Get-GSTeamDrivesList'              = 'Get-GSDrive'
     'Get-GSUserASPList'                 = 'Get-GSUserASP'
