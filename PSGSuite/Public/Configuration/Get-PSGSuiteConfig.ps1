@@ -70,16 +70,14 @@ function Get-PSGSuiteConfig {
             'P12Key',
             @{l = 'P12KeyPassword';e = {Decrypt $_.P12KeyPassword}},
             @{l = 'P12KeyObject';e = {Decrypt $_.P12KeyObject}},
-            @{l = 'JSONServiceAccountKeyPath';e = {Decrypt $_.JSONServiceAccountKeyPath}},
-            @{l = 'JSONServiceAccountKey';e = {Decrypt $_.JSONServiceAccountKey}},
             @{l = 'ClientSecretsPath';e = {Decrypt $_.ClientSecretsPath}},
             @{l = 'ClientSecrets';e = {Decrypt $_.ClientSecrets}},
             @{l = 'AppEmail';e = {
-                if ($_.JSONServiceAccountKey) {
-                    ($_.JSONServiceAccountKey | ConvertFrom-Json).client_email
+                if ($_.AppEmail) {
+                    Decrypt $_.ServiceAccountClientID
                 }
-                else {
-                    Decrypt $_.AppEmail
+                elseif ($_.ClientSecrets) {
+                    (Decrypt $_.ClientSecrets | ConvertFrom-Json).client_email
                 }
             }},
             @{l = 'AdminEmail';e = {Decrypt $_.AdminEmail}},
@@ -87,11 +85,11 @@ function Get-PSGSuiteConfig {
             @{l = 'Domain';e = {Decrypt $_.Domain}},
             @{l = 'Preference';e = {Decrypt $_.Preference}},
             @{l = 'ServiceAccountClientID';e = {
-                if ($_.JSONServiceAccountKey) {
-                    ($_.JSONServiceAccountKey | ConvertFrom-Json).client_id
-                }
-                else {
+                if ($_.ServiceAccountClientID) {
                     Decrypt $_.ServiceAccountClientID
+                }
+                elseif ($_.ClientSecrets) {
+                    (Decrypt $_.ClientSecrets | ConvertFrom-Json).client_id
                 }
             }},
             @{l = 'Chat';e = {
