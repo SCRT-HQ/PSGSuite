@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+    * [2.36.1 - 2020-03-02](#2361---2020-03-02)
     * [2.36.0 - 2020-02-28](#2360---2020-02-28)
     * [2.35.1 - 2019-12-29](#2351---2019-12-29)
     * [2.35.0 - 2019-12-29](#2350---2019-12-29)
@@ -106,6 +107,12 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.36.1 - 2020-03-02
+
+* [Issue #263](https://github.com/scrthq/PSGSuite/issues/263)
+    * Fixed `[SecureString]` decryption on Unix machines running PowerShell 7 (found additional bugs)
+    * Migrated private `Encrypt` and `Decrypt` to `EncryptionHelpers.ps1` in the Private folder to allow a single place to update.
 
 ## 2.36.0 - 2020-02-28
 

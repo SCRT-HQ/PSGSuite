@@ -61,17 +61,6 @@
             }
         }
         else {
-            function Decrypt {
-                param($String)
-                if ($String -is [System.Security.SecureString]) {
-                    [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
-                        [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
-                            $string))
-                }
-                elseif ($String -is [System.String]) {
-                    $String
-                }
-            }
             $fullConf = Import-SpecificConfiguration -CompanyName 'SCRT HQ' -Name 'PSGSuite' -Scope $Script:ConfigScope -Verbose:$false
             $defaultConfigName = $fullConf['DefaultConfig']
             $choice = switch ($PSCmdlet.ParameterSetName) {
@@ -86,25 +75,50 @@
             }
             if ($choice) {
                 $script:PSGSuite = [PSCustomObject]($fullConf[$choice]) |
-                    Select-Object -Property @{l = 'ConfigName';e = {$choice}},
-                                            @{l = 'P12KeyPath';e = {Decrypt $_.P12KeyPath}},
-                                            P12Key,
-                                            @{l = 'ClientSecretsPath';e = {Decrypt $_.ClientSecretsPath}},
-                                            @{l = 'ClientSecrets';e = {Decrypt $_.ClientSecrets}},
-                                            @{l = 'AppEmail';e = {Decrypt $_.AppEmail}},
-                                            @{l = 'AdminEmail';e = {Decrypt $_.AdminEmail}},
-                                            @{l = 'CustomerID';e = {Decrypt $_.CustomerID}},
-                                            @{l = 'Domain';e = {Decrypt $_.Domain}},
-                                            @{l = 'Preference';e = {Decrypt $_.Preference}},
-                                            @{l = 'ServiceAccountClientID';e = {Decrypt $_.ServiceAccountClientID}},
-                                            @{l = 'Webhook';e = {
-                                                $dict = @{}
-                                                foreach ($key in $_.Webhook.Keys) {
-                                                    $dict[$key] = (Decrypt $_.Webhook[$key])
-                                                }
-                                                $dict
-                                            }},
-                                            ConfigPath
+                    Select-Object -Property @{l = 'ConfigName';e = { $choice }},
+                    @{l = 'P12KeyPath'; e = { Invoke-GSDecrypt $_.P12KeyPath } },
+                    'P12Key',
+                    @{l = 'P12KeyPassword'; e = { Invoke-GSDecrypt $_.P12KeyPassword } },
+                    @{l = 'P12KeyObject'; e = { Invoke-GSDecrypt $_.P12KeyObject } },
+                    @{l = 'ClientSecretsPath'; e = { Invoke-GSDecrypt $_.ClientSecretsPath } },
+                    @{l = 'ClientSecrets'; e = { Invoke-GSDecrypt $_.ClientSecrets } },
+                    @{l = 'AppEmail'; e = {
+                            if ($_.AppEmail) {
+                                Invoke-GSDecrypt $_.AppEmail
+                            }
+                            elseif ($_.ClientSecrets) {
+                                (Invoke-GSDecrypt $_.ClientSecrets | ConvertFrom-Json).client_email
+                            }
+                        }
+                    },
+                    @{l = 'AdminEmail'; e = { Invoke-GSDecrypt $_.AdminEmail } },
+                    @{l = 'CustomerID'; e = { Invoke-GSDecrypt $_.CustomerID } },
+                    @{l = 'Domain'; e = { Invoke-GSDecrypt $_.Domain } },
+                    @{l = 'Preference'; e = { Invoke-GSDecrypt $_.Preference } },
+                    @{l = 'ServiceAccountClientID'; e = {
+                            if ($_.ServiceAccountClientID) {
+                                Invoke-GSDecrypt $_.ServiceAccountClientID
+                            }
+                            elseif ($_.ClientSecrets) {
+                                (Invoke-GSDecrypt $_.ClientSecrets | ConvertFrom-Json).client_id
+                            }
+                        }
+                    },
+                    @{l = 'Chat'; e = {
+                            $dict = @{
+                                Webhooks = @{ }
+                                Spaces   = @{ }
+                            }
+                            foreach ($key in $_.Chat.Webhooks.Keys) {
+                                $dict['Webhooks'][$key] = (Invoke-GSDecrypt $_.Chat.Webhooks[$key])
+                            }
+                            foreach ($key in $_.Chat.Spaces.Keys) {
+                                $dict['Spaces'][$key] = (Invoke-GSDecrypt $_.Chat.Spaces[$key])
+                            }
+                            $dict
+                        }
+                    },
+                    ConfigPath
                 if ($SetToDefault) {
                     if ($defaultConfigName -ne $choice) {
                         Write-Verbose "Setting config name '$choice' for domain '$($script:PSGSuite.Domain)' as default"

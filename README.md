@@ -158,6 +158,12 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.36.1 - 2020-03-02
+
+* [Issue #263](https://github.com/scrthq/PSGSuite/issues/263)
+    * Fixed `[SecureString]` decryption on Unix machines running PowerShell 7 (found additional bugs)
+    * Migrated private `Encrypt` and `Decrypt` to `EncryptionHelpers.ps1` in the Private folder to allow a single place to update.
+
 #### 2.36.0 - 2020-02-28
 
 * [PR #255](https://github.com/scrthq/PSGSuite/pull/255) - _Thanks, [@FISHMANPET](https://github.com/FISHMANPET)!_
