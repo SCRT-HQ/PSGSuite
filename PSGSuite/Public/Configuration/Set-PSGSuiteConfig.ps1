@@ -143,7 +143,7 @@ function Set-PSGSuiteConfig {
         $NoImport
     )
     Begin {
-        Function Encrypt {
+        Function Invoke-GSEncrypt {
             param($string)
             if ($string -is [System.Security.SecureString]) {
                 $string
@@ -158,11 +158,7 @@ function Set-PSGSuiteConfig {
     }
     Process {
         $script:ConfigScope = $Scope
-        $params = @{}
-        if ($PSBoundParameters.Keys -contains "Verbose") {
-            $params["Verbose"] = $PSBoundParameters["Verbose"]
-        }
-        $configHash = Import-SpecificConfiguration -CompanyName 'SCRT HQ' -Name 'PSGSuite' @params
+        $configHash = Import-SpecificConfiguration -CompanyName 'SCRT HQ' -Name 'PSGSuite'
         if (!$ConfigName) {
             $ConfigName = if ($configHash["DefaultConfig"]){
                 $configHash["DefaultConfig"]
@@ -195,7 +191,7 @@ function Set-PSGSuiteConfig {
                 }
                 P12KeyPath {
                     if (-not [System.String]::IsNullOrWhiteSpace($PSBoundParameters[$key].Trim())) {
-                        $configHash["$ConfigName"][$key] = (Encrypt $PSBoundParameters[$key])
+                        $configHash["$ConfigName"][$key] = (Invoke-GSEncrypt $PSBoundParameters[$key])
                         $configHash["$ConfigName"]['P12Key'] = ([System.IO.File]::ReadAllBytes($PSBoundParameters[$key]))
                     }
                 }
@@ -204,8 +200,8 @@ function Set-PSGSuiteConfig {
                 }
                 ClientSecretsPath {
                     if (-not [System.String]::IsNullOrWhiteSpace($PSBoundParameters[$key].Trim())) {
-                        $configHash["$ConfigName"][$key] = (Encrypt $PSBoundParameters[$key])
-                        $configHash["$ConfigName"]['ClientSecrets'] = (Encrypt $(Get-Content $PSBoundParameters[$key] -Raw))
+                        $configHash["$ConfigName"][$key] = (Invoke-GSEncrypt $PSBoundParameters[$key])
+                        $configHash["$ConfigName"]['ClientSecrets'] = (Invoke-GSEncrypt $(Get-Content $PSBoundParameters[$key] -Raw))
                     }
                 }
                 Webhook {
@@ -217,7 +213,7 @@ function Set-PSGSuiteConfig {
                     }
                     foreach ($cWebhook in $PSBoundParameters[$key]) {
                         foreach ($cWebhookKey in $cWebhook.Keys) {
-                            $configHash["$ConfigName"]['Chat']['Webhooks'][$cWebhookKey] = (Encrypt $cWebhook[$cWebhookKey])
+                            $configHash["$ConfigName"]['Chat']['Webhooks'][$cWebhookKey] = (Invoke-GSEncrypt $cWebhook[$cWebhookKey])
                         }
                     }
                 }
@@ -231,12 +227,12 @@ function Set-PSGSuiteConfig {
                     $configHash["$ConfigName"]['Chat']['Spaces'] = @{}
                     foreach ($cWebhook in $PSBoundParameters[$key]) {
                         foreach ($cWebhookKey in $cWebhook.Keys) {
-                            $configHash["$ConfigName"]['Chat']['Spaces'][$cWebhookKey] = (Encrypt $cWebhook[$cWebhookKey])
+                            $configHash["$ConfigName"]['Chat']['Spaces'][$cWebhookKey] = (Invoke-GSEncrypt $cWebhook[$cWebhookKey])
                         }
                     }
                 }
                 default {
-                    $configHash["$ConfigName"][$key] = (Encrypt $PSBoundParameters[$key])
+                    $configHash["$ConfigName"][$key] = (Invoke-GSEncrypt $PSBoundParameters[$key])
                 }
             }
         }

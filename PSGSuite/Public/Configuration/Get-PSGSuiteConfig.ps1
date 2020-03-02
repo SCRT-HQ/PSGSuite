@@ -49,77 +49,6 @@ function Get-PSGSuiteConfig {
         [Switch]
         $NoImport
     )
-    Begin {
-        function Decrypt {
-            param($String)
-            if ($String -is [System.Security.SecureString]) {
-                [System.Runtime.InteropServices.Marshal]::PtrToStringBSTR(
-                    [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
-                        $String
-                    )
-                )
-            }
-            elseif ($String -is [ScriptBlock]) {
-                $String.InvokeReturnAsIs()
-            }
-            else {
-                $String
-            }
-        }
-        $outputProps = @(
-            @{l = 'ConfigName';e = {$choice}},
-            @{l = 'P12KeyPath';e = {Decrypt $_.P12KeyPath}},
-            'P12Key',
-            @{l = 'P12KeyPassword';e = {Decrypt $_.P12KeyPassword}},
-            @{l = 'P12KeyObject';e = {Decrypt $_.P12KeyObject}},
-            @{l = 'ClientSecretsPath';e = {Decrypt $_.ClientSecretsPath}},
-            @{l = 'ClientSecrets';e = {Decrypt $_.ClientSecrets}},
-            @{l = 'AppEmail';e = {
-                if ($_.AppEmail) {
-                    Decrypt $_.ServiceAccountClientID
-                }
-                elseif ($_.ClientSecrets) {
-                    (Decrypt $_.ClientSecrets | ConvertFrom-Json).client_email
-                }
-            }},
-            @{l = 'AdminEmail';e = {Decrypt $_.AdminEmail}},
-            @{l = 'CustomerID';e = {Decrypt $_.CustomerID}},
-            @{l = 'Domain';e = {Decrypt $_.Domain}},
-            @{l = 'Preference';e = {Decrypt $_.Preference}},
-            @{l = 'ServiceAccountClientID';e = {
-                if ($_.ServiceAccountClientID) {
-                    Decrypt $_.ServiceAccountClientID
-                }
-                elseif ($_.ClientSecrets) {
-                    (Decrypt $_.ClientSecrets | ConvertFrom-Json).client_id
-                }
-            }},
-            @{l = 'Chat';e = {
-                $dict = @{
-                    Webhooks = @{}
-                    Spaces = @{}
-                }
-                foreach ($key in $_.Chat.Webhooks.Keys) {
-                    $dict['Webhooks'][$key] = (Decrypt $_.Chat.Webhooks[$key])
-                }
-                foreach ($key in $_.Chat.Spaces.Keys) {
-                    $dict['Spaces'][$key] = (Decrypt $_.Chat.Spaces[$key])
-                }
-                $dict
-            }},
-            @{l = 'ConfigPath';e = {
-                if ($_.ConfigPath) {
-                    $_.ConfigPath
-                }
-                elseif ($Path) {
-                    (Resolve-Path $Path).Path
-                }
-                else {
-                    $null
-                }
-            }}
-        )
-    }
     Process {
         $script:ConfigScope = $Scope
         switch ($PSCmdlet.ParameterSetName) {
@@ -148,7 +77,63 @@ function Get-PSGSuiteConfig {
                 }
             }
         }
-        $decryptedConfig = $encConf | Select-Object -Property $outputProps
+        $decryptedConfig = $encConf | Select-Object -Property @{l = 'ConfigName';e = { $choice }},
+            @{l = 'P12KeyPath'; e = { Invoke-GSDecrypt $_.P12KeyPath } },
+            'P12Key',
+            @{l = 'P12KeyPassword'; e = { Invoke-GSDecrypt $_.P12KeyPassword } },
+            @{l = 'P12KeyObject'; e = { Invoke-GSDecrypt $_.P12KeyObject } },
+            @{l = 'ClientSecretsPath'; e = { Invoke-GSDecrypt $_.ClientSecretsPath } },
+            @{l = 'ClientSecrets'; e = { Invoke-GSDecrypt $_.ClientSecrets } },
+            @{l = 'AppEmail'; e = {
+                    if ($_.AppEmail) {
+                        Invoke-GSDecrypt $_.AppEmail
+                    }
+                    elseif ($_.ClientSecrets) {
+                        (Invoke-GSDecrypt $_.ClientSecrets | ConvertFrom-Json).client_email
+                    }
+                }
+            },
+            @{l = 'AdminEmail'; e = { Invoke-GSDecrypt $_.AdminEmail } },
+            @{l = 'CustomerID'; e = { Invoke-GSDecrypt $_.CustomerID } },
+            @{l = 'Domain'; e = { Invoke-GSDecrypt $_.Domain } },
+            @{l = 'Preference'; e = { Invoke-GSDecrypt $_.Preference } },
+            @{l = 'ServiceAccountClientID'; e = {
+                    if ($_.ServiceAccountClientID) {
+                        Invoke-GSDecrypt $_.ServiceAccountClientID
+                    }
+                    elseif ($_.ClientSecrets) {
+                        (Invoke-GSDecrypt $_.ClientSecrets | ConvertFrom-Json).client_id
+                    }
+                }
+            },
+            @{l = 'Chat'; e = {
+                    $dict = @{
+                        Webhooks = @{ }
+                        Spaces   = @{ }
+                    }
+                    foreach ($key in $_.Chat.Webhooks.Keys) {
+                        $dict['Webhooks'][$key] = (Invoke-GSDecrypt $_.Chat.Webhooks[$key])
+                    }
+                    foreach ($key in $_.Chat.Spaces.Keys) {
+                        $dict['Spaces'][$key] = (Invoke-GSDecrypt $_.Chat.Spaces[$key])
+                    }
+                    $dict
+                }
+            },
+            @{
+                l = 'ConfigPath'
+                e = {
+                    if ($_.ConfigPath) {
+                        $_.ConfigPath
+                    }
+                    elseif ($Path) {
+                        (Resolve-Path $Path).Path
+                    }
+                    else {
+                        $null
+                    }
+                }
+            }
         Write-Verbose "Retrieved configuration '$choice'"
         if (!$NoImport) {
             $script:PSGSuite = $decryptedConfig
