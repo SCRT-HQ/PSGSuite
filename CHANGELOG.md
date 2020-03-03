@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+    * [2.36.2 - 2020-03-02](#2362---2020-03-02)
     * [2.36.1 - 2020-03-02](#2361---2020-03-02)
     * [2.36.0 - 2020-02-28](#2360---2020-02-28)
     * [2.35.1 - 2019-12-29](#2351---2019-12-29)
@@ -107,6 +108,11 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.36.2 - 2020-03-02
+
+* [Issue #263](https://github.com/scrthq/PSGSuite/issues/263)
+    * Cleaned up decryption logic for encrypted config.
 
 ## 2.36.1 - 2020-03-02
 

@@ -158,6 +158,11 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.36.2 - 2020-03-02
+
+* [Issue #263](https://github.com/scrthq/PSGSuite/issues/263)
+    * Cleaned up decryption logic for encrypted config.
+
 #### 2.36.1 - 2020-03-02
 
 * [Issue #263](https://github.com/scrthq/PSGSuite/issues/263)

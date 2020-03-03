@@ -142,20 +142,6 @@ function Set-PSGSuiteConfig {
         [switch]
         $NoImport
     )
-    Begin {
-        Function Invoke-GSEncrypt {
-            param($string)
-            if ($string -is [System.Security.SecureString]) {
-                $string
-            }
-            elseif ($string -is [System.String] -and $String -notlike '') {
-                ConvertTo-SecureString -String $string -AsPlainText -Force
-            }
-            elseif ($string -is [System.Management.Automation.ScriptBlock]) {
-                $string
-            }
-        }
-    }
     Process {
         $script:ConfigScope = $Scope
         $configHash = Import-SpecificConfiguration -CompanyName 'SCRT HQ' -Name 'PSGSuite'
