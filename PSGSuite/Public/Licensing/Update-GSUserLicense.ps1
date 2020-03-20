@@ -22,7 +22,7 @@ function Update-GSUserLicense {
     Param
     (
         [parameter(Mandatory = $false,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
-        [Alias("PrimaryEmail","UserKey","Mail")]
+        [Alias("PrimaryEmail","UserKey","Mail","UserId")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $User

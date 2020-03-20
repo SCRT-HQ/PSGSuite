@@ -21,6 +21,9 @@ function Get-GSUserLicense {
     .PARAMETER Limit
     The maximum amount of results you want returned. Exclude or set to 0 to return all results
 
+    .PARAMETER CheckAll
+    If $true, force a check of all license products when specifying a User. This will return all license types it finds for a specific user instead of the default behavior of short circuiting after matching against the first license assigned.
+
     .EXAMPLE
     Get-GSUserLicense
 
@@ -31,7 +34,7 @@ function Get-GSUserLicense {
     Param
     (
         [parameter(Mandatory = $false, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = "Get")]
-        [Alias("PrimaryEmail", "UserKey", "Mail")]
+        [Alias("PrimaryEmail", "UserKey", "Mail","UserId")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $User,
@@ -43,7 +46,10 @@ function Get-GSUserLicense {
         [parameter(Mandatory = $false, ParameterSetName = "List")]
         [Alias('First')]
         [Int]
-        $Limit = 0
+        $Limit = 0,
+        [parameter(ParameterSetName = "Get")]
+        [Switch]
+        $CheckAll
     )
     DynamicParam {
         $paramDictionary = New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
@@ -106,23 +112,23 @@ function Get-GSUserLicense {
                         }
                         else {
                             foreach ($License in (Get-LicenseSkuFromDisplayName).Keys | Sort-Object) {
+                                $response = $null
                                 Write-Verbose "Getting License SKU '$License' for User '$U'"
                                 $License = Get-LicenseSkuFromDisplayName $License
                                 try {
                                     $request = $service.LicenseAssignments.Get((Get-LicenseSkuToProductHash $License), $License, $U)
                                     $response = $request.Execute()
                                 }
-                                catch {
-                                }
-                                if ($response) {
+                                catch {}
+                                if (-not $CheckAll -and $response) {
                                     break
+                                }
+                                elseif ($response) {
+                                    $response
                                 }
                             }
                             if (!$response) {
                                 Write-Warning "No license found for $U!"
-                            }
-                            else {
-                                $response
                             }
                         }
                     }

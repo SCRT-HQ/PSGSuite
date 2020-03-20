@@ -158,6 +158,14 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.36.3 - 2020-03-20
+
+* [Issue #270](https://github.com/scrthq/PSGSuite/issues/270)
+    * Added `CheckAll` switch parameter to `Get-GSUserLicense`
+    * Updated `User` parameter aliases for all `*-GSUserLicense` functions to include `UserId` for better pipeline support.
+* Miscellaneous
+    * Updated GitHub Release section in psake.ps1 to POST the release to the Org URL due to failures.
+
 #### 2.36.2 - 2020-03-02
 
 * [Issue #263](https://github.com/scrthq/PSGSuite/issues/263)
