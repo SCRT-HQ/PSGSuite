@@ -158,6 +158,11 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.36.4 - 2020-03-20
+
+* [Issue #270](https://github.com/scrthq/PSGSuite/issues/270)
+    * Corrected inaccurate warning that no licenses were found for a user when using the `CheckAll` switch on `Get-GSUserLicense`.
+
 #### 2.36.3 - 2020-03-20
 
 * [Issue #270](https://github.com/scrthq/PSGSuite/issues/270)

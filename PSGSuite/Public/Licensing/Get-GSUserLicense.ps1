@@ -111,6 +111,7 @@ function Get-GSUserLicense {
                             $request.Execute()
                         }
                         else {
+                            $matchedLicense = $false
                             foreach ($License in (Get-LicenseSkuFromDisplayName).Keys | Sort-Object) {
                                 $response = $null
                                 Write-Verbose "Getting License SKU '$License' for User '$U'"
@@ -121,13 +122,15 @@ function Get-GSUserLicense {
                                 }
                                 catch {}
                                 if (-not $CheckAll -and $response) {
+                                    $matchedLicense = $true
                                     break
                                 }
                                 elseif ($response) {
+                                    $matchedLicense = $true
                                     $response
                                 }
                             }
-                            if (!$response) {
+                            if (-not $matchedLicense) {
                                 Write-Warning "No license found for $U!"
                             }
                         }

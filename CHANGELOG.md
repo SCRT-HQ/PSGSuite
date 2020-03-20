@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+    * [2.36.4 - 2020-03-20](#2364---2020-03-20)
     * [2.36.3 - 2020-03-20](#2363---2020-03-20)
     * [2.36.2 - 2020-03-02](#2362---2020-03-02)
     * [2.36.1 - 2020-03-02](#2361---2020-03-02)
@@ -109,6 +110,11 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.36.4 - 2020-03-20
+
+* [Issue #270](https://github.com/scrthq/PSGSuite/issues/270)
+    * Corrected inaccurate warning that no licenses were found for a user when using the `CheckAll` switch on `Get-GSUserLicense`.
 
 ## 2.36.3 - 2020-03-20
 
