@@ -22,7 +22,7 @@ function Set-GSUserLicense {
     Param
     (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
-        [Alias("PrimaryEmail","UserKey","Mail")]
+        [Alias("PrimaryEmail","UserKey","Mail","UserId")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $User

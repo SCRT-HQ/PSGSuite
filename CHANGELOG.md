@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+    * [2.36.3 - 2020-03-20](#2363---2020-03-20)
     * [2.36.2 - 2020-03-02](#2362---2020-03-02)
     * [2.36.1 - 2020-03-02](#2361---2020-03-02)
     * [2.36.0 - 2020-02-28](#2360---2020-02-28)
@@ -108,6 +109,14 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.36.3 - 2020-03-20
+
+* [Issue #270](https://github.com/scrthq/PSGSuite/issues/270)
+    * Added `CheckAll` switch parameter to `Get-GSUserLicense`
+    * Updated `User` parameter aliases for all `*-GSUserLicense` functions to include `UserId` for better pipeline support.
+* Miscellaneous
+    * Updated GitHub Release section in psake.ps1 to POST the release to the Org URL due to failures.
 
 ## 2.36.2 - 2020-03-02
 
