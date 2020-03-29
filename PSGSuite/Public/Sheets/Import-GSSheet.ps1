@@ -165,7 +165,7 @@ function Import-GSSheet {
                         }
                     }
                     else {
-                        [void]$datatable.Rows.Add([String[]]$_)
+                        [void]$datatable.Rows.Add([String[]]$_[0..($datatable.Columns.Count - 1)])
                     }
                     $i++
                 }
