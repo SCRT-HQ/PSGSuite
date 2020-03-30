@@ -43,9 +43,9 @@ function Add-GSSheetValues {
     How the input data should be interpreted
 
     Available values are:
-    * "INPUT_VALUE_OPTION_UNSPECIFIED"
+    * "INPUTVALUEOPTIONUNSPECIFIED"
     * "RAW"
-    * "USER_ENTERED"
+    * "USERENTERED"
 
     .PARAMETER InsertDataOption
     How the input data should be inserted.
