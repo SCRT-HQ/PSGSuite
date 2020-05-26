@@ -30,6 +30,11 @@ function Edit-GSPresentation {
     $newSlide | Edit-GSPresentation -PresentationID $ID #Will add one new slide at the end of the Presentation
     Edit-GSPresentation -PresentationID $ID -Update $newSlide,$newSlide #Will execute the newslide request twice, adding two new slides to the end of the Presentation
 
+    .NOTES
+    Executing multiple updates at once ensures the updates happen atomically, as one action.
+    If there is a problem with one of the updates, none of them will be executed.
+    If you wanted updates to happen individually, you would need to call this command multiple times, once per Update.
+
     #>
     [OutputType('Google.Apis.Slides.v1.Data.BatchUpdatePresentationResponse')]
     [cmdletbinding()]
