@@ -35,6 +35,7 @@
     #>
     [OutputType('Google.Apis.Slides.v1.Data.Request')]
     [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Does not change any state')]
     param (
         # Parameter help description
         [Parameter(Mandatory = $true, Position = 1, ValueFromPipelineByPropertyName = $true)]
