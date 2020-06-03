@@ -64,15 +64,15 @@ function Import-PSGSuiteConfig {
             switch ($PSCmdlet.ParameterSetName) {
                 Path {
                     Write-Verbose "Importing config from path: $Path"
-                    $script:PSGSuite = (ConvertFrom-Json (Get-Content $Path -Raw))
+                    $script:PSGSuite = (ConvertFrom-Json (Get-Content $Path -Raw)) | Get-GSDecryptedConfig -ConfigName 'ImportPath'
                 }
                 Json {
                     Write-Verbose "Importing config from Json string"
-                    $script:PSGSuite = (ConvertFrom-Json $Json)
+                    $script:PSGSuite = (ConvertFrom-Json $Json) | Get-GSDecryptedConfig -ConfigName 'ImportJSON'
                 }
                 Object {
                     Write-Verbose "Importing config from Object"
-                    $script:PSGSuite = $Object
+                    $script:PSGSuite = $Object | Get-GSDecryptedConfig -ConfigName 'ImportObject'
                 }
             }
             if (-not $Temporary) {
