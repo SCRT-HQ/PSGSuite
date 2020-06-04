@@ -6,6 +6,16 @@ $TargetModulePath = Get-ChildItem "$ProjectRoot\BuildOutput\$($ModuleName)" | So
 Describe "Public Function Help tests" {
     # Adapted from Francois' post here: https://lazywinadmin.com/2016/05/using-pester-to-test-your-comment-based.html
     Import-Module "$TargetModulePath\$($ModuleName).psd1" -Force -ErrorAction SilentlyContinue
+    # Make sure the assemblies are present in the current scope otherwise function help will fail
+    $dllFolder = if ($PSVersionTable.PSVersion.Major -le 5) {
+        [System.IO.Path]::Combine($TargetModulePath,'lib','net45')
+    }
+    else {
+        [System.IO.Path]::Combine($TargetModulePath,'lib','netstandard1.3')
+    }
+    Get-ChildItem $dllFolder -Filter '*.dll' -Recurse | ForEach-Object {
+        Add-Type -Path $_.FullName -IgnoreWarnings
+    }
     $FunctionsList = (Get-Module $ModuleName).ExportedFunctions.Keys
     foreach ($Function in $FunctionsList) {
         $Help = Get-Help -Name $Function -Full
