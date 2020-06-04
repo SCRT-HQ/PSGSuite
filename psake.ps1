@@ -340,7 +340,32 @@ Task Import -Depends Compile {
 } -description 'Imports the newly compiled module'
 
 $pesterScriptBlock = {
-    'Pester' | Resolve-Module -UpdateModules -Verbose
+    $dependencies = @(
+        @{
+            Name           = 'Pester'
+            MinimumVersion = '4.10.1'
+            MaximumVersion = '4.99.99'
+        }
+        @{
+            Name           = 'Assert'
+            MinimumVersion = '0.9.5'
+        }
+    )
+    foreach ($module in $dependencies) {
+        Write-BuildLog "[$($module.Name)] Resolving"
+        try {
+            if ($imported = Get-Module $($module.Name)) {
+                Write-BuildLog "[$($module.Name)] Removing imported module"
+                $imported | Remove-Module
+            }
+            Import-Module @module
+        }
+        catch {
+            Write-BuildLog "[$($module.Name)] Installing missing module"
+            Install-Module @module -Repository PSGallery
+            Import-Module @module
+        }
+    }
     Push-Location
     Set-Location -PassThru $outputModDir
     if (-not $ENV:BHProjectPath) {
