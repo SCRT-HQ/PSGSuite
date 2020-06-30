@@ -138,7 +138,17 @@ else {
             "    + Commit message matches '!deploy' : $($env:BUILD_SOURCEVERSIONMESSAGE -match '!deploy') [$env:BUILD_SOURCEVERSIONMESSAGE]"| Write-Host -ForegroundColor Green
         }
         Write-BuildLog "Resolving necessary modules"
-        $moduleDependencies.Name | Resolve-Module -UpdateModules -Verbose
+        foreach ($module in $moduleDependencies) {
+            Write-BuildLog "[$($module.Name)] Resolving"
+            try {
+                Import-Module @module
+            }
+            catch {
+                Write-BuildLog "[$($module.Name)] Installing missing module"
+                Install-Module @module -Repository PSGallery
+                Import-Module @module
+            }
+        }
         Write-BuildLog "Modules resolved"
         if ($Task -eq 'TestOnly') {
             $global:ExcludeTag = @('Module')

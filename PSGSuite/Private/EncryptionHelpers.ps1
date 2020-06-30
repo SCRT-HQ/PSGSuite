@@ -1,10 +1,10 @@
 function Get-GSDecryptedConfig {
     [CmdletBinding()]
     Param(
-        [parameter(Position = 0,ValueFromPipeline,Mandatory)]
+        [parameter(Position = 0, ValueFromPipeline, Mandatory)]
         [object]
         $Config,
-        [parameter(Position = 1,Mandatory)]
+        [parameter(Position = 1, Mandatory)]
         [string]
         $ConfigName,
         [parameter(Position = 2)]
@@ -12,36 +12,47 @@ function Get-GSDecryptedConfig {
         $ConfigPath
     )
     Process {
-        $Config | Select-Object -Property `
-            @{l = 'ConfigName';e = { $ConfigName }},
-            @{l = 'P12KeyPath'; e = { Invoke-GSDecrypt $_.P12KeyPath } },
-            'P12Key',
-            @{l = 'P12KeyPassword'; e = { Invoke-GSDecrypt $_.P12KeyPassword } },
-            @{l = 'P12KeyObject'; e = { Invoke-GSDecrypt $_.P12KeyObject } },
-            @{l = 'ClientSecretsPath'; e = { Invoke-GSDecrypt $_.ClientSecretsPath } },
-            @{l = 'ClientSecrets'; e = { Invoke-GSDecrypt $_.ClientSecrets } },
+        $Config | Select-Object -Property @(
+            @{l = 'ConfigName'; e = { $ConfigName }}
+            @{l = 'P12KeyPath'; e = { Invoke-GSDecrypt $_.P12KeyPath } }
+            'P12Key'
+            @{l = 'P12KeyPassword'; e = { Invoke-GSDecrypt $_.P12KeyPassword } }
+            @{l = 'P12KeyObject'; e = { Invoke-GSDecrypt $_.P12KeyObject } }
+            @{l = 'JSONServiceAccountKeyPath'; e = {Invoke-GSDecrypt $_.JSONServiceAccountKeyPath}}
+            @{l = 'JSONServiceAccountKey'; e = {Invoke-GSDecrypt $_.JSONServiceAccountKey}}
+            @{l = 'ClientSecretsPath'; e = { Invoke-GSDecrypt $_.ClientSecretsPath } }
+            @{l = 'ClientSecrets'; e = { Invoke-GSDecrypt $_.ClientSecrets } }
             @{l = 'AppEmail'; e = {
-                    if ($_.AppEmail) {
+                    if ($_.JSONServiceAccountKey) {
+                        (Invoke-GSDecrypt $_.JSONServiceAccountKey | ConvertFrom-Json).client_email
+                    } elseif ($_.AppEmail) {
                         Invoke-GSDecrypt $_.AppEmail
                     }
-                    elseif ($_.ClientSecrets) {
-                        (Invoke-GSDecrypt $_.ClientSecrets | ConvertFrom-Json).client_email
+                }
+            }
+            @{l = 'AdminEmail'; e = {
+                    if ($_.AdminEmail) {
+                        Invoke-GSDecrypt $_.AdminEmail
+                    } elseif ($_.JSONServiceAccountKey) {
+                        (Invoke-GSDecrypt $_.JSONServiceAccountKey | ConvertFrom-Json).client_email
+                    } elseif ($_.AppEmail) {
+                        Invoke-GSDecrypt $_.AppEmail
                     }
                 }
-            },
-            @{l = 'AdminEmail'; e = { Invoke-GSDecrypt $_.AdminEmail } },
-            @{l = 'CustomerID'; e = { Invoke-GSDecrypt $_.CustomerID } },
-            @{l = 'Domain'; e = { Invoke-GSDecrypt $_.Domain } },
-            @{l = 'Preference'; e = { Invoke-GSDecrypt $_.Preference } },
+            }
+            @{l = 'CustomerID'; e = { Invoke-GSDecrypt $_.CustomerID } }
+            @{l = 'Domain'; e = { Invoke-GSDecrypt $_.Domain } }
+            @{l = 'Preference'; e = { Invoke-GSDecrypt $_.Preference } }
             @{l = 'ServiceAccountClientID'; e = {
-                    if ($_.ServiceAccountClientID) {
+                    if ($_.JSONServiceAccountKey) {
+                        (Invoke-GSDecrypt $_.JSONServiceAccountKey | ConvertFrom-Json).client_id
+                    } elseif ($_.ServiceAccountClientID) {
                         Invoke-GSDecrypt $_.ServiceAccountClientID
-                    }
-                    elseif ($_.ClientSecrets) {
-                        (Invoke-GSDecrypt $_.ClientSecrets | ConvertFrom-Json).client_id
+                    } elseif ($_.ClientSecrets) {
+                        (Invoke-GSDecrypt $_.ClientSecrets | ConvertFrom-Json).installed.client_id
                     }
                 }
-            },
+            }
             @{l = 'Chat'; e = {
                     $dict = @{
                         Webhooks = @{ }
@@ -55,10 +66,12 @@ function Get-GSDecryptedConfig {
                     }
                     $dict
                 }
-            },
+            }
             @{l = 'ConfigPath'; e = {
-                if ($ConfigPath) {(Resolve-Path $ConfigPath).Path} elseif ($_.ConfigPath) {$_.ConfigPath} else {$null}
-            }}
+                    if ($ConfigPath) {(Resolve-Path $ConfigPath).Path} elseif ($_.ConfigPath) {$_.ConfigPath} else {$null}
+                }
+            }
+        )
     }
 }
 function Invoke-GSDecrypt {
@@ -69,11 +82,9 @@ function Invoke-GSDecrypt {
                 $String
             )
         )
-    }
-    elseif ($String -is [ScriptBlock]) {
+    } elseif ($String -is [ScriptBlock]) {
         $String.InvokeReturnAsIs()
-    }
-    else {
+    } else {
         $String
     }
 }
@@ -82,8 +93,7 @@ Function Invoke-GSEncrypt {
     param($string)
     if ($string -is [System.String] -and -not [String]::IsNullOrEmpty($String)) {
         ConvertTo-SecureString -String $string -AsPlainText -Force
-    }
-    else {
+    } else {
         $string
     }
 }

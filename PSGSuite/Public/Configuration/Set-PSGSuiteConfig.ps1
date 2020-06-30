@@ -18,6 +18,12 @@ function Set-PSGSuiteConfig {
     .PARAMETER P12KeyPassword
     The password for the P12 Key file. If not specified the default of 'notasecret' will be used and this config value will not be set. This is only needed in the case where the P12 file has been manually rexported with a custom password
 
+    .PARAMETER JSONServiceAccountKeyPath
+    The path to the Service Account JSON file downloaded from the Google Developer's Console.
+
+    .PARAMETER JSONServiceAccountKey
+    The string contents of the Serivce Account JSON file downloaded from the Google Developer's Console.
+
     .PARAMETER ClientSecretsPath
     The path to the Client Secrets JSON file downloaded from the Google Developer's Console. Using the ClientSecrets JSON will prompt the user to complete OAuth2 authentication in their browser on the first run and store the retrieved Refresh and Access tokens in the user's home directory. The config will auto-update with this value after running any command, if ClientSecretsPath is filled and this value is not already present. If JSONServiceAccountKeyPath or P12KeyPath is also specified, ClientSecretsPath will be ignored.
 
@@ -102,6 +108,12 @@ function Set-PSGSuiteConfig {
         $P12KeyPassword,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [string]
+        $JSONServiceAccountKeyPath,
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [string]
+        $JSONServiceAccountKey,
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [string]
         $ClientSecretsPath,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [string]
@@ -155,7 +167,7 @@ function Set-PSGSuiteConfig {
             }
         }
         Write-Verbose "Setting config name '$ConfigName'"
-        $configParams = @('P12Key','P12KeyPath','P12KeyPassword','ClientSecretsPath','ClientSecrets','AppEmail','AdminEmail','CustomerID','Domain','Preference','ServiceAccountClientID','Webhook','Space')
+        $configParams = @('P12Key','P12KeyPath','P12KeyPassword','JSONServiceAccountKeyPath','JSONServiceAccountKey','ClientSecretsPath','ClientSecrets','AppEmail','AdminEmail','CustomerID','Domain','Preference','ServiceAccountClientID','Webhook','Space')
         if ($SetAsDefaultConfig -or !$configHash["DefaultConfig"]) {
             $configHash["DefaultConfig"] = $ConfigName
         }
@@ -181,8 +193,11 @@ function Set-PSGSuiteConfig {
                         $configHash["$ConfigName"]['P12Key'] = ([System.IO.File]::ReadAllBytes($PSBoundParameters[$key]))
                     }
                 }
-                P12KeyPassword {
-                    $configHash["$ConfigName"][$key] = $PSBoundParameters[$key]
+                JSONServiceAccountKeyPath {
+                    if (-not [System.String]::IsNullOrWhiteSpace($PSBoundParameters[$key].Trim())) {
+                        $configHash["$ConfigName"][$key] = (Invoke-GSEncrypt $PSBoundParameters[$key])
+                        $configHash["$ConfigName"]['JSONServiceAccountKey'] = (Invoke-GSEncrypt $(Get-Content $PSBoundParameters[$key] -Raw))
+                    }
                 }
                 ClientSecretsPath {
                     if (-not [System.String]::IsNullOrWhiteSpace($PSBoundParameters[$key].Trim())) {
