@@ -14,7 +14,7 @@ function Revoke-GSUserVerificationCodes {
 
     Invalidates the verification codes for the AdminEmail user, skipping confirmation
     #>
-    [cmdletbinding()]
+    [cmdletbinding(ConfirmImpact = "High",SupportsShouldProcess)]
     Param
     (
         [parameter(Mandatory = $false,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
@@ -31,16 +31,13 @@ function Revoke-GSUserVerificationCodes {
         $service = New-GoogleService @serviceParams
         try {
             foreach ($U in $User) {
-                if ($U -ceq 'me') {
-                    $U = $Script:PSGSuite.AdminEmail
+                Resolve-Email ([ref]$U)
+                if ($PSCmdlet.ShouldProcess("Invalidating verification codes for user '$U'")) {
+                    Write-Verbose "Invalidating verification codes for user '$U'"
+                    $request = $service.VerificationCodes.Invalidate($U)
+                    $request.Execute()
+                    Write-Verbose "Verification codes successfully invalidated for user '$U'"
                 }
-                elseif ($U -notlike "*@*.*") {
-                    $U = "$($U)@$($Script:PSGSuite.Domain)"
-                }
-                Write-Verbose "Invalidating verification codes for user '$U'"
-                $request = $service.VerificationCodes.Invalidate($U)
-                $request.Execute()
-                Write-Verbose "Verification codes successfully invalidated for user '$U'"
             }
         }
         catch {
