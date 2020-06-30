@@ -47,15 +47,13 @@ function Update-GSUserLicense {
 
         return $paramDictionary
     }
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/apps.licensing'
             ServiceType = 'Google.Apis.Licensing.v1.LicensingService'
         }
         $service = New-GoogleService @serviceParams
         $License = $PSBoundParameters['License']
-    }
-    Process {
         try {
             foreach ($U in $User) {
                 Resolve-Email ([ref]$U)

@@ -30,14 +30,12 @@ function New-GSUserSchema {
         [Google.Apis.Admin.Directory.directory_v1.Data.SchemaFieldSpec[]]
         $Fields
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.userschema'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             Write-Verbose "Creating schema '$SchemaName'"
             $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.Schema'

@@ -24,14 +24,12 @@ function Get-GSDomain {
         [String[]]
         $DomainName
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.domain'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         if ($PSBoundParameters.ContainsKey('DomainName')) {
             foreach ($domain in $DomainName) {
                 try {

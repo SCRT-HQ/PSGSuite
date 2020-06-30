@@ -37,14 +37,12 @@ function Update-GSUserSchema {
         [Google.Apis.Admin.Directory.directory_v1.Data.SchemaFieldSpec[]]
         $Fields
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.userschema'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             Write-Verbose "Updating schema '$SchemaId'"
             $schemaObj = Get-GSUserSchema -Schema $SchemaId -Verbose:$false

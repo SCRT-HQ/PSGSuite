@@ -60,14 +60,12 @@
         [Switch]
         $BlockInheritance
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.orgunit'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $body = switch ($PSCmdlet.ParameterSetName) {
                 Path {

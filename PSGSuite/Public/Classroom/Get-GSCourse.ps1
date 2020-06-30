@@ -55,7 +55,7 @@ function Get-GSCourse {
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -68,8 +68,6 @@ function Get-GSCourse {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         if ($PSBoundParameters.Keys -contains 'Id') {
             foreach ($I in $Id) {
                 try {

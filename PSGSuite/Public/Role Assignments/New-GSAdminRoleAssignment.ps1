@@ -45,7 +45,7 @@ function New-GSAdminRoleAssignment {
         [String]
         $ScopeType = 'CUSTOMER'
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.rolemanagement'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
@@ -58,8 +58,6 @@ function New-GSAdminRoleAssignment {
         else {
             'my_customer'
         }
-    }
-    Process {
         foreach ($Assigned in $AssignedTo) {
             try {
                 $uKey = try {

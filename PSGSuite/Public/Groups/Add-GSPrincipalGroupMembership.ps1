@@ -40,14 +40,12 @@ function Add-GSPrincipalGroupMembership {
         [String]
         $Role = "MEMBER"
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.group'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             Resolve-Email ([ref]$Identity)
             try {

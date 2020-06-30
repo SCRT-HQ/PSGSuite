@@ -33,7 +33,7 @@
         [String]
         $CodeId
     )
-    Begin {
+    Process {
         if ($PSBoundParameters.Keys -contains 'CodeId') {
             $serviceParams = @{
                 Scope       = 'https://www.googleapis.com/auth/admin.directory.user.security'
@@ -41,8 +41,6 @@
             }
             $service = New-GoogleService @serviceParams
         }
-    }
-    Process {
         try {
             foreach ($U in $User) {
                 if ($U -ceq 'me') {

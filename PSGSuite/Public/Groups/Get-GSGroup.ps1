@@ -84,14 +84,12 @@
         [Int]
         $Limit = 0
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.group'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         switch -Regex ($PSCmdlet.ParameterSetName) {
             Get {
                 foreach ($G in $Identity) {

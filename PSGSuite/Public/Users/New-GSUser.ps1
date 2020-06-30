@@ -193,14 +193,12 @@ function New-GSUser {
         [Hashtable]
         $CustomSchemas
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.user'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             Write-Verbose "Creating user '$PrimaryEmail'"
             $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.User'

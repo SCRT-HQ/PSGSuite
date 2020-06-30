@@ -44,7 +44,7 @@ function Restore-GSUser {
         [Switch]
         $RecentOnly
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.user'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
@@ -54,8 +54,6 @@ function Restore-GSUser {
             $User =  ($Id | ForEach-Object {"$_"})
             $GetId = $false
         }
-    }
-    Process {
         try {
             foreach ($U in $User) {
                 $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserUndelete'

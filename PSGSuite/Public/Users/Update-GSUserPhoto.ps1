@@ -31,15 +31,13 @@ function Update-GSUserPhoto {
         [String]
         $Path
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.user'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
         $Path = (Resolve-Path $Path).Path
-    }
-    Process {
         try {
             if ($User -ceq 'me') {
                 $User = $Script:PSGSuite.AdminEmail

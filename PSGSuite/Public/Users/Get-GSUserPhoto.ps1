@@ -47,14 +47,12 @@ function Get-GSUserPhoto {
         [String]
         $OutFileFormat = 'PNG'
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.user.readonly'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             foreach ($U in $User) {
                 if ($U -ceq 'me') {

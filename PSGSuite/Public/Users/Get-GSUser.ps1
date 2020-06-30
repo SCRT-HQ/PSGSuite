@@ -156,14 +156,12 @@ function Get-GSUser {
         [String]
         $SortOrder
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.user.readonly'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         if ($MyInvocation.InvocationName -ne 'Get-GSUserList' -and $PSCmdlet.ParameterSetName -eq 'Get') {
             foreach ($U in $User) {
                 try {

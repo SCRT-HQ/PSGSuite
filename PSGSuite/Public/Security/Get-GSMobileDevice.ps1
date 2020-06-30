@@ -86,7 +86,7 @@
         [String]
         $SortOrder
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.device.mobile'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
@@ -98,8 +98,6 @@
         else {
             "my_customer"
         }
-    }
-    Process {
         try {
             $request = $service.Mobiledevices.List($customerId)
             if ($Limit -gt 0 -and $PageSize -gt $Limit) {

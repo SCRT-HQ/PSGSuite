@@ -2,12 +2,12 @@ function Remove-GSUserSchema {
     <#
     .SYNOPSIS
     Removes a custom user schema
-    
+
     .DESCRIPTION
     Removes a custom user schema
-    
+
     .PARAMETER SchemaId
-    The SchemaId or SchemaName to remove. If excluded, all Custom User Schemas for the customer will be removed    
+    The SchemaId or SchemaName to remove. If excluded, all Custom User Schemas for the customer will be removed
     .EXAMPLE
     Remove-GSUserSchema 2SV
 
@@ -21,16 +21,14 @@ function Remove-GSUserSchema {
         [String[]]
         $SchemaId
     )
-    Begin {
-        if ($PSBoundParameters.Keys -contains 'SchemaName') {
+    Process {
+        if ($PSBoundParameters.Keys -contains 'SchemaId') {
             $serviceParams = @{
                 Scope       = 'https://www.googleapis.com/auth/admin.directory.user.userschema'
                 ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
             }
             $service = New-GoogleService @serviceParams
         }
-    }
-    Process {
         try {
             if ($PSBoundParameters.Keys -contains 'SchemaId') {
                 foreach ($S in $SchemaId) {

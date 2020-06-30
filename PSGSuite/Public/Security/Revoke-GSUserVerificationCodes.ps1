@@ -2,13 +2,13 @@ function Revoke-GSUserVerificationCodes {
     <#
     .SYNOPSIS
     Revokes/invalidates Verification Codes for the user
-    
+
     .DESCRIPTION
     Revokes/invalidates Verification Codes for the user
-    
+
     .PARAMETER User
     The user to revoke verification codes from
-    
+
     .EXAMPLE
     Revoke-GSUserVerificationCodes -User me -Confirm:$false
 
@@ -23,14 +23,12 @@ function Revoke-GSUserVerificationCodes {
         [String[]]
         $User
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.user.security'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             foreach ($U in $User) {
                 if ($U -ceq 'me') {
