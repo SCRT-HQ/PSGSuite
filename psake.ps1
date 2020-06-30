@@ -362,7 +362,7 @@ $pesterScriptBlock = {
         }
         catch {
             Write-BuildLog "[$($module.Name)] Installing missing module"
-            Install-Module @module -Repository PSGallery -Force
+            Install-Module @module -Repository PSGallery -Scope CurrentUser -Force
             Import-Module @module
         }
     }
