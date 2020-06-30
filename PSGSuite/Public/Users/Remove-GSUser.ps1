@@ -2,13 +2,13 @@ function Remove-GSUser {
     <#
     .SYNOPSIS
     Removes a user
-    
+
     .DESCRIPTION
     Removes a user
-    
+
     .PARAMETER User
     The primary email or unique Id of the user to Remove-GSUser
-    
+
     .EXAMPLE
     Remove-GSUser joe -Confirm:$false
 
@@ -23,14 +23,12 @@ function Remove-GSUser {
         [String[]]
         $User
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.user'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($U in $User) {
             try {
                 if ($U -notlike "*@*.*") {

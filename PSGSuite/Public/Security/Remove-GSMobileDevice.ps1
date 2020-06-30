@@ -22,14 +22,12 @@
         [String[]]
         $ResourceId
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.device.mobile'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             foreach ($R in $ResourceId) {
                 if ($PSCmdlet.ShouldProcess("Removing Mobile Device '$R'")) {

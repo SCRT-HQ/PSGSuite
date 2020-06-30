@@ -91,7 +91,7 @@
         [String]
         $SortOrder
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.device.chromeos'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
@@ -103,9 +103,6 @@
         else {
             "my_customer"
         }
-
-    }
-    Process {
         try {
             switch ($PSCmdlet.ParameterSetName) {
                 Get {

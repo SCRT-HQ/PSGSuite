@@ -25,14 +25,12 @@ function Get-GSChatMessage {
         [string[]]
         $Name
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/chat.bot'
             ServiceType = 'Google.Apis.HangoutsChat.v1.HangoutsChatService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($msg in $Name) {
             try {
                 $request = $service.Spaces.Messages.Get($msg)

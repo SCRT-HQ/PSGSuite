@@ -38,7 +38,7 @@
         [String]
         $Delegate
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -54,8 +54,6 @@
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             Write-Verbose "Adding delegate access to user '$User's inbox for delegate '$Delegate'"
             $body = New-Object 'Google.Apis.Gmail.v1.Data.Delegate' -Property @{

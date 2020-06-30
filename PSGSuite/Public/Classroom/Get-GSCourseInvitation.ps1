@@ -42,7 +42,7 @@ function Get-GSCourseInvitation {
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -55,8 +55,6 @@ function Get-GSCourseInvitation {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         switch ($PSCmdlet.ParameterSetName) {
             Get {
                 foreach ($part in $Id) {

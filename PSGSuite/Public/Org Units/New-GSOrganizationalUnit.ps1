@@ -48,7 +48,7 @@ function New-GSOrganizationalUnit {
         [Switch]
         $BlockInheritance
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.orgunit'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
@@ -57,8 +57,6 @@ function New-GSOrganizationalUnit {
         if ($PSBoundParameters.Keys -notcontains 'ParentOrgUnitPath' -and $PSCmdlet.ParameterSetName -eq 'ParentOrgUnitPath') {
             $PSBoundParameters['ParentOrgUnitPath'] = '/'
         }
-    }
-    Process {
         try {
             Write-Verbose "Creating OrgUnit '$Name'"
             $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.OrgUnit'

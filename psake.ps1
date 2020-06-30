@@ -132,7 +132,7 @@ task Compile -depends Clean {
     # Set remainder of PSM1 contents
     @"
 
-Import-GoogleSDK
+#Import-GoogleSDK
 
 if (`$global:PSGSuiteKey -and `$MyInvocation.BoundParameters['Debug']) {
     `$prevDebugPref = `$DebugPreference
@@ -486,7 +486,7 @@ $deployScriptBlock = {
         }
         $result = Invoke-RestMethod @uploadParams
     }
-    if (($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") -or $global:ForceDeploy -eq $true) {
+    if (($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -in @('master','main')) -or $global:ForceDeploy -eq $true) {
         if ($null -eq (Get-Module PoshTwit -ListAvailable)) {
             "    Installing PoshTwit module..."
             Install-Module PoshTwit -Scope CurrentUser
@@ -622,7 +622,7 @@ $deployScriptBlock = {
 
     }
     else {
-        Write-Host -ForegroundColor Magenta "Build system is not VSTS, commit message does not contain '!deploy' and/or branch is not 'master' -- skipping module update!"
+        Write-Host -ForegroundColor Magenta "Build system is not VSTS, commit message does not contain '!deploy' and/or branch is not (master|main) -- skipping module update!"
     }
 }
 

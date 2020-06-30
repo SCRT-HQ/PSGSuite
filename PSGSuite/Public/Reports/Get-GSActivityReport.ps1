@@ -88,14 +88,12 @@ function Get-GSActivityReport {
         [Int]
         $Limit = 0
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.reports.audit.readonly'
             ServiceType = 'Google.Apis.Admin.Reports.reports_v1.ReportsService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             if ($UserKey -notlike "*@*.*" -and $UserKey -cne 'all') {
                 $UserKey = "$($UserKey)@$($Script:PSGSuite.Domain)"

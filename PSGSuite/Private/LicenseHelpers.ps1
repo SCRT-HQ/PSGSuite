@@ -39,6 +39,7 @@ function Get-LicenseSkuHash {
     $_licenses = $_full.PSObject.Properties.Name | Sort-Object -Unique
     foreach ($_sku in $_licenses) {
         $_displayName = $_full.$_sku.displayName -replace '\W+','-'
+        $_result[$_sku] = $_sku
         $_result[$_displayName] = $_sku
         foreach ($_alias in $_full.$_sku.aliases) {
             $_result[$_alias] = $_sku
@@ -88,7 +89,11 @@ function Get-LicenseSkuFromDisplayName  {
     $_licenses = $_full.PSObject.Properties.Name | Sort-Object -Unique
     foreach ($_sku in $_licenses) {
         $_displayName = $_full.$_sku.displayName -replace '\W+','-'
+        $_result[$_sku] = $_sku
         $_result[$_displayName] = $_sku
+        foreach ($_alias in $_full.$_sku.aliases) {
+            $_result[$_alias] = $_sku
+        }
     }
     if ($Key) {
         $_result[$Key]
@@ -109,6 +114,7 @@ function Get-LicenseProductFromDisplayName {
     $_products = $_full.PSObject.Properties.Name | Sort-Object -Unique
     foreach ($_id in $_products) {
         $_friendlyname = $_full.$_id -replace '\W+','-'
+        $_result[$_id] = $_id
         $_result[$_friendlyname] = $_id
     }
     if ($Key) {

@@ -25,14 +25,12 @@ function Get-GSGroupSettings {
         [String[]]
         $Identity
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/apps.groups.settings'
             ServiceType = 'Google.Apis.Groupssettings.v1.GroupssettingsService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             foreach ($G in $Identity) {
                 Resolve-Email ([ref]$G) -IsGroup

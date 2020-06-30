@@ -50,7 +50,7 @@ function Update-GSGmailAutoForwardingSettings {
         [switch]
         $Enabled
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -63,8 +63,6 @@ function Update-GSGmailAutoForwardingSettings {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $body = New-Object 'Google.Apis.Gmail.v1.Data.AutoForwarding'
             foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {

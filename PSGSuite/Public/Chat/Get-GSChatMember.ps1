@@ -33,14 +33,12 @@ function Get-GSChatMember {
         [string[]]
         $Space
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/chat.bot'
             ServiceType = 'Google.Apis.HangoutsChat.v1.HangoutsChatService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         switch ($PSCmdlet.ParameterSetName) {
             Get {
                 foreach ($mem in $Member) {

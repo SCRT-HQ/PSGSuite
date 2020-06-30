@@ -63,7 +63,7 @@ function Get-GSResource {
         [Int]
         $Limit = 0
     )
-    Begin {
+    Process {
         if ($MyInvocation.InvocationName -eq 'Get-GSCalendarResourceList') {
             $Resource = 'Calendars'
         }
@@ -83,8 +83,6 @@ function Get-GSResource {
         else {
             'my_customer'
         }
-    }
-    Process {
         switch ($PSCmdlet.ParameterSetName) {
             Get {
                 foreach ($I in $Id) {

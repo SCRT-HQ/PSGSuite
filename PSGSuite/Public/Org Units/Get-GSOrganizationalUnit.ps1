@@ -40,7 +40,7 @@ function Get-GSOrganizationalUnit {
         [String]
         $SearchScope = 'All'
     )
-    Begin {
+    Process {
         if ($PSBoundParameters.Keys -contains 'SearchBase' -and $SearchBase -ne "/" -and $SearchScope -eq 'Base') {
             $serviceParams = @{
                 Scope       = 'https://www.googleapis.com/auth/admin.directory.orgunit'
@@ -48,8 +48,6 @@ function Get-GSOrganizationalUnit {
             }
             $service = New-GoogleService @serviceParams
         }
-    }
-    Process {
         try {
             if ($PSBoundParameters.Keys -contains 'SearchBase' -and $SearchBase -ne "/" -and $SearchScope -eq 'Base') {
                 foreach ($O in $SearchBase) {

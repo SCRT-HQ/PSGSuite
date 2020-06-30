@@ -32,7 +32,7 @@ function Remove-GSCalendarSubscription {
         [String[]]
         $CalendarId
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -45,8 +45,6 @@ function Remove-GSCalendarSubscription {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($calId in $CalendarID) {
             try {
                 if ($PSCmdlet.ShouldProcess("Unsubscribing user '$User' from Calendar '$($calId)'")) {

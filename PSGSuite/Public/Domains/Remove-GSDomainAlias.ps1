@@ -21,14 +21,12 @@ function Remove-GSDomainAlias {
         [String[]]
         $DomainAliasName
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.domain'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($alias in $DomainAliasName) {
             try {
                 if ($PSCmdlet.ShouldProcess("Removing Domain Alias '$domain'")) {

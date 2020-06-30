@@ -55,7 +55,7 @@
         [switch]
         $ReleaseResources
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.datatransfer'
             ServiceType = 'Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService'
@@ -75,8 +75,6 @@
             Write-Verbose "Resolving New Owner's UserId from '$NewOwnerUserId'"
             [bigint](Get-GSUser -User $NewOwnerUserId -Projection Basic -Verbose:$false | Select-Object -ExpandProperty id)
         }
-    }
-    Process {
         try {
             $body = New-Object 'Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.DataTransfer' -Property @{
                 OldOwnerUserId = $OldOwnerUserId

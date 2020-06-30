@@ -40,6 +40,9 @@ function New-GSAdminRole {
         $RoleDescription
     )
     Begin {
+        $privArray = New-Object 'System.Collections.Generic.List[Google.Apis.Admin.Directory.directory_v1.Data.Role+RolePrivilegesData]'
+    }
+    Process {
         if ($PSCmdlet.ParameterSetName -eq 'Get') {
             $serviceParams = @{
                 Scope       = 'https://www.googleapis.com/auth/admin.directory.rolemanagement'
@@ -53,9 +56,6 @@ function New-GSAdminRole {
         else {
             'my_customer'
         }
-        $privArray = New-Object 'System.Collections.Generic.List[Google.Apis.Admin.Directory.directory_v1.Data.Role+RolePrivilegesData]'
-    }
-    Process {
         foreach ($Privilege in $RolePrivileges) {
             $privArray.Add($Privilege)
         }

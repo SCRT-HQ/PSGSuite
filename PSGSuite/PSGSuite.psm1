@@ -1,5 +1,5 @@
-Param
-(
+[CmdletBinding()]
+Param (
     [parameter(Position = 0,ValueFromRemainingArguments = $true)]
     [AllowNull()]
     [Byte[]]

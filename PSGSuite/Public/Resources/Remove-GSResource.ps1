@@ -2,19 +2,19 @@ function Remove-GSResource {
     <#
     .SYNOPSIS
     Removes a resource
-    
+
     .DESCRIPTION
     Removes a resource
-    
+
     .PARAMETER ResourceId
     The Resource Id of the Resource *Calendar* you would like to remove
-    
+
     .PARAMETER BuildingId
     The Building Id of the Resource *Building* you would like to remove
-    
+
     .PARAMETER FeatureKey
     The Feature Key of the Resource *Feature* you would like to remove
-    
+
     .EXAMPLE
     Remove-GSResource -ResourceId Train01
 
@@ -35,14 +35,12 @@ function Remove-GSResource {
         [String[]]
         $FeatureKey
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.resource.calendar'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             switch ($PSCmdlet.ParameterSetName) {
                 Calendars {
