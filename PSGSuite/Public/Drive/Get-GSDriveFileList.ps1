@@ -120,12 +120,7 @@ function Get-GSDriveFileList {
         }
     }
     Process {
-        if ($User -ceq 'me') {
-            $User = $Script:PSGSuite.AdminEmail
-        }
-        elseif ($User -notlike "*@*.*") {
-            $User = "$($User)@$($Script:PSGSuite.Domain)"
-        }
+        Resolve-Email ([ref]$User)
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/drive'
             ServiceType = 'Google.Apis.Drive.v3.DriveService'

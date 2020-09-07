@@ -33,11 +33,12 @@ function Install-NuGetDependencies {
         foreach ($search in $AddlSearchString) {
             Write-BuildLog "Finding NuGet packages matching SearchString: $search"
             Register-PackageSource -Name NuGet -Location https://www.nuget.org/api/v2 -ProviderName NuGet -Force -Trusted -ForceBootstrap
-            PackageManagement\Find-Package $search -Source NuGet -AllowPrereleaseVersions:$false -Verbose | Where-Object {$_.Name -in $packagesToInstall.BaseName} | ForEach-Object {
+            PackageManagement\Find-Package $search -Source NuGet -AllowPrereleaseVersions:$false | Where-Object {$_.Name -in $packagesToInstall.BaseName} | ForEach-Object {
                 Write-BuildLog "Matched package: $($_.Name)"
                 $nugHash[$_.Name] = $_
             }
         }
+        $webClient = New-Object System.Net.WebClient
         foreach ($inst in $packagesToInstall) {
             try {
                 $pkg = if ($nugHash.ContainsKey($inst.BaseName)) {
@@ -64,7 +65,8 @@ function Install-NuGetDependencies {
                 $pkgUrl = 'https://www.nuget.org/api/v2/package/'+ ($pkg.TagId.Replace('#','/'))
                 $i = 0
                 do {
-                    Invoke-WebRequest -Uri $pkgUrl -OutFile $zipPath
+                    $webClient.DownloadFile($pkgUrl,$zipPath)
+                    #Invoke-WebRequest -Uri $pkgUrl -OutFile $zipPath
                     $i++
                 }
                 until ((Test-Path $zipPath) -or $i -ge 5)
@@ -87,7 +89,7 @@ function Install-NuGetDependencies {
                             [System.IO.Path]::Combine($extPath,'lib',$target)
                         }
                         if (Test-Path $sourcePath) {
-                            Get-ChildItem $sourcePath -Filter '*.dll' | Copy-Item -Destination $targetPath -Force -Verbose
+                            Get-ChildItem $sourcePath -Filter '*.dll' | Copy-Item -Destination $targetPath -Force
                         }
                         else {
                             Write-BuildError "$($pkg.Name) was not downloaded successfully from NuGet!" -ErrorAction Stop
@@ -108,6 +110,7 @@ function Install-NuGetDependencies {
                 }
             }
         }
+        $webClient.Dispose()
     }
     finally {
         if (Test-Path $dllStgPath) {

@@ -49,56 +49,6 @@ function Get-PSGSuiteConfig {
         [Switch]
         $NoImport
     )
-    Begin {
-        function Decrypt {
-            param($String)
-            if ($String -is [System.Security.SecureString]) {
-                [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
-                    [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
-                        $String))
-            }
-            else {
-                $String
-            }
-        }
-        $outputProps = @(
-            @{l = 'ConfigName';e = {$choice}},
-            @{l = 'P12KeyPath';e = {Decrypt $_.P12KeyPath}},
-            'P12Key',
-            @{l = 'ClientSecretsPath';e = {Decrypt $_.ClientSecretsPath}},
-            @{l = 'ClientSecrets';e = {Decrypt $_.ClientSecrets}},
-            @{l = 'AppEmail';e = {Decrypt $_.AppEmail}},
-            @{l = 'AdminEmail';e = {Decrypt $_.AdminEmail}},
-            @{l = 'CustomerID';e = {Decrypt $_.CustomerID}},
-            @{l = 'Domain';e = {Decrypt $_.Domain}},
-            @{l = 'Preference';e = {Decrypt $_.Preference}},
-            @{l = 'ServiceAccountClientID';e = {Decrypt $_.ServiceAccountClientID}},
-            @{l = 'Chat';e = {
-                $dict = @{
-                    Webhooks = @{}
-                    Spaces = @{}
-                }
-                foreach ($key in $_.Chat.Webhooks.Keys) {
-                    $dict['Webhooks'][$key] = (Decrypt $_.Chat.Webhooks[$key])
-                }
-                foreach ($key in $_.Chat.Spaces.Keys) {
-                    $dict['Spaces'][$key] = (Decrypt $_.Chat.Spaces[$key])
-                }
-                $dict
-            }},
-            @{l = 'ConfigPath';e = {
-                if ($_.ConfigPath) {
-                    $_.ConfigPath
-                }
-                elseif ($Path) {
-                    (Resolve-Path $Path).Path
-                }
-                else {
-                    $null
-                }
-            }}
-        )
-    }
     Process {
         $script:ConfigScope = $Scope
         switch ($PSCmdlet.ParameterSetName) {
@@ -127,7 +77,13 @@ function Get-PSGSuiteConfig {
                 }
             }
         }
-        $decryptedConfig = $encConf | Select-Object -Property $outputProps
+        $decryptParams = @{
+            ConfigName = $choice
+        }
+        if ($Path) {
+            $decryptParams['ConfigPath'] = $Path
+        }
+        $decryptedConfig = $encConf | Get-GSDecryptedConfig @decryptParams
         Write-Verbose "Retrieved configuration '$choice'"
         if (!$NoImport) {
             $script:PSGSuite = $decryptedConfig

@@ -9,7 +9,7 @@
     "Name": "Google.Apis.dll",
     "BaseName": "Google.Apis",
     "Target": "Latest",
-    "LatestVersion": "1.41.1"
+    "LatestVersion": "1.44.0"
   },
   {
     "Name": "Google.Apis.Admin.DataTransfer.datatransfer_v1.dll",
@@ -32,12 +32,6 @@
   {
     "Name": "Google.Apis.Auth.dll",
     "BaseName": "Google.Apis.Auth",
-    "Target": "Latest",
-    "LatestVersion": "1.41.1"
-  },
-  {
-    "Name": "Google.Apis.Auth.PlatformServices.dll",
-    "BaseName": "Google.Apis.Auth.PlatformServices",
     "Target": "Latest",
     "LatestVersion": "1.41.1"
   },
@@ -114,12 +108,6 @@
     "LatestVersion": "1.41.1.1715"
   },
   {
-    "Name": "Google.Apis.PlatformServices.dll",
-    "BaseName": "Google.Apis.PlatformServices",
-    "Target": "Latest",
-    "LatestVersion": "1.41.1"
-  },
-  {
     "Name": "Google.Apis.Script.v1.dll",
     "BaseName": "Google.Apis.Script.v1",
     "Target": "Latest",
@@ -144,21 +132,15 @@
     "LatestVersion": "1.41.1.1713"
   },
   {
-    "Name": "Google.Apis.Urlshortener.v1.dll",
-    "BaseName": "Google.Apis.Urlshortener.v1",
-    "Target": "Latest",
-    "LatestVersion": "1.41.1.138"
-  },
-  {
     "Name": "MimeKit.dll",
     "BaseName": "MimeKit",
-    "Target": "1.10.1.0",
+    "Target": "Latest",
     "LatestVersion": "1.10.1.0"
   },
   {
     "Name": "Newtonsoft.Json.dll",
     "BaseName": "Newtonsoft.Json",
-    "Target": "10.0.3",
-    "LatestVersion": "10.0.3"
+    "Target": "Latest",
+    "LatestVersion": "12.0.3"
   }
 ]

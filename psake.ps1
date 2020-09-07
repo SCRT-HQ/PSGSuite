@@ -340,7 +340,32 @@ Task Import -Depends Compile {
 } -description 'Imports the newly compiled module'
 
 $pesterScriptBlock = {
-    'Pester' | Resolve-Module -UpdateModules -Verbose
+    $dependencies = @(
+        @{
+            Name           = 'Pester'
+            MinimumVersion = '4.10.1'
+            MaximumVersion = '4.99.99'
+        }
+        @{
+            Name           = 'Assert'
+            MinimumVersion = '0.9.5'
+        }
+    )
+    foreach ($module in $dependencies) {
+        Write-BuildLog "[$($module.Name)] Resolving"
+        try {
+            if ($imported = Get-Module $($module.Name)) {
+                Write-BuildLog "[$($module.Name)] Removing imported module"
+                $imported | Remove-Module
+            }
+            Import-Module @module
+        }
+        catch {
+            Write-BuildLog "[$($module.Name)] Installing missing module"
+            Install-Module @module -Repository PSGallery
+            Import-Module @module
+        }
+    }
     Push-Location
     Set-Location -PassThru $outputModDir
     if (-not $ENV:BHProjectPath) {
@@ -521,6 +546,24 @@ $deployScriptBlock = {
                     "    [SKIPPED] Deployment of version [$($versionToDeploy)] to PSGallery"
                 }
                 $commitId = git rev-parse --verify HEAD
+                if ($ENV:BHBuildSystem -eq 'VSTS' -and -not [String]::IsNullOrEmpty($env:TwitterAccessSecret) -and -not [String]::IsNullOrEmpty($env:TwitterAccessToken) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerKey) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerSecret)) {
+                    "    Publishing tweet about new release..."
+                    $manifest = Import-PowerShellDataFile -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")
+                    $text = "#$($env:BHProjectName) v$($versionToDeploy) is now available on the #PSGallery! https://www.powershellgallery.com/packages/$($env:BHProjectName)/$($versionToDeploy) #PowerShell"
+                    $manifest.PrivateData.PSData.Tags | Foreach-Object {
+                        $text += " #$($_)"
+                    }
+                    if ($text.Length -gt 280) {
+                        "    Trimming [$($text.Length - 280)] extra characters from tweet text to get to 280 character limit..."
+                        $text = $text.Substring(0,280)
+                    }
+                    "    Tweet text: $text"
+                    Publish-Tweet -Tweet $text -ConsumerKey $env:TwitterConsumerKey -ConsumerSecret $env:TwitterConsumerSecret -AccessToken $env:TwitterAccessToken -AccessSecret $env:TwitterAccessSecret
+                    "    Tweet successful!"
+                }
+                else {
+                    "    [SKIPPED] Twitter update of new release"
+                }
                 if (-not [String]::IsNullOrEmpty($env:GitHubPAT)) {
                     "    Creating Release ZIP..."
                     $zipPath = [System.IO.Path]::Combine($PSScriptRoot,"$($env:BHProjectName).zip")
@@ -556,7 +599,7 @@ $deployScriptBlock = {
                         CommitId         = $commitId
                         ReleaseNotes     = $ReleaseNotes
                         ArtifactPath     = $zipPath
-                        GitHubUsername   = 'scrthq'
+                        GitHubUsername   = 'SCRT-HQ'
                         GitHubRepository = $env:BHProjectName
                         GitHubApiKey     = $env:GitHubPAT
                         Draft            = $false
@@ -566,24 +609,6 @@ $deployScriptBlock = {
                 }
                 else {
                     "    [SKIPPED] Publishing Release v$($versionToDeploy) @ commit Id [$($commitId)] to GitHub"
-                }
-                if ($ENV:BHBuildSystem -eq 'VSTS' -and -not [String]::IsNullOrEmpty($env:TwitterAccessSecret) -and -not [String]::IsNullOrEmpty($env:TwitterAccessToken) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerKey) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerSecret)) {
-                    "    Publishing tweet about new release..."
-                    $manifest = Import-PowerShellDataFile -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")
-                    $text = "#$($env:BHProjectName) v$($versionToDeploy) is now available on the #PSGallery! https://www.powershellgallery.com/packages/$($env:BHProjectName)/$($versionToDeploy) #PowerShell"
-                    $manifest.PrivateData.PSData.Tags | Foreach-Object {
-                        $text += " #$($_)"
-                    }
-                    if ($text.Length -gt 280) {
-                        "    Trimming [$($text.Length - 280)] extra characters from tweet text to get to 280 character limit..."
-                        $text = $text.Substring(0,280)
-                    }
-                    "    Tweet text: $text"
-                    Publish-Tweet -Tweet $text -ConsumerKey $env:TwitterConsumerKey -ConsumerSecret $env:TwitterConsumerSecret -AccessToken $env:TwitterAccessToken -AccessSecret $env:TwitterAccessSecret
-                    "    Tweet successful!"
-                }
-                else {
-                    "    [SKIPPED] Twitter update of new release"
                 }
             }
             catch {
