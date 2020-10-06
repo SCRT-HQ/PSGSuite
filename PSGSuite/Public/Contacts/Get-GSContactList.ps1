@@ -14,6 +14,9 @@ Function Get-GSContactList {
     .EXAMPLE
     Get-GSContactList -User user@domain.com
 
+    .NOTES
+    Updated: 6 Oct 2020 by Chris O'Sullivan / CompareCloud 
+    Updates: Added Organization details to output object
     #>
     [cmdletbinding()]
     Param
@@ -60,6 +63,9 @@ Function Get-GSContactList {
                             FamilyName     = $i.name.familyName
                             EmailAddresses = $(if($i.email.address){$i.email.address}else{$null})
                             PhoneNumber    = $i.phonenumber
+                            JobTitle       = $i.organization.orgTitle           #added by CompareCloud 6 Oct 2020
+                            Department     = $i.organization.orgDepartment      #added by CompareCloud 6 Oct 2020
+                            CompanyName    = $i.organization.orgName            #added by CompareCloud 6 Oct 2020
                             Updated        = $i.updated
                             Edited         = $i.edited.'#text'
                             Path           = $(if($i.email.rel){$i.email.rel}else{$null})
