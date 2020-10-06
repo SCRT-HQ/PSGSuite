@@ -59,6 +59,7 @@
                 Write-Verbose "Successfully removed delegate access for user '$User's inbox for delegate '$Delegate'"
             }
             catch {
+                $origError = $_
                 if ($ErrorActionPreference -eq 'Stop') {
                     $PSCmdlet.ThrowTerminatingError($origError)
                 }
