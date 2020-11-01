@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+    * [2.36.5 - 2020-11-01](#2365---2020-11-01)
     * [2.36.4 - 2020-03-20](#2364---2020-03-20)
     * [2.36.3 - 2020-03-20](#2363---2020-03-20)
     * [2.36.2 - 2020-03-02](#2362---2020-03-02)
@@ -110,6 +111,11 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.36.5 - 2020-11-01
+
+* [Issue #331](https://github.com/scrthq/PSGSuite/issues/331)
+    * Updated many inaccurate parameters in `Set-GSGroupSettings.ps1` due to Google Group changes upstream
 
 ## 2.36.4 - 2020-03-20
 
