@@ -6,9 +6,6 @@ function Set-GSGroupSettings {
     .DESCRIPTION
     Hard-sets the settings for a group
     
-    Reference:
-    https://developers.google.com/admin-sdk/groups-settings/v1/reference/groups
-
     .PARAMETER Identity
     The primary email or unique Id of the group to set
 
