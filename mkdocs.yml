@@ -7,6 +7,7 @@ site_url: 'https://psgsuite.io'
 # Repository
 repo_name: 'scrthq/PSGSuite'
 repo_url: 'https://github.com/scrthq/PSGSuite'
+edit_uri: 'edit/main/docs'
 
 # Copyright
 copyright: 'Copyright &copy; 2015 - 2019 Nate Ferrell'
