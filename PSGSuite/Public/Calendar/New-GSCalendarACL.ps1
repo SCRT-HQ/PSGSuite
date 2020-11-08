@@ -117,9 +117,7 @@ function New-GSCalendarAcl {
                     Write-Verbose "Inserting new ACL for type '$Type' with value '$Value' in role '$Role'  on calendar '$calId' for user '$U'"
                     $body.Scope = $scopeData
                     $request = $service.Acl.Insert($body, $calId)
-                    if ($DisableNotifications.IsPresent){
-                        $request.sendNotifications = $false
-                    }
+                    $request.sendNotifications = -not $DisableNotifications
                     $request.Execute()
                 }
                 catch {
