@@ -6,6 +6,10 @@ function Edit-GSPresentation {
     .DESCRIPTION
     Updates a Presentation. Accepts update requests created by New-GSPresentationUpdateRequest
 
+    .PARAMETER PresentationId
+
+    The uniqe Id of the Presentation
+
     .PARAMETER Update
     The update requests, as created by New-GSPresentationUpdateRequest. Can either be passed as a list of updates, or updates can piped into the command
 
