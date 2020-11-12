@@ -162,7 +162,7 @@ Function Sync-GSCourse {
 
         Write-Host "Processing: $CourseAlias"
 
-        # Try and get the course direct from 
+        # Try and get the course direct from Google Classroom
         If ($null -eq $CourseID){
             Write-Verbose "Course '$CourseAlias' not found in cache"
             Try {
@@ -266,7 +266,7 @@ Function Sync-GSCourse {
         $StudentsToRemove = @()
         $TeachersToAdd = @()
         $TeachersToRemove = @()
-        $RemoveParameters = @{}
+        $MembershipUpdated = $False
 
         Compare-Object -ReferenceObject $Student -DifferenceObject $CourseCache[$CourseId].Student | ForEach-Object {
             If ($_.SideIndicator -eq "<="){
@@ -275,6 +275,8 @@ Function Sync-GSCourse {
                 $StudentsToRemove += $_.inputObject
             }
         }
+        $TempTeacher = $Teacher.Clone()
+        $TempTeacher = $TempTeacher += $OwnerID | Select-Object -Unique
         Compare-Object -ReferenceObject $Teacher -DifferenceObject $CourseCache[$CourseId].Teacher | ForEach-Object {
             If ($_.SideIndicator -eq "<="){
                 $TeachersToAdd += $_.inputObject
@@ -283,39 +285,11 @@ Function Sync-GSCourse {
             }
         }
 
-        If ($StudentsToAdd.count){
-            Try {
-                Add-GSCourseParticipant -CourseId $CourseAlias -Student $StudentsToAdd -ErrorAction Stop -Verbose:$Verbose | Select-Object -ExpandProperty Profile | ForEach-Object {
-                    $CourseCache[$CourseID].Student += $_.EmailAddress
-                }
-            } catch {
-                if ($ErrorActionPreference -eq 'Stop') {
-                    $PSCmdlet.ThrowTerminatingError($_)
-                } else {
-                    Write-Error $_
-                }
-            }
-        }
-
-        If ($TeachersToAdd.count){
-            Try {
-                Add-GSCourseParticipant -CourseId $CourseAlias -Teacher $TeachersToAdd -ErrorAction Stop -Verbose:$Verbose | Select-Object -ExpandProperty Profile | ForEach-Object {
-                    $CourseCache[$CourseID].Teacher += $_.EmailAddress
-                }
-            } catch {
-                if ($ErrorActionPreference -eq 'Stop') {
-                    $PSCmdlet.ThrowTerminatingError($_)
-                } else {
-                    Write-Error $_
-                }
-            }
-        }
-
         If ($StudentsToRemove.count){
             If ($RemoveStudents){
                 Try {
-                    Remove-GSCourseParticipant -CourseId $CourseAlias -Student $StudentsToAdd -Confirm:$Confirm -ErrorAction Stop -Verbose:$Verbose
-                    $CourseCache[$CourseID].Student = Compare-Object -ReferenceObject $StudentsToRemove -DifferenceObject $CourseCache[$CourseID].Student -PassThru
+                    $MembershipUpdated = $True
+                    Remove-GSCourseParticipant -CourseId $CourseAlias -Student $StudentsToRemove -Confirm:$Confirm -ErrorAction Stop -Verbose:$Verbose | Out-Null
                 } catch {
                     if ($ErrorActionPreference -eq 'Stop') {
                         $PSCmdlet.ThrowTerminatingError($_)
@@ -331,8 +305,8 @@ Function Sync-GSCourse {
         If ($TeachersToRemove.count){
             If ($RemoveTeachers){
                 Try {
-                    Remove-GSCourseParticipant -CourseId $CourseAlias -Teacher $TeachersToAdd -Confirm:$Confirm -ErrorAction Stop -Verbose:$Verbose
-                    $CourseCache[$CourseID].Teacher = Compare-Object -ReferenceObject $TeachersToRemove -DifferenceObject $CourseCache[$CourseID].Teacher -PassThru
+                    $MembershipUpdated = $True
+                    Remove-GSCourseParticipant -CourseId $CourseAlias -Teacher $TeachersToRemove -Confirm:$Confirm -ErrorAction Stop -Verbose:$Verbose | Out-Null
                 } catch {
                 if ($ErrorActionPreference -eq 'Stop') {
                     $PSCmdlet.ThrowTerminatingError($_)
@@ -345,11 +319,47 @@ Function Sync-GSCourse {
             }
         }
 
-        
+        If ($StudentsToAdd.count){
+            Try {
+                $MembershipUpdated = $True
+                Add-GSCourseParticipant -CourseId $CourseAlias -Student $StudentsToAdd -ErrorAction Stop -Verbose:$Verbose | Out-Null
+            } catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                } else {
+                    Write-Error $_
+                }
+            }
+        }
+
+        If ($TeachersToAdd.count){
+            Try {
+                $MembershipUpdated = $True
+                Add-GSCourseParticipant -CourseId $CourseAlias -Teacher $TeachersToAdd -ErrorAction Stop -Verbose:$Verbose | Out-Null
+            } catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                } else {
+                    Write-Error $_
+                }
+            }
+        }
+
+        # Update the course properties
         $UpdateParameters = @{}
         ForEach ($Parameter in @('Name', 'OwnerID', 'Section', 'Description', 'DescriptionHeading', 'Room', 'CourseState')){
-            If ($PSBoundParameters[$Parameter] -cne $CourseCache[$CourseID].$Parameter){
-                $UpdateParameters[$Parameter] = $PSBoundParameters[$Parameter]
+            Switch ($Parameter){
+            OwnerID {
+                If ($OwnerID -ne $CourseCache[$CourseID].OwnerID){
+                    $UpdateParameters["OwnerID"] = $Global:GSUserCache[$OwnerID].user
+                    $MembershipUpdated = $True
+                }
+            }
+            Default {
+                    If ($PSBoundParameters[$Parameter] -cne $CourseCache[$CourseID].$Parameter){
+                        $UpdateParameters[$Parameter] = $PSBoundParameters[$Parameter]
+                    }
+                }
             }
         }
 
@@ -380,6 +390,28 @@ Function Sync-GSCourse {
                 }
             }
         }
+
+        #Update the cached membership
+        If ($MembershipUpdated){
+            Try {
+                $CourseCache[$CourseID].Student = @()
+                Get-GSCourseParticipant -CourseId $CourseAlias -Role Student -ErrorAction Stop -Verbose:$Verbose | Select-Object -ExpandProperty Profile | ForEach-Object {
+                    $CourseCache[$CourseID].Student += $_.EmailAddress
+                }
+                $CourseCache[$CourseID].Teacher = @()
+                Get-GSCourseParticipant -CourseId $CourseAlias -Role Teacher -ErrorAction Stop -Verbose:$Verbose | Select-Object -ExpandProperty Profile | ForEach-Object {
+                    $CourseCache[$CourseID].Teacher += $_.EmailAddress
+                }
+            } catch {
+                if ($ErrorActionPreference -eq 'Stop') {
+                    $PSCmdlet.ThrowTerminatingError($_)
+                } else {
+                    Write-Error $_
+                }
+            }
+        }
+
+
         
         If ($PassThru.IsPresent){
             $CourseCache[$CourseID]
