@@ -1,4 +1,11 @@
-﻿Function Sync-GSCourse {
+﻿<#
+ TODO
+
+ -support changing student to teacher and vice versa.
+ -Support chaning owner
+#>
+
+Function Sync-GSCourse {
     <#
     .SYNOPSIS
     Syncs one or more courses.
@@ -18,7 +25,6 @@
         [String]
         $Name,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
-        [Alias('Teacher')]
         [String]
         $OwnerId,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
@@ -72,9 +78,14 @@
         $PassThru
     )
     Begin {
+        If ($VerbosePreference -eq "Continue"){
+            $verbose = $True
+        } else {
+            $Verbose = $False
+        }
         
         If ($null -eq $Global:GSUserCache){
-            Sync-GSUserCache
+            Sync-GSUserCache -Verbose:$Verbose
         }
 
         # Initialise a hashtable to store all of the cached courses and aliases
@@ -86,7 +97,7 @@
             If (Test-Path $CachePath){
                 write-host "Loading cached courses from '$CachePath'"
                 Try {
-                    Import-CSV -Path $CachePath | ForEach-Object {
+                    Import-CSV -Path $CachePath -verbose:$verbose | ForEach-Object {
                         $Course = New-Object PSObject -Property @{
                             Name = $_.Name
                             OwnerID = $_.OwnerID
@@ -100,14 +111,14 @@
                             Student = @()
                             Teacher = @()
                         }
-                        $Alias.Split(" ") | ForEach-Object {
+                        $_.Alias.Split(";") | ForEach-Object {
                             $Course.Alias += $_
                             $AliasCache[$_] = $Course.ID
                         }
-                        $Student.Split(" ") | ForEach-Object {
+                        $_.Student.Split(";") | ForEach-Object {
                             $Course.Student += $_
                         }
-                        $Teacher.Split(" ") | ForEach-Object {
+                        $_.Teacher.Split(";") | ForEach-Object {
                             $Course.Teacher += $_
                         }
                         $CourseCache[$Course.ID] = $Course
@@ -121,14 +132,41 @@
                 }
             }
         }
+        Write-Verbose "Loaded $($CourseCache.Count) courses and $($AliasCache.count) aliases from cache."
+        
+    }
 
-        If ($CourseCache.count -eq 0){
-            # No courses were loaded from the course cache
-            # Retrieve the courses directly from Google
-            
-            Write-Host "Loading courses from Google"
+    Process {
+
+        Trap {
+            $_
+            write-host "Error"
+        }
+        
+        # Get the course ID from the supplied alias/ID in the cache.
+        $CourseID = $null
+        $CourseAlias = $null
+        If ($Id -match "^[0-9]+$"){
+            If ($CourseCache.ContainsKey($Id)){
+                $CourseID = $Id
+            }
+            $CourseAlias = $Id
+        } else {
+            If ($Id -match "^d:"){
+                $CourseAlias = $Id
+            } else {
+                $CourseAlias = "d:$Id"
+            }
+            $CourseID = $AliasCache[$CourseAlias]
+        }
+
+        Write-Host "Processing: $CourseAlias"
+
+        # Try and get the course direct from 
+        If ($null -eq $CourseID){
+            Write-Verbose "Course '$CourseAlias' not found in cache"
             Try {
-                Get-GSCourse | ForEach-Object {
+                Get-GSCourse -ErrorAction Stop -id $CourseAlias -Verbose:$Verbose | ForEach-Object {
                     $Course = New-Object PSObject -Property @{
                         Name = $_.Name
                         OwnerID = $Global:GSUserCache[$_.OwnerID].user
@@ -142,56 +180,55 @@
                         Student = @()
                         Teacher = @()
                     }
-                    Get-GSCourseAlias -CourseId $_.ID | Select-Object -ExpandProperty Aliases | ForEach-Object {
+                    Get-GSCourseAlias -CourseId $_.ID -ErrorAction Stop -Verbose:$Verbose | Select-Object -ExpandProperty Aliases | ForEach-Object {
                         $Course.Alias += $_.Alias
                         $AliasCache[$_.Alias] = $Course.ID
                     }
 
-                    Get-GSCourseParticipant -CourseId $_.ID -Role Student | Select-Object -ExpandProperty Profile | ForEach-Object {
+                    Get-GSCourseParticipant -CourseId $_.ID -Role Student -ErrorAction Stop -Verbose:$Verbose | Select-Object -ExpandProperty Profile | ForEach-Object {
                         $Course.Student += $_.EmailAddress
                     }
-                    Get-GSCourseParticipant -CourseId $_.ID -Role Teacher | Select-Object -ExpandProperty Profile | ForEach-Object {
+                    Get-GSCourseParticipant -CourseId $_.ID -Role Teacher -ErrorAction Stop -Verbose:$Verbose | Select-Object -ExpandProperty Profile | ForEach-Object {
                         $Course.Teacher += $_.EmailAddress
                     }
                     $CourseCache[$Course.ID] = $Course
+                    $CourseID = $Course.ID
                 }
             } catch {
-                if ($ErrorActionPreference -eq 'Stop') {
-                    $PSCmdlet.ThrowTerminatingError($_)
-                } else {
-                    Write-Error $_
-                }
+                Switch -regex ($_.exception.message){
+                    "Message\[Requested entity was not found\.\]" {
+                        write-verbose "Course '$CourseAlias' not found in Google Classroom"
+                    }
+                    Default {
+                        if ($ErrorActionPreference -eq 'Stop') {
+                            $PSCmdlet.ThrowTerminatingError($_)
+                        } else {
+                            Write-Error $_
+                        }
+                    }
+                }   
             }
         }
 
-        Write-Verbose "Loaded $($CourseCache.Count) courses with $($AliasCache.count) aliases."
-        
-    }
-
-    Process {
-        
-        Write-Host "Processing: $ID"
-
-        # Get the course ID from the supplied alias/ID
-        If ($Id -match "[0-9]+"){
-            If ($CourseCache.ContainsKey($Id)){
-                $CourseID = $Id
-            } else {
-                # The course does not exist and an alias was not specified. Course cannot be created.
-                 write-warning "Unable to create course '$Id'. An alias value was not specified. Only courses with an Alias value can be created."
-                # The course does not exist. No point executing the remaining logic.
-                Return
-            }
-        } else {
-            $CourseID = $AliasCache[$Id]
-        }
 
         # Create non-existant courses
         If ($null -eq $CourseID){
             #Create the course now and add the course users further below.
-            If ($CreateCourses.IsPresent){
+            If ($CreateCourses){
+                
+                If ($CourseAlias -match "^[0-9]+$"){
+                    write-warning "Course '$CourseAlias' cannot be created. Please specify an alias string instead of an ID number."
+                    Return
+                }
+                
                 Try {
-                    New-GSCourse -Name $Name -OwnerId $OwnerId -Id $Id -Section $Section -DescriptionHeading $DescriptionHeading -Description $Description -Room $Room -User $OwnerId | ForEach-Object {
+                    $Params = @{}
+                    ForEach ($Param in @('Section', 'DescriptionHeading', 'Description', 'Room')){
+                        If ($PSBoundParameters[$Param]){
+                            $Params[$Param] = $PSBoundParameters[$Param]
+                        }    
+                    }
+                    New-GSCourse @Params -Name $Name -OwnerId $OwnerId -Id $CourseAlias -User $OwnerId -ErrorAction Stop -Verbose:$Verbose | ForEach-Object {
                         $Course = New-Object PSObject -Property @{
                             Name = $_.Name
                             OwnerID = $Global:GSUserCache[$_.OwnerID].user
@@ -201,13 +238,13 @@
                             DescriptionHeading = $_.DescriptionHeading
                             Room = $_.Room
                             CourseState = $_.CourseState
-                            Alias = @($ID)
+                            Alias = @($CourseAlias)
                             Student = @()
                             Teacher = @()
                         }
                         $Course.Teacher += $Course.OwnerID
                         $CourseCache[$Course.ID] = $Course
-                        $AliasCache[$ID] = $Course.ID
+                        $AliasCache[$CourseAlias] = $Course.ID
                         $CourseID = $Course.ID
                     }
                 } catch {
@@ -218,7 +255,7 @@
                     }
                 }
             } else {
-                write-warning "Unable to create course '$Id'. The -createCourse switch is not present."
+                write-warning "Unable to create course '$CourseAlias'. The -createCourse switch is not present."
                 # The course does not exist. No point executing the remaining logic.
                 Return
             }      
@@ -231,14 +268,14 @@
         $TeachersToRemove = @()
         $RemoveParameters = @{}
 
-        Compare-Object -ReferenceObject $Student -DifferenceObject $CourseCache[$Id].Student | ForEach-Object {
+        Compare-Object -ReferenceObject $Student -DifferenceObject $CourseCache[$CourseId].Student | ForEach-Object {
             If ($_.SideIndicator -eq "<="){
                 $StudentsToAdd += $_.inputObject
             } else {
                 $StudentsToRemove += $_.inputObject
             }
         }
-        Compare-Object -ReferenceObject $Teacher -DifferenceObject $CourseCache[$Id].Teacher | ForEach-Object {
+        Compare-Object -ReferenceObject $Teacher -DifferenceObject $CourseCache[$CourseId].Teacher | ForEach-Object {
             If ($_.SideIndicator -eq "<="){
                 $TeachersToAdd += $_.inputObject
             } else {
@@ -248,7 +285,7 @@
 
         If ($StudentsToAdd.count){
             Try {
-                Add-GSCourseParticipant -CourseId $CourseID -Student $StudentsToAdd | Select-Object -ExpandProperty Profile | ForEach-Object {
+                Add-GSCourseParticipant -CourseId $CourseAlias -Student $StudentsToAdd -ErrorAction Stop -Verbose:$Verbose | Select-Object -ExpandProperty Profile | ForEach-Object {
                     $CourseCache[$CourseID].Student += $_.EmailAddress
                 }
             } catch {
@@ -262,7 +299,7 @@
 
         If ($TeachersToAdd.count){
             Try {
-                Add-GSCourseParticipant -CourseId $CourseID -Teacher $TeachersToAdd | Select-Object -ExpandProperty Profile | ForEach-Object {
+                Add-GSCourseParticipant -CourseId $CourseAlias -Teacher $TeachersToAdd -ErrorAction Stop -Verbose:$Verbose | Select-Object -ExpandProperty Profile | ForEach-Object {
                     $CourseCache[$CourseID].Teacher += $_.EmailAddress
                 }
             } catch {
@@ -275,9 +312,9 @@
         }
 
         If ($StudentsToRemove.count){
-            If ($RemoveStudents.IsPresent){
+            If ($RemoveStudents){
                 Try {
-                    Remove-GSCourseParticipant -CourseId $CourseID -Student $StudentsToAdd -WhatIf:$WhatIf -Confirm:$Confirm
+                    Remove-GSCourseParticipant -CourseId $CourseAlias -Student $StudentsToAdd -Confirm:$Confirm -ErrorAction Stop -Verbose:$Verbose
                     $CourseCache[$CourseID].Student = Compare-Object -ReferenceObject $StudentsToRemove -DifferenceObject $CourseCache[$CourseID].Student -PassThru
                 } catch {
                     if ($ErrorActionPreference -eq 'Stop') {
@@ -287,14 +324,14 @@
                     }
                 }
             } else {
-                Write-Warning "Unable to remove $($StudentsToRemove.count) students from course '$Id'. The -RemoveStudents switch is not present."
+                Write-Warning "Unable to remove $($StudentsToRemove.count) students from course '$CourseAlias'. The -RemoveStudents switch is not present."
             }
         }
 
         If ($TeachersToRemove.count){
-            If ($RemoveTeachers.IsPresent){
+            If ($RemoveTeachers){
                 Try {
-                    Remove-GSCourseParticipant -CourseId $CourseID -Teacher $TeachersToAdd -whatif:$WhatIf -Confirm:$Confirm
+                    Remove-GSCourseParticipant -CourseId $CourseAlias -Teacher $TeachersToAdd -Confirm:$Confirm -ErrorAction Stop -Verbose:$Verbose
                     $CourseCache[$CourseID].Teacher = Compare-Object -ReferenceObject $TeachersToRemove -DifferenceObject $CourseCache[$CourseID].Teacher -PassThru
                 } catch {
                 if ($ErrorActionPreference -eq 'Stop') {
@@ -304,7 +341,7 @@
                 }
             }
             } else {
-                Write-Warning "Unable to remove $($TeachersToRemove.count) teachers from course '$Id'. The -RemoveTeachers switch is not present."
+                Write-Warning "Unable to remove $($TeachersToRemove.count) teachers from course '$CourseAlias'. The -RemoveTeachers switch is not present."
             }
         }
 
@@ -317,15 +354,15 @@
         }
 
         If ($UpdateParameters.ContainsKey('CourseState')){
-            If (($CourseState -eq 'Archive') -and ($ArchiveCourses.IsPresent -eq $False)){
+            If (($CourseState -eq 'Archive') -and ($ArchiveCourses -eq $False)){
                 $UpdateParameters.Remove('CourseState')
-                write-warning "Unable to archive course '$Id'. The -ArchiveCourses switch is not present."
+                write-warning "Unable to archive course '$CourseAlias'. The -ArchiveCourses switch is not present."
             }
         }
         
         If ($UpdateParameters.Count){
             Try {
-                Update-GSCourse -Id $CourseID @UpdateParameters | ForEach-Object {
+                Update-GSCourse -Id $CourseAlias @UpdateParameters -ErrorAction Stop -Verbose:$Verbose | ForEach-Object {
                     $CourseCache[$_.ID].Name = $_.Name
                     $CourseCache[$_.ID].OwnerID = $Global:GSUserCache[$_.OwnerID].user
                     $CourseCache[$_.ID].ID = $_.ID
@@ -357,11 +394,11 @@
             write-host "Writing course cache at '$CachePath'."
             Try {
                 $CourseCache.Values | ForEach-Object {
-                    $_.Alias = $_.Alias -join " "
-                    $_.Student = $_.Student -join " "
-                    $_.Teacher = $_.Teacher -join " "
+                    $_.Alias = $_.Alias -join ";"
+                    $_.Student = $_.Student -join ";"
+                    $_.Teacher = $_.Teacher -join ";"
                     $_
-                } | Export-CSV -Path $CachePath -Force
+                } | Export-CSV -Path $CachePath -Force -Verbose:$Verbose
             } catch {
                 if ($ErrorActionPreference -eq 'Stop') {
                     $PSCmdlet.ThrowTerminatingError($_)
