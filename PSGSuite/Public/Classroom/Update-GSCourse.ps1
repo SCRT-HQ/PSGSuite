@@ -65,19 +65,20 @@ function Update-GSCourse {
         [String]
         $OwnerId,
         [parameter(Mandatory = $false)]
-        [ValidateLength(1,2800)]
+        [ValidateLength(0,2800)]
         [String]
         $Section,
         [parameter(Mandatory = $false)]
-        [ValidateLength(1,3600)]
+        [ValidateLength(0,3600)]
         [Alias('Heading')]
         [String]
         $DescriptionHeading,
         [parameter(Mandatory = $false)]
-        [ValidateLength(1,30000)]
+        [ValidateLength(0,30000)]
         [String]
         $Description,
         [parameter(Mandatory = $false)]
+        [ValidateLength(0,650)]
         [String]
         $Room,
         [parameter(Mandatory = $false)]
