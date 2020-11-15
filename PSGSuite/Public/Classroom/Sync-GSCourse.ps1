@@ -1,33 +1,125 @@
-﻿<#
- TODO
-
- -support changing student to teacher and vice versa.
- -Support chaning owner
-#>
-
-Function Sync-GSCourse {
+﻿Function Sync-GSCourse {
     <#
     .SYNOPSIS
-    Syncs one or more courses.
+    Syncs one or more courses with Google Classroom.
     .DESCRIPTION
-    Syncs one or more courses.
+    Syncs one or more courses with Google Classroom by comparing the course values supplied to Sync-GSCourse with the values found in Classroom. Where a discrepancy is found Sync-GSCourse will update Classroom to match.
+    It is intended to primarily be used in conjunction with enrolment data retrieved from School Information Systems (SIS) to allow easily managing courses and enrolments in Classroom.
     .PARAMETER Name
     Name of the course. For example, "10th Grade Biology". The name is required. It must be between 1 and 750 characters and a valid UTF-8 string.
+    .PARAMETER OwnerId
+    The identifier of the owner of a course.
+    The identifier can be one of the following:
+    * the numeric identifier for the user
+    * the email address of the user
+    .PARAMETER Id
+    Identifier for this course assigned by Classroom.
+    The identifier can be one of the following:
+    * the numeric identifier assigned by Classroom
+    * an alias string assigned to the course
+    It is recommended to use alias strings where possible. If the course is created by SYnc-GSCourse and an alis string was specified the alias string will be automatically assigned to the course for future use.
+    .PARAMETER Section
+    Section of the course. For example, "Period 2". If set, this field must be a valid UTF-8 string and no longer than 2800 characters.
+    .PARAMETER DescriptionHeading
+    Optional heading for the description. For example, "Welcome to 10th Grade Biology." If set, this field must be a valid UTF-8 string and no longer than 3600 characters.
+    .PARAMETER Description
+    Optional description. For example, "We'll be learning about the structure of living creatures from a combination of textbooks, guest lectures, and lab work. Expect to be excited!" If set, this field must be a valid UTF-8 string and no longer than 30,000 characters.
+    .PARAMETER Room
+    Optional room location. For example, "301". If set, this field must be a valid UTF-8 string and no longer than 650 characters.
+    .PARAMETER CourseState
+    State of the course. If unspecified, the default state is PROVISIONED
+    Available values are:
+    * ACTIVE - The course is active.
+    * ARCHIVED - The course has been archived. You cannot modify it except to change it to a different state.
+    * PROVISIONED - The course has been created, but not yet activated. It is accessible by the primary teacher and domain administrators, who may modify it or change it to the ACTIVE or DECLINED states. A course may only be changed to PROVISIONED if it is in the DECLINED state.
+    * DECLINED - The course has been created, but declined. It is accessible by the course owner and domain administrators, though it will not be displayed in the web UI. You cannot modify the course except to change it to the PROVISIONED state. A course may only be changed to DECLINED if it is in the PROVISIONED state.
+    .PARAMETER Student
+    Email address of the user partcipating in the course as a student
+    .PARAMETER Teacher
+    Email address of the user partcipating in the course as a teacher
+    .PARAMETER CachePath
+    The file path to the Classroom course cache CSV file.
+    If specified Sync-GSCourse will attempt to read and write course properties to this file during execution. By caching course properties on the local file system the current course properties do not need to be retrieved from Classroom saving API calls and reducing the time taken to execute. 
+    If unspecified no caching will be used.
+    .PARAMETER RemoveStudents
+    If $True Sync-GSCourse will remove students from the course if required
+    .PARAMETER RemoveTeachers
+    If $True Sync-GSCourse will remove teachers from the course if required
+    .PARAMETER AddStudents
+    If $True Sync-GSCourse will add students to the course if required
+    .PARAMETER AddTeachers
+    If $True Sync-GSCourse will add teachers to the course if requried
+    .PARAMETER CreateCourses
+    If $True Sync-GSCourse will create the course if required.
+    .PARAMETER UpdateCourses
+    If $True Sync-GSCourse will update the course properties if required
+    .PARAMETER ArchiveCourses
+    If $True Sync-GSCourse will archive the course if required
+    .PARAMETER Passthru
+    If $True Sync-GSCourse will return the course details to the pipeline
     .EXAMPLE
-    New-GSCourse -Name "The Rebublic" -OwnerId plato@athens.edu -Id the-republic-s01 -Section s01 -DescriptionHeading "The definition of justice, the order and character of the just city-state and the just man" -Room academy-01
+    $Courses = @()
+
+    $Courses += New-Object PSObject -Property @{
+        Name = "Example Course 1"
+        OwnerID = "teacher1@foo.com"
+        ID = "Example1"
+        Description = "This is an example course."
+        DescriptionHeading = "Example Course 1"
+        Room = "Room 1"
+        CourseState = "Active"
+        Teacher = @('teacher1@foo.com','teacher2@foo.com')
+    }
+
+    $Courses += New-Object PSObject -Property @{
+        Name = "Example Course 2"
+        OwnerID = "teacher1@foo.com"
+        ID = "Example2"
+        CourseState = "Active"
+        Teacher = @('teacher1@foo.com')
+        Student = @('student1@foo.com','student2@foo.com')
+    }
+
+    $Courses | Sync-GSCourse -CachePath 'C:\CourseCache.CSV' -CreateCourses
+
+    This command would search for the two courses identified by the alias strings 'd:Exmaple1' and 'd:example2'.
+    If the courses do not exist in Classroom they will be created. However, the only particiapnts added to the courses are the course owners due to the -AddStudents and -AddTeachers switches being $False.
+    If the courses exist in Classroom they will not be updated due to the -UpdateCourses switch being $False. NO changes will be made to the course participants due to the -AddStudents, -RemoveStudents, -AddTeachers and -RemoveTeachers switches all being $False.
+    .EXAMPLE
+    Get-GSCourse | ForEach-Object {$_.CourseState = 'ARCHIVED';$_} | Sync-GSCourse -ArchiveCourses
+
+    This command would archive all courses found in Classroom.
+    .EXAMPLE
+    Get-GSCourse | ForEach-Object {
+        New-Object PSObject -property @{
+            ID = $_.ID
+            Student = @('student1@foo.com','student2@foo.com')
+        }
+    } | Sync-GSCourse -AddStudents
+
+    This command would add student1@foo.com and student2@foo.com to all courses found in Classroom.
+    .EXAMPLE
+    @('123456789', 'd:Example2', 'Example3', 'Example4') | ForEach-Object {
+        New-Object PSObject -property @{
+            ID = $_.ID
+            Teacher = @('teacher1@foo.com','teacher2@foo.com')
+        }
+    } | Sync-GSCourse -AddTeachers
+
+    This command would add teacher1@foo.com and teacher2@foo.com to the specified courses.
+
     #>
-    #[OutputType('Google.Apis.Classroom.v1.Data.Course')]
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
     Param
     (
-        [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
         [ValidateLength(1,750)]
         [String]
         $Name,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String]
         $OwnerId,
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
         [Alias('Alias')]
         [String]
         $Id,
@@ -54,10 +146,10 @@ Function Sync-GSCourse {
         $CourseState,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String[]]
-        $Student,
+        $Student = @(),
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String[]]
-        $Teacher,
+        $Teacher = @(),
         [parameter(Mandatory = $false)]
         [String]
         $CachePath,
@@ -73,6 +165,9 @@ Function Sync-GSCourse {
         [parameter(Mandatory = $false)]
         [switch]
         $CreateCourses,
+        [parameter(Mandatory = $false)]
+        [switch]
+        $UpdateCourses,
         [parameter(Mandatory = $false)]
         [switch]
         $PassThru
@@ -111,14 +206,14 @@ Function Sync-GSCourse {
                             Student = @()
                             Teacher = @()
                         }
-                        $_.Alias.Split(";") | ForEach-Object {
+                        $_.Alias.Split(";") | Where-Object {$_} | ForEach-Object {
                             $Course.Alias += $_
                             $AliasCache[$_] = $Course.ID
                         }
-                        $_.Student.Split(";") | ForEach-Object {
+                        $_.Student.Split(";") | Where-Object {$_} | ForEach-Object {
                             $Course.Student += $_
                         }
-                        $_.Teacher.Split(";") | ForEach-Object {
+                        $_.Teacher.Split(";") | Where-Object {$_} | ForEach-Object {
                             $Course.Teacher += $_
                         }
                         $CourseCache[$Course.ID] = $Course
@@ -347,32 +442,45 @@ Function Sync-GSCourse {
 
         # Update the course properties
         $UpdateParameters = @{}
+        $ArchiveParameters = @{}
         ForEach ($Parameter in @('Name', 'OwnerID', 'Section', 'Description', 'DescriptionHeading', 'Room', 'CourseState')){
             Switch ($Parameter){
-            OwnerID {
-                If ($OwnerID -ne $CourseCache[$CourseID].OwnerID){
-                    $UpdateParameters["OwnerID"] = $Global:GSUserCache[$OwnerID].user
-                    $MembershipUpdated = $True
+                OwnerID {
+                    If ($Global:GSUserCache[$OwnerID].user -ne $CourseCache[$CourseID].OwnerID){
+                        $UpdateParameters["OwnerID"] = $Global:GSUserCache[$OwnerID].user
+                    }
                 }
-            }
-            Default {
+                CourseState {
+                    If ($PSBoundParameters[$Parameter] -cne $CourseCache[$CourseID].$Parameter){
+                        If ($PSBoundParameters[$Parameter] -eq 'Archived'){
+                            $ArchiveParameters[$Parameter] = $PSBoundParameters[$Parameter]
+                        } else {
+                            $UpdateParameters[$Parameter] = $PSBoundParameters[$Parameter]
+                        }
+                    }
+                }
+                Default {
                     If ($PSBoundParameters[$Parameter] -cne $CourseCache[$CourseID].$Parameter){
                         $UpdateParameters[$Parameter] = $PSBoundParameters[$Parameter]
+                        
                     }
                 }
             }
         }
 
-        If ($UpdateParameters.ContainsKey('CourseState')){
-            If (($CourseState -eq 'Archive') -and ($ArchiveCourses -eq $False)){
-                $UpdateParameters.Remove('CourseState')
-                write-warning "Unable to archive course '$CourseAlias'. The -ArchiveCourses switch is not present."
-            }
+        If ($ArchiveParameters.count -and ($ArchiveCourses -eq $False)){
+            $ArchiveParameters = @{}
+            write-warning "Unable to archive course '$CourseAlias'. The -ArchiveCourses switch is not present."
+        }
+
+        If ($UpdateParameters.count -and ($UpdateCourses -eq $False)){
+            $UpdateParameters = @{}
+            write-warning "Unable to update course '$CourseAlias'. The -UpdateCourses switch is not present."
         }
         
-        If ($UpdateParameters.Count){
+        If ($UpdateParameters.Count -or $ArchiveParameters.count){
             Try {
-                Update-GSCourse -Id $CourseAlias @UpdateParameters -ErrorAction Stop -Verbose:$Verbose | ForEach-Object {
+                Update-GSCourse -Id $CourseAlias @UpdateParameters @ArchiveParameters -ErrorAction Stop -Verbose:$Verbose | ForEach-Object {
                     $CourseCache[$_.ID].Name = $_.Name
                     $CourseCache[$_.ID].OwnerID = $Global:GSUserCache[$_.OwnerID].user
                     $CourseCache[$_.ID].ID = $_.ID
@@ -430,7 +538,7 @@ Function Sync-GSCourse {
                     $_.Student = $_.Student -join ";"
                     $_.Teacher = $_.Teacher -join ";"
                     $_
-                } | Export-CSV -Path $CachePath -Force -Verbose:$Verbose
+                } | Export-CSV -Path $CachePath -Force -confirm:$Confirm -Verbose:$Verbose
             } catch {
                 if ($ErrorActionPreference -eq 'Stop') {
                     $PSCmdlet.ThrowTerminatingError($_)
