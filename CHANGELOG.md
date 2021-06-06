@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+    * [2.36.6 - 2021-06-06](#2366---2021-06-06)
     * [2.36.5 - 2020-11-01](#2365---2020-11-01)
     * [2.36.4 - 2020-03-20](#2364---2020-03-20)
     * [2.36.3 - 2020-03-20](#2363---2020-03-20)
@@ -111,6 +112,12 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.36.6 - 2021-06-06
+
+* [Issue #344](https://github.com/SCRT-HQ/PSGSuite/issues/344)
+    * Added 'Update-GSGroup' function to allow updating directory information.
+    * Removed 'Email' parameter in `Update-GSGroupSettings.ps1` as this cannot be updated via Groups Settings API.
 
 ## 2.36.5 - 2020-11-01
 
