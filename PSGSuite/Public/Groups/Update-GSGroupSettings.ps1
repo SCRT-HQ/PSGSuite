@@ -36,9 +36,6 @@ function Update-GSGroupSettings {
     .PARAMETER DefaultMessageDenyNotificationText
     Default message deny notification message
 
-    .PARAMETER Email
-    Email id of the group
-
     .PARAMETER EnableCollaborativeInbox
     Specifies whether the collaborative inbox functionality will be turned on or off for the group.
 
@@ -217,9 +214,6 @@ function Update-GSGroupSettings {
         [ValidateScript( {$_.length -le 10000})]
         [String]
         $DefaultMessageDenyNotificationText,
-        [parameter(Mandatory = $false)]
-        [String]
-        $Email,
         [parameter(Mandatory = $false)]
         [Switch]
         $EnableCollaborativeInbox,
