@@ -158,7 +158,7 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-#### 2.36.6 - 2022-03-18
+#### 2.37.0 - 2022-03-18
 
 * Added `Move-GSCalendarEvent` function for changing event ownership/organizer.
   
