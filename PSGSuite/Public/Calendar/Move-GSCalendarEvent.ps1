@@ -14,8 +14,8 @@ function Move-GSCalendarEvent {
     .PARAMETER EventID
     The unique Id of the event to update
 
-    .PARAMETER NewCalendarId
-    The Id of the target calendar.
+    .PARAMETER DestinationCalendarId
+    The Id of the destination calendar.
 
     .PARAMETER User
     The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
@@ -33,7 +33,7 @@ function Move-GSCalendarEvent {
     * "all" - Notifications are sent to all guests.
 
     .EXAMPLE
-    Move-GSCalendarEvent -CalendarId source.calendar@domain.com -EventId bcfgr7j83oqpv8174bnamv63pj -NewCalendarId target.calendar@domain.com
+    Move-GSCalendarEvent -CalendarId source.calendar@domain.com -EventId bcfgr7j83oqpv8174bnamv63pj -DestinationCalendarId target.calendar@domain.com
 
     Moves the event with eventId "bcfgr7j83oqpv8174bnamv63pj" from calendar "source.calendar@domain.com" to calendar "target.calendar@domain.com"
     #>
@@ -55,7 +55,7 @@ function Move-GSCalendarEvent {
         $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $false)]
         [String]
-        $NewCalendarId,
+        $DestinationCalendarId,
         [parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $false)]
         [ValidateSet("none", "all", "externalOnly")]
         [String]
@@ -75,10 +75,10 @@ function Move-GSCalendarEvent {
                 User        = $User
             }
             $service = New-GoogleService @serviceParams
-            Write-Verbose "Moving Calendar Event '$EventId' on calendar '$CalendarId' for user '$User' to calendar '$NewCalendarId'"
-            $request = $service.Events.Move($CalendarId, $EventId, $NewCalendarId)
+            Write-Verbose "Moving Calendar Event '$EventId' on calendar '$CalendarId' for user '$User' to calendar '$DestinationCalendarId'"
+            $request = $service.Events.Move($CalendarId, $EventId, $DestinationCalendarId)
             $request.SendUpdates = $SendUpdates
-            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $NewCalendarId -PassThru
+            $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $DestinationCalendarId -PassThru
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {
