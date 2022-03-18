@@ -61,17 +61,6 @@
             }
         }
         else {
-            function Decrypt {
-                param($String)
-                if ($String -is [System.Security.SecureString]) {
-                    [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
-                        [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
-                            $string))
-                }
-                elseif ($String -is [System.String]) {
-                    $String
-                }
-            }
             $fullConf = Import-SpecificConfiguration -CompanyName 'SCRT HQ' -Name 'PSGSuite' -Scope $Script:ConfigScope -Verbose:$false
             $defaultConfigName = $fullConf['DefaultConfig']
             $choice = switch ($PSCmdlet.ParameterSetName) {
@@ -85,26 +74,7 @@
                 }
             }
             if ($choice) {
-                $script:PSGSuite = [PSCustomObject]($fullConf[$choice]) |
-                    Select-Object -Property @{l = 'ConfigName';e = {$choice}},
-                                            @{l = 'P12KeyPath';e = {Decrypt $_.P12KeyPath}},
-                                            P12Key,
-                                            @{l = 'ClientSecretsPath';e = {Decrypt $_.ClientSecretsPath}},
-                                            @{l = 'ClientSecrets';e = {Decrypt $_.ClientSecrets}},
-                                            @{l = 'AppEmail';e = {Decrypt $_.AppEmail}},
-                                            @{l = 'AdminEmail';e = {Decrypt $_.AdminEmail}},
-                                            @{l = 'CustomerID';e = {Decrypt $_.CustomerID}},
-                                            @{l = 'Domain';e = {Decrypt $_.Domain}},
-                                            @{l = 'Preference';e = {Decrypt $_.Preference}},
-                                            @{l = 'ServiceAccountClientID';e = {Decrypt $_.ServiceAccountClientID}},
-                                            @{l = 'Webhook';e = {
-                                                $dict = @{}
-                                                foreach ($key in $_.Webhook.Keys) {
-                                                    $dict[$key] = (Decrypt $_.Webhook[$key])
-                                                }
-                                                $dict
-                                            }},
-                                            ConfigPath
+                $script:PSGSuite = [PSCustomObject]($fullConf[$choice]) | Get-GSDecryptedConfig -ConfigName $choice
                 if ($SetToDefault) {
                     if ($defaultConfigName -ne $choice) {
                         Write-Verbose "Setting config name '$choice' for domain '$($script:PSGSuite.Domain)' as default"

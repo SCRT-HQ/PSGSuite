@@ -20,6 +20,9 @@ function Get-PSGSuiteConfig {
     .PARAMETER PassThru
     If specified, returns the config after loading it
 
+    .PARAMETER NoImport
+    If $true, just returns the specified config but does not impart it in the current session.
+
     .EXAMPLE
     Get-PSGSuiteConfig personalDomain -PassThru
 
@@ -46,85 +49,47 @@ function Get-PSGSuiteConfig {
         [Switch]
         $NoImport
     )
-    function Decrypt {
-        param($String)
-        if ($String -is [System.Security.SecureString]) {
-            [System.Runtime.InteropServices.Marshal]::PtrToStringAuto(
-                [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR(
-                    $string))
-        }
-        elseif ($String -is [System.String]) {
-            $String
-        }
-    }
-    $script:ConfigScope = $Scope
-    switch ($PSCmdlet.ParameterSetName) {
-        ConfigurationModule {
-            $fullConf = Import-SpecificConfiguration -CompanyName 'SCRT HQ' -Name 'PSGSuite' -Scope $Script:ConfigScope
-            if (!$ConfigName) {
-                $choice = $fullConf["DefaultConfig"]
-                Write-Verbose "Importing default config: $choice"
-            }
-            else {
-                $choice = $ConfigName
-                Write-Verbose "Importing config: $choice"
-            }
-            $encConf = [PSCustomObject]($fullConf[$choice])
-        }
-        Path {
-            $encConf = switch ((Get-Item -Path $Path).Extension) {
-                '.xml' {
-                    Import-Clixml -Path $Path
-                    $choice = "LegacyXML"
+    Process {
+        $script:ConfigScope = $Scope
+        switch ($PSCmdlet.ParameterSetName) {
+            ConfigurationModule {
+                $fullConf = Import-SpecificConfiguration -CompanyName 'SCRT HQ' -Name 'PSGSuite' -Scope $Script:ConfigScope
+                if (!$ConfigName) {
+                    $choice = $fullConf["DefaultConfig"]
+                    Write-Verbose "Importing default config: $choice"
                 }
-                '.psd1' {
-                    Import-SpecificConfiguration -Path $Path
-                    $choice = "CustomConfigurationFile"
+                else {
+                    $choice = $ConfigName
+                    Write-Verbose "Importing config: $choice"
+                }
+                $encConf = [PSCustomObject]($fullConf[$choice])
+            }
+            Path {
+                $encConf = switch ((Get-Item -Path $Path).Extension) {
+                    '.xml' {
+                        Import-Clixml -Path $Path
+                        $choice = "LegacyXML"
+                    }
+                    '.psd1' {
+                        Import-SpecificConfiguration -Path $Path
+                        $choice = "CustomConfigurationFile"
+                    }
                 }
             }
         }
-    }
-    $decryptedConfig = $encConf |
-        Select-Object -Property @{l = 'ConfigName';e = {$choice}},
-                                @{l = 'P12KeyPath';e = {Decrypt $_.P12KeyPath}},
-                                P12Key,
-                                @{l = 'ClientSecretsPath';e = {Decrypt $_.ClientSecretsPath}},
-                                @{l = 'ClientSecrets';e = {Decrypt $_.ClientSecrets}},
-                                @{l = 'AppEmail';e = {Decrypt $_.AppEmail}},
-                                @{l = 'AdminEmail';e = {Decrypt $_.AdminEmail}},
-                                @{l = 'CustomerID';e = {Decrypt $_.CustomerID}},
-                                @{l = 'Domain';e = {Decrypt $_.Domain}},
-                                @{l = 'Preference';e = {Decrypt $_.Preference}},
-                                @{l = 'ServiceAccountClientID';e = {Decrypt $_.ServiceAccountClientID}},
-                                @{l = 'Chat';e = {
-                                    $dict = @{
-                                        Webhooks = @{}
-                                        Spaces = @{}
-                                    }
-                                    foreach ($key in $_.Chat.Webhooks.Keys) {
-                                        $dict['Webhooks'][$key] = (Decrypt $_.Chat.Webhooks[$key])
-                                    }
-                                    foreach ($key in $_.Chat.Spaces.Keys) {
-                                        $dict['Spaces'][$key] = (Decrypt $_.Chat.Spaces[$key])
-                                    }
-                                    $dict
-                                }},
-                                @{l = 'ConfigPath';e = {if ($_.ConfigPath) {
-                                            $_.ConfigPath
-                                        }
-                                        elseif ($Path) {
-                                            "$(Resolve-Path $Path)"
-                                        }
-                                        else {
-                                            $null
-                                        }
-                                    }
-                                }
-    Write-Verbose "Retrieved configuration '$choice'"
-    if (!$NoImport) {
-        $script:PSGSuite = $decryptedConfig
-    }
-    if ($PassThru) {
-        $decryptedConfig
+        $decryptParams = @{
+            ConfigName = $choice
+        }
+        if ($Path) {
+            $decryptParams['ConfigPath'] = $Path
+        }
+        $decryptedConfig = $encConf | Get-GSDecryptedConfig @decryptParams
+        Write-Verbose "Retrieved configuration '$choice'"
+        if (!$NoImport) {
+            $script:PSGSuite = $decryptedConfig
+        }
+        if ($PassThru) {
+            $decryptedConfig
+        }
     }
 }

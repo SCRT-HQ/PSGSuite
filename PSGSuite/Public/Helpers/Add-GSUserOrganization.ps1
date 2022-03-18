@@ -6,8 +6,38 @@ function Add-GSUserOrganization {
     .DESCRIPTION
     Builds a Organization object to use when creating or updating a User
 
+    .PARAMETER CostCenter
+    The cost center of the users department
+
     .PARAMETER CustomType
     If the external ID type is custom, this property holds the custom type
+
+    .PARAMETER Department
+    Department within the organization
+
+    .PARAMETER Description
+    Description of the organization
+
+    .PARAMETER Domain
+    The domain to which the organization belongs to
+
+    .PARAMETER FullTimeEquivalent
+    The full-time equivalent percent within the organization (100000 = 100%).
+
+    .PARAMETER Location
+    Location of the organization. This need not be fully qualified address.
+
+    .PARAMETER Name
+    Name of the organization
+
+    .PARAMETER Primary
+    If it is the user's primary organization
+
+    .PARAMETER Symbol
+    Symbol of the organization
+
+    .PARAMETER Title
+    Title (designation) of the user in the organization
 
     .PARAMETER Type
     The type of the organization.
@@ -33,6 +63,7 @@ function Add-GSUserOrganization {
 
     Creates a user named John Smith and adds their work address, work phone, login_id and alternate non gsuite work email to the user object.
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization')]
     [CmdletBinding(DefaultParameterSetName = "InputObject")]
     Param
     (

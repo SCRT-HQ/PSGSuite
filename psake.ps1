@@ -9,22 +9,32 @@ Properties {
         }
         $ProjectRoot = $pwd.Path
     }
+    $moduleName = "PSGSuite"
     $sut = $env:BHModulePath
     $tests = "$projectRoot\Tests"
     $Timestamp = Get-Date -Uformat "%Y%m%d-%H%M%S"
     $PSVersion = $PSVersionTable.PSVersion.ToString()
-    $TestFile = "TestResults_PS$PSVersion`_$TimeStamp.xml"
+    $TestFile = "TestResults.xml"
     $lines = '----------------------------------------------------------------------'
     $outputDir = $env:BHBuildOutput
     $outputModDir = Join-Path -Path $outputDir -ChildPath $env:BHProjectName
     $manifest = Import-PowerShellDataFile -Path $env:BHPSModuleManifest
     $outputModVerDir = Join-Path -Path $outputModDir -ChildPath $manifest.ModuleVersion
     $pathSeperator = [IO.Path]::PathSeparator
+    $NuGetSearchStrings = @(
+        "Google.Apis*"
+    )
     $Verbose = @{}
     if ($ENV:BHCommitMessage -match "!verbose") {
         $Verbose = @{Verbose = $True}
     }
 }
+
+. ([System.IO.Path]::Combine($PSScriptRoot,"ci","AzurePipelinesHelpers.ps1"))
+
+Set-BuildVariables
+
+FormatTaskName (Get-PsakeTaskSectionFormatter)
 
 #Task Default -Depends Init,Test,Build,Deploy
 task default -depends Test
@@ -34,14 +44,14 @@ task Skip {
 }
 
 task Init {
-    "`nSTATUS: Testing with PowerShell $psVersion"
-    "Build System Details:"
-    Get-Item ENV:BH*
-    Get-Item ENV:BUILD_*
-    "`n"
     Set-Location $ProjectRoot
+    Write-BuildLog "Build System Details:"
+    Write-BuildLog "$((Get-ChildItem Env: | Where-Object {$_.Name -match "^(BUILD_|SYSTEM_|BH)"} | Sort-Object Name | Format-Table Name,Value -AutoSize | Out-String).Trim())"
+    if ($env:BHProjectName -cne $moduleName) {
+        $env:BHProjectName = $moduleName
+    }
 
-    'Configuration', 'Pester' | Foreach-Object {
+    'Configuration' | Foreach-Object {
         Install-Module -Name $_ -Repository PSGallery -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Confirm:$false -ErrorAction Stop -Force
         Import-Module -Name $_ -Verbose:$false -ErrorAction Stop -Force
     }
@@ -55,10 +65,23 @@ task Clean -depends Init {
     Remove-Module -Name $env:BHProjectName -Force -ErrorAction SilentlyContinue
 
     if (Test-Path -Path $outputDir) {
-        Get-ChildItem -Path $outputDir -Recurse -File | Where-Object {$_.BaseName -eq $env:BHProjectName -or $_.Name -like "Test*.xml"} | Remove-Item -Force -Recurse
+        if ("$env:NoNugetRestore" -eq 'True') {
+            Write-BuildLog "Skipping DLL clean due to `$env:NoNugetRestore = $env:NoNugetRestore"
+            Get-ChildItem -Path $outputDir -Recurse -File | Where-Object {$_.FullName -notlike "$outputModVerDir\lib*"} | Sort-Object {$_.FullName.Length} -Descending | ForEach-Object {
+                try {
+                    Remove-Item $_.FullName -Force -Recurse
+                }
+                catch {
+                    Write-Warning "Unable to delete: '$($_.FullName)'"
+                }
+            }
+        }
+        else {
+            Remove-Item $outputDir -Recurse -Force
+        }
     }
-    else {
-        New-Item -Path $outputDir -ItemType Directory > $null
+    if (-not (Test-Path $outputDir)) {
+        New-Item -Path $outputDir -ItemType Directory | Out-Null
     }
     "    Cleaned previous output directory [$outputDir]"
 } -description 'Cleans module output directory'
@@ -66,24 +89,44 @@ task Clean -depends Init {
 task Compile -depends Clean {
     # Create module output directory
     $functionsToExport = @()
+    $sutLib = [System.IO.Path]::Combine($sut,'lib')
     $aliasesToExport = (. $sut\Aliases\PSGSuite.Aliases.ps1).Keys
-    $modDir = New-Item -Path $outputModDir -ItemType Directory -ErrorAction SilentlyContinue
-    New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue > $null
+    if (-not (Test-Path $outputModVerDir)) {
+        $modDir = New-Item -Path $outputModDir -ItemType Directory -ErrorAction SilentlyContinue
+        New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
+    }
 
     # Append items to psm1
-    Write-Verbose -Message 'Creating psm1...'
+    Write-BuildLog 'Creating psm1...'
     $psm1 = Copy-Item -Path (Join-Path -Path $sut -ChildPath 'PSGSuite.psm1') -Destination (Join-Path -Path $outputModVerDir -ChildPath "$($ENV:BHProjectName).psm1") -PassThru
 
-    Get-ChildItem -Path (Join-Path -Path $sut -ChildPath 'Private') -Recurse -File | ForEach-Object {
-        "$(Get-Content $_.FullName -Raw)`n" | Add-Content -Path $psm1 -Encoding UTF8
-    }
-    Get-ChildItem -Path (Join-Path -Path $sut -ChildPath 'Public') -Recurse -File | ForEach-Object {
-        "$(Get-Content $_.FullName -Raw)`nExport-ModuleMember -Function '$($_.BaseName)'`n" | Add-Content -Path $psm1 -Encoding UTF8
-        $functionsToExport += $_.BaseName
+    foreach ($scope in @('Private','Public')) {
+        Write-BuildLog "Copying contents from files in source folder to PSM1: $($scope)"
+        $gciPath = Join-Path $sut $scope
+        if (Test-Path $gciPath) {
+            Get-ChildItem -Path $gciPath -Filter "*.ps1" -Recurse -File | ForEach-Object {
+                Write-BuildLog "Working on: $scope$([System.IO.Path]::DirectorySeparatorChar)$($_.FullName.Replace("$gciPath$([System.IO.Path]::DirectorySeparatorChar)",'') -replace '\.ps1$')"
+                [System.IO.File]::AppendAllText($psm1,("$([System.IO.File]::ReadAllText($_.FullName))`n"))
+                if ($scope -eq 'Public') {
+                    $functionsToExport += $_.BaseName
+                    [System.IO.File]::AppendAllText($psm1,("Export-ModuleMember -Function '$($_.BaseName)'`n"))
+                }
+            }
+        }
     }
 
-    New-Item -Path "$outputModVerDir\lib" -ItemType Directory -ErrorAction SilentlyContinue > $null
-    Copy-Item -Path "$sut\lib\*" -Destination "$outputModVerDir\lib" -Recurse -ErrorAction SilentlyContinue
+
+    Invoke-CommandWithLog {Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue -Force -Verbose:$false}
+
+    if ("$env:NoNugetRestore" -ne 'True') {
+        New-Item -Path "$outputModVerDir\lib" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
+        Write-BuildLog "Installing NuGet dependencies..."
+        Install-NuGetDependencies -Destination $outputModVerDir -AddlSearchString $NuGetSearchStrings -Verbose
+    }
+    else {
+        Write-BuildLog "Skipping NuGet Restore due to `$env:NoNugetRestore = '$env:NoNugetRestore'"
+    }
+
     $aliasHashContents = (Get-Content "$sut\Aliases\PSGSuite.Aliases.ps1" -Raw).Trim()
 
     # Set remainder of PSM1 contents
@@ -149,7 +192,7 @@ Add-MetadataConverter -Converters @{
         elseif (`$Global:PSGSuiteKey -is [System.Security.SecureString]) {
             `$encParams["SecureKey"] = `$Global:PSGSuiteKey
         }
-        'Secure "{0}"' -f (ConvertFrom-SecureString `$_ @encParams)
+        'ConvertTo-SecureString "{0}"' -f (ConvertFrom-SecureString `$_ @encParams)
     }
     "Secure" = {
         param([string]`$String)
@@ -162,7 +205,19 @@ Add-MetadataConverter -Converters @{
         }
         ConvertTo-SecureString `$String @encParams
     }
+    "ConvertTo-SecureString" = {
+        param([string]`$String)
+        `$encParams = @{}
+        if (`$Global:PSGSuiteKey -is [System.Byte[]]) {
+            `$encParams["Key"] = `$Global:PSGSuiteKey
+        }
+        elseif (`$Global:PSGSuiteKey -is [System.Security.SecureString]) {
+            `$encParams["SecureKey"] = `$Global:PSGSuiteKey
+        }
+        ConvertTo-SecureString `$String @encParams
+    }
 }
+
 try {
     `$confParams = @{
         Scope = `$ConfigScope
@@ -215,12 +270,102 @@ catch {
     Get-ChildItem $outputModVerDir | Format-Table -Autosize
 } -description 'Compiles module from source'
 
+Task Docs -Depends Init {
+    'platyPS','PSGSuite' | ForEach-Object {
+        "    Installing $_ if missing"
+        $_ | Resolve-Module -Verbose
+        Import-Module $_
+    }
+    $docPath = Join-Path $PSScriptRoot 'docs'
+    $funcPath = Join-Path $docPath 'Function Help'
+    $docStage = Join-Path $PSScriptRoot 'docstage'
+    $sitePath = Join-Path $PSScriptRoot 'site'
+
+    "    Setting index.md content from README"
+    Get-Content (Join-Path $PSScriptRoot 'README.md') -Raw | Set-Content (Join-Path $docPath 'index.md') -Force
+    if (-not (Test-Path $docPath)) {
+        "    Creating Doc Path: $docPath"
+        New-Item $docPath -ItemType Directory -Force | Out-Null
+    }
+    if (-not (Test-Path $sitePath)) {
+        "    Creating Site Path: $sitePath"
+        New-Item $sitePath -ItemType Directory -Force | Out-Null
+    }
+    if (Test-Path $docstage) {
+        "    Clearing out Doc Stage Path: $docstage"
+        Remove-Item $docstage -Recurse -Force
+    }
+    "    Creating a fresh Doc Stage folder: $docstage"
+    New-Item $docstage -ItemType Directory -Force | Out-Null
+
+    New-MarkdownHelp -Module PSGSuite -NoMetadata -OutputFolder $docstage -Force -AlphabeticParamsOrder -ExcludeDontShow -Verbose | Out-Null
+
+    $env:PSModulePath = $origPSModulePath
+
+    $stagesDocs = Get-ChildItem $docstage -Recurse -Filter "*.md"
+    foreach ($folder in (Get-ChildItem (Join-Path -Path $sut -ChildPath 'Public') -Directory)) {
+        $docFolder = Join-Path $funcPath $folder.BaseName
+        if (-not (Test-Path $docFolder)) {
+            "    Creating Doc Folder: $docFolder"
+            New-Item $docFolder -ItemType Directory -Force | Out-Null
+        }
+        else {
+            "    Cleaning up existing Doc Folder"
+            Get-ChildItem $docFolder -Recurse | Remove-Item -Recurse -Force
+        }
+        foreach ($func in (Get-ChildItem $folder.FullName -Recurse -Filter "*.ps1")) {
+            if ($doc = $stagesDocs | Where-Object {$_.BaseName -eq $func.BaseName}) {
+                "    Moving function doc '$($func.BaseName)' to doc folder: $docFolder"
+                Move-Item $doc.FullName -Destination $docFolder -Force | Out-Null
+            }
+        }
+    }
+    Set-Location $PSScriptRoot
+    if ($null -eq (python -m mkdocs --version)) {
+        python -m pip install --user wheel
+        python -m pip install --user mkdocs
+        python -m pip install --user mkdocs-material
+        python -m pip install --user mkdocs-minify-plugin
+        python -m pip install --user pymdown-extensions
+    }
+    python -m mkdocs gh-deploy --message "[skip ci] Deploying Docs update @ $(Get-Date) to https://psgsuite.io" --verbose --force --ignore-version | Tee-Object -Variable mkdocs
+    if ($errors = ($mkdocs -split "`n") | Where-Object {$_ -match 'Error\s+\-\s+'}) {
+        Write-BuildError ($errors -join "`n")
+    }
+}
+
 Task Import -Depends Compile {
     '    Testing import of compiled module'
     Import-Module (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")
 } -description 'Imports the newly compiled module'
 
 $pesterScriptBlock = {
+    $dependencies = @(
+        @{
+            Name           = 'Pester'
+            MinimumVersion = '4.10.1'
+            MaximumVersion = '4.99.99'
+        }
+        @{
+            Name           = 'Assert'
+            MinimumVersion = '0.9.5'
+        }
+    )
+    foreach ($module in $dependencies) {
+        Write-BuildLog "[$($module.Name)] Resolving"
+        try {
+            if ($imported = Get-Module $($module.Name)) {
+                Write-BuildLog "[$($module.Name)] Removing imported module"
+                $imported | Remove-Module
+            }
+            Import-Module @module
+        }
+        catch {
+            Write-BuildLog "[$($module.Name)] Installing missing module"
+            Install-Module @module -Repository PSGallery -Force
+            Import-Module @module
+        }
+    }
     Push-Location
     Set-Location -PassThru $outputModDir
     if (-not $ENV:BHProjectPath) {
@@ -254,16 +399,16 @@ $pesterScriptBlock = {
     $testResults = Invoke-Pester @pesterParams
     '    Pester invocation complete!'
     if ($testResults.FailedCount -gt 0) {
-        $testResults | Format-List
-        Write-Error -Message 'One or more Pester tests failed. Build cannot continue!'
+        $testResults.TestResult | Where-Object {-not $_.Passed} | Format-List
+        Write-BuildError -Message 'One or more Pester tests failed. Build cannot continue!'
     }
     Pop-Location
     $env:PSModulePath = $origModulePath
 }
 
-task Test -Depends Compile $pesterScriptBlock -description 'Run Pester tests'
+task Full -Depends Compile $pesterScriptBlock -description 'Run Pester tests'
 
-task TestOnly -Depends Init $pesterScriptBlock -description 'Run Pester tests only [no module compilation]'
+task Test -Depends Init $pesterScriptBlock -description 'Run Pester tests only [no module compilation]'
 
 $deployScriptBlock = {
     function Publish-GitHubRelease {
@@ -353,7 +498,9 @@ $deployScriptBlock = {
             $commitVer = $commParsed.Matches.Value.Trim().Replace('v','')
         }
         $curVer = (Get-Module $env:BHProjectName).Version
-        $nextGalVer = Get-NextNugetPackageVersion -Name $env:BHProjectName -PackageSourceUrl 'https://www.powershellgallery.com/api/v2/'
+        $galVer = (Find-Module $env:BHProjectName -Repository PSGallery).Version.ToString()
+        $galVerSplit = $galVer.Split('.')
+        $nextGalVer = [System.Version](($galVerSplit[0..($galVerSplit.Count - 2)] -join '.') + '.' + ([int]$galVerSplit[-1] + 1))
 
         $versionToDeploy = if ($commitVer -and ([System.Version]$commitVer -lt $nextGalVer)) {
             Write-Host -ForegroundColor Yellow "Version in commit message is $commitVer, which is less than the next Gallery version and would result in an error. Possible duplicate deployment build, skipping module bump and negating deployment"
@@ -399,6 +546,24 @@ $deployScriptBlock = {
                     "    [SKIPPED] Deployment of version [$($versionToDeploy)] to PSGallery"
                 }
                 $commitId = git rev-parse --verify HEAD
+                if ($ENV:BHBuildSystem -eq 'VSTS' -and -not [String]::IsNullOrEmpty($env:TwitterAccessSecret) -and -not [String]::IsNullOrEmpty($env:TwitterAccessToken) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerKey) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerSecret)) {
+                    "    Publishing tweet about new release..."
+                    $manifest = Import-PowerShellDataFile -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")
+                    $text = "#$($env:BHProjectName) v$($versionToDeploy) is now available on the #PSGallery! https://www.powershellgallery.com/packages/$($env:BHProjectName)/$($versionToDeploy) #PowerShell"
+                    $manifest.PrivateData.PSData.Tags | Foreach-Object {
+                        $text += " #$($_)"
+                    }
+                    if ($text.Length -gt 280) {
+                        "    Trimming [$($text.Length - 280)] extra characters from tweet text to get to 280 character limit..."
+                        $text = $text.Substring(0,280)
+                    }
+                    "    Tweet text: $text"
+                    Publish-Tweet -Tweet $text -ConsumerKey $env:TwitterConsumerKey -ConsumerSecret $env:TwitterConsumerSecret -AccessToken $env:TwitterAccessToken -AccessSecret $env:TwitterAccessSecret
+                    "    Tweet successful!"
+                }
+                else {
+                    "    [SKIPPED] Twitter update of new release"
+                }
                 if (-not [String]::IsNullOrEmpty($env:GitHubPAT)) {
                     "    Creating Release ZIP..."
                     $zipPath = [System.IO.Path]::Combine($PSScriptRoot,"$($env:BHProjectName).zip")
@@ -434,7 +599,7 @@ $deployScriptBlock = {
                         CommitId         = $commitId
                         ReleaseNotes     = $ReleaseNotes
                         ArtifactPath     = $zipPath
-                        GitHubUsername   = 'scrthq'
+                        GitHubUsername   = 'SCRT-HQ'
                         GitHubRepository = $env:BHProjectName
                         GitHubApiKey     = $env:GitHubPAT
                         Draft            = $false
@@ -444,24 +609,6 @@ $deployScriptBlock = {
                 }
                 else {
                     "    [SKIPPED] Publishing Release v$($versionToDeploy) @ commit Id [$($commitId)] to GitHub"
-                }
-                if ($ENV:BHBuildSystem -eq 'VSTS' -and -not [String]::IsNullOrEmpty($env:TwitterAccessSecret) -and -not [String]::IsNullOrEmpty($env:TwitterAccessToken) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerKey) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerSecret)) {
-                    "    Publishing tweet about new release..."
-                    $manifest = Import-PowerShellDataFile -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")
-                    $text = "#$($env:BHProjectName) v$($versionToDeploy) is now available on the #PSGallery! https://www.powershellgallery.com/packages/$($env:BHProjectName) #PowerShell"
-                    $manifest.PrivateData.PSData.Tags | Foreach-Object {
-                        $text += " #$($_)"
-                    }
-                    if ($text.Length -gt 280) {
-                        "    Trimming [$($text.Length - 280)] extra characters from tweet text to get to 280 character limit..."
-                        $text = $text.Substring(0,280)
-                    }
-                    "    Tweet text: $text"
-                    Publish-Tweet -Tweet $text -ConsumerKey $env:TwitterConsumerKey -ConsumerSecret $env:TwitterConsumerSecret -AccessToken $env:TwitterAccessToken -AccessSecret $env:TwitterAccessSecret
-                    "    Tweet successful!"
-                }
-                else {
-                    "    [SKIPPED] Twitter update of new release"
                 }
             }
             catch {

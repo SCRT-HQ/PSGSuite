@@ -6,8 +6,8 @@
     .DESCRIPTION
     Gets the specified group's information. Returns the full group list if -Group is excluded. Designed for parity with Get-ADGroup (although Google's API is unable to 'Filter' for groups)
 
-    .PARAMETER Group
-    The list of groups you would like to retrieve info for. If excluded, returns the group list instead
+    .PARAMETER Identity
+    The group or list of groups you would like to retrieve info for. If excluded, returns the group list instead
 
     .PARAMETER Filter
     Query string search. Complete documentation is at https://developers.google.com/admin-sdk/directory/v1/guides/search-groups
@@ -25,6 +25,9 @@
     Page size of the result set
 
     Defaults to 200
+
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
 
     .EXAMPLE
     Get-GSGroup -Where_IsAMember "joe@domain.com"
@@ -47,32 +50,39 @@
     Gets the IT HelpDesk group by name using PowerShell syntax. PowerShell syntax is supported as a best effort, please refer to the Group Search documentation from Google for exact syntax.
     #>
     [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.Group')]
-    [cmdletbinding(DefaultParameterSetName = "List")]
+    [cmdletbinding(DefaultParameterSetName = "ListFilter")]
     Param
     (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true,ParameterSetName = "Get")]
-        [Alias("Email")]
+        [Alias("Email","Group","GroupEmail")]
         [ValidateNotNullOrEmpty()]
         [String[]]
-        $Group,
-        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        $Identity,
+        [parameter(Mandatory = $false,ParameterSetName = "ListFilter")]
         [Alias('Query')]
         [string]
         $Filter,
-        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        [parameter(Mandatory = $false,ParameterSetName = "ListWhereMember")]
+        [Alias('UserKey')]
         [String]
         $Where_IsAMember,
-        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        [parameter(Mandatory = $false,ParameterSetName = "ListFilter")]
         [string]
         $Domain,
         [parameter(Mandatory = $false,ParameterSetName = "Get")]
         [String[]]
         $Fields,
-        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        [parameter(Mandatory = $false,ParameterSetName = "ListFilter")]
+        [parameter(Mandatory = $false,ParameterSetName = "ListWhereMember")]
         [ValidateRange(1,200)]
         [Alias("MaxResults")]
         [Int]
-        $PageSize = "200"
+        $PageSize = 200,
+        [parameter(Mandatory = $false,ParameterSetName = "ListFilter")]
+        [parameter(Mandatory = $false,ParameterSetName = "ListWhereMember")]
+        [Alias('First')]
+        [Int]
+        $Limit = 0
     )
     Begin {
         $serviceParams = @{
@@ -82,13 +92,11 @@
         $service = New-GoogleService @serviceParams
     }
     Process {
-        switch ($PSCmdlet.ParameterSetName) {
+        switch -Regex ($PSCmdlet.ParameterSetName) {
             Get {
-                foreach ($G in $Group) {
+                foreach ($G in $Identity) {
                     try {
-                        if ($G -notlike "*@*.*") {
-                            $G = "$($G)@$($Script:PSGSuite.Domain)"
-                        }
+                        Resolve-Email ([ref]$G) -IsGroup
                         Write-Verbose "Getting group '$G'"
                         $request = $service.Groups.Get($G)
                         if ($Fields) {
@@ -106,21 +114,16 @@
                     }
                 }
             }
-            List {
+            'List.*' {
                 $verbString = "Getting all G Suite Groups"
                 try {
                     $request = $service.Groups.List()
                     if ($PSBoundParameters.Keys -contains 'Where_IsAMember') {
-                        if ($Where_IsAMember -ceq "me") {
-                            $Where_IsAMember = $Script:PSGSuite.AdminEmail
-                        }
-                        elseif ($Where_IsAMember -notlike "*@*.*") {
-                            $Where_IsAMember = "$($Where_IsAMember)@$($Script:PSGSuite.Domain)"
-                        }
+                        Resolve-Email ([ref]$Where_IsAMember)
                         $verbString += " where '$Where_IsAMember' is a member"
                         $request.UserKey = $Where_IsAMember
                     }
-                    if ($PSBoundParameters.Keys -contains 'Filter') {
+                    elseif ($PSBoundParameters.Keys -contains 'Filter') {
                         if ($Filter -eq '*') {
                             $Filter = ""
                         }
@@ -133,23 +136,28 @@
                             $request.Query = $Filter.Trim()
                         }
                     }
-                    if ($PSBoundParameters.Keys -contains 'Domain') {
-                        $verbString += " for domain '$Domain'"
-                        $request.Domain = $Domain
+                    if ($PSBoundParameters.Keys -notcontains 'Where_IsAMember') {
+                        if ($PSBoundParameters.Keys -contains 'Domain') {
+                            $verbString += " for domain '$Domain'"
+                            $request.Domain = $Domain
+                        }
+                        elseif ( -not [String]::IsNullOrEmpty($Script:PSGSuite.CustomerID)) {
+                            $verbString += " for customer '$($Script:PSGSuite.CustomerID)'"
+                            $request.Customer = $Script:PSGSuite.CustomerID
+                        }
+                        else {
+                            $verbString += " for customer 'my_customer'"
+                            $request.Customer = "my_customer"
+                        }
                     }
-                    elseif ( -not [String]::IsNullOrEmpty($Script:PSGSuite.CustomerID)) {
-                        $verbString += " for customer '$($Script:PSGSuite.CustomerID)'"
-                        $request.Customer = $Script:PSGSuite.CustomerID
+                    if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                        Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                        $PageSize = $Limit
                     }
-                    else {
-                        $verbString += " for customer 'my_customer'"
-                        $request.Customer = "my_customer"
-                    }
-                    if ($PageSize) {
-                        $request.MaxResults = $PageSize
-                    }
+                    $request.MaxResults = $PageSize
                     Write-Verbose $verbString
                     [int]$i = 1
+                    $overLimit = $false
                     do {
                         $result = $request.Execute()
                         if ($null -ne $result.GroupsValue) {
@@ -158,9 +166,18 @@
                         $request.PageToken = $result.NextPageToken
                         [int]$retrieved = ($i + $result.GroupsValue.Count) - 1
                         Write-Verbose "Retrieved $retrieved groups..."
+                        if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                            Write-Verbose "Limit reached: $Limit"
+                            $overLimit = $true
+                        }
+                        elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                            $newPS = $Limit - $retrieved
+                            Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                            $request.MaxResults = $newPS
+                        }
                         [int]$i = $i + $result.GroupsValue.Count
                     }
-                    until (!$result.NextPageToken)
+                    until ($overLimit -or !$result.NextPageToken)
                 }
                 catch {
                     if ($ErrorActionPreference -eq 'Stop') {

@@ -2,18 +2,21 @@ function Get-GSDocContent {
     <#
     .SYNOPSIS
     Gets the content of a Google Doc and returns it as an array of strings. Supports HTML or PlainText
-    
+
     .DESCRIPTION
     Gets the content of a Google Doc and returns it as an array of strings. Supports HTML or PlainText
-    
+
     .PARAMETER FileID
     The unique Id of the file to get content of
-    
+
     .PARAMETER User
     The email or unique Id of the owner of the Drive file
 
     Defaults to the AdminEmail user
-    
+
+    .PARAMETER Type
+    Whether to get the results in HTML or PlainText format.
+
     .EXAMPLE
     Get-GSDocContent -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976'
 
@@ -21,7 +24,7 @@ function Get-GSDocContent {
     #>
     [CmdLetBinding()]
     Param
-    (      
+    (
         [parameter(Mandatory = $true,Position = 0)]
         [String]
         $FileID,

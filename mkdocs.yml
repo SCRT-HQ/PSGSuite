@@ -1,0 +1,71 @@
+# Project information
+site_name: 'PSGSuite'
+site_description: 'PowerShell for G Suite'
+site_author: 'Nate Ferrell'
+site_url: 'https://psgsuite.io'
+
+# Repository
+repo_name: 'scrthq/PSGSuite'
+repo_url: 'https://github.com/scrthq/PSGSuite'
+edit_uri: 'edit/main/docs'
+
+# Copyright
+copyright: 'Copyright &copy; 2015 - 2019 Nate Ferrell'
+
+# Configuration
+theme:
+  name: 'material'
+  language: 'en'
+  logo:
+    icon: 'keyboard'
+  palette:
+    primary: 'blue'
+    accent: 'green'
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+  feature:
+    tabs: true
+
+# Customization
+extra:
+  disqus: 'psgsuite'
+  manifest: 'manifest.webmanifest'
+  search:
+    tokenizer: '\s+'
+  social:
+    - type: 'github'
+      link: 'https://github.com/scrthq'
+    - type: 'twitter'
+      link: 'https://twitter.com/scrthq'
+    - type: 'linkedin'
+      link: 'https://linkedin.com/in/scrthq'
+
+extra_css:
+  - 'stylesheets/extra.css'
+
+# Google Analytics
+google_analytics:
+  - 'UA-101420411-4'
+  - 'auto'
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.emoji
+  - pymdownx.tasklist
+  - pymdownx.mark
+  - pymdownx.keys
+  - pymdownx.details
+  - pymdownx.critic
+  - codehilite:
+      guess_lang: true
+  - toc:
+      permalink: true
+
+# Plugins
+plugins:
+  - search
+  - minify:
+      minify_html: true

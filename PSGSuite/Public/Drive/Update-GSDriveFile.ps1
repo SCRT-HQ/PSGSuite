@@ -53,6 +53,20 @@ function Update-GSDriveFile {
     .PARAMETER RemoveParents
     The parent Ids to remove
 
+    .PARAMETER CopyRequiresWriterPermission
+    Whether the options to copy, print, or download this file, should be disabled for readers and commenters.
+
+    .PARAMETER Starred
+    Whether the user has starred the file.
+
+    .PARAMETER Trashed
+    Whether the file has been trashed, either explicitly or from a trashed parent folder.
+
+    Only the owner may trash a file, and other users cannot see files in the owner's trash.
+
+    .PARAMETER WritersCanShare
+    If $true, sets Writers Can Share to true on the file.
+
     .PARAMETER Projection
     The defined subset of fields to be returned
 
@@ -84,14 +98,14 @@ function Update-GSDriveFile {
     (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
         [Alias('Id')]
-        [String]
+        [string]
         $FileId,
         [parameter(Mandatory = $false,Position = 1)]
         [ValidateScript( { Test-Path $_ })]
-        [String]
+        [string]
         $Path,
         [parameter(Mandatory = $false)]
-        [String]
+        [string]
         $Name,
         [parameter(Mandatory = $false)]
         [String]
@@ -101,11 +115,23 @@ function Update-GSDriveFile {
         [string]
         $FolderColorRgb,
         [parameter(Mandatory = $false)]
-        [String[]]
+        [string[]]
         $AddParents,
         [parameter(Mandatory = $false)]
         [String[]]
         $RemoveParents,
+        [parameter(Mandatory = $false)]
+        [switch]
+        $CopyRequiresWriterPermission,
+        [parameter(Mandatory = $false)]
+        [switch]
+        $Starred,
+        [parameter(Mandatory = $false)]
+        [switch]
+        $Trashed,
+        [parameter(Mandatory = $false)]
+        [switch]
+        $WritersCanShare,
         [parameter(Mandatory = $false,ParameterSetName = "Depth")]
         [Alias('Depth')]
         [ValidateSet("Minimal","Standard","Full","Access")]
@@ -147,7 +173,7 @@ function Update-GSDriveFile {
             PurpleRain        = '#cd74e6'
             ToyEggplant       = '#a47ae2'
         }
-        if ($Projection) {
+        if ($PSCmdlet.ParameterSetName -eq 'Depth') {
             $fs = switch ($Projection) {
                 Standard {
                     @("createdTime","description","fileExtension","id","lastModifyingUser","modifiedTime","name","owners","parents","properties","version","webContentLink","webViewLink")
@@ -160,7 +186,7 @@ function Update-GSDriveFile {
                 }
             }
         }
-        elseif ($Fields) {
+        elseif ($PSBoundParameters.ContainsKey('Fields')) {
             $fs = $Fields
         }
     }
@@ -179,14 +205,18 @@ function Update-GSDriveFile {
         $service = New-GoogleService @serviceParams
         try {
             $body = New-Object 'Google.Apis.Drive.v3.Data.File'
-            if ($Name) {
-                $body.Name = [String]$Name
-            }
-            if ($Description) {
-                $body.Description = $Description
-            }
-            if ($FolderColorRgb) {
-                $body.FolderColorRgb = $ColorDictionary[$FolderColorRgb]
+            foreach ($prop in $PSBoundParameters.Keys | Where-Object { $body.PSObject.Properties.Name -contains $_ }) {
+                switch ($prop) {
+                    Name {
+                        $body.Name = [String]$Name
+                    }
+                    FolderColorRgb {
+                        $body.FolderColorRgb = $ColorDictionary[$FolderColorRgb]
+                    }
+                    Default {
+                        $body.$prop = $PSBoundParameters[$prop]
+                    }
+                }
             }
             if ($PSBoundParameters.Keys -contains 'Path') {
                 $ioFile = Get-Item $Path
@@ -202,7 +232,7 @@ function Update-GSDriveFile {
             else {
                 $request = $service.Files.Update($body,$FileId)
             }
-            $request.SupportsTeamDrives = $true
+            $request.SupportsAllDrives = $true
             if ($fs) {
                 $request.Fields = $($fs -join ",")
             }

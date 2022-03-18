@@ -20,6 +20,9 @@ function Get-GSDrivePermission {
     .PARAMETER PageSize
     The page size of the result set
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
     .EXAMPLE
     Get-GSDrivePermission -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976'
 
@@ -29,13 +32,14 @@ function Get-GSDrivePermission {
     [cmdletbinding(DefaultParameterSetName = "List")]
     Param
     (
-        [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
+        [Alias('Id')]
+        [String]
+        $FileId,
+        [parameter(Mandatory = $false,Position = 1,ValueFromPipelineByPropertyName = $true)]
         [Alias('Owner','PrimaryEmail','UserKey','Mail')]
         [string]
         $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $true)]
-        [String]
-        $FileId,
         [parameter(Mandatory = $false,ParameterSetName = "Get")]
         [String[]]
         $PermissionId,
@@ -43,7 +47,11 @@ function Get-GSDrivePermission {
         [Alias('MaxResults')]
         [ValidateRange(1,100)]
         [Int]
-        $PageSize = "100"
+        $PageSize = 100,
+        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        [Alias('First')]
+        [Int]
+        $Limit = 0
     )
     Process {
         if ($User -ceq 'me') {
@@ -62,7 +70,7 @@ function Get-GSDrivePermission {
             if ($PermissionId) {
                 foreach ($per in $PermissionId) {
                     $request = $service.Permissions.Get($FileId,$per)
-                    $request.SupportsTeamDrives = $true
+                    $request.SupportsAllDrives = $true
                     $request.Fields = "*"
                     Write-Verbose "Getting Permission Id '$per' on File '$FileId' for user '$User'"
                     $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru | Add-Member -MemberType NoteProperty -Name 'FileId' -Value $FileId -PassThru
@@ -70,11 +78,16 @@ function Get-GSDrivePermission {
             }
             else {
                 $request = $service.Permissions.List($FileId)
-                $request.SupportsTeamDrives = $true
+                $request.SupportsAllDrives = $true
+                if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                    Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                    $PageSize = $Limit
+                }
                 $request.PageSize = $PageSize
                 $request.Fields = "*"
                 Write-Verbose "Getting Permission list on File '$FileId' for user '$User'"
                 [int]$i = 1
+                $overLimit = $false
                 do {
                     $result = $request.Execute()
                     $result.Permissions | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru | Add-Member -MemberType NoteProperty -Name 'FileId' -Value $FileId -PassThru
@@ -83,6 +96,15 @@ function Get-GSDrivePermission {
                     }
                     [int]$retrieved = ($i + $result.Permissions.Count) - 1
                     Write-Verbose "Retrieved $retrieved Permissions..."
+                    if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                        Write-Verbose "Limit reached: $Limit"
+                        $overLimit = $true
+                    }
+                    elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                        $newPS = $Limit - $retrieved
+                        Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                        $request.PageSize = $newPS
+                    }
                     [int]$i = $i + $result.Permissions.Count
                 }
                 until (!$result.NextPageToken)

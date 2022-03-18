@@ -6,7 +6,7 @@ function Add-GSGmailSmtpMsa {
     .DESCRIPTION
     Builds a SmtpMsa object to use when creating or updating SmtpMsa settings withing the Gmail SendAs settings.
 
-    .PARAMETER Host
+    .PARAMETER HostName
     The hostname of the SMTP service.
 
     .PARAMETER Port
@@ -43,6 +43,7 @@ function Add-GSGmailSmtpMsa {
 
     Updates Joe's SendAs settings for his work SendAs alias, including signature and SmtpMsa settings.
     #>
+    [OutputType('Google.Apis.Gmail.v1.Data.SmtpMsa')]
     [CmdletBinding(DefaultParameterSetName = "InputObject")]
     Param
     (

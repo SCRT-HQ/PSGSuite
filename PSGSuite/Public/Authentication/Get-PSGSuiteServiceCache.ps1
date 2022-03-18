@@ -10,8 +10,16 @@ function Get-PSGSuiteServiceCache {
 
         $SessionKey = @($User,$ServiceType,$(($Scope | Sort-Object) -join ";")) -join ";"
 
+    .PARAMETER IncludeKeys
+    If $true, returns the full service cache dictionary including keys.
+
+    Defaults to $false.
+
     .EXAMPLE
     Get-PSGSuiteServiceCache
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Authentication/Get-PSGSuiteServiceCache/
     #>
     [CmdletBinding()]
     Param (
@@ -26,6 +34,11 @@ function Get-PSGSuiteServiceCache {
     }
     Process {
         Write-Verbose "Getting cached session list"
-        $script:_PSGSuiteSessions.Values
+        if ($IncludeKeys) {
+            $script:_PSGSuiteSessions
+        }
+        else {
+            $script:_PSGSuiteSessions.Values
+        }
     }
 }

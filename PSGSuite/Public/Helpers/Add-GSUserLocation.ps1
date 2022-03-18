@@ -40,6 +40,7 @@ function Add-GSUserLocation {
 
     Adds a custom user location.
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.UserLocation')]
     [CmdletBinding()]
     Param
     (
@@ -86,7 +87,12 @@ function Add-GSUserLocation {
                 Fields {
                     $obj = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserLocation'
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
-                        $obj.$prop = $PSBoundParameters[$prop]
+                        if ($prop -eq 'Type') {
+                            $obj.$prop = $PSBoundParameters[$prop].ToLower()
+                        }
+                        else {
+                            $obj.$prop = $PSBoundParameters[$prop]
+                        }
                     }
                     $obj
                 }

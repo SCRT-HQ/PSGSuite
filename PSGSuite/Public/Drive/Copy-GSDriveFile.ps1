@@ -84,7 +84,7 @@ function Copy-GSDriveFile {
                 }
             }
         }
-        elseif ($Fields) {
+        elseif ($PSBoundParameters.ContainsKey('Fields')) {
             $fs = $Fields
         }
     }
@@ -113,7 +113,7 @@ function Copy-GSDriveFile {
                 $body.Parents = [String[]]$Parents
             }
             $request = $service.Files.Copy($body,$FileID)
-            $request.SupportsTeamDrives = $true
+            $request.SupportsAllDrives = $true
             if ($fs) {
                 $request.Fields = "$($fs -join ",")"
             }

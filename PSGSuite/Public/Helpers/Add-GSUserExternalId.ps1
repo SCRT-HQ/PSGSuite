@@ -39,6 +39,7 @@ function Add-GSUserExternalId {
 
     Creates a user named John Smith and adds their work address, work phone, login_id and alternate non gsuite work email to the user object.
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.UserExternalId')]
     [CmdletBinding(DefaultParameterSetName = "InputObject")]
     Param
     (
@@ -70,7 +71,12 @@ function Add-GSUserExternalId {
                 Fields {
                     $obj = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserExternalId'
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
-                        $obj.$prop = $PSBoundParameters[$prop]
+                        if ($prop -eq 'Type') {
+                            $obj.$prop = $PSBoundParameters[$prop].ToLower()
+                        }
+                        else {
+                            $obj.$prop = $PSBoundParameters[$prop]
+                        }
                     }
                     $obj
                 }

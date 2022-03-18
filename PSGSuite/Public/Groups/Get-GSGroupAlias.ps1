@@ -6,11 +6,11 @@ function Get-GSGroupAlias {
     .DESCRIPTION
     Gets the specified G SUite Group's aliases
 
-    .PARAMETER Group
+    .PARAMETER Identity
     The primary email or ID of the group who you are trying to get aliases for. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
 
     .EXAMPLE
-    Get-GSGroupAlias -Group hr
+    Get-GSGroupAlias -Identity hr
 
     Gets the list of aliases for the group hr@domain.com
     #>
@@ -19,10 +19,9 @@ function Get-GSGroupAlias {
     Param
     (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
-        [Alias("Email")]
-        [ValidateNotNullOrEmpty()]
+        [Alias('GroupEmail','Group','Email')]
         [String[]]
-        $Group
+        $Identity
     )
     Begin {
         $serviceParams = @{
@@ -32,11 +31,9 @@ function Get-GSGroupAlias {
         $service = New-GoogleService @serviceParams
     }
     Process {
-        foreach ($G in $Group) {
+        foreach ($G in $Identity) {
             try {
-                if ($G -notlike "*@*.*") {
-                    $G = "$($G)@$($Script:PSGSuite.Domain)"
-                }
+                Resolve-Email ([ref]$G) -IsGroup
                 Write-Verbose "Getting Alias list for Group '$G'"
                 $request = $service.Groups.Aliases.List($G)
                 $request.Execute() | Select-Object -ExpandProperty AliasesValue

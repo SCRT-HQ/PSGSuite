@@ -1,26 +1,16 @@
 # PSGSuite
 <div align="center">
-<img src="bin/img/psgsuite2.0.0.png" alt="PSGSuite 2.0.0 released!" />
-</br>
-</br>
+  <img src="https://github.com/scrthq/PSGSuite/raw/master/bin/img/psgsuite2.0.0.png" alt="PSGSuite 2.0.0 released!" />
+  <br />
+  <br />
   <!-- Azure Pipelines -->
   <a href="https://dev.azure.com/scrthq/SCRT%20HQ/_build/latest?definitionId=2">
     <img src="https://dev.azure.com/scrthq/SCRT%20HQ/_apis/build/status/PSGSuite-CI"
       alt="Azure Pipelines" title="Azure Pipelines" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <!-- Codacy -->
-  <a href="https://www.codacy.com/app/scrthq/PSGSuite?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scrthq/PSGSuite&amp;utm_campaign=Badge_Grade">
-    <img src="https://api.codacy.com/project/badge/Grade/0d5203a1cf1945fe94c46b779eecb7f0"
-      alt="Codacy" title="Codacy" />
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <!-- PS Gallery -->
-  <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
-    <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat&logo=powershell"
-      alt="PowerShell Gallery" title="PowerShell Gallery" />
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Discord -->
   <a href="https://discord.gg/G66zVG7">
-    <img src="https://img.shields.io/discord/235574673155293194.svg?style=flat&label=Discord&logo=discord"
+    <img src="https://img.shields.io/discord/235574673155293194.svg?style=flat&label=Discord&logo=discord&color=purple"
       alt="Discord - Chat" title="Discord - Chat" />
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Slack -->
@@ -30,8 +20,30 @@
   </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- Gitter -->
   <a href="https://gitter.im/PSGSuite/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">
-    <img src="https://img.shields.io/gitter/room/scrthq/PSGSuite.svg?logo=gitter&style=flat"
+    <img src="https://img.shields.io/gitter/room/scrthq/PSGSuite.svg?logo=gitter&style=flat&color=red"
       alt="Gitter - Chat" title="Gitter - Chat" />
+  </a>
+  <br />
+  <br />
+  <!-- Codacy -->
+  <a href="https://www.codacy.com/app/scrthq/PSGSuite?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scrthq/PSGSuite&amp;utm_campaign=Badge_Grade">
+    <img src="https://api.codacy.com/project/badge/Grade/0d5203a1cf1945fe94c46b779eecb7f0"
+      alt="Codacy" title="Codacy" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- PS Gallery -->
+  <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
+    <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat&logo=powershell&color=blue"
+      alt="PowerShell Gallery" title="PowerShell Gallery" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- GitHub Releases -->
+  <a href="https://github.com/scrthq/PSGSuite/releases/latest">
+    <img src="https://img.shields.io/github/downloads/scrthq/PSGSuite/total.svg?logo=github&color=blue"
+      alt="GitHub Releases" title="GitHub Releases" />
+  </a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <!-- GitHub Releases -->
+  <a href="https://github.com/scrthq/PSGSuite/releases/latest">
+    <img src="https://img.shields.io/github/release/scrthq/PSGSuite.svg?label=version&logo=github"
+      alt="GitHub Releases" title="GitHub Releases" />
   </a>
 </div>
 <br />
@@ -40,7 +52,7 @@
 
 ## Documentation
 
-Check out the [GitHub wiki for PSGSuite](https://github.com/scrthq/PSGSuite/wiki) for help with setting up as well as full function help!
+Check out [PSGSuite.io](https://psgsuite.io/) for PSGSuite documentation, including [initial setup](https://psgsuite.io/Initial%20Setup/) help as well as function help!
 
 ## Contributing
 
@@ -90,74 +102,102 @@ Please adhere to our [Code of Conduct](https://github.com/scrthq/PSGSuite/blob/m
 
 Please note that not all functions were ported to PSGSuite 2.0.0 due to restrictions within the .NET SDK and deprecated API calls. Here is the list of functions no longer existing in PSGSuite as of 2.0.0:
 
-* Get-GSToken: no need for this as the keys are being consumed by Googles Auth SDK directly now, which makes Access/Refresh tokens non-existent for P12 Key service accounts and token management is handled automatically
-* Revoke-GSToken: same here, no longer needed due to auth service changes
-* Start-PSGSuiteConfigWizard: no longer supported as WPF is not compatible outside of Windows
+* `Get-GSToken`: no need for this as the keys are being consumed by Googles Auth SDK directly now, which makes Access/Refresh tokens non-existent for P12 Key service accounts and token management is handled automatically
+* `Revoke-GSToken`: same here, no longer needed due to auth service changes
+* `Start-PSGSuiteConfigWizard`: no longer supported as WPF is not compatible outside of Windows
 
 
 #### Functions Aliased
 
 All other functions are either intact or have an alias included to support backwards compatibility in scripts. Full list of aliases:
 
-```
-Alias                             Maps To
------                             -------
-Add-GSDriveFilePermissions        Add-GSDrivePermission
-Export-PSGSuiteConfiguration      Set-PSGSuiteConfig
-Get-GSCalendarEventList           Get-GSCalendarEvent
-Get-GSCalendarResourceList        Get-GSResourceList
-Get-GSDataTransferApplicationList Get-GSDataTransferApplication
-Get-GSDriveFileInfo               Get-GSDriveFile
-Get-GSDriveFilePermissionsList    Get-GSDrivePermission
-Get-GSGmailFilterList             Get-GSGmailFilter
-Get-GSGmailLabelList              Get-GSGmailLabel
-Get-GSGmailMessageInfo            Get-GmailMessage
-Get-GSGroupList                   Get-GSGroup
-Get-GSGroupMemberList             Get-GSGroupMember
-Get-GSMobileDeviceList            Get-GSMobileDevice
-Get-GSOrganizationalUnitList      Get-GSOrganizationalUnit
-Get-GSOrgUnit                     Get-GSOrganizationalUnit
-Get-GSOrgUnitList                 Get-GSOrganizationalUnit
-Get-GSOU                          Get-GSOrganizationalUnit
-Get-GSResourceList                Get-GSResource
-Get-GSShortURLInfo                Get-GSShortURL
-Get-GSTeamDrivesList              Get-GSTeamDrive
-Get-GSUserASPList                 Get-GSUserASP
-Get-GSUserLicenseInfo             Get-GSUserLicense
-Get-GSUserLicenseList             Get-GSUserLicense
-Get-GSUserList                    Get-GSUser
-Get-GSUserSchemaInfo              Get-GSUserSchema
-Get-GSUserSchemaList              Get-GSUserSchema
-Get-GSUserTokenList               Get-GSUserToken
-Import-PSGSuiteConfiguration      Get-PSGSuiteConfig
-Move-GSGmailMessageToTrash        Remove-GSGmailMessage
-New-GSCalendarResource            New-GSResource
-Remove-GSGmailMessageFromTrash    Restore-GSGmailMessage
-Set-PSGSuiteDefaultDomain         Switch-PSGSuiteConfig
-Switch-PSGSuiteDomain             Switch-PSGSuiteConfig
-Update-GSCalendarResource         Update-GSResource
-Update-GSSheetValue               Export-GSSheet
-```
+|               Alias               |            Maps To            |
+| :-------------------------------: | :---------------------------: |
+|    Add-GSDriveFilePermissions     |     Add-GSDrivePermission     |
+|   Export-PSGSuiteConfiguration    |      Set-PSGSuiteConfig       |
+|      Get-GSCalendarEventList      |      Get-GSCalendarEvent      |
+|    Get-GSCalendarResourceList     |      Get-GSResourceList       |
+| Get-GSDataTransferApplicationList | Get-GSDataTransferApplication |
+|        Get-GSDriveFileInfo        |        Get-GSDriveFile        |
+|  Get-GSDriveFilePermissionsList   |     Get-GSDrivePermission     |
+|       Get-GSGmailDelegates        |      Get-GSGmailDelegate      |
+|       Get-GSGmailFilterList       |       Get-GSGmailFilter       |
+|       Get-GSGmailLabelList        |       Get-GSGmailLabel        |
+|      Get-GSGmailMessageInfo       |      Get-GSGmailMessage       |
+|     Get-GSGmailSendAsSettings     |    Get-GSGmailSendAsAlias     |
+|       Get-GSGmailSignature        |    Get-GSGmailSendAsAlias     |
+|          Get-GSGroupList          |          Get-GSGroup          |
+|       Get-GSGroupMemberList       |       Get-GSGroupMember       |
+|      Get-GSMobileDeviceList       |      Get-GSMobileDevice       |
+|   Get-GSOrganizationalUnitList    |   Get-GSOrganizationalUnit    |
+|           Get-GSOrgUnit           |   Get-GSOrganizationalUnit    |
+|         Get-GSOrgUnitList         |   Get-GSOrganizationalUnit    |
+|             Get-GSOU              |   Get-GSOrganizationalUnit    |
+|        Get-GSResourceList         |        Get-GSResource         |
+|        Get-GSShortURLInfo         |        Get-GSShortURL         |
+|          Get-GSTeamDrive          |          Get-GSDrive          |
+|       Get-GSTeamDrivesList        |          Get-GSDrive          |
+|         Get-GSUserASPList         |         Get-GSUserASP         |
+|       Get-GSUserLicenseInfo       |       Get-GSUserLicense       |
+|       Get-GSUserLicenseList       |       Get-GSUserLicense       |
+|          Get-GSUserList           |          Get-GSUser           |
+|       Get-GSUserSchemaInfo        |       Get-GSUserSchema        |
+|       Get-GSUserSchemaList        |       Get-GSUserSchema        |
+|        Get-GSUserTokenList        |        Get-GSUserToken        |
+|   Import-PSGSuiteConfiguration    |      Get-PSGSuiteConfig       |
+|    Move-GSGmailMessageToTrash     |     Remove-GSGmailMessage     |
+|      New-GSCalendarResource       |        New-GSResource         |
+|  Remove-GSGmailMessageFromTrash   |    Restore-GSGmailMessage     |
+|     Set-PSGSuiteDefaultDomain     |     Switch-PSGSuiteConfig     |
+|       Switch-PSGSuiteDomain       |     Switch-PSGSuiteConfig     |
+|     Update-GSCalendarResource     |       Update-GSResource       |
+|   Update-GSGmailSendAsSettings    |   Update-GSGmailSendAsAlias   |
+|        Update-GSSheetValue        |        Export-GSSheet         |
 
 ### Most recent changes
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
-#### 2.26.1
+#### 2.36.4 - 2020-03-20
 
-* [Issue #172](https://github.com/scrthq/PSGSuite/issues/172)
-  * Fixed: `New-GoogleService` now using `New-Object` to prevent `[Google.Apis.Util.Store.FileDataStore]::new()` constructor issues in PowerShell 4.
-* [Issue #173](https://github.com/scrthq/PSGSuite/issues/173)
-  * Added: `FolderColorRgb` parameter to `New-GSDriveFile` and `Update-GSDriveFile` to enable setting the color of a folder in Drive - _Thanks, [@WJurecki](https://github.com/WJurecki)!_
-* [PR #174](https://github.com/scrthq/PSGSuite/pull/174) - _Thanks, [@WJurecki](https://github.com/WJurecki)!_
-  * Fixed: `Get-GSDriveFileList` filter concatenation so it joins multiple filters with ` and ` instead of just a space ` `.
+* [Issue #270](https://github.com/scrthq/PSGSuite/issues/270)
+    * Corrected inaccurate warning that no licenses were found for a user when using the `CheckAll` switch on `Get-GSUserLicense`.
 
-#### 2.26.0
+#### 2.36.3 - 2020-03-20
 
-* [Issue #169](https://github.com/scrthq/PSGSuite/issues/169)
-  * Fixed: `Get-GSGmailMessage` fails to download attachments containing invalid characters (e.g. `:`)
-* [Issue #168](https://github.com/scrthq/PSGSuite/issues/168)
-  * Added: `Add-GSUserLocation`
-  * Updated: `New-GSUser` and `Update-GSUser` to add in Location support
+* [Issue #270](https://github.com/scrthq/PSGSuite/issues/270)
+    * Added `CheckAll` switch parameter to `Get-GSUserLicense`
+    * Updated `User` parameter aliases for all `*-GSUserLicense` functions to include `UserId` for better pipeline support.
 * Miscellaneous
-  * Improved pipeline support for the `User` parameter across all pertinent functions, i.e. Drive, Calendar, Gmail, Sheets & Tasks APIs.
+    * Updated GitHub Release section in psake.ps1 to POST the release to the Org URL due to failures.
+
+#### 2.36.2 - 2020-03-02
+
+* [Issue #263](https://github.com/scrthq/PSGSuite/issues/263)
+    * Cleaned up decryption logic for encrypted config.
+
+#### 2.36.1 - 2020-03-02
+
+* [Issue #263](https://github.com/scrthq/PSGSuite/issues/263)
+    * Fixed `[SecureString]` decryption on Unix machines running PowerShell 7 (found additional bugs)
+    * Migrated private `Encrypt` and `Decrypt` to `EncryptionHelpers.ps1` in the Private folder to allow a single place to update.
+
+#### 2.36.0 - 2020-02-28
+
+* [PR #255](https://github.com/scrthq/PSGSuite/pull/255) - _Thanks, [@FISHMANPET](https://github.com/FISHMANPET)!_
+    * Added support for `[ScriptBlock]` values on the config, allowing you to provide a script to run that will pull in a configuration value (vs embedded the value directly on the config)
+* [PR #255](https://github.com/scrthq/PSGSuite/pull/260) - _Thanks, [@vaskotoo](https://github.com/vaskotoo)!_
+    * Added support for an array of Users on `Get-GSGmailMessageList`
+* [PR #261](https://github.com/scrthq/PSGSuite/issues/261) - _Thanks, [@Foggy2](https://github.com/Foggy2)!_
+    * Added support for all license types including undocumented ones.
+    * Closed out [Issue #252](https://github.com/scrthq/PSGSuite/issues/252) as well.
+* [PR #262](https://github.com/scrthq/PSGSuite/issues/262) - _Thanks, [@nwls-hermesj](https://github.com/nwls-hermesj)!_
+    * Added support for pipeline input of Drive file objects to `Remove-GSDriveFile`.
+* [Issue #256](https://github.com/scrthq/PSGSuite/issues/256)
+    * Cleaned up docs on `Send-GSChatMessage`.
+* [Issue #258](https://github.com/scrthq/PSGSuite/issues/258)
+    * Removed URL Shortener functions due to Google deprecation.
+* [Issue #263](https://github.com/scrthq/PSGSuite/issues/263)
+    * Fixed `[SecureString]` decryption on Unix machines running PowerShell 7
+* Miscellaneous
+    * Removed the Tasks API functions. Google has not pushed an update to the Tasks .NET SDK in over 2 months, so it is now behind the current release versions of the core Google.Apis assemblies, resulting in failure to import.

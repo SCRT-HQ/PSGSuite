@@ -11,6 +11,9 @@ function Get-GSDriveProfile {
 
     Defaults to the AdminEmail user
 
+    .PARAMETER Fields
+    The specific fields to request
+
     .EXAMPLE
     Get-GSDriveProfile
 

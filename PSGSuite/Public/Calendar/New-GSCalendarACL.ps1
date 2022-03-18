@@ -44,6 +44,9 @@ function New-GSCalendarAcl {
     New-GSCalendarACL -CalendarID jennyappleseed@domain.com -Role reader -Value Jonnyappleseed@domain.com -Type user
 
     Gives Jonnyappleseed@domain.com reader access to jennyappleseed's calendar.
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Calendar/New-GSCalendarACL/
     #>
     [OutputType('Google.Apis.Calendar.v3.Data.AclRule')]
     [cmdletbinding(DefaultParameterSetName = "AttendeeEmails")]

@@ -16,3 +16,5 @@ BuildOutput/*
 PSGSuite.zip
 PSGSuite*.json
 *.psgs
+site
+docstage

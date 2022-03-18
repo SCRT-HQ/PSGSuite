@@ -43,13 +43,13 @@ function Add-GSUserAddress {
     The street address, such as 1600 Amphitheatre Parkway. Whitespace within the string is ignored; however, newlines are significant
 
     .PARAMETER Type
-    	The address type.
+    The address type.
 
     Acceptable values are:
-    * "Custom"
-    * "Home"
-    * "Other"
-    * "Work"
+    * "custom"
+    * "home"
+    * "other"
+    * "work"
 
     .PARAMETER InputObject
     Used for pipeline input of an existing UserAddress object to strip the extra attributes and prevent errors
@@ -67,6 +67,7 @@ function Add-GSUserAddress {
 
     Creates a user named John Smith and adds their work address, work phone, login_id and alternate non gsuite work email to the user object.
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.UserAddress')]
     [CmdletBinding(DefaultParameterSetName = "InputObject")]
     Param
     (
@@ -109,7 +110,7 @@ function Add-GSUserAddress {
         [String]
         $StreetAddress,
         [Parameter(Mandatory = $false, ParameterSetName = "Fields")]
-        [ValidateSet('Custom', 'Home', 'Other', 'Work')]
+        [ValidateSet('custom', 'home', 'other', 'work')]
         [String]
         $Type,
         [Parameter(Mandatory = $false, ValueFromPipeline = $true, ParameterSetName = "InputObject")]
@@ -139,7 +140,12 @@ function Add-GSUserAddress {
                 Fields {
                     $obj = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.UserAddress'
                     foreach ($prop in $PSBoundParameters.Keys | Where-Object {$obj.PSObject.Properties.Name -contains $_}) {
-                        $obj.$prop = $PSBoundParameters[$prop]
+                        if ($prop -eq 'Type') {
+                            $obj.$prop = $PSBoundParameters[$prop].ToLower()
+                        }
+                        else {
+                            $obj.$prop = $PSBoundParameters[$prop]
+                        }
                     }
                     $obj
                 }

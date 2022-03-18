@@ -6,15 +6,18 @@ function Get-GSCalendarEvent {
     .DESCRIPTION
     Gets the calendar events for a user
 
-    .PARAMETER User
-    The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
-
-    Defaults to the AdminEmail in the config
+    .PARAMETER EventId
+    The Id of the event to get info for
 
     .PARAMETER CalendarId
     The calendar ID of the calendar you would like to list events from.
 
     Defaults to the user's primary calendar
+
+    .PARAMETER User
+    The primary email or UserID of the user. You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
+
+    Defaults to the AdminEmail in the config
 
     .PARAMETER Filter
     Free text search terms to find events that match these terms in any field, except for extended properties.
@@ -32,6 +35,9 @@ function Get-GSCalendarEvent {
     .PARAMETER PageSize
     Maximum number of events returned on one result page.
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
     .PARAMETER ShowDeleted
     Whether to include deleted events (with status equals "cancelled") in the result. Cancelled instances of recurring events (but not the underlying recurring event) will still be included if showDeleted and singleEvents are both False. If showDeleted and singleEvents are both True, only single instances of deleted events (but not the underlying recurring events) are returned.
 
@@ -40,6 +46,12 @@ function Get-GSCalendarEvent {
 
     .PARAMETER SingleEvents
     Whether to expand recurring events into instances and only return single one-off events and instances of recurring events, but not the underlying recurring events themselves.
+
+    .PARAMETER PrivateExtendedProperty
+    Extended properties constraint specified as a hashtable where propertyName=value. Matches only private properties.
+
+    .PARAMETER SharedExtendedProperty
+    Extended properties constraint specified as a hashtable where propertyName=value. Matches only shared properties.
 
     .PARAMETER TimeMin
     Lower bound (inclusive) for an event's end time to filter by. If TimeMax is set, TimeMin must be smaller than timeMax.
@@ -51,6 +63,15 @@ function Get-GSCalendarEvent {
     Get-GSCalendarEventList -TimeMin (Get-Date "01-21-2018 00:00:00") -TimeMax (Get-Date "01-28-2018 23:59:59") -SingleEvents
 
     This gets the single events on the primary calendar of the Admin for the week of Jan 21-28, 2018.
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Calendar/Get-GSCalendarEvent/
+
+    .LINK
+    https://developers.google.com/calendar/v3/reference/events/get
+
+    .LINK
+    https://developers.google.com/calendar/v3/reference/events/list
     #>
     [OutputType('Google.Apis.Calendar.v3.Data.Event')]
     [cmdletbinding(DefaultParameterSetName = "List")]
@@ -82,6 +103,10 @@ function Get-GSCalendarEvent {
         [ValidateRange(1,2500)]
         [Int]
         $PageSize = 2500,
+        [parameter(Mandatory = $false,ParameterSetName = 'List')]
+        [Alias('First')]
+        [Int]
+        $Limit = 0,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [switch]
         $ShowDeleted,
@@ -169,9 +194,11 @@ function Get-GSCalendarEvent {
                                     }
                                 }
                             }
-                            if ($PageSize) {
-                                $request.MaxResults = $PageSize
+                            if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                                Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                                $PageSize = $Limit
                             }
+                            $request.MaxResults = $PageSize
                             if ($Filter) {
                                 Write-Verbose "Getting all Calendar Events matching filter '$Filter' on calendar '$calId' for user '$U'"
                             }
@@ -179,6 +206,7 @@ function Get-GSCalendarEvent {
                                 Write-Verbose "Getting all Calendar Events on calendar '$calId' for user '$U'"
                             }
                             [int]$i = 1
+                            $overLimit = $false
                             do {
                                 $result = $request.Execute()
                                 $result.Items | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $calId -PassThru
@@ -187,9 +215,18 @@ function Get-GSCalendarEvent {
                                 }
                                 [int]$retrieved = ($i + $result.Items.Count) - 1
                                 Write-Verbose "Retrieved $retrieved Calendar Events..."
+                                if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                                    Write-Verbose "Limit reached: $Limit"
+                                    $overLimit = $true
+                                }
+                                elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                                    $newPS = $Limit - $retrieved
+                                    Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                                    $request.MaxResults = $newPS
+                                }
                                 [int]$i = $i + $result.Items.Count
                             }
-                            until (!$result.NextPageToken)
+                            until ($overLimit -or !$result.NextPageToken)
                         }
                         catch {
                             if ($ErrorActionPreference -eq 'Stop') {

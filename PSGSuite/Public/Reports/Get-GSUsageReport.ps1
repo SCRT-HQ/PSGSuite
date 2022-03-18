@@ -36,14 +36,22 @@ function Get-GSUsageReport {
     .PARAMETER PageSize
     Maximum number of results to return. Maximum allowed is 1000
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
+    .PARAMETER Flat
+    If $true, returns a flattened object for easy parsing.
+
+    .PARAMETER Raw
+    If $true, returns the raw, unformatted results.
+
     .EXAMPLE
     Get-GSUsageReport -Date (Get-Date).AddDays(-30)
 
     Gets the Customer Usage report from 30 days prior
     #>
     [cmdletbinding(DefaultParameterSetName = "Customer")]
-    Param
-    (
+    Param (
         [parameter(Mandatory = $false,ParameterSetName = "Customer")]
         [parameter(Mandatory = $false,ParameterSetName = "Entity")]
         [parameter(Mandatory = $false,ParameterSetName = "User")]
@@ -74,6 +82,11 @@ function Get-GSUsageReport {
         [Alias("MaxResults")]
         [Int]
         $PageSize = "1000",
+        [parameter(Mandatory = $false,ParameterSetName = "Entity")]
+        [parameter(Mandatory = $false,ParameterSetName = "User")]
+        [Alias('First')]
+        [Int]
+        $Limit = 0,
         [parameter(Mandatory = $false)]
         [switch]
         $Flat,
@@ -97,6 +110,10 @@ function Get-GSUsageReport {
                 }
                 Entity {
                     $request = $service.EntityUsageReports.Get($EntityType,$EntityKey,($Date.ToString('yyyy-MM-dd')))
+                    if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                        Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                        $PageSize = $Limit
+                    }
                     $request.MaxResults = $PageSize
                 }
                 User {
@@ -107,6 +124,10 @@ function Get-GSUsageReport {
                         $UserKey = "$($UserKey)@$($Script:PSGSuite.Domain)"
                     }
                     $request = $service.UserUsageReport.Get($UserKey,($Date.ToString('yyyy-MM-dd')))
+                    if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                        Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                        $PageSize = $Limit
+                    }
                     $request.MaxResults = $PageSize
                 }
             }
@@ -127,6 +148,7 @@ function Get-GSUsageReport {
             }
             $warnings = @()
             [int]$i = 1
+            $overLimit = $false
             do {
                 $result = $request.Execute()
                 if ($Raw) {
@@ -186,9 +208,18 @@ function Get-GSUsageReport {
                 $request.PageToken = $result.NextPageToken
                 [int]$retrieved = ($i + $result.UsageReportsValue.Count) - 1
                 Write-Verbose "Retrieved $retrieved entities for this report..."
+                if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                    Write-Verbose "Limit reached: $Limit"
+                    $overLimit = $true
+                }
+                elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                    $newPS = $Limit - $retrieved
+                    Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                    $request.MaxResults = $newPS
+                }
                 [int]$i = $i + $result.UsageReportsValue.Count
             }
-            until (!$result.NextPageToken)
+            until ($overLimit -or !$result.NextPageToken)
             if ($warnings | Where-Object {$_.Code}) {
                 $warnings | ForEach-Object {
                     Write-Warning "[$($_.Code)] $($_.Message)"

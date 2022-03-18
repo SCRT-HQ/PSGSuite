@@ -12,9 +12,12 @@ function Get-GSGmailMessageList {
     Defaults to the AdminEmail user
 
     .PARAMETER Filter
-    Only return messages matching the specified query. Supports the same query format as the Gmail search box. For example, "from:someuser@example.com rfc822msgid: is:unread"
+    Only return messages matching the specified query. Supports the same query format as the Gmail search box. For example, "from:someuser@example.com rfc822msgid:<lkj123l4jj1lj@gmail.com> is:unread"
 
     More info on Gmail search operators here: https://support.google.com/mail/answer/7190?hl=en
+
+    .PARAMETER Rfc822MsgId
+    The RFC822 Message ID to add to your filter.
 
     .PARAMETER LabelIds
     Only return messages with labels that match all of the specified label IDs
@@ -28,23 +31,30 @@ function Get-GSGmailMessageList {
     .PARAMETER PageSize
     The page size of the result set
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
     .EXAMPLE
     Get-GSGmailMessageList -Filter "to:me","after:2017/12/25" -ExcludeChats
 
     Gets the list of messages sent directly to the user after 2017/12/25 excluding chats
     #>
     [OutputType('Google.Apis.Gmail.v1.Data.Message')]
-    [cmdletbinding()]
+    [cmdletbinding(DefaultParameterSetName = "Filter")]
     Param
     (
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail")]
-        [String]
+        [String[]]
         $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ParameterSetName = "Filter")]
         [Alias('Query')]
         [String[]]
         $Filter,
+        [parameter(Mandatory = $false,ParameterSetName = "Rfc822MsgId")]
+        [Alias('MessageId','MsgId')]
+        [String]
+        $Rfc822MsgId,
         [parameter(Mandatory = $false)]
         [Alias('LabelId')]
         [String[]]
@@ -58,7 +68,11 @@ function Get-GSGmailMessageList {
         [parameter(Mandatory = $false)]
         [ValidateRange(1,500)]
         [Int]
-        $PageSize = "500"
+        $PageSize = 500,
+        [parameter(Mandatory = $false)]
+        [Alias('First')]
+        [Int]
+        $Limit = 0
     )
     Process {
         try {
@@ -86,6 +100,9 @@ function Get-GSGmailMessageList {
                 $request = $service.Users.Messages.List($U)
                 foreach ($key in $PSBoundParameters.Keys) {
                     switch ($key) {
+                        Rfc822MsgId {
+                            $request.Q = "rfc822msgid:$($Rfc822MsgId.Trim())"
+                        }
                         Filter {
                             $request.Q = $($Filter -join " ")
                         }
@@ -99,16 +116,19 @@ function Get-GSGmailMessageList {
                         }
                     }
                 }
-                if ($PageSize) {
-                    $request.MaxResults = $PageSize
+                if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                    Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                    $PageSize = $Limit
                 }
-                if ($Filter) {
-                    Write-Verbose "Getting all Messages matching filter '$Filter' for user '$U'"
+                $request.MaxResults = $PageSize
+                if ($request.Q) {
+                    Write-Verbose "Getting all Messages matching filter '$($request.Q)' for user '$U'"
                 }
                 else {
                     Write-Verbose "Getting all Messages for user '$U'"
                 }
                 [int]$i = 1
+                $overLimit = $false
                 do {
                     $result = $request.Execute()
                     if ($result.Messages) {
@@ -119,9 +139,18 @@ function Get-GSGmailMessageList {
                     }
                     [int]$retrieved = ($i + $result.Messages.Count) - 1
                     Write-Verbose "Retrieved $retrieved Messages..."
+                    if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                        Write-Verbose "Limit reached: $Limit"
+                        $overLimit = $true
+                    }
+                    elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                        $newPS = $Limit - $retrieved
+                        Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                        $request.MaxResults = $newPS
+                    }
                     [int]$i = $i + $result.Messages.Count
                 }
-                until (!$result.NextPageToken)
+                until ($overLimit -or !$result.NextPageToken)
             }
         }
         catch {

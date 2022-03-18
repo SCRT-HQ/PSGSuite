@@ -18,9 +18,16 @@
     .PARAMETER PrivacyLevel
     The privacy level for the data you'd like to transfer
 
+    *Valid for Drive & Docs data transfers only.*
+
     Available values are:
     * "SHARED": all shared content owned by the user
     * "PRIVATE": all private (unshared) content owned by the user
+
+    .PARAMETER ReleaseResources
+    If true, releases Calendar resources booked by the OldOwner to the NewOwner.
+
+    *Valid for Calendar data transfers only.*
 
     .EXAMPLE
     Start-GSDataTransfer -OldOwnerUserId joe -NewOwnerUserId mark -ApplicationId 55656082996 -PrivacyLevel SHARED,PRIVATE
@@ -40,10 +47,13 @@
         [alias("id")]
         [string]
         $ApplicationId,
-        [parameter(Mandatory=$true)]
+        [parameter(Mandatory=$false)]
         [ValidateSet("SHARED","PRIVATE")]
         [string[]]
-        $PrivacyLevel
+        $PrivacyLevel,
+        [parameter(Mandatory=$false)]
+        [switch]
+        $ReleaseResources
     )
     Begin {
         $serviceParams = @{
@@ -79,6 +89,12 @@
                 $AppDataTransfers.ApplicationTransferParams = [Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationTransferParam[]](New-Object 'Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationTransferParam' -Property @{
                     Key = 'PRIVACY_LEVEL'
                     Value = [String[]]$PrivacyLevel
+                })
+            }
+            elseif ($ReleaseResources) {
+                $AppDataTransfers.ApplicationTransferParams = [Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationTransferParam[]](New-Object 'Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationTransferParam' -Property @{
+                    Key = 'RELEASE_RESOURCES'
+                    Value = [String[]]'TRUE'
                 })
             }
             $body.ApplicationDataTransfers = [Google.Apis.Admin.DataTransfer.datatransfer_v1.Data.ApplicationDataTransfer[]]$AppDataTransfers

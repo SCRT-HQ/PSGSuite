@@ -117,7 +117,7 @@ function Import-SpecificConfiguration {
         }
         else {
             if (!$Scope -or $Scope -eq "Machine") {
-                $MachinePath = Get-StoragePath @Parameters -Scope Machine
+                $MachinePath = Get-ConfigurationPath @Parameters -Scope Machine
                 $MachinePath = Join-Path $MachinePath Configuration.psd1
                 $Machine = if (Test-Path $MachinePath) {
                     Import-Metadata $MachinePath -ErrorAction Ignore -Ordered:$Ordered
@@ -129,7 +129,7 @@ function Import-SpecificConfiguration {
             }
 
             if (!$Scope -or $Scope -eq "Enterprise") {
-                $EnterprisePath = Get-StoragePath @Parameters -Scope Enterprise
+                $EnterprisePath = Get-ConfigurationPath @Parameters -Scope Enterprise
                 $EnterprisePath = Join-Path $EnterprisePath Configuration.psd1
                 $Enterprise = if (Test-Path $EnterprisePath) {
                     Import-Metadata $EnterprisePath -ErrorAction Ignore -Ordered:$Ordered
@@ -141,7 +141,7 @@ function Import-SpecificConfiguration {
             }
 
             if (!$Scope -or $Scope -eq "User") {
-                $LocalUserPath = Get-StoragePath @Parameters -Scope User
+                $LocalUserPath = Get-ConfigurationPath @Parameters -Scope User
                 $LocalUserPath = Join-Path $LocalUserPath Configuration.psd1
                 $LocalUser = if (Test-Path $LocalUserPath) {
                     Import-Metadata $LocalUserPath -ErrorAction Ignore -Ordered:$Ordered
