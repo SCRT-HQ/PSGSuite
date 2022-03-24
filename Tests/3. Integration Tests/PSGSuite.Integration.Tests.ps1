@@ -1,4 +1,4 @@
-if ($ENV:BUILD_BUILDURI -like 'vstfs:*') {
+if ($ENV:BUILD_BUILDURI -like 'vstfs:*' -and -not [String]::IsNullOrEmpty($env:PSGSuiteConfigJson)) {
     $projectRoot = Resolve-Path "$PSScriptRoot\..\.."
     $ModulePath = Resolve-Path "$projectRoot\BuildOutput\$($env:BHProjectName)"
     $decompiledModulePath = Resolve-Path "$projectRoot\$($env:BHProjectName)"

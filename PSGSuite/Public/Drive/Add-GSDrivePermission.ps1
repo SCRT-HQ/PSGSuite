@@ -23,6 +23,7 @@ function Add-GSDrivePermission {
     * "Commenter"
     * "Reader"
     * "Organizer"
+    * "FileOrganizer"
 
     .PARAMETER Type
     The type of the grantee
@@ -77,21 +78,22 @@ function Add-GSDrivePermission {
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High",DefaultParameterSetName = "Email")]
     Param
     (
-        [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
-        [Alias('Owner','PrimaryEmail','UserKey','Mail')]
-        [string]
-        $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $true)]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
+        [Alias('Id')]
         [String]
         $FileId,
         [parameter(Mandatory = $true)]
-        [ValidateSet("Owner","Writer","Commenter","Reader","Organizer")]
+        [ValidateSet("Owner","Writer","Commenter","Reader","Organizer","FileOrganizer")]
         [String]
         $Role,
         [parameter(Mandatory = $true)]
         [ValidateSet("User","Group","Domain","Anyone")]
         [String]
         $Type,
+        [parameter(Mandatory = $false,Position = 1,ValueFromPipelineByPropertyName = $true)]
+        [Alias('Owner','PrimaryEmail','UserKey','Mail')]
+        [string]
+        $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $false,ParameterSetName = "Email")]
         [String]
         $EmailAddress,
@@ -118,7 +120,7 @@ function Add-GSDrivePermission {
         [switch]
         $UseDomainAdminAccess
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -131,8 +133,6 @@ function Add-GSDrivePermission {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             if ($Role -eq "Owner" -and !$TransferOwnership) {
                 if ($PSCmdlet.ShouldProcess("Confirm transfer of ownership of FileId '$FileID' from user '$User' to user '$EmailAddress'")) {
@@ -167,7 +167,7 @@ function Add-GSDrivePermission {
                         $body.EmailAddress = $EmailAddress
                     }
                     Role {
-                        $body.$key = ($PSBoundParameters[$key]).ToLower()
+                        $body.$key = ($PSBoundParameters[$key]).ToLower().Replace("fileorganizer","fileOrganizer")
                     }
                     Type {
                         $body.$key = ($PSBoundParameters[$key]).ToLower()
@@ -180,7 +180,7 @@ function Add-GSDrivePermission {
                 }
             }
             $request = $service.Permissions.Create($body,$FileId)
-            $request.SupportsTeamDrives = $true
+            $request.SupportsAllDrives = $true
             foreach ($key in $PSBoundParameters.Keys) {
                 if ($request.PSObject.Properties.Name -contains $key -and $key -ne 'FileId') {
                     $request.$key = $PSBoundParameters[$key]

@@ -26,7 +26,7 @@ function Get-GSGmailVacationSettings {
         [string]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -39,8 +39,6 @@ function Get-GSGmailVacationSettings {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $request = $service.Users.Settings.GetVacation($User)
             Write-Verbose "Getting Vacation settings for user '$User'"

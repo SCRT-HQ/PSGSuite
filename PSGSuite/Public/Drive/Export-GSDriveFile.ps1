@@ -50,6 +50,9 @@ function Export-GSDriveFile {
     .PARAMETER Fields
     The specific fields to returned
 
+    .PARAMETER Force
+    If $true, overwrites any existing files at the same path.
+
     .EXAMPLE
     Export-GSDriveFile -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -Type CSV -OutFilePath .\SheetExport.csv
 
@@ -99,7 +102,7 @@ function Export-GSDriveFile {
                 }
             }
         }
-        elseif ($Fields) {
+        elseif ($PSBoundParameters.ContainsKey('Fields')) {
             $fs = $Fields
         }
         $mimeHash = @{
@@ -122,6 +125,8 @@ function Export-GSDriveFile {
             SVG                    = "image/svg+xml"
             TSV                    = "text/tab-separated-values"
         }
+    }
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -134,8 +139,6 @@ function Export-GSDriveFile {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $request = $service.Files.Export($FileID,($mimeHash[$Type]))
             if ($fs) {

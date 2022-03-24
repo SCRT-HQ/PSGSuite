@@ -1,4 +1,17 @@
 function Compare-ModuleVersion {
+    <#
+    .SYNOPSIS
+    Compares the installed version of a module with the latest version on the PowerShell Gallery
+
+    .DESCRIPTION
+    Compares the installed version of a module with the latest version on the PowerShell Gallery
+
+    .PARAMETER ModuleName
+    The name of the module to compare
+
+    .EXAMPLE
+    Compare-ModuleVersion PSGSuite
+    #>
     [CmdletBinding()]
     Param
     (

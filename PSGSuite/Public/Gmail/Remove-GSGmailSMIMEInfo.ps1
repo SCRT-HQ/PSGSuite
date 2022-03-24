@@ -2,21 +2,21 @@ function Remove-GSGmailSMIMEInfo {
     <#
     .SYNOPSIS
     Removes Gmail S/MIME info
-    
+
     .DESCRIPTION
     Removes Gmail S/MIME info
-    
+
     .PARAMETER SendAsEmail
     The email address that appears in the "From:" header for mail sent using this alias.
-    
+
     .PARAMETER Id
     The immutable ID for the SmimeInfo
-    
+
     .PARAMETER User
     The user's email address
 
     Defaults to the AdminEmail user
-    
+
     .EXAMPLE
     Remove-GSGmailSMIMEInfo -SendAsEmail 'joe@otherdomain.com' -Id 1008396210820120578939 -User joe@domain.com
 
@@ -31,13 +31,13 @@ function Remove-GSGmailSMIMEInfo {
         [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
         [string[]]
         $Id,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [string]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -50,8 +50,6 @@ function Remove-GSGmailSMIMEInfo {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($I in $Id) {
             try {
                 if ($PSCmdlet.ShouldProcess("Removing S/MIME Id '$I' of SendAsEmail '$SendAsEmail' for user '$User'")) {

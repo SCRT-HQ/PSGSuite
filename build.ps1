@@ -1,89 +1,26 @@
-﻿
-[cmdletbinding(DefaultParameterSetName = 'task')]
+﻿[cmdletbinding()]
 param(
-    [parameter(ParameterSetName = 'task', Position = 0)]
-    [ValidateSet('Init','Clean','Update','Compile','Import','Test','TestOnly','Deploy','Skip')]
+    [parameter( Position = 0)]
+    [ValidateSet('Init','Clean','Update','Compile','Import','Test','Full','Deploy','Skip','Docs')]
     [string[]]
     $Task = @('Compile','Import'),
-
-    [parameter(ParameterSetName = 'help')]
-    [switch]$Help,
+    [parameter()]
+    [Alias('nr','nor')]
+    [switch]$NoRestore,
 
     [switch]$UpdateModules,
-    [switch]$Force
+    [switch]$Force,
+    [switch]$Help
 )
-
-# build/init script borrowed from PoshBot x Brandon Olin
-
-function Resolve-Module {
-    [Cmdletbinding()]
-    param (
-        [Parameter(Mandatory, ValueFromPipeline)]
-        [string[]]$Name,
-
-        [switch]$UpdateModules
-    )
-
-    begin {
-        Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false | Out-Null
-        Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false
-
-        $PSDefaultParameterValues = @{
-            '*-Module:Verbose' = $false
-            'Find-Module:Repository' = 'PSGallery'
-            'Import-Module:ErrorAction' = 'Stop'
-            'Import-Module:Verbose' = $false
-            'Import-Module:Force' = $true
-            'Install-Module:ErrorAction' = 'Stop'
-            'Install-Module:Force' = $true
-            'Install-Module:Scope' = 'CurrentUser'
-            'Install-Module:Verbose' = $false
-            'Install-Module:AllowClobber' = $true
-            'Install-Module:Repository' = 'PSGallery'
-        }
-    }
-
-    process {
-        foreach ($moduleName in $Name) {
-            $versionToImport = ''
-
-            Write-Verbose -Message "Resolving Module [$($moduleName)]"
-            if ($Module = Get-Module -Name $moduleName -ListAvailable -Verbose:$false) {
-                # Determine latest version on PSGallery and warn us if we're out of date
-                $latestLocalVersion = ($Module | Measure-Object -Property Version -Maximum).Maximum
-                $latestGalleryVersion = (Find-Module -Name $moduleName -Repository PSGallery |
-                    Measure-Object -Property Version -Maximum).Maximum
-
-                # Out we out of date?
-                if ($latestLocalVersion -lt $latestGalleryVersion) {
-                    if ($UpdateModules) {
-                        Write-Verbose -Message "$($moduleName) installed version [$($latestLocalVersion.ToString())] is outdated. Installing gallery version [$($latestGalleryVersion.ToString())]"
-                        if ($UpdateModules) {
-                            Install-Module -Name $moduleName -RequiredVersion $latestGalleryVersion
-                            $versionToImport = $latestGalleryVersion
-                        }
-                    } else {
-                        Write-Warning "$($moduleName) is out of date. Latest version on PSGallery is [$latestGalleryVersion]. To update, use the -UpdateModules switch."
-                    }
-                } else {
-                    $versionToImport = $latestLocalVersion
-                }
-            } else {
-                Write-Verbose -Message "[$($moduleName)] missing. Installing..."
-                Install-Module -Name $moduleName -Repository PSGallery
-                $versionToImport = (Get-Module -Name $moduleName -ListAvailable | Measure-Object -Property Version -Maximum).Maximum
-            }
-
-            Write-Verbose -Message "$($moduleName) installed. Importing..."
-            if (-not [string]::IsNullOrEmpty($versionToImport)) {
-                Import-module -Name $moduleName -RequiredVersion $versionToImport
-            } else {
-                Import-module -Name $moduleName
-            }
-        }
-    }
+$env:_BuildStart = Get-Date -Format 'o'
+$ModuleName = 'PSGSuite'
+$Dependencies = @{
+    Configuration     = '1.3.1'
+    psake             = '4.9.0'
 }
-
+if ($env:SYSTEM_STAGENAME -eq 'Build' -or -not (Test-Path Env:\TF_BUILD)) {
+    $Dependencies['PowerShellGet'] = '2.2.1'
+}
 $update = @{}
 $verbose = @{}
 if ($PSBoundParameters.ContainsKey('UpdateModules')) {
@@ -93,13 +30,81 @@ if ($PSBoundParameters.ContainsKey('Verbose')) {
     $verbose['Verbose'] = $PSBoundParameters['Verbose']
 }
 
+. ([System.IO.Path]::Combine($PSScriptRoot,"ci","AzurePipelinesHelpers.ps1"))
+
 if ($Help) {
-    'psake' | Resolve-Module @update -Verbose
+    Add-Heading "Getting help"
+    Write-BuildLog -c '"psake" | Resolve-Module @update @Verbose'
+    'psake' | Resolve-Module @update @verbose
+    Write-BuildLog "psake script tasks:"
     Get-PSakeScriptTasks -buildFile "$PSScriptRoot\psake.ps1" |
         Sort-Object -Property Name |
         Format-Table -Property Name, Description, Alias, DependsOn
 }
 else {
+
+    $env:BuildProjectName = $ModuleName
+    $env:BuildScriptPath = $PSScriptRoot
+
+    if ($Task -contains 'Docs') {
+        $env:NoNugetRestore = $true
+    }
+    else {
+        $env:NoNugetRestore = $NoRestore
+    }
+
+    $global:PSDefaultParameterValues = @{
+        '*-Module:Verbose' = $false
+        'Import-Module:ErrorAction' = 'Stop'
+        'Import-Module:Force' = $true
+        'Import-Module:Verbose' = $false
+        'Install-Module:AllowClobber' = $true
+        'Install-Module:ErrorAction' = 'Stop'
+        'Install-Module:Force' = $true
+        'Install-Module:Scope' = 'CurrentUser'
+        'Install-Module:Repository' = 'PSGallery'
+        'Install-Module:Verbose' = $false
+    }
+    Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false
+    Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -Verbose:$false
+
+    Add-EnvironmentSummary "Build started"
+    Set-BuildVariables
+
+    Add-Heading "Pulling module and build dependencies"
+    [hashtable[]]$moduleDependencies = @()
+    foreach ($module in $Dependencies.Keys) {
+        $moduleDependencies += @{
+            Name           = $module
+            MinimumVersion = $Dependencies[$module]
+        }
+    }
+    (Import-PowerShellDataFile ([System.IO.Path]::Combine($PSScriptRoot,$ModuleName,"$ModuleName.psd1"))).RequiredModules | ForEach-Object {
+        $item = $_
+        if ($item -is [hashtable] -and $Dependencies.Keys -notcontains $item.ModuleName) {
+            Write-BuildLog "Adding new dependency from PSD1: $($item.ModuleName)"
+            $hash = @{
+                Name = $item.ModuleName
+            }
+            if ($item.ContainsKey('ModuleVersion')) {
+                $hash['MinimumVersion'] = $item.ModuleVersion
+            }
+            $moduleDependencies += $hash
+        }
+        elseif ($item -is [string] -and $Dependencies.Keys -notcontains $item) {
+            $moduleDependencies += @{
+                Name = $item
+            }
+        }
+    }
+    try {
+        $null = Get-PackageProvider -Name Nuget -ForceBootstrap -Verbose:$false -ErrorAction Stop
+    }
+    catch {
+        throw
+    }
+
+    Add-Heading "Finalizing build prerequisites"
     if (
         $Task -eq 'Deploy' -and -not $Force -and (
             $ENV:BUILD_BUILDURI -notlike 'vstfs:*' -or
@@ -132,21 +137,19 @@ else {
             "    + NuGet API key is not null        : $($null -ne $env:NugetApiKey)`n" +
             "    + Commit message matches '!deploy' : $($env:BUILD_SOURCEVERSIONMESSAGE -match '!deploy') [$env:BUILD_SOURCEVERSIONMESSAGE]"| Write-Host -ForegroundColor Green
         }
-        if (-not (Get-Module BuildHelpers -ListAvailable | Where-Object {$_.Version -eq '2.0.1'})) {
-            Write-Verbose "Installing BuildHelpers v2.0.1" -Verbose
-            Install-Module 'BuildHelpers' -RequiredVersion 2.0.1 -Scope CurrentUser -Repository PSGallery -AllowClobber -SkipPublisherCheck -Force
+        Write-BuildLog "Resolving necessary modules"
+        foreach ($module in $moduleDependencies) {
+            Write-BuildLog "[$($module.Name)] Resolving"
+            try {
+                Import-Module @module
+            }
+            catch {
+                Write-BuildLog "[$($module.Name)] Installing missing module"
+                Install-Module @module -Repository PSGallery
+                Import-Module @module
+            }
         }
-        Write-Verbose "Importing BuildHelpers v2.0.1" -Verbose
-        Import-Module 'BuildHelpers' -RequiredVersion 2.0.1
-        'psake' | Resolve-Module @update -Verbose
-        Set-BuildEnvironment -Force
-        Write-Host -ForegroundColor Green "Modules successfully resolved..."
-        Write-Host -ForegroundColor Green "Invoking psake with task list: [ $($Task -join ', ') ]`n"
-        $psakeParams = @{
-            nologo = $true
-            buildFile = "$PSScriptRoot\psake.ps1"
-            taskList = $Task
-        }
+        Write-BuildLog "Modules resolved"
         if ($Task -eq 'TestOnly') {
             $global:ExcludeTag = @('Module')
         }
@@ -159,10 +162,17 @@ else {
         else {
             $global:ForceDeploy = $false
         }
-        Invoke-psake @psakeParams @verbose
+        Add-Heading "Invoking psake with task list: [ $($Task -join ', ') ]"
+        $psakeParams = @{
+            buildFile = "$PSScriptRoot\psake.ps1"
+            taskList = $Task
+        }
+        Invoke-psake @psakeParams @verbose -parameters @{NoRestore = $NoRestore}
         if (($Task -contains 'Import' -or $Task -contains 'Test') -and $psake.build_success) {
+            Add-Heading "Importing $env:BuildProjectName to local scope"
             Import-Module ([System.IO.Path]::Combine($env:BHBuildOutput,$env:BHProjectName)) -Verbose:$false
         }
+        Add-EnvironmentSummary "Build finished"
         exit ( [int]( -not $psake.build_success ) )
     }
 }

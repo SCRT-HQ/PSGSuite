@@ -3,16 +3,16 @@
 <!-- TOC -->
 
 * [Contributing to PSGSuite](#contributing-to-psgsuite)
-  * [Git and Pull requests](#git-and-pull-requests)
-  * [Overview](#overview)
-    * [Step by Step (High-Level)](#step-by-step-high-level)
-    * [Contributing Guidelines](#contributing-guidelines)
-    * [Updating the Wiki](#updating-the-wiki)
-  * [Getting Started](#getting-started)
-    * [Enabling Debug Mode](#enabling-debug-mode)
-    * [Google .NET SDK Documentation](#google-net-sdk-documentation)
-      * [.NET/API Documentation Links](#netapi-documentation-links)
-  * [Keeping in Touch](#keeping-in-touch)
+    * [Git and Pull requests](#git-and-pull-requests)
+    * [Overview](#overview)
+        * [Step by Step (High-Level)](#step-by-step-high-level)
+        * [Contributing Guidelines](#contributing-guidelines)
+        * [Updating the Wiki](#updating-the-wiki)
+    * [Getting Started](#getting-started)
+        * [Enabling Debug Mode](#enabling-debug-mode)
+        * [Google .NET SDK Documentation](#google-net-sdk-documentation)
+            * [.NET/API Documentation Links](#netapi-documentation-links)
+    * [Keeping in Touch](#keeping-in-touch)
 
 <!-- /TOC -->
 
@@ -129,6 +129,9 @@ Here are some links to the most commonly used SDK's and API's in PSGSuite:
 * **Contacts API - To be replaced soon with People API**
     * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/contacts/v1/csharp/latest/)
     * [API Documentation](https://developers.google.com/contacts/v3/reference)
+* **Data Transfer API**
+    * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/admin/datatransfer_v1/csharp/latest/)
+    * [API Documentation](https://developers.google.com/admin-sdk/data-transfer/v1/reference)
 * **Drive Activity API v2**
     * [.NET SDK Documentation](https://developers.google.com/resources/api-libraries/documentation/driveactivity/v2/csharp/latest/)
     * [API Documentation](https://developers.google.com/drive/activity/v2/reference/rest/)

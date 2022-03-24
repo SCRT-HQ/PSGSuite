@@ -12,7 +12,7 @@
     RootModule            = 'PSGSuite.psm1'
 
     # Version number of this module.
-    ModuleVersion         = '2.25.0'
+    ModuleVersion         = '2.36.4'
 
     # ID used to uniquely identify this module
     GUID                  = '9d751152-e83e-40bb-a6db-4c329092aaec'
@@ -48,7 +48,7 @@
     ProcessorArchitecture = 'None'
 
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules       = @(@{ModuleName = "Configuration"; ModuleVersion = "1.2.0"})
+    RequiredModules       = @(@{ModuleName = "Configuration"; ModuleVersion = "1.3.1" })
 
     # Assemblies that must be loaded prior to importing this module
     RequiredAssemblies    = @()
@@ -95,7 +95,7 @@
             # Prerelease = '-alpha'
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags       = 'GSuite', 'Google', 'Apps', 'API', 'Drive', 'Gmail', 'Admin', 'Automation', 'PSEdition_Core', 'PSEdition_Desktop'
+            Tags       = 'GSuite', 'Google', 'Apps', 'API', 'Drive', 'Gmail', 'Admin', 'Automation', 'PSEdition_Core', 'PSEdition_Desktop', 'Windows', 'Linux', 'Mac'
 
             # A URL to the license for this module.
             LicenseUri = 'https://github.com/scrthq/PSGSuite/blob/master/LICENSE'

@@ -108,7 +108,7 @@
         [Switch]
         $Raw
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -121,8 +121,6 @@
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $body = New-Object 'Google.Apis.Gmail.v1.Data.Filter'
             $action = New-Object 'Google.Apis.Gmail.v1.Data.FilterAction'

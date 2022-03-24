@@ -85,11 +85,14 @@ function Update-GSCourse {
         [ValidateSet('PROVISIONED','ACTIVE','ARCHIVED','DECLINED')]
         [String]
         $CourseState,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
+        $UpdateMask = @()
+    }
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -102,9 +105,6 @@ function Update-GSCourse {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-        $UpdateMask = @()
-    }
-    Process {
         try {
             Write-Verbose "Updating Course ID '$Id'"
             $body = New-Object 'Google.Apis.Classroom.v1.Data.Course'

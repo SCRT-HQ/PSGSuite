@@ -1,0 +1,415 @@
+# New-GSCalendarEvent
+
+## SYNOPSIS
+Creates a new calendar event
+
+## SYNTAX
+
+### AttendeeEmails (Default)
+```
+New-GSCalendarEvent [-Summary] <String> [-Description <String>] [-Id <String>] [-User <String[]>]
+ [-CalendarID <String[]>] [-AttendeeEmails <String[]>] [-Location <String>] [-Visibility <String>]
+ [-EventColor <String>] [-Reminders <EventReminder[]>] [-DisableDefaultReminder]
+ [-LocalStartDateTime <DateTime>] [-LocalEndDateTime <DateTime>] [-StartDate <String>] [-EndDate <String>]
+ [-UTCStartDateTime <String>] [-UTCEndDateTime <String>] [-PrivateExtendedProperties <Hashtable>]
+ [-SharedExtendedProperties <Hashtable>] [-ExtendedProperties <ExtendedPropertiesData>] [<CommonParameters>]
+```
+
+### AttendeeObjects
+```
+New-GSCalendarEvent [-Summary] <String> [-Description <String>] [-Id <String>] [-User <String[]>]
+ [-CalendarID <String[]>] [-Attendees <EventAttendee[]>] [-Location <String>] [-Visibility <String>]
+ [-EventColor <String>] [-Reminders <EventReminder[]>] [-DisableDefaultReminder]
+ [-LocalStartDateTime <DateTime>] [-LocalEndDateTime <DateTime>] [-StartDate <String>] [-EndDate <String>]
+ [-UTCStartDateTime <String>] [-UTCEndDateTime <String>] [-PrivateExtendedProperties <Hashtable>]
+ [-SharedExtendedProperties <Hashtable>] [-ExtendedProperties <ExtendedPropertiesData>] [<CommonParameters>]
+```
+
+## DESCRIPTION
+Creates a new calendar event
+
+## EXAMPLES
+
+### EXAMPLE 1
+```
+New-GSCalendarEvent "Go to the gym" -StartDate (Get-Date "21:00:00") -EndDate (Get-Date "22:00:00")
+```
+
+Creates an event titled "Go to the gym" for 9-10PM the day the function is ran.
+
+## PARAMETERS
+
+### -AttendeeEmails
+The email addresses of the attendees to add.
+
+NOTE: This performs simple adds without additional attendee options.
+If additional options are needed, use the Attendees parameter instead.
+
+```yaml
+Type: String[]
+Parameter Sets: AttendeeEmails
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Attendees
+The EventAttendee object(s) to add.
+Use Add-GSEventAttendee with this parameter for best results.
+
+```yaml
+Type: EventAttendee[]
+Parameter Sets: AttendeeObjects
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -CalendarID
+The calendar ID of the calendar you would like to list events from.
+
+Defaults to the user's primary calendar.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Primary
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -Description
+Event description
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -DisableDefaultReminder
+When $true, disables inheritance of the default Reminders from the Calendar the event was created on.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: DisableReminder
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -EndDate
+String representation of the end date.
+Middle precendence of the three EndDate parameters.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -EventColor
+Color of the event as seen in Calendar
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ExtendedProperties
+Extended properties of the event.
+This must be of the type 'Google.Apis.Calendar.v3.Data.Event+ExtendedPropertiesData'.
+
+This is useful for copying another events ExtendedProperties over when creating a new event.
+
+```yaml
+Type: ExtendedPropertiesData
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Id
+Opaque identifier of the event.
+When creating new single or recurring events, you can specify their IDs.
+Provided IDs must follow these rules:
+
+* characters allowed in the ID are those used in base32hex encoding, i.e.
+lowercase letters a-v and digits 0-9, see section 3.1.2 in RFC2938
+* the length of the ID must be between 5 and 1024 characters
+* the ID must be unique per calendar
+
+Due to the globally distributed nature of the system, we cannot guarantee that ID collisions will be detected at event creation time.
+To minimize the risk of collisions we recommend using an established UUID algorithm such as one described in RFC4122.
+
+If you do not specify an ID, it will be automatically generated by the server.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -LocalEndDateTime
+End date and time of the event.
+Lowest precendence of the three EndDate parameters.
+
+Defaults to 30 minutes after the time the function is ran.
+
+```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: (Get-Date).AddMinutes(30)
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -LocalStartDateTime
+Start date and time of the event.
+Lowest precendence of the three StartDate parameters.
+
+Defaults to the time the function is ran.
+
+```yaml
+Type: DateTime
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: (Get-Date)
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Location
+Event location
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -PrivateExtendedProperties
+A hashtable of properties that are private to the copy of the event that appears on this calendar.
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Reminders
+A list of reminders to add to this calendar event other than the default calendar reminder.
+
+This parameter expects a 'Google.Apis.Calendar.v3.Data.EventReminder\[\]' object type.
+You can create objects of this type easily by using the function 'Add-GSCalendarEventReminder'
+
+```yaml
+Type: EventReminder[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -SharedExtendedProperties
+A hashtable of properties that are shared between copies of the event on other attendees' calendars.
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -StartDate
+String representation of the start date.
+Middle precendence of the three StartDate parameters.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Summary
+Event summary
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -User
+The primary email or UserID of the user.
+You can exclude the '@domain.com' to insert the Domain in the config or use the special 'me' to indicate the AdminEmail in the config.
+
+Defaults to the AdminEmail in the config.
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases: PrimaryEmail, UserKey, Mail
+
+Required: False
+Position: Named
+Default value: $Script:PSGSuite.AdminEmail
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+### -UTCEndDateTime
+String representation of the end date in UTC.
+Highest precendence of the three EndDate parameters.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -UTCStartDateTime
+String representation of the start date in UTC.
+Highest precendence of the three StartDate parameters.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Visibility
+Visibility of the event.
+
+Possible values are:
+* "default" - Uses the default visibility for events on the calendar.
+This is the default value.
+* "public" - The event is public and event details are visible to all readers of the calendar.
+* "private" - The event is private and only event attendees may view event details.
+* "confidential" - The event is private.
+This value is provided for compatibility reasons.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+## INPUTS
+
+## OUTPUTS
+
+### Google.Apis.Calendar.v3.Data.Event
+## NOTES
+
+## RELATED LINKS
+
+[https://psgsuite.io/Function%20Help/Calendar/New-GSCalendarEvent/](https://psgsuite.io/Function%20Help/Calendar/New-GSCalendarEvent/)
+

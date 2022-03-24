@@ -9,11 +9,6 @@ function Start-GSDriveFileUpload {
     .PARAMETER Path
     The path of the file or folder to upload
 
-    .PARAMETER Name
-    The new name of the file once uploaded
-
-    Defaults to the existing name of the file or folder
-
     .PARAMETER Description
     The description of the file or folder in Drive
 
@@ -54,9 +49,6 @@ function Start-GSDriveFileUpload {
         $Path,
         [parameter(Mandatory = $false)]
         [String]
-        $Name,
-        [parameter(Mandatory = $false)]
-        [String]
         $Description,
         [parameter(Mandatory = $false)]
         [String[]]
@@ -80,6 +72,18 @@ function Start-GSDriveFileUpload {
         $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
+        $taskList = [System.Collections.ArrayList]@()
+        $fullTaskList = [System.Collections.ArrayList]@()
+        $start = Get-Date
+        $folIdHash = @{}
+        $throttleCount = 0
+        $totalThrottleCount = 0
+        $totalFiles = 0
+        $successParam = @{
+            Successful = $false
+        }
+    }
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -92,15 +96,6 @@ function Start-GSDriveFileUpload {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-        $taskList = [System.Collections.ArrayList]@()
-        $fullTaskList = [System.Collections.ArrayList]@()
-        $start = Get-Date
-        $folIdHash = @{}
-        $throttleCount = 0
-        $totalThrottleCount = 0
-        $totalFiles = 0
-    }
-    Process {
         try {
             foreach ($file in $Path) {
                 $details = Get-Item $file
@@ -111,10 +106,14 @@ function Start-GSDriveFileUpload {
                         Type    = 'DriveFolder'
                         Verbose = $false
                     }
+                    $parentVerbose = $null
                     if ($PSBoundParameters.Keys -contains 'Parents') {
                         $newFolPerms['Parents'] = $PSBoundParameters['Parents']
+                        if ($par = Get-GSDriveFileInfo -FileId $PSBoundParameters['Parents'] -User $User -Verbose:$false -ErrorAction Stop) {
+                            $parentVerbose = " under parent folder '$($par.Name -join ',')'"
+                        }
                     }
-                    Write-Verbose "Creating new Drive folder '$($details.Name)'"
+                    Write-Verbose "Creating new Drive folder '$($details.Name)'$parentVerbose"
                     $id = New-GSDriveFile @newFolPerms | Select-Object -ExpandProperty Id
                     $folIdHash[$details.FullName.TrimEnd('\').TrimEnd('/')] = $id
                     if ($Recurse) {
@@ -163,10 +162,10 @@ function Start-GSDriveFileUpload {
                     if ($Description) {
                         $body.Description = $Description
                     }
-                    $stream = New-Object 'System.IO.FileStream' $detPart.FullName,([System.IO.FileMode]::Open),([System.IO.FileAccess]::Read),([System.IO.FileShare]::Delete + [System.IO.FileShare]::ReadWrite)
+                    $stream = New-Object 'System.IO.FileStream' $detPart.FullName,([System.IO.FileMode]::Open),([System.IO.FileAccess]::Read),([System.IO.FileShare]"Delete, ReadWrite")
                     $request = $service.Files.Create($body,$stream,$contentType)
                     $request.QuotaUser = $User
-                    $request.SupportsTeamDrives = $true
+                    $request.SupportsAllDrives = $true
                     $request.ChunkSize = 512KB
                     $upload = $request.UploadAsync()
                     $task = $upload.ContinueWith([System.Action[System.Threading.Tasks.Task]] {if ($stream) {
@@ -221,8 +220,13 @@ function Start-GSDriveFileUpload {
             }
         }
         finally {
-            if ($Host.Name -and $Host.Name -notlike "Windows*PowerShell*ISE*") {
+            try {
                 [System.Console]::CursorVisible = $true
+            }
+            catch {
+                if ($Error[0].Exception.Message -eq 'Exception setting "CursorVisible": "The handle is invalid."') {
+                    $Global:Error.Remove($Global:Error[0])
+                }
             }
         }
     }
@@ -237,6 +241,7 @@ function Start-GSDriveFileUpload {
                 $failedFiles = $fullStatusList | Where-Object {$_.Status -eq "Failed"}
                 if (!$failedFiles) {
                     Write-Verbose "All files uploaded to Google Drive successfully! Total time: $("{0:c}" -f ((Get-Date) - $start) -replace "\..*")"
+                    $successParam['Successful'] = $true
                 }
                 elseif ($RetryCount) {
                     $totalRetries = 0
@@ -264,7 +269,7 @@ function Start-GSDriveFileUpload {
                             $stream = New-Object 'System.IO.FileStream' $detPart.FullName,([System.IO.FileMode]::Open),([System.IO.FileAccess]::Read),([System.IO.FileShare]::Delete + [System.IO.FileShare]::ReadWrite)
                             $request = $service.Files.Create($body,$stream,$contentType)
                             $request.QuotaUser = $User
-                            $request.SupportsTeamDrives = $true
+                            $request.SupportsAllDrives = $true
                             $request.ChunkSize = 512KB
                             $upload = $request.UploadAsync()
                             $task = $upload.ContinueWith([System.Action[System.Threading.Tasks.Task]] {$stream.Dispose()})
@@ -316,6 +321,7 @@ function Start-GSDriveFileUpload {
                     }
                     elseif (!$failedFiles) {
                         Write-Verbose "All files uploaded to Google Drive successfully! Total time: $("{0:c}" -f ((Get-Date) - $start) -replace "\..*")"
+                        $successParam['Successful'] = $true
                     }
                 }
             }
@@ -329,9 +335,16 @@ function Start-GSDriveFileUpload {
             }
             finally {
                 if ($Host.Name -and $Host.Name -notlike "Windows*PowerShell*ISE*") {
-                    [System.Console]::CursorVisible = $true
+                    try {
+                        [System.Console]::CursorVisible = $true
+                    }
+                    catch {
+                        if ($Error[0].Exception.Message -eq 'Exception setting "CursorVisible": "The handle is invalid."') {
+                            $Global:Error.Remove($Global:Error[0])
+                        }
+                    }
                 }
-                Stop-GSDriveFileUpload
+                Stop-GSDriveFileUpload @successParam
             }
         }
     }

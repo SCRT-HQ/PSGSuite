@@ -1,0 +1,3 @@
+﻿@{
+  AppEmail = 'app@psgsuite.io'
+}

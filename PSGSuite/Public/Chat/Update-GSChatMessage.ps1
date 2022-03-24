@@ -45,6 +45,12 @@ function Update-GSChatMessage {
 
     If section widgets are passed directly to this function, a new section without a SectionHeader will be created and the widgets will be added to it
 
+    .PARAMETER BodyPassThru
+    If $true, returns the message body.
+
+    .PARAMETER UseRest
+    If $true, uses the REST API.
+
     .EXAMPLE
     Send-GSChatMessage -Text "Post job report:" -Cards $cards -Webhook (Get-GSChatWebhook JobReports)
 

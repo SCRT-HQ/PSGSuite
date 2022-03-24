@@ -45,6 +45,7 @@ function Add-GSUserSchemaField {
 
     This command will create a schema named "SDK" with two fields, "string" and "date", readable by ADMINS_AND_SELF
     #>
+    [OutputType('Google.Apis.Admin.Directory.directory_v1.Data.SchemaFieldSpec')]
     [CmdletBinding(DefaultParameterSetName = "InputObject")]
     Param
     (

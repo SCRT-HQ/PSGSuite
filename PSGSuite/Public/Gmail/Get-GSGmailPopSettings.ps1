@@ -26,7 +26,7 @@ function Get-GSGmailPopSettings {
         [string]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -39,8 +39,6 @@ function Get-GSGmailPopSettings {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $request = $service.Users.Settings.GetPop($User)
             Write-Verbose "Getting POP settings for user '$User'"

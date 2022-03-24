@@ -13,16 +13,59 @@ function Update-GSDriveFile {
     The path to the local file whose content you would like to upload to Drive.
 
     .PARAMETER Name
-    The new name of the Drive file
+    The name of the Drive file
 
     .PARAMETER Description
-    The new description of the Drive file
+    The description of the Drive file
+
+    .PARAMETER FolderColorRgb
+    The color for a folder as an RGB hex string.
+
+    Available values are:
+    * "ChocolateIceCream"
+    * "OldBrickRed"
+    * "Cardinal"
+    * "WildStrawberries"
+    * "MarsOrange"
+    * "YellowCab"
+    * "Spearmint"
+    * "VernFern"
+    * "Asparagus"
+    * "SlimeGreen"
+    * "DesertSand"
+    * "Macaroni"
+    * "SeaFoam"
+    * "Pool"
+    * "Denim"
+    * "RainySky"
+    * "BlueVelvet"
+    * "PurpleDino"
+    * "Mouse"
+    * "MountainGrey"
+    * "Earthworm"
+    * "BubbleGum"
+    * "PurpleRain"
+    * "ToyEggplant"
 
     .PARAMETER AddParents
     The parent Ids to add
 
     .PARAMETER RemoveParents
     The parent Ids to remove
+
+    .PARAMETER CopyRequiresWriterPermission
+    Whether the options to copy, print, or download this file, should be disabled for readers and commenters.
+
+    .PARAMETER Starred
+    Whether the user has starred the file.
+
+    .PARAMETER Trashed
+    Whether the file has been trashed, either explicitly or from a trashed parent folder.
+
+    Only the owner may trash a file, and other users cannot see files in the owner's trash.
+
+    .PARAMETER WritersCanShare
+    If $true, sets Writers Can Share to true on the file.
 
     .PARAMETER Projection
     The defined subset of fields to be returned
@@ -55,24 +98,40 @@ function Update-GSDriveFile {
     (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
         [Alias('Id')]
-        [String]
+        [string]
         $FileId,
         [parameter(Mandatory = $false,Position = 1)]
-        [ValidateScript({Test-Path $_})]
-        [String]
+        [ValidateScript( { Test-Path $_ })]
+        [string]
         $Path,
         [parameter(Mandatory = $false)]
-        [String]
+        [string]
         $Name,
         [parameter(Mandatory = $false)]
         [String]
         $Description,
         [parameter(Mandatory = $false)]
-        [String[]]
+        [ValidateSet('ChocolateIceCream','OldBrickRed','Cardinal','WildStrawberries','MarsOrange','YellowCab','Spearmint','VernFern','Asparagus','SlimeGreen','DesertSand','Macaroni','SeaFoam','Pool','Denim','RainySky','BlueVelvet','PurpleDino','Mouse','MountainGrey','Earthworm','BubbleGum','PurpleRain','ToyEggplant')]
+        [string]
+        $FolderColorRgb,
+        [parameter(Mandatory = $false)]
+        [string[]]
         $AddParents,
         [parameter(Mandatory = $false)]
         [String[]]
         $RemoveParents,
+        [parameter(Mandatory = $false)]
+        [switch]
+        $CopyRequiresWriterPermission,
+        [parameter(Mandatory = $false)]
+        [switch]
+        $Starred,
+        [parameter(Mandatory = $false)]
+        [switch]
+        $Trashed,
+        [parameter(Mandatory = $false)]
+        [switch]
+        $WritersCanShare,
         [parameter(Mandatory = $false,ParameterSetName = "Depth")]
         [Alias('Depth')]
         [ValidateSet("Minimal","Standard","Full","Access")]
@@ -88,7 +147,33 @@ function Update-GSDriveFile {
         $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
-        if ($Projection) {
+        $colorDictionary = @{
+            ChocolateIceCream = '#ac725e'
+            OldBrickRed       = '#d06b64'
+            Cardinal          = '#f83a22'
+            WildStrawberries  = '#fa573c'
+            MarsOrange        = '#ff7537'
+            YellowCab         = '#ffad46'
+            Spearmint         = '#42d692'
+            VernFern          = '#16a765'
+            Asparagus         = '#7bd148'
+            SlimeGreen        = '#b3dc6c'
+            DesertSand        = '#fbe983'
+            Macaroni          = '#fad165'
+            SeaFoam           = '#92e1c0'
+            Pool              = '#9fe1e7'
+            Denim             = '#9fc6e7'
+            RainySky          = '#4986e7'
+            BlueVelvet        = '#9a9cff'
+            PurpleDino        = '#b99aff'
+            Mouse             = '#8f8f8f'
+            MountainGrey      = '#cabdbf'
+            Earthworm         = '#cca6ac'
+            BubbleGum         = '#f691b2'
+            PurpleRain        = '#cd74e6'
+            ToyEggplant       = '#a47ae2'
+        }
+        if ($PSCmdlet.ParameterSetName -eq 'Depth') {
             $fs = switch ($Projection) {
                 Standard {
                     @("createdTime","description","fileExtension","id","lastModifyingUser","modifiedTime","name","owners","parents","properties","version","webContentLink","webViewLink")
@@ -101,9 +186,11 @@ function Update-GSDriveFile {
                 }
             }
         }
-        elseif ($Fields) {
+        elseif ($PSBoundParameters.ContainsKey('Fields')) {
             $fs = $Fields
         }
+    }
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -116,15 +203,20 @@ function Update-GSDriveFile {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $body = New-Object 'Google.Apis.Drive.v3.Data.File'
-            if ($Name) {
-                $body.Name = [String]$Name
-            }
-            if ($Description) {
-                $body.Description = $Description
+            foreach ($prop in $PSBoundParameters.Keys | Where-Object { $body.PSObject.Properties.Name -contains $_ }) {
+                switch ($prop) {
+                    Name {
+                        $body.Name = [String]$Name
+                    }
+                    FolderColorRgb {
+                        $body.FolderColorRgb = $ColorDictionary[$FolderColorRgb]
+                    }
+                    Default {
+                        $body.$prop = $PSBoundParameters[$prop]
+                    }
+                }
             }
             if ($PSBoundParameters.Keys -contains 'Path') {
                 $ioFile = Get-Item $Path
@@ -140,7 +232,7 @@ function Update-GSDriveFile {
             else {
                 $request = $service.Files.Update($body,$FileId)
             }
-            $request.SupportsTeamDrives = $true
+            $request.SupportsAllDrives = $true
             if ($fs) {
                 $request.Fields = $($fs -join ",")
             }

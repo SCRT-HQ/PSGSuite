@@ -2,16 +2,16 @@ function Remove-GSPrincipalGroupMembership {
     <#
     .SYNOPSIS
     Removes the target member from a group or list of groups
-    
+
     .DESCRIPTION
     Removes the target member from a group or list of groups
-    
+
     .PARAMETER Identity
     The email or unique Id of the member you would like to remove from the group(s)
-    
+
     .PARAMETER MemberOf
     The group(s) to remove the member from
-    
+
     .EXAMPLE
     Remove-GSPrincipalGroupMembership -Identity 'joe.smith' -MemberOf admins,test_pool
 
@@ -37,19 +37,15 @@ function Remove-GSPrincipalGroupMembership {
         $service = New-GoogleService @serviceParams
     }
     Process {
-        if ($Identity -notlike "*@*.*") {
-            $Identity = "$($Identity)@$($Script:PSGSuite.Domain)"
-        }
+        Resolve-Email ([ref]$Identity)
         foreach ($G in $MemberOf) {
             try {
-                if ($G -notlike "*@*.*") {
-                    $G = "$($G)@$($Script:PSGSuite.Domain)"
-                }
+                Resolve-Email ([ref]$G) -IsGroup
                 if ($PSCmdlet.ShouldProcess("Removing member '$Identity' from group '$G'")) {
                     Write-Verbose "Removing member '$Identity' from group '$G'"
                     $request = $service.Members.Delete($G,$Identity)
                     $request.Execute()
-                    Write-Verbose "Member '$G' has been successfully removed"
+                    Write-Verbose "Member '$Identity' has been successfully removed from group '$G'"
                 }
             }
             catch {

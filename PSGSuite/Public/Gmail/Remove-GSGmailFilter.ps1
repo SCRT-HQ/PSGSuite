@@ -2,21 +2,21 @@
     <#
     .SYNOPSIS
     Removes a Gmail filter
-    
+
     .DESCRIPTION
     Removes a Gmail filter
-    
+
     .PARAMETER User
     The primary email of the user to remove the filter from
 
     Defaults to the AdminEmail user
-    
+
     .PARAMETER FilterId
     The unique Id of the filter to remove
-    
+
     .PARAMETER Raw
     If $true, returns the raw response. If not passed or -Raw:$false, response is formatted as a flat object for readability
-    
+
     .EXAMPLE
     Remove-GSGmailFilter -FilterId ANe1Bmj5l3089jd3k1eQbY90g9rXswjS03LVOw
 
@@ -38,7 +38,7 @@
         [switch]
         $Raw
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -51,8 +51,6 @@
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             foreach ($fil in $FilterId) {
                 if ($PSCmdlet.ShouldProcess("Deleting Filter Id '$fil' from user '$User'")) {

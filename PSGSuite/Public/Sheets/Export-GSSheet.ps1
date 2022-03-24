@@ -111,6 +111,9 @@ function Export-GSSheet {
         $Launch
     )
     Begin {
+        $values = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Object]]'
+    }
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -123,9 +126,6 @@ function Export-GSSheet {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-        $values = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Object]]'
-    }
-    Process {
         try {
             if ($Value) {
                 $finalArray = $([pscustomobject]@{Value = "$Value"})
@@ -184,7 +184,7 @@ function Export-GSSheet {
                 Write-Verbose "New spreadsheet ID: $SpreadsheetId"
             }
             else {
-                $sheet = Get-GSSheetInfo -SpreadsheetId $SpreadsheetId -User $User -Verbose:$false
+                $sheet = Get-GSSheetInfo -SpreadsheetId $SpreadsheetId -User $User -IncludeGridData:$false -Verbose:$false
                 $SpreadsheetUrl = $sheet.SpreadsheetUrl
             }
             if ($SheetName) {

@@ -26,7 +26,7 @@ function Get-GSGmailImapSettings {
         [string]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -39,8 +39,6 @@ function Get-GSGmailImapSettings {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $request = $service.Users.Settings.GetImap($User)
             Write-Verbose "Getting IMAP settings for user '$User'"

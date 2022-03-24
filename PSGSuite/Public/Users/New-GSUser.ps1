@@ -45,6 +45,16 @@ function New-GSUser {
 
     This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserExternalId[]' object type. You can create objects of this type easily by using the function 'Add-GSUserExternalId'
 
+    .PARAMETER Ims
+    The IM objects of the user
+
+    This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserIm[]' object type. You can create objects of this type easily by using the function 'Add-GSUserIm'
+
+    .PARAMETER Locations
+    The Location objects of the user
+
+    This parameter expects a 'Google.Apis.Admin.Directory.directory_v1.Data.UserLocation[]' object type. You can create objects of this type easily by using the function 'Add-GSUserLocation'
+
     .PARAMETER Organizations
     The organization objects of the user
 
@@ -146,6 +156,12 @@ function New-GSUser {
         [Google.Apis.Admin.Directory.directory_v1.Data.UserExternalId[]]
         $ExternalIds,
         [parameter(Mandatory = $false)]
+        [Google.Apis.Admin.Directory.directory_v1.Data.UserIm[]]
+        $Ims,
+        [parameter(Mandatory = $false)]
+        [Google.Apis.Admin.Directory.directory_v1.Data.UserLocation[]]
+        $Locations,
+        [parameter(Mandatory = $false)]
         [Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization[]]
         $Organizations,
         [parameter(Mandatory = $false)]
@@ -223,6 +239,20 @@ function New-GSUser {
                             $extIdList.Add($extId)
                         }
                         $body.ExternalIds = $extIdList
+                    }
+                    Ims {
+                        $imList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserIm]'
+                        foreach ($im in $Ims) {
+                            $imList.Add($im)
+                        }
+                        $body.Ims = $imList
+                    }
+                    Locations {
+                        $locationList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserLocation]'
+                        foreach ($loc in $Locations) {
+                            $locationList.Add($loc)
+                        }
+                        $body.Locations = $locationList
                     }
                     Organizations {
                         $orgList = New-Object 'System.Collections.Generic.List`1[Google.Apis.Admin.Directory.directory_v1.Data.UserOrganization]'

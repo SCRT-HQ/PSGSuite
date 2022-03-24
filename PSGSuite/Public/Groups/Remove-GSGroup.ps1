@@ -2,21 +2,20 @@
     <#
     .SYNOPSIS
     Removes a group
-    
+
     .DESCRIPTION
     Removes a group
-    
+
     .PARAMETER Identity
     The email or unique Id of the group to removed
-    
+
     .EXAMPLE
     Remove-GSGroup 'test_group' -Confirm:$false
 
     Removes the group 'test_group@domain.com' without asking for confirmation
     #>
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
-    Param
-    (
+    Param (
         [parameter(Mandatory = $true,Position = 0,ValueFromPipeline = $true,ValueFromPipelineByPropertyName = $true)]
         [Alias('GroupEmail','Group','Email')]
         [String[]]
@@ -32,9 +31,7 @@
     Process {
         try {
             foreach ($G in $Identity) {
-                if ($G -notlike "*@*.*") {
-                    $G = "$($G)@$($Script:PSGSuite.Domain)"
-                }
+                Resolve-Email ([ref]$G) -IsGroup
                 if ($PSCmdlet.ShouldProcess("Removing group '$G'")) {
                     Write-Verbose "Removing group '$G'"
                     $request = $service.Groups.Delete($G)

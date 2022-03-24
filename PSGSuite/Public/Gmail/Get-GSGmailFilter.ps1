@@ -37,7 +37,7 @@ function Get-GSGmailFilter {
         [switch]
         $Raw
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -50,8 +50,6 @@ function Get-GSGmailFilter {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             if ($FilterId) {
                 foreach ($fil in $FilterId) {

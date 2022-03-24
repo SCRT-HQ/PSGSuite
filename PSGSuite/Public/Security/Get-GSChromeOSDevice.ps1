@@ -27,6 +27,9 @@
     .PARAMETER PageSize
     Page size of the result set
 
+    .PARAMETER Limit
+    The maximum amount of results you want returned. Exclude or set to 0 to return all results
+
     .PARAMETER OrderBy
     Device property to use for sorting results.
 
@@ -74,7 +77,11 @@
         [ValidateRange(1,100)]
         [Alias('MaxResults')]
         [Int]
-        $PageSize = "100",
+        $PageSize = 100,
+        [parameter(Mandatory = $false,ParameterSetName = "List")]
+        [Alias('First')]
+        [Int]
+        $Limit = 0,
         [parameter(Mandatory = $false,ParameterSetName = "List")]
         [ValidateSet("annotatedLocation","annotatedUser","lastSync","notes","serialNumber","status","supportEndDate")]
         [String]
@@ -120,6 +127,11 @@
                 }
                 List {
                     $request = $service.Chromeosdevices.List($customerId)
+                    if ($Limit -gt 0 -and $PageSize -gt $Limit) {
+                        Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with first page" -f $PageSize,$Limit)
+                        $PageSize = $Limit
+                    }
+                    $request.MaxResults = $PageSize
                     if ($PSBoundParameters.Keys -contains 'Filter') {
                         Write-Verbose "Getting Chrome OS Device list for filter '$Filter'"
                         $request.Query = $PSBoundParameters['Filter']
@@ -127,19 +139,14 @@
                     else {
                         Write-Verbose "Getting Chrome OS Device list"
                     }
-                    foreach ($key in $PSBoundParameters.Keys | Where-Object {$_ -ne 'Filter'}) {
-                        switch ($key) {
-                            PageSize {
-                                $request.MaxResults = $PSBoundParameters[$key]
-                            }
-                            default {
-                                if ($request.PSObject.Properties.Name -contains $key) {
-                                    $request.$key = $PSBoundParameters[$key]
-                                }
-                            }
+
+                    foreach ($key in $PSBoundParameters.Keys | Where-Object {$_ -notin @('PageSize','Filter')}) {
+                        if ($request.PSObject.Properties.Name -contains $key) {
+                            $request.$key = $PSBoundParameters[$key]
                         }
                     }
                     [int]$i = 1
+                    $overLimit = $false
                     do {
                         $result = $request.Execute()
                         $result.Chromeosdevices
@@ -148,9 +155,18 @@
                         }
                         [int]$retrieved = ($i + $result.Chromeosdevices.Count) - 1
                         Write-Verbose "Retrieved $retrieved Chrome OS Devices..."
+                        if ($Limit -gt 0 -and $retrieved -eq $Limit) {
+                            Write-Verbose "Limit reached: $Limit"
+                            $overLimit = $true
+                        }
+                        elseif ($Limit -gt 0 -and ($retrieved + $PageSize) -gt $Limit) {
+                            $newPS = $Limit - $retrieved
+                            Write-Verbose ("Reducing PageSize from {0} to {1} to meet limit with next page" -f $PageSize,$newPS)
+                            $request.MaxResults = $newPS
+                        }
                         [int]$i = $i + $result.Chromeosdevices.Count
                     }
-                    until (!$result.NextPageToken)
+                    until ($overLimit -or !$result.NextPageToken)
                 }
             }
         }

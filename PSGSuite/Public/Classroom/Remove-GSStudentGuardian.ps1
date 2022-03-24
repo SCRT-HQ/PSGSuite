@@ -35,11 +35,11 @@ function Remove-GSStudentGuardian {
         [Alias('Guardian')]
         [String]
         $GuardianId,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -52,8 +52,6 @@ function Remove-GSStudentGuardian {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             if ( -not ($StudentId -as [decimal])) {
                 if ($StudentId -ceq 'me') {

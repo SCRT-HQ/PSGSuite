@@ -33,7 +33,7 @@ function Get-GSGmailLabel {
         [string]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -46,8 +46,6 @@ function Get-GSGmailLabel {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             if ($LabelId) {
                 foreach ($label in $LabelId) {

@@ -19,7 +19,7 @@ function Get-GSSheetInfo {
     The specific range of the Sheet to retrieve info for
 
     .PARAMETER IncludeGridData
-    Whether or not to include Grid Data in the response
+    Whether or not to include Grid Data in the response. Defaults to $false
 
     .PARAMETER Fields
     The fields to return in the response
@@ -68,7 +68,7 @@ function Get-GSSheetInfo {
         [switch]
         $Raw
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -81,8 +81,6 @@ function Get-GSSheetInfo {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             if ($SheetName) {
                 if ($Range -like "'*'!*") {
@@ -102,11 +100,8 @@ function Get-GSSheetInfo {
             if ($Fields) {
                 $request.Fields = "$(($Fields | ForEach-Object {$f = $_;@("namedRanges","properties","sheets","spreadsheetId") | Where-Object {$_ -eq $f}}) -join ",")"
             }
-            elseif ($PSBoundParameters.Keys -contains 'IncludeGridData') {
+            if ($PSBoundParameters.Keys -contains 'IncludeGridData') {
                 $request.IncludeGridData = $IncludeGridData
-            }
-            else {
-                $request.IncludeGridData = $true
             }
             Write-Verbose "Getting Spreadsheet Id '$SpreadsheetId' for user '$User'"
             $response = $request.Execute()

@@ -270,6 +270,8 @@ function New-GSGmailLabel {
             White               = '#ffffff'
             YellowOrange        = '#ffad47'
         }
+    }
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -282,9 +284,6 @@ function New-GSGmailLabel {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-
-    Process {
         $body = New-Object 'Google.Apis.Gmail.v1.Data.Label'
         foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {
             $body.$prop = $PSBoundParameters[$prop]

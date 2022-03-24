@@ -30,21 +30,21 @@ function New-GSGmailSMIMEInfo {
     [cmdletbinding()]
     Param
     (
-        [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [string]
         $SendAsEmail,
         [parameter(Mandatory = $true)]
-        [ValidateScript({
-            if (!(Test-Path $_)) {
-                throw "Please enter a valid file path."
-            }
-            elseif ($_ -notlike "*.pfx" -and $_ -notlike "*.p12") {
-                throw "Pkcs12 must be a .pfx or .p12 file"
-            }
-            else {
-                $true
-            }
-        })]
+        [ValidateScript( {
+                if (!(Test-Path $_)) {
+                    throw "Please enter a valid file path."
+                }
+                elseif ($_ -notlike "*.pfx" -and $_ -notlike "*.p12") {
+                    throw "Pkcs12 must be a .pfx or .p12 file"
+                }
+                else {
+                    $true
+                }
+            })]
         [string]
         $Pkcs12,
         [parameter(Mandatory = $false)]
@@ -53,45 +53,43 @@ function New-GSGmailSMIMEInfo {
         [parameter(Mandatory = $false)]
         [Switch]
         $IsDefault,
-        [parameter(Mandatory = $true)]
-        [Alias("PrimaryEmail","UserKey","Mail")]
+        [parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [Alias("PrimaryEmail", "UserKey", "Mail")]
         [ValidateNotNullOrEmpty()]
         [string]
         $User
     )
-    Begin {
-        if ($User -ceq 'me') {
-            $User = $Script:PSGSuite.AdminEmail
-        }
-        elseif ($User -notlike "*@*.*") {
-            $User = "$($User)@$($Script:PSGSuite.Domain)"
-        }
+    Process {
+        Resolve-Email ([Ref]$User)
         $serviceParams = @{
-            Scope       = 'https://www.googleapis.com/auth/gmail.settings.basic'
+            Scope       = @(
+                'https://www.googleapis.com/auth/gmail.settings.basic'
+                'https://www.googleapis.com/auth/gmail.settings.sharing'
+            )
             ServiceType = 'Google.Apis.Gmail.v1.GmailService'
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $body = New-Object 'Google.Apis.Gmail.v1.Data.SmimeInfo'
-            foreach ($key in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {
+            foreach ($key in $PSBoundParameters.Keys | Where-Object { $body.PSObject.Properties.Name -contains $_ }) {
                 switch ($key) {
                     EncryptedKeyPassword {
-                        $body.$key = (New-Object PSCredential "user",$PSBoundParameters[$key]).GetNetworkCredential().Password
+                        $pw = (New-Object PSCredential "user", $PSBoundParameters[$key]).GetNetworkCredential().Password
+                        $body.EncryptedKeyPassword = $pw
                     }
                     Pkcs12 {
-                        $p12String = Convert-Base64 -From NormalString -To WebSafeBase64String -String "$([System.IO.File]::ReadAllText((Resolve-Path $PSBoundParameters[$key]).Path))"
-                        $body.$key = $p12String
+                        $pkcs12Content = [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes($Pkcs12))
+                        $urlSafePkcs12Content = $pkcs12Content.Replace('+', '-').Replace('/', '_')
+                        $body.Pkcs12 = $urlSafePkcs12Content
                     }
                     Default {
-                        $body.$prop = $PSBoundParameters[$prop]
+                        $body.$key = $PSBoundParameters[$key]
                     }
                 }
             }
             Write-Verbose "Adding new S/MIME of SendAsEmail '$SendAsEmail' for user '$User' using Certificate '$Pkcs12'"
-            $request = $service.Users.Settings.SendAs.SmimeInfo.Insert($body,$User,$SendAsEmail)
+            $request = $service.Users.Settings.SendAs.SmimeInfo.Insert($body, $User, $SendAsEmail)
             $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
         }
         catch {

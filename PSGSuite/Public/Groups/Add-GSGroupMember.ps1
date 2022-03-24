@@ -31,7 +31,7 @@ function Add-GSGroupMember {
         [String]
         $Identity,
         [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true,Position = 1)]
-        [Alias("PrimaryEmail","UserKey","Mail","User","UserEmail")]
+        [Alias("PrimaryEmail","UserKey","Mail","User","UserEmail","Members")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $Member,
@@ -49,15 +49,11 @@ function Add-GSGroupMember {
     }
     Process {
         try {
-            if ($Identity -notlike "*@*.*") {
-                $Identity = "$($Identity)@$($Script:PSGSuite.Domain)"
-            }
+            Resolve-Email ([ref]$Identity) -IsGroup
             $groupObj = Get-GSGroup -Group $Identity -Verbose:$false
-            try {
-                foreach ($U in $Member) {
-                    if ($U -notlike "*@*.*") {
-                        $U = "$($U)@$($Script:PSGSuite.Domain)"
-                    }
+            foreach ($U in $Member) {
+                try {
+                    Resolve-Email ([ref]$U)
                     Write-Verbose "Adding '$U' as a $Role of group '$Identity'"
                     $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.Member'
                     $body.Email = $U
@@ -65,13 +61,13 @@ function Add-GSGroupMember {
                     $request = $service.Members.Insert($body,$groupObj.Id)
                     $request.Execute() | Add-Member -MemberType NoteProperty -Name 'Group' -Value $Identity -PassThru
                 }
-            }
-            catch {
-                if ($ErrorActionPreference -eq 'Stop') {
-                    $PSCmdlet.ThrowTerminatingError($_)
-                }
-                else {
-                    Write-Error $_
+                catch {
+                    if ($ErrorActionPreference -eq 'Stop') {
+                        $PSCmdlet.ThrowTerminatingError($_)
+                    }
+                    else {
+                        Write-Error $_
+                    }
                 }
             }
         }

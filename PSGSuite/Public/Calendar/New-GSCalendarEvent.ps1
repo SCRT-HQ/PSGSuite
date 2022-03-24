@@ -44,10 +44,24 @@ function New-GSCalendarEvent {
     .PARAMETER Location
     Event location
 
+    .PARAMETER Visibility
+    Visibility of the event.
+
+    Possible values are:
+    * "default" - Uses the default visibility for events on the calendar. This is the default value.
+    * "public" - The event is public and event details are visible to all readers of the calendar.
+    * "private" - The event is private and only event attendees may view event details.
+    * "confidential" - The event is private. This value is provided for compatibility reasons.
+
     .PARAMETER EventColor
     Color of the event as seen in Calendar
 
-    .PARAMETER DisableReminder
+    .PARAMETER Reminders
+    A list of reminders to add to this calendar event other than the default calendar reminder.
+
+    This parameter expects a 'Google.Apis.Calendar.v3.Data.EventReminder[]' object type. You can create objects of this type easily by using the function 'Add-GSCalendarEventReminder'
+
+    .PARAMETER DisableDefaultReminder
     When $true, disables inheritance of the default Reminders from the Calendar the event was created on.
 
     .PARAMETER LocalStartDateTime
@@ -83,77 +97,101 @@ function New-GSCalendarEvent {
 
     This is useful for copying another events ExtendedProperties over when creating a new event.
 
+    .PARAMETER CreateMeetEvent
+    Create a Google Meet conference event while creating the calendar event.
+
+    This is useful for creating a Google Meet URL which you can send to people for video conferences.
+
     .EXAMPLE
     New-GSCalendarEvent "Go to the gym" -StartDate (Get-Date "21:00:00") -EndDate (Get-Date "22:00:00")
 
     Creates an event titled "Go to the gym" for 9-10PM the day the function is ran.
+
+    .LINK
+    https://psgsuite.io/Function%20Help/Calendar/New-GSCalendarEvent/
     #>
     [OutputType('Google.Apis.Calendar.v3.Data.Event')]
     [cmdletbinding(DefaultParameterSetName = "AttendeeEmails")]
     Param
     (
-        [parameter(Mandatory = $true,Position = 0)]
+        [parameter(Mandatory,Position = 0)]
         [String]
         $Summary,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [String]
         $Description,
-        [parameter(Mandatory = $false)]
-        [ValidateScript({if ($_ -match '^[0-9a-v]+$'){$true}else{throw "The characters allowed in the ID are only those used in base32hex encoding, i.e. lowercase letters a-v and digits 0-9"}})]
+        [parameter()]
+        [ValidateScript( { if ($_ -match '^[0-9a-v]+$') {
+                    $true
+                }
+                else {
+                    throw "The characters allowed in the ID are only those used in base32hex encoding, i.e. lowercase letters a-v and digits 0-9"
+                } })]
         [ValidateLength(5,1024)]
         [String]
         $Id,
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [parameter(ValueFromPipelineByPropertyName)]
         [Alias("PrimaryEmail","UserKey","Mail")]
         [ValidateNotNullOrEmpty()]
         [String[]]
         $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [parameter(ValueFromPipelineByPropertyName)]
         [String[]]
         $CalendarID = "primary",
-        [parameter(Mandatory = $false,ParameterSetName = "AttendeeEmails")]
+        [parameter(ParameterSetName = "AttendeeEmails")]
         [String[]]
         $AttendeeEmails,
-        [parameter(Mandatory = $false,ParameterSetName = "AttendeeObjects")]
+        [parameter(ParameterSetName = "AttendeeObjects")]
         [Google.Apis.Calendar.v3.Data.EventAttendee[]]
         $Attendees,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [String]
         $Location,
-        [parameter(Mandatory = $false)]
+        [parameter()]
+        [ValidateSet('default','public','private','confidential')]
+        [String]
+        $Visibility,
+        [parameter()]
         [ValidateSet("Periwinkle","Seafoam","Lavender","Coral","Goldenrod","Beige","Cyan","Grey","Blue","Green","Red")]
         [String]
         $EventColor,
-        [parameter(Mandatory = $false)]
+        [parameter()]
+        [Google.Apis.Calendar.v3.Data.EventReminder[]]
+        $Reminders,
+        [parameter()]
+        [Alias('DisableReminder')]
         [Switch]
-        $DisableReminder,
-        [parameter(Mandatory = $false)]
+        $DisableDefaultReminder,
+        [parameter()]
         [DateTime]
         $LocalStartDateTime = (Get-Date),
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [DateTime]
         $LocalEndDateTime = (Get-Date).AddMinutes(30),
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [String]
         $StartDate,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [String]
         $EndDate,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [String]
         $UTCStartDateTime,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [String]
         $UTCEndDateTime,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [Hashtable]
         $PrivateExtendedProperties,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [Hashtable]
         $SharedExtendedProperties,
-        [parameter(Mandatory = $false)]
+        [parameter()]
         [Google.Apis.Calendar.v3.Data.Event+ExtendedPropertiesData]
-        $ExtendedProperties
+        $ExtendedProperties,
+        [parameter()]
+        [switch]
+        $CreateMeetEvent
     )
     Begin {
         $colorHash = @{
@@ -194,6 +232,7 @@ function New-GSCalendarEvent {
                 if ($Attendees) {
                     $body.Attendees = [Google.Apis.Calendar.v3.Data.EventAttendee[]]$Attendees
                 }
+                $RemindersData = $null
                 foreach ($key in $PSBoundParameters.Keys) {
                     switch ($key) {
                         EventColor {
@@ -203,7 +242,7 @@ function New-GSCalendarEvent {
                             if (-not $ExtendedProperties) {
                                 $ExtendedProperties = New-Object 'Google.Apis.Calendar.v3.Data.Event+ExtendedPropertiesData' -Property @{
                                     Private__ = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
-                                    Shared = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
+                                    Shared    = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
                                 }
                             }
                             elseif (-not $ExtendedProperties.Private__) {
@@ -217,7 +256,7 @@ function New-GSCalendarEvent {
                             if (-not $ExtendedProperties) {
                                 $ExtendedProperties = New-Object 'Google.Apis.Calendar.v3.Data.Event+ExtendedPropertiesData' -Property @{
                                     Private__ = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
-                                    Shared = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
+                                    Shared    = (New-Object 'System.Collections.Generic.Dictionary[string,string]')
                                 }
                             }
                             elseif (-not $ExtendedProperties.Shared) {
@@ -227,11 +266,17 @@ function New-GSCalendarEvent {
                                 $ExtendedProperties.Shared.Add($prop,$SharedExtendedProperties[$prop])
                             }
                         }
-                        DisableReminder {
-                            $reminder = New-Object 'Google.Apis.Calendar.v3.Data.Event+RemindersData' -Property @{
-                                UseDefault = (-not $DisableReminder)
+                        Reminders {
+                            if ($null -eq $RemindersData) {
+                                $RemindersData = New-Object 'Google.Apis.Calendar.v3.Data.Event+RemindersData'
                             }
-                            $body.Reminders = $reminder
+                            $RemindersData.Overrides = $Reminders
+                        }
+                        DisableDefaultReminder {
+                            if ($null -eq $RemindersData) {
+                                $RemindersData = New-Object 'Google.Apis.Calendar.v3.Data.Event+RemindersData'
+                            }
+                            $RemindersData.UseDefault = (-not $DisableDefaultReminder)
                         }
                         Default {
                             if ($body.PSObject.Properties.Name -contains $key) {
@@ -239,6 +284,9 @@ function New-GSCalendarEvent {
                             }
                         }
                     }
+                }
+                if ($RemindersData) {
+                    $body.Reminders = $RemindersData
                 }
                 if ($ExtendedProperties) {
                     $body.ExtendedProperties = $ExtendedProperties
@@ -273,9 +321,21 @@ function New-GSCalendarEvent {
                         DateTime = $LocalEndDateTime
                     }
                 }
+                $verbMsg = $null
+                if ($CreateMeetEvent) {
+                    $createRequest = New-Object 'Google.Apis.Calendar.v3.Data.CreateConferenceRequest'
+                    $createRequest.RequestId = (New-Guid).ToString('n')
+                    $confData = New-Object 'Google.Apis.Calendar.v3.Data.ConferenceData'
+                    $confData.CreateRequest = $createRequest
+                    $body.ConferenceData = $confData
+                    $verbMsg = ' with Meet conferencing'
+                }
                 foreach ($calId in $CalendarID) {
-                    Write-Verbose "Creating Calendar Event '$($Summary)' on calendar '$calId' for user '$U'"
+                    Write-Verbose "Creating Calendar Event '$($Summary)'$($verbMsg) on calendar '$calId' for user '$U'"
                     $request = $service.Events.Insert($body,$calId)
+                    if ($CreateMeetEvent) {
+                        $request.ConferenceDataVersion = 1
+                    }
                     $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $U -PassThru | Add-Member -MemberType NoteProperty -Name 'CalendarId' -Value $calId -PassThru
                 }
             }

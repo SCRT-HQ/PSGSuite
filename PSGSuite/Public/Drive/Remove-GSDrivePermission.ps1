@@ -2,21 +2,21 @@ function Remove-GSDrivePermission {
     <#
     .SYNOPSIS
     Removes a permission from a Drive file
-    
+
     .DESCRIPTION
     Removes a permission from a Drive file
-    
+
     .PARAMETER User
     The email or unique Id of the user whose Drive file permission you are trying to get
 
     Defaults to the AdminEmail user
-    
+
     .PARAMETER FileId
     The unique Id of the Drive file
-    
+
     .PARAMETER PermissionId
     The unique Id of the permission you are trying to remove.
-    
+
     .EXAMPLE
     Remove-GSDrivePermission -FileId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -PermissionID 'sdfadsfsdafasd'
 
@@ -30,19 +30,19 @@ function Remove-GSDrivePermission {
     [cmdletbinding(SupportsShouldProcess = $true,ConfirmImpact = "High")]
     Param
     (
-        [parameter(Mandatory = $false,Position = 0,ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $true,Position = 0,ValueFromPipelineByPropertyName = $true)]
+        [String]
+        $FileId,
+        [parameter(Mandatory = $false,Position = 1,ValueFromPipelineByPropertyName = $true)]
         [Alias('Owner','PrimaryEmail','UserKey','Mail')]
         [string]
-        $User = $Script:PSGSuite.AdminEmail, 
+        $User = $Script:PSGSuite.AdminEmail,
         [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
-        [String]
-        $FileId, 
-        [parameter(Mandatory = $true,ValueFromPipelineByPropertyName = $true)]
-        [Alias('Id')]        
+        [Alias('Id')]
         [String]
         $PermissionId
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -55,12 +55,10 @@ function Remove-GSDrivePermission {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             if ($PSCmdlet.ShouldProcess("Removing Drive Permission Id '$PermissionId' from FileId '$FileID'")) {
                 $request = $service.Permissions.Delete($FileId,$PermissionId)
-                $request.SupportsTeamDrives = $true
+                $request.SupportsAllDrives = $true
                 $request.Execute()
                 Write-Verbose "Successfully removed Drive Permission Id '$PermissionId' from FileId '$FileID'"
             }

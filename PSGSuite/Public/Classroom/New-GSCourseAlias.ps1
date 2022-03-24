@@ -41,23 +41,11 @@ function New-GSCourseAlias {
         [ValidateSet('Domain','Project')]
         [String]
         $Scope = $(if($Alias -match "^p\:"){'Project'}else{'Domain'}),
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
     Begin {
-        if ($User -ceq 'me') {
-            $User = $Script:PSGSuite.AdminEmail
-        }
-        elseif ($User -notlike "*@*.*") {
-            $User = "$($User)@$($Script:PSGSuite.Domain)"
-        }
-        $serviceParams = @{
-            Scope       = 'https://www.googleapis.com/auth/classroom.courses'
-            ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
-            User        = $User
-        }
-        $service = New-GoogleService @serviceParams
         $formatted = if ($Alias -match "^(d\:|p\:)") {
             $Alias
             $Scope = if ($Alias -match "^d\:") {
@@ -80,6 +68,18 @@ function New-GSCourseAlias {
         }
     }
     Process {
+        if ($User -ceq 'me') {
+            $User = $Script:PSGSuite.AdminEmail
+        }
+        elseif ($User -notlike "*@*.*") {
+            $User = "$($User)@$($Script:PSGSuite.Domain)"
+        }
+        $serviceParams = @{
+            Scope       = 'https://www.googleapis.com/auth/classroom.courses'
+            ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
+            User        = $User
+        }
+        $service = New-GoogleService @serviceParams
         try {
             Write-Verbose "Creating new Alias '$Alias' for Course '$CourseId' at '$Scope' scope"
             $body = New-Object 'Google.Apis.Classroom.v1.Data.CourseAlias' -Property @{
