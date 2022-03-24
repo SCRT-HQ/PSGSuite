@@ -1,19 +1,22 @@
-function Submit-GSSheetBatchUpdateRequest {
+function Submit-GSSheetBatchUpdate {
     <#
     .SYNOPSIS
-    Submits a batch update request to a Google Sheet
+    Submits a batch update request to a Google Sheet.
 
     .DESCRIPTION
-    Submits a batch update request to a Google Sheet
+    Submits a batch update request to a Google Sheet.
 
-    .PARAMETER Title
-    The name of the SpreadSheet
+    .PARAMETER Id
+    The unique identifier of the Sheet to be updated.
+
+    .PARAMETER Requests
+    The updates to apply to the Sheet.
 
     .PARAMETER User
-    The user to update the Sheet for
+    The user to update the Sheet as.
 
     .PARAMETER Launch
-    If $true, opens the SpreadSheet Url in your default browser
+    If $true, opens the SpreadSheet Url in your default browser after submitting the batch update request.
 
     .EXAMPLE
     Update-GSSheet -Title "Finance Workbook" -Launch
@@ -28,10 +31,18 @@ function Submit-GSSheetBatchUpdateRequest {
         [Alias('SheetId')]
         [String]
         $Id,
+        [parameter(Mandatory = $true,ValueFromPipeline = $true)]
+        [Google.Apis.Sheets.v4.Data.Request[]]
+        $Requests,
         [parameter(Mandatory = $false)]
-        [Alias('SheetTitle')]
-        [String]
-        $Title,
+        [Switch]
+        $IncludeSpreadsheetInResponse,
+        [parameter(Mandatory = $false)]
+        [Switch]
+        $ResponseIncludeGridData,
+        [parameter(Mandatory = $false)]
+        [String[]]
+        $ResponseRanges,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [Alias('Owner','PrimaryEmail','UserKey','Mail')]
         [string]
@@ -41,6 +52,9 @@ function Submit-GSSheetBatchUpdateRequest {
         [Switch]
         $Launch
     )
+    Begin {
+        $requestList = New-Object 'System.Collections.Generic.List[Google.Apis.Sheets.v4.Data.Request]'
+    }
     Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
@@ -54,15 +68,16 @@ function Submit-GSSheetBatchUpdateRequest {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
+        foreach ($request in $Requests) {
+            $requestList.Add($request)
+        }
+    }
+    End {
         try {
-            $body = New-Object 'Google.Apis.Sheets.v4.Data.Spreadsheet'
-            $body.Properties = New-Object 'Google.Apis.Sheets.v4.Data.SpreadsheetProperties' -Property @{
-                Title = $Title
+            $body = New-Object 'Google.Apis.Sheets.v4.Data.BatchUpdateSpreadsheetRequest' -Property @{
+                Requests = $requestList
             }
-            if (!$Title) {
-                $Title = "Untitled spreadsheet"
-            }
-            Write-Verbose "Creating Spreadsheet '$Title' for user '$User'"
+            Write-Verbose "Updating Spreadsheet '$Title' for user '$User'"
             $request = $service.Spreadsheets.Create($body)
             $response = $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
             if ($Launch) {

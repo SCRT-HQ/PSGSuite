@@ -84,9 +84,47 @@ task Clean -depends Init {
         New-Item -Path $outputDir -ItemType Directory | Out-Null
     }
     "    Cleaned previous output directory [$outputDir]"
+    $ciGeneratedPath = [System.IO.Path]::Combine($PSScriptRoot,'PSGSuite','Public','Helpers','CIGenerated')
+    Get-ChildItem $ciGeneratedPath -Filter "*.ps1" -Recurse | Remove-Item -Force -Confirm:$false
+    "    Cleaned CI Generated directory [$ciGeneratedPath]"
 } -description 'Cleans module output directory'
 
-task Compile -depends Clean {
+task Update -depends Clean {
+    Get-ChildItem (Join-Path $PSScriptRoot 'ci') -Recurse -Filter "*.ps1" | ForEach-Object {
+        . $_.FullName
+    }
+    $lib = [System.IO.Path]::Combine($sut,'lib')
+    $sdkPath = if ($PSVersionTable.PSVersion.Major -lt 6) {
+        "$lib\net45"
+    }
+    else {
+        "$lib\netstandard1.3"
+    }
+    Get-ChildItem $sdkPath | Where-Object {$_.Name -match 'Sheets|Docs|Slides'} | ForEach-Object {
+        $sdk = $_.Name
+        try {
+            Add-Type -Path $_.FullName -ErrorAction Stop
+        }
+        catch [System.Reflection.ReflectionTypeLoadException] {
+            Write-Host "Message: $($_.Exception.Message)"
+            Write-Host "StackTrace: $($_.Exception.StackTrace)"
+            Write-Host "LoaderExceptions: $($_.Exception.LoaderExceptions)"
+        }
+        catch {
+            Write-Error "$($sdk): $($_.Exception.Message)"
+        }
+    }
+    $genTargets = @(
+        'Google.Apis.Sheets.v4.Data.Request'
+        'Google.Apis.Docs.v1.Data.Request'
+        'Google.Apis.Slides.v1.Data.Request'
+    )
+    foreach ($target in $genTargets) {
+        Invoke-BatchUpdateFunctionGeneration -BaseType $target -Verbose
+    }
+}
+
+task Compile -depends Update {
     # Create module output directory
     $functionsToExport = @()
     $sutLib = [System.IO.Path]::Combine($sut,'lib')

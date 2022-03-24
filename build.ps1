@@ -1,9 +1,9 @@
 ﻿[cmdletbinding()]
 param(
     [parameter( Position = 0)]
-    [ValidateSet('Init','Clean','Compile','Import','Test','Full','Deploy','Skip','Docs')]
+    [ValidateSet('Init','Clean','Update','Compile','Import','Test','Full','Deploy','Skip','Docs')]
     [string[]]
-    $Task = @('Init','Clean','Compile','Import'),
+    $Task = @('Compile','Import'),
     [parameter()]
     [Alias('nr','nor')]
     [switch]$NoRestore,

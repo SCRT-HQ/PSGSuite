@@ -29,10 +29,16 @@ function Add-GSUserSchemaField {
     A switch specifying whether this is a multi-valued field or not. Default: false
 
     .PARAMETER ReadAccessType
-    Parameter description
+    Specifies who can view values of this field. See 'Retrieve users as a non-administrator' for more information: https://developers.google.com/admin-sdk/directory/v1/guides/manage-users#retrieve_users_non_admin
+
+    Note: It may take up to 24 hours for changes to this field to be reflected.
+
+    Acceptable values are:
+    * "ADMINS_AND_SELF"
+    * "ALL_DOMAIN_USERS"
 
     .PARAMETER InputObject
-    Parameter description
+    Used for pipeline input of an existing UserSchemaField object to strip the extra attributes and prevent errors.
 
     .EXAMPLE
     New-GSUserSchema -SchemaName "SDK" -Fields (Add-GSUserSchemaField -FieldName "string" -FieldType STRING -ReadAccessType ADMINS_AND_SELF),(Add-GSUserSchemaField -FieldName "date" -FieldType DATE -ReadAccessType ADMINS_AND_SELF)
