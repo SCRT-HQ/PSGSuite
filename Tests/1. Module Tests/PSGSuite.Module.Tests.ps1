@@ -35,7 +35,7 @@ Describe "Module tests: $($env:BHProjectName)" -Tag 'Module' {
         $testCase = Get-ChildItem "$decompiledModulePath\Private" -Recurse -Include *.ps1 | Foreach-Object {@{item = $_.BaseName}}
         It "Should throw when checking for '<item>' in the module commands" -TestCases $testCase {
             param($item)
-            {Get-Command -Name $item -Module $env:BHProjectName -ErrorAction Stop} | Should -Throw -ExceptionType ([CommandNotFoundException])
+            {Get-Command -Name $item -Module $env:BHProjectName -ErrorAction Stop} | Should -Throw -ExceptionType ([System.Management.Automation.CommandNotFoundException])
         }
     }
     Context "Confirm all aliases are created" {
