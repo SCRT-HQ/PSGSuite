@@ -36,13 +36,10 @@ function Set-GSDocContent {
         [string]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
-        $service = New-GoogleService @serviceParams
+    Process {
         $stream = New-Object 'System.IO.MemoryStream'
         $writer = New-Object 'System.IO.StreamWriter' $stream
         $concatStrings = @()
-    }
-    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -54,6 +51,7 @@ function Set-GSDocContent {
             ServiceType = 'Google.Apis.Drive.v3.DriveService'
             User        = $User
         }
+        $service = New-GoogleService @serviceParams
         foreach ($string in $Value) {
             $concatStrings += $string
         }

@@ -39,7 +39,7 @@ function Update-GSMobileDevice {
         $Action
 
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.device.mobile'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
@@ -54,8 +54,6 @@ function Update-GSMobileDevice {
         $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.MobileDeviceAction' -Property @{
             Action = $Action
         }
-    }
-    Process {
         try {
             foreach ($R in $ResourceId) {
                 Write-Verbose "Updating Mobile Device '$R' with Action '$Action'"

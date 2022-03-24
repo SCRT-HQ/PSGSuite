@@ -94,14 +94,12 @@ function Get-GSUsageReport {
         [switch]
         $Raw
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.reports.usage.readonly'
             ServiceType = 'Google.Apis.Admin.Reports.reports_v1.ReportsService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             Write-Verbose "Getting $($PSCmdlet.ParameterSetName) Usage report for $($Date.ToString('yyyy-MM-dd'))"
             switch ($PSCmdlet.ParameterSetName) {

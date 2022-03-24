@@ -32,14 +32,12 @@ function Get-GSDomainAlias {
         [String[]]
         $ParentDomainName
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.domain'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         if ($PSBoundParameters.ContainsKey('DomainAliasName')) {
             foreach ($alias in $DomainAliasName) {
                 try {

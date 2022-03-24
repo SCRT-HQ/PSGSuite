@@ -22,14 +22,12 @@ function New-GSDomain {
         [String]
         $DomainName
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.domain'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             Write-Verbose "Adding Domain '$DomainName'"
             $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.Domains' -Property @{

@@ -33,7 +33,7 @@
         [String]
         $Delegate
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -49,8 +49,6 @@
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         if ($PSCmdlet.ShouldProcess("Removing delegate access for '$Delegate' from user '$User's inbox")) {
             try {
                 Write-Verbose "Removing delegate access for '$Delegate' from user '$User's inbox"

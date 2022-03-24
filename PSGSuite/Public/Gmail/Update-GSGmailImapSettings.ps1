@@ -56,7 +56,7 @@ function Update-GSGmailImapSettings {
         [int]
         $MaxFolderSize
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -69,8 +69,6 @@ function Update-GSGmailImapSettings {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $body = New-Object 'Google.Apis.Gmail.v1.Data.ImapSettings'
             foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {

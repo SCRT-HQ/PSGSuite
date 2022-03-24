@@ -2,16 +2,16 @@ function Remove-GSUserAlias {
     <#
     .SYNOPSIS
     Removes an alias from a G Suite user
-    
+
     .DESCRIPTION
     Removes an alias from a G Suite user
-    
+
     .PARAMETER User
     The user to remove the alias from
-    
+
     .PARAMETER Alias
     The alias or list of aliases to remove from the user
-    
+
     .EXAMPLE
     Remove-GSUserAlias -User john.smith@domain.com -Alias 'jsmith@domain.com','johns@domain.com'
 
@@ -29,14 +29,12 @@ function Remove-GSUserAlias {
         [String[]]
         $Alias
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.user'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($A in $Alias) {
             try {
                 if ($User -ceq 'me') {

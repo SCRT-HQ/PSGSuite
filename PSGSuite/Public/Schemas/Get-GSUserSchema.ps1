@@ -23,7 +23,7 @@ function Get-GSUserSchema {
         [String[]]
         $SchemaId
     )
-    Begin {
+    Process {
         if ($PSBoundParameters.Keys -contains 'SchemaId') {
             $serviceParams = @{
                 Scope       = 'https://www.googleapis.com/auth/admin.directory.userschema'
@@ -31,8 +31,6 @@ function Get-GSUserSchema {
             }
             $service = New-GoogleService @serviceParams
         }
-    }
-    Process {
         try {
             if ($PSBoundParameters.Keys -contains 'SchemaId') {
                 foreach ($S in $SchemaId) {

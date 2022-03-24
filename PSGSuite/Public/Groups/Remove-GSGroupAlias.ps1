@@ -27,14 +27,12 @@ function Remove-GSGroupAlias {
         [String[]]
         $Alias
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.group'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         Resolve-Email ([ref]$Identity) -IsGroup
         foreach ($A in $Alias) {
             try {

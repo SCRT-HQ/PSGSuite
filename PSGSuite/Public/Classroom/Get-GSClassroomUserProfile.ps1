@@ -32,7 +32,7 @@ function Get-GSClassroomUserProfile {
         [String[]]
         $Fields = '*'
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = @(
                 'https://www.googleapis.com/auth/classroom.rosters'
@@ -42,8 +42,6 @@ function Get-GSClassroomUserProfile {
             ServiceType = 'Google.Apis.Classroom.v1.ClassroomService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($part in $UserId) {
             try {
                 if ( -not ($part -as [decimal])) {

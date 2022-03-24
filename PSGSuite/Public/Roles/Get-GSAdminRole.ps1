@@ -44,7 +44,7 @@ function Get-GSAdminRole {
         [Int]
         $Limit = 0
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.rolemanagement'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
@@ -56,8 +56,6 @@ function Get-GSAdminRole {
         else {
             'my_customer'
         }
-    }
-    Process {
         switch ($PSCmdlet.ParameterSetName) {
             Get {
                 foreach ($Role in $RoleId) {

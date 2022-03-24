@@ -157,7 +157,7 @@ function Send-GSChatMessage {
         [switch]
         $BodyPassThru
     )
-    Begin {
+    Process {
         $addlSections = @()
         $addlCardActions = @()
         $addlSectionWidgets = @()
@@ -234,8 +234,6 @@ function Send-GSChatMessage {
                 }
             }
         }
-    }
-    Process {
         foreach ($segment in $MessageSegment) {
             switch -RegEx ($segment['SDK'].PSTypeNames[0]) {
                 '(.*?)Google\.Apis\.HangoutsChat\.v1\.Data\.Card' {

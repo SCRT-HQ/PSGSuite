@@ -52,14 +52,12 @@ function Update-GSCustomer {
         [Google.Apis.Admin.Directory.directory_v1.Data.CustomerPostalAddress]
         $PostalAddress
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.customer'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.Customer'
             foreach ($key in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {

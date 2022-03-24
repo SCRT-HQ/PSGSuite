@@ -86,6 +86,9 @@ function Update-GSChromeOSDevice {
 
     )
     Begin {
+        $bodyUpdated = $false
+    }
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.device.chromeos'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
@@ -97,9 +100,6 @@ function Update-GSChromeOSDevice {
         else {
             "my_customer"
         }
-        $bodyUpdated = $false
-    }
-    Process {
         $body = New-Object 'Google.Apis.Admin.Directory.directory_v1.Data.ChromeOsDevice'
         foreach ($key in $PSBoundParameters.Keys | Where-Object {$_ -in @('Action','OrgUnitPath') -or $_ -in $body.PSObject.Properties.Name}) {
             switch ($key) {

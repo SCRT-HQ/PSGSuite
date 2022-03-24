@@ -38,14 +38,12 @@
         [Int]
         $Limit = 0
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.datatransfer'
             ServiceType = 'Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             if ($ApplicationId) {
                 foreach ($I in $ApplicationId) {

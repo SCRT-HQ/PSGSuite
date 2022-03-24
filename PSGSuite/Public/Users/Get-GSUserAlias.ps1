@@ -26,14 +26,12 @@ function Get-GSUserAlias {
         [String[]]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.user.readonly'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($U in $User) {
             try {
                 if ($U -ceq 'me') {

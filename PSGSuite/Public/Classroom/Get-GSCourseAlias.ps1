@@ -26,7 +26,7 @@ function Get-GSCourseAlias {
         [String]
         $User = $Script:PSGSuite.AdminEmail
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -39,8 +39,6 @@ function Get-GSCourseAlias {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             Write-Verbose "Getting Alias list for Course '$CourseId'"
             $request = $service.Courses.Aliases.List($CourseId)

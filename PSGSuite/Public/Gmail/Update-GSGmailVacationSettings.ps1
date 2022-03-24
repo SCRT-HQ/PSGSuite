@@ -77,7 +77,7 @@ function Update-GSGmailVacationSettings {
         [datetime]
         $StartTime
     )
-    Begin {
+    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -90,8 +90,6 @@ function Update-GSGmailVacationSettings {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             $body = New-Object 'Google.Apis.Gmail.v1.Data.VacationSettings'
             foreach ($prop in $PSBoundParameters.Keys | Where-Object {$body.PSObject.Properties.Name -contains $_}) {

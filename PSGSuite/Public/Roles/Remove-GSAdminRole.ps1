@@ -2,13 +2,13 @@ function Remove-GSAdminRole {
     <#
     .SYNOPSIS
     Removes a specific Admin Role or a list of Admin Roles
-    
+
     .DESCRIPTION
     Removes a specific Admin Role or a list of Admin Roles
-    
+
     .PARAMETER RoleId
     The RoleId(s) you would like to remove
-    
+
     .EXAMPLE
     Remove-GSAdminRole -RoleId 9191482342768644,9191482342768642
 
@@ -21,7 +21,7 @@ function Remove-GSAdminRole {
         [int64[]]
         $RoleId
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.rolemanagement'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
@@ -33,8 +33,6 @@ function Remove-GSAdminRole {
         else {
             'my_customer'
         }
-    }
-    Process {
         foreach ($Role in $RoleId) {
             try {
                 if ($PSCmdlet.ShouldProcess("Deleting Role Id '$Role'")) {

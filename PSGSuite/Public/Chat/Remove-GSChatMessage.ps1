@@ -2,7 +2,7 @@ function Remove-GSChatMessage {
     <#
     .SYNOPSIS
     Removes a Chat message
-    
+
     .DESCRIPTION
     Removes a Chat message
 
@@ -10,7 +10,7 @@ function Remove-GSChatMessage {
     Resource name of the message to be removed, in the form "spaces/messages".
 
     Example: spaces/AAAAMpdlehY/messages/UMxbHmzDlr4.UMxbHmzDlr4
-    
+
     .EXAMPLE
     Remove-GSChatMessage -Name 'spaces/AAAAMpdlehY/messages/UMxbHmzDlr4.UMxbHmzDlr4'
 
@@ -24,14 +24,12 @@ function Remove-GSChatMessage {
         [string[]]
         $Name
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/chat.bot'
             ServiceType = 'Google.Apis.HangoutsChat.v1.HangoutsChatService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($msg in $Name) {
             try {
                 if ($PSCmdlet.ShouldProcess("Removing Message '$msg'")) {

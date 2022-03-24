@@ -34,14 +34,12 @@ function New-GSGroup {
         [String]
         $Description
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.group'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             Resolve-Email ([ref]$Email)
             Write-Verbose "Creating group '$Email'"

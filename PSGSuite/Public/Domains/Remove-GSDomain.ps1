@@ -21,14 +21,12 @@ function Remove-GSDomain {
         [String[]]
         $DomainName
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.domain'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($domain in $DomainName) {
             try {
                 if ($PSCmdlet.ShouldProcess("Removing Domain '$domain'")) {

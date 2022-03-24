@@ -20,14 +20,12 @@ function Get-GSCustomer {
         [String]
         $CustomerKey = $Script:PSGSuite.CustomerId
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.customer'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             Write-Verbose "Getting Customer '$CustomerKey'"
             $request = $service.Customers.Get($CustomerKey)

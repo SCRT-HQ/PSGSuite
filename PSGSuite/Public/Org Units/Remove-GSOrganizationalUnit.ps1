@@ -2,13 +2,13 @@ function Remove-GSOrganizationalUnit {
     <#
     .SYNOPSIS
     Removes an OrgUnit
-    
+
     .DESCRIPTION
     Removes an Organization Unit
-    
+
     .PARAMETER OrgUnitPath
     The path of the OrgUnit you would like to Remove-GSOrganizationalUnit
-    
+
     .EXAMPLE
     Remove-GSOrganizationalUnit -OrgUnitPath "/Testing"
 
@@ -21,14 +21,12 @@ function Remove-GSOrganizationalUnit {
         [String[]]
         $OrgUnitPath
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.orgunit'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         try {
             foreach ($O in $OrgUnitPath) {
                 if ($PSCmdlet.ShouldProcess("Deleting OrgUnit at Path '$O'")) {

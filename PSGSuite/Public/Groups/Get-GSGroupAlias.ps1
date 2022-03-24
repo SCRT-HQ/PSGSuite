@@ -23,14 +23,12 @@ function Get-GSGroupAlias {
         [String[]]
         $Identity
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.group'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($G in $Identity) {
             try {
                 Resolve-Email ([ref]$G) -IsGroup

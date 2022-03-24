@@ -83,7 +83,7 @@ function Get-GSUserLicense {
         # return the collection of dynamic parameters
         return $paramDictionary
     }
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/apps.licensing'
             ServiceType = 'Google.Apis.Licensing.v1.LicensingService'
@@ -96,8 +96,6 @@ function Get-GSUserLicense {
         else {
             (Get-LicenseProductFromDisplayName).Keys | Where-Object {$_ -ne 'Cloud-Identity'} | Sort-Object
         }
-    }
-    Process {
         try {
             switch ($PSCmdlet.ParameterSetName) {
                 Get {
@@ -112,7 +110,7 @@ function Get-GSUserLicense {
                         }
                         else {
                             $matchedLicense = $false
-                            foreach ($License in (Get-LicenseSkuFromDisplayName).Keys | Sort-Object) {
+                            foreach ($License in (Get-LicenseSkuFromDisplayName).Values | Sort-Object -Unique) {
                                 $response = $null
                                 Write-Verbose "Getting License SKU '$License' for User '$U'"
                                 $License = Get-LicenseSkuFromDisplayName $License
@@ -123,6 +121,7 @@ function Get-GSUserLicense {
                                 catch {}
                                 if (-not $CheckAll -and $response) {
                                     $matchedLicense = $true
+                                    $response
                                     break
                                 }
                                 elseif ($response) {

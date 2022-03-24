@@ -2,36 +2,36 @@ function New-GSResource {
     <#
     .SYNOPSIS
     Creates a new Calendar Resource
-    
+
     .DESCRIPTION
     Creates a new Calendar Resource. Supports Resource types 'Calendars','Buildings' & 'Features'
-    
+
     .PARAMETER Name
     The name of the new Resource
-    
+
     .PARAMETER Id
     The unique ID for the calendar resource.
-    
+
     .PARAMETER BuildingId
     Unique ID for the building a resource is located in.
-    
+
     .PARAMETER Description
     Description of the resource, visible only to admins.
-    
+
     .PARAMETER Capacity
     Capacity of a resource, number of seats in a room.
-    
+
     .PARAMETER FloorName
     Name of the floor a resource is located on (Calendars Resource type)
-    
+
     .PARAMETER FloorNames
     The names of the floors in the building (Buildings Resource type)
-    
+
     .PARAMETER FloorSection
     Name of the section within a floor a resource is located in.
-    
+
     .PARAMETER Category
-    The category of the calendar resource. Either CONFERENCE_ROOM or OTHER. Legacy data is set to CATEGORY_UNKNOWN. 
+    The category of the calendar resource. Either CONFERENCE_ROOM or OTHER. Legacy data is set to CATEGORY_UNKNOWN.
 
     Acceptable values are:
     * "CATEGORY_UNKNOWN"
@@ -39,13 +39,13 @@ function New-GSResource {
     * "OTHER"
 
     Defaults to 'CATEGORY_UNKNOWN' if creating a Calendar Resource
-    
+
     .PARAMETER ResourceType
     The type of the calendar resource, intended for non-room resources.
-    
+
     .PARAMETER UserVisibleDescription
     Description of the resource, visible to users and admins.
-    
+
     .PARAMETER Resource
     The resource type you would like to create
 
@@ -53,7 +53,7 @@ function New-GSResource {
     * "Calendars": create a Resource Calendar or legacy resource type
     * "Buildings": create a Resource Building
     * "Features": create a Resource Feature
-    
+
     .EXAMPLE
     New-GSResource -Name "Training Room" -Id "Train01" -Capacity 75 -Category 'CONFERENCE_ROOM' -ResourceType "Conference Room" -Description "Training room for new hires - has 1 LAN port per station" -UserVisibleDescription "Training room for new hires"
 
@@ -104,7 +104,7 @@ function New-GSResource {
         [String]
         $Resource
     )
-    Begin {
+    Process {
         $resType = if ($MyInvocation.InvocationName -eq 'New-GSCalendarResource') {
             'Calendars'
         }
@@ -122,8 +122,6 @@ function New-GSResource {
         if ($PSBoundParameters -notcontains 'Category' -and $PSCmdlet.ParameterSetName -eq 'Calendars') {
             $PSBoundParameters['Category'] = 'CATEGORY_UNKNOWN'
         }
-    }
-    Process {
         try {
             Write-Verbose "Creating Resource $resType '$Name'"
             $body = New-Object "$(switch ($resType) {
@@ -149,7 +147,7 @@ function New-GSResource {
                         else {
                             $body.$key = $PSBoundParameters[$key]
                         }
-                        
+
                     }
                     Name {
                         if ($resType -eq 'Calendars') {

@@ -140,7 +140,7 @@ function Update-GSChatMessage {
         [Object[]]
         $MessageSegment
     )
-    Begin {
+    Process {
         $addlSections = @()
         $addlCardActions = @()
         $addlSectionWidgets = @()
@@ -205,8 +205,6 @@ function Update-GSChatMessage {
                 }
             }
         }
-    }
-    Process {
         if ($MessageSegment) {
             if ($UpdateMask -notcontains 'cards') {
                 $UpdateMask += 'cards'

@@ -30,14 +30,12 @@ function New-GSUserAlias {
         [String[]]
         $Alias
     )
-    Begin {
+    Process {
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/admin.directory.user'
             ServiceType = 'Google.Apis.Admin.Directory.directory_v1.DirectoryService'
         }
         $service = New-GoogleService @serviceParams
-    }
-    Process {
         foreach ($A in $Alias) {
             try {
                 if ($User -ceq 'me') {
