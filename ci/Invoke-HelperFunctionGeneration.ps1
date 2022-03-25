@@ -10,7 +10,7 @@ function Invoke-HelperFunctionGeneration {
     $req = New-Object $BaseType
     $paramBlock = @()
     $paramHelpBlock = @()
-    $listParamBlock = @()
+    $listOrDictParamBlock = @()
     $exampleParamString = ""
     $requestType = $BaseType.Split('.')[-1]
     $fnName = "Add-GS" + $TargetApi + $requestType
@@ -22,8 +22,16 @@ function Invoke-HelperFunctionGeneration {
         $fullType = $_.Definition.Split(' ',2)[0]
         if ($fullType -match '\[.*\]') {
             $typeSplit = ($fullType | Select-String -Pattern '([\w|\.]+)\[(.*)\]' -AllMatches).Matches.Groups[1..2].Value
-            $isList = $typeSplit[0] -match 'IList'
-            $fullType = $typeSplit[1]
+            if ($typeSplit[0] -match 'IList') {
+                $isList = $true
+                $fullType = $typeSplit[1]
+            }
+            elseif ($typeSplit[0] -match 'IDictionary') {
+                $isDict = $true
+                $fullType = $typeSplit[1].Split(',')[1]
+            }
+            # $isList = $typeSplit[0] -match 'IList'
+            # $fullType = $typeSplit[1]
         }
         else {
             $isList = $fullType -match 'IList'
@@ -35,11 +43,14 @@ function Invoke-HelperFunctionGeneration {
         $paramType = if ($isList) {
             "$fullType[]"
         }
+        elseif ($isDict) {
+            'System.Collections.Hashtable'
+        }
         else {
             $fullType
         }
         $paramName = $_.Name
-        $paramBlock += "        [parameter()]`n        [$paramType]`n        `$$paramName,"
+        $paramBlock += "        [parameter(ParameterSetName = `"Fields`")]`n        [$paramType]`n        `$$paramName,"
         if ($paramType -match '^Google\.') {
             $helperFunctionName = "Add-GS" + $TargetApi + $(if ($fullType -match '\.'){$fullType.Split('.')[-1]}else{$fullType})
             $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: [$paramType].`n`n    To create this type, use the function $helperFunctionName or instantiate the type directly via New-Object '$fullType'.`n"
@@ -49,13 +60,24 @@ function Invoke-HelperFunctionGeneration {
         }
         $exampleParamString += " -$paramName `$$($paramName.Substring(0,1).ToLower())$($paramName.Substring(1))"
         if ($isList) {
-            $listParamBlock += @"
+            $listOrDictParamBlock += @"
                             $paramName {
                                 `$list = New-Object 'System.Collections.Generic.List[$fullType]'
                                 foreach (`$item in `$$paramName) {
                                     `$list.Add(`$item)
                                 }
                                 `$obj.$paramName = `$list
+                            }
+"@
+        }
+        if ($isDict) {
+            $listOrDictParamBlock += @"
+                            $paramName {
+                                `$dict = New-Object 'System.Collections.Generic.Dictionary[[string],[$fullType]]'
+                                foreach (`$item in `$$paramName.GetEnumerator()) {
+                                    `$dict.Add(`$item.Key,`$item.Value)
+                                }
+                                `$obj.$paramName = `$dict
                             }
 "@
         }
@@ -100,7 +122,7 @@ $($paramBlock -join "`n")
                 Fields {
                     `$obj = New-Object '$BaseType'
                     foreach (`$prop in `$PSBoundParameters.Keys | Where-Object {`$obj.PSObject.Properties.Name -contains `$_}) {
-                        switch (`$prop) {$(if($listParamBlock.Count){"`n" + ($listParamBlock -join "`n")})
+                        switch (`$prop) {$(if($listOrDictParamBlock.Count){"`n" + ($listOrDictParamBlock -join "`n")})
                             default {
                                 `$obj.`$prop = `$PSBoundParameters[`$prop]
                             }
