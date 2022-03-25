@@ -134,8 +134,8 @@
   {
     "Name": "MimeKit.dll",
     "BaseName": "MimeKit",
-    "Target": "2.9.2",
-    "LatestVersion": "2.9.2.0"
+    "Target": "2.0.3",
+    "LatestVersion": "2.0.3.0"
   },
   {
     "Name": "Newtonsoft.Json.dll",
