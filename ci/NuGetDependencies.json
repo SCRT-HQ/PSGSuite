@@ -9,138 +9,138 @@
     "Name": "Google.Apis.dll",
     "BaseName": "Google.Apis",
     "Target": "Latest",
-    "LatestVersion": "1.44.0"
+    "LatestVersion": "1.56.0"
   },
   {
     "Name": "Google.Apis.Admin.DataTransfer.datatransfer_v1.dll",
     "BaseName": "Google.Apis.Admin.DataTransfer.datatransfer_v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.418"
+    "LatestVersion": "1.56.0.2392"
   },
   {
     "Name": "Google.Apis.Admin.Directory.directory_v1.dll",
     "BaseName": "Google.Apis.Admin.Directory.directory_v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1678"
+    "LatestVersion": "1.56.0.2633"
   },
   {
     "Name": "Google.Apis.Admin.Reports.reports_v1.dll",
     "BaseName": "Google.Apis.Admin.Reports.reports_v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1601"
+    "LatestVersion": "1.56.0.2532"
   },
   {
     "Name": "Google.Apis.Auth.dll",
     "BaseName": "Google.Apis.Auth",
     "Target": "Latest",
-    "LatestVersion": "1.41.1"
+    "LatestVersion": "1.56.0"
   },
   {
     "Name": "Google.Apis.Calendar.v3.dll",
     "BaseName": "Google.Apis.Calendar.v3",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1713"
+    "LatestVersion": "1.56.0.2590"
   },
   {
     "Name": "Google.Apis.Classroom.v1.dll",
     "BaseName": "Google.Apis.Classroom.v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1713"
+    "LatestVersion": "1.56.0.2634"
   },
   {
     "Name": "Google.Apis.Core.dll",
     "BaseName": "Google.Apis.Core",
     "Target": "Latest",
-    "LatestVersion": "1.41.1"
+    "LatestVersion": "1.56.0"
   },
   {
     "Name": "Google.Apis.Docs.v1.dll",
     "BaseName": "Google.Apis.Docs.v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1708"
+    "LatestVersion": "1.56.0.2379"
   },
   {
     "Name": "Google.Apis.Drive.v3.dll",
     "BaseName": "Google.Apis.Drive.v3",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1708"
+    "LatestVersion": "1.56.0.2601"
   },
   {
     "Name": "Google.Apis.DriveActivity.v2.dll",
     "BaseName": "Google.Apis.DriveActivity.v2",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1713"
+    "LatestVersion": "1.56.0.2269"
   },
   {
     "Name": "Google.Apis.Gmail.v1.dll",
     "BaseName": "Google.Apis.Gmail.v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1635"
+    "LatestVersion": "1.56.0.2622"
   },
   {
     "Name": "Google.Apis.Groupssettings.v1.dll",
     "BaseName": "Google.Apis.Groupssettings.v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1666"
+    "LatestVersion": "1.56.0.2366"
   },
   {
     "Name": "Google.Apis.HangoutsChat.v1.dll",
     "BaseName": "Google.Apis.HangoutsChat.v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1716"
+    "LatestVersion": "1.56.0.2623"
   },
   {
     "Name": "Google.Apis.Licensing.v1.dll",
     "BaseName": "Google.Apis.Licensing.v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.774"
+    "LatestVersion": "1.56.0.2636"
   },
   {
     "Name": "Google.Apis.Oauth2.v2.dll",
     "BaseName": "Google.Apis.Oauth2.v2",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1602"
+    "LatestVersion": "1.56.0.1869"
   },
   {
     "Name": "Google.Apis.PeopleService.v1.dll",
     "BaseName": "Google.Apis.PeopleService.v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1715"
+    "LatestVersion": "1.56.0.2637"
   },
   {
     "Name": "Google.Apis.Script.v1.dll",
     "BaseName": "Google.Apis.Script.v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1714"
+    "LatestVersion": "1.56.0.2555"
   },
   {
     "Name": "Google.Apis.Sheets.v4.dll",
     "BaseName": "Google.Apis.Sheets.v4",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1705"
+    "LatestVersion": "1.56.0.2623"
   },
   {
     "Name": "Google.Apis.Slides.v1.dll",
     "BaseName": "Google.Apis.Slides.v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1707"
+    "LatestVersion": "1.56.0.2423"
   },
   {
     "Name": "Google.Apis.Tasks.v1.dll",
     "BaseName": "Google.Apis.Tasks.v1",
     "Target": "Latest",
-    "LatestVersion": "1.41.1.1713"
+    "LatestVersion": "1.56.0.2384"
   },
   {
     "Name": "MimeKit.dll",
     "BaseName": "MimeKit",
-    "Target": "Latest",
-    "LatestVersion": "1.10.1.0"
+    "Target": "2.9.2",
+    "LatestVersion": "2.9.2.0"
   },
   {
     "Name": "Newtonsoft.Json.dll",
     "BaseName": "Newtonsoft.Json",
     "Target": "Latest",
-    "LatestVersion": "13.0.1"
+    "LatestVersion": "13.0.1+ae9fe44e1323e91bcbd185ca1a14099fba7c021f"
   }
 ]

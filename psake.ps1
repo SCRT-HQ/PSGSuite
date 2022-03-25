@@ -89,11 +89,26 @@ task Clean -depends Init {
     "    Cleaned CI Generated directory [$ciGeneratedPath]"
 } -description 'Cleans module output directory'
 
-task Update -depends Clean {
+task Nuget -depends Clean {
+    if (-not (Test-Path $outputModVerDir)) {
+        $modDir = New-Item -Path $outputModDir -ItemType Directory -ErrorAction SilentlyContinue
+        New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
+    }
+    if ("$env:NoNugetRestore" -ne 'True') {
+        New-Item -Path "$outputModVerDir\lib" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
+        Write-BuildLog "Installing NuGet dependencies..."
+        Install-NuGetDependencies -Destination $outputModVerDir -AddlSearchString $NuGetSearchStrings -Verbose
+    }
+    else {
+        Write-BuildLog "Skipping NuGet Restore due to `$env:NoNugetRestore = '$env:NoNugetRestore'"
+    }
+}
+
+task Update -depends Nuget {
     Get-ChildItem (Join-Path $PSScriptRoot 'ci') -Recurse -Filter "*.ps1" | ForEach-Object {
         . $_.FullName
     }
-    $lib = [System.IO.Path]::Combine($sut,'lib')
+    $lib = [System.IO.Path]::Combine($outputModVerDir,'lib')
     $sdkPath = if ($PSVersionTable.PSVersion.Major -lt 6) {
         "$lib\net45"
     }
@@ -129,10 +144,6 @@ task Compile -depends Update {
     $functionsToExport = @()
     $sutLib = [System.IO.Path]::Combine($sut,'lib')
     $aliasesToExport = (. $sut\Aliases\PSGSuite.Aliases.ps1).Keys
-    if (-not (Test-Path $outputModVerDir)) {
-        $modDir = New-Item -Path $outputModDir -ItemType Directory -ErrorAction SilentlyContinue
-        New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-    }
 
     # Append items to psm1
     Write-BuildLog 'Creating psm1...'
@@ -155,15 +166,6 @@ task Compile -depends Update {
 
 
     Invoke-CommandWithLog {Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue -Force -Verbose:$false}
-
-    if ("$env:NoNugetRestore" -ne 'True') {
-        New-Item -Path "$outputModVerDir\lib" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-        Write-BuildLog "Installing NuGet dependencies..."
-        Install-NuGetDependencies -Destination $outputModVerDir -AddlSearchString $NuGetSearchStrings -Verbose
-    }
-    else {
-        Write-BuildLog "Skipping NuGet Restore due to `$env:NoNugetRestore = '$env:NoNugetRestore'"
-    }
 
     $aliasHashContents = (Get-Content "$sut\Aliases\PSGSuite.Aliases.ps1" -Raw).Trim()
 

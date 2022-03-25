@@ -45,13 +45,13 @@ function Install-NuGetDependencies {
                     $nugHash[$inst.BaseName]
                 }
                 else {
-                    [PSCustomObject]@{
-                        Name = $inst.BaseName
-                        Version = $inst.LatestVersion
-                        TagId = $inst.BaseName + '#' + $inst.LatestVersion
+                    $findPackage = @{Name = $inst.BaseName}
+                    if ($inst.Target -ne "Latest") {
+                       $findPackage['RequiredVersion'] = $inst.Target
                     }
+                    PackageManagement\Find-Package @findPackage -Source NuGet -AllowPrereleaseVersions:$false
                 }
-                Write-BuildLog ("[{0}.{1}] Downloading latest package from NuGet" -f $pkg.Name,$pkg.Version)
+                Write-BuildLog ("[{0}.{1}] Downloading {2} package from NuGet" -f $pkg.Name,$pkg.Version,$inst.Target.ToLower())
                 $extPath = [System.IO.Path]::Combine($dllStgPath,"$($pkg.Name.ToLower().TrimEnd('.dll')).$($pkg.Version)")
                 if (Test-Path ($extPath)) {
                     Remove-Item $extPath -Recurse -Force
