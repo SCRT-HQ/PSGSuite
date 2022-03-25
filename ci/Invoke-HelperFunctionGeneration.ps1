@@ -71,14 +71,26 @@ function $fnName {
     Creates a $BaseType object.
 
     $($paramHelpBlock -join "`n    ")
+    .PARAMETER InputObject
+    Creates a $BaseType object from a standard PowerShell object such as a hashtable or PSCustomObject.
+    Can be used either via the pipeline, a named Parameter, or unnamed Parameter
     .EXAMPLE
     $fnName$exampleParamString
+
+    .EXAMPLE
+    `$obj | $fnName
+
+    .EXAMPLE
+    $fnName `$obj
+
+    .EXAMPLE
+    $fnName -InputObject `$obj
     #>
     [OutputType('$BaseType')]
     [CmdletBinding()]
     Param(
 $($paramBlock -join "`n")
-        [parameter(Mandatory = `$false,ValueFromPipeline = `$true,ParameterSetName = "InputObject")]
+        [parameter(Mandatory = `$false,ValueFromPipeline = `$true,Position=0,ParameterSetName = "InputObject")]
         [$BaseType[]]
         `$InputObject
     )
