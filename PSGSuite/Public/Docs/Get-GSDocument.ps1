@@ -1,36 +1,36 @@
-﻿function Get-GSPresentation {
+﻿function Get-GSDocument {
     <#
     .SYNOPSIS
-    Retrieves a Presentation
+    Retrieves a Document
 
     .DESCRIPTION
-    Retrieves a Presentation, in the form of a Google.Apis.Slides.v1.Data.Presentation object representing the presentation
+    Retrieves a Document, in the form of a Google.Apis.Docs.v1.Data.Document object representing the document
 
-    .PARAMETER PresentationId
-    The unique Id of the Presentation
+    .PARAMETER DocumentId
+    The unique Id of the Document
 
     .PARAMETER User
-    The primary email of the user that has at least View rights to the target Presentation
+    The primary email of the user that has at least View rights to the target Document
 
     Defaults to the AdminEmail user
 
     .PARAMETER Launch
-    If $true, opens the Presentation Url in your default browser
+    If $true, opens the Document Url in your default browser
 
     .OUTPUTS
-    Google.Apis.Slides.v1.Data.Presentation
-    An overview of the properties of a Presentation are available here: https://developers.google.com/slides/reference/rest/v1/presentations
+    Google.Apis.Docs.v1.Data.Document
+    An overview of the properties of a Document are available here: https://developers.google.com/docs/api/reference/rest/v1/documents
 
     .EXAMPLE
-    $presentation = Get-GSPresentation -PresentationID $ID
+    $document = Get-GSDocument -DocumentID $ID
 
     #>
-    [OutputType('Google.Apis.Slides.v1.Data.Presentation')]
+    [OutputType('Google.Apis.Docs.v1.Data.Document')]
     [CmdletBinding()]
     param (
         [parameter(Mandatory = $true, ValueFromPipeline = $true, Position = 0)]
         [String]
-        $PresentationId,
+        $DocumentId,
         [parameter(Mandatory = $false)]
         [Alias('Owner', 'PrimaryEmail', 'UserKey', 'Mail')]
         [string]
@@ -48,7 +48,7 @@
         }
         $serviceParams = @{
             Scope       = 'https://www.googleapis.com/auth/drive'
-            ServiceType = 'Google.Apis.Slides.v1.SlidesService'
+            ServiceType = 'Google.Apis.Docs.v1.DocsService'
             User        = $User
         }
         $service = New-GoogleService @serviceParams
@@ -56,14 +56,14 @@
 
     process {
         try {
-            $request = $service.Presentations.Get($PresentationId)
-            Write-Verbose "Getting Presentation '$PresentationId' for user '$User'"
+            $request = $service.Documents.Get($DocumentId)
+            Write-Verbose "Getting Document '$DocumentId' for user '$User'"
             $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
             if ($Launch) {
-                $presentation = Get-GSDriveFile -FileId $PresentationId
-                $PresentationUrl = $presentation.WebViewLink
-                Write-Verbose "Launching Presentation at $PresentationUrl"
-                Start-Process $PresentationUrl
+                $document = Get-GSDriveFile -FileId $DocumentId
+                $DocumentUrl = $document.WebViewLink
+                Write-Verbose "Launching Document at $DocumentUrl"
+                Start-Process $DocumentUrl
             }
         } catch {
             if ($ErrorActionPreference -eq 'Stop') {
