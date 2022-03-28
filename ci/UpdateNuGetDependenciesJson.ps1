@@ -22,7 +22,7 @@ if ($items = Get-ChildItem (Resolve-Path $PSScriptRoot\..\BuildOutput\PSGSuite\*
                     '1.8.1'
                 }
                 elseif ($_.BaseName -match 'MimeKit') {
-                    '2.9.2'
+                    '2.0.3'
                 }
                 else {
                     'Latest'
