@@ -96,6 +96,7 @@ function $fnName {
     .PARAMETER InputObject
     Creates a $BaseType object from a standard PowerShell object such as a hashtable or PSCustomObject.
     Can be used either via the pipeline, a named Parameter, or unnamed Parameter
+
     .EXAMPLE
     $fnName$exampleParamString
 
@@ -109,7 +110,7 @@ function $fnName {
     $fnName -InputObject `$obj
     #>
     [OutputType('$BaseType')]
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = "Fields")]
     Param(
 $($paramBlock -join "`n")
         [parameter(Mandatory = `$false,ValueFromPipeline = `$true,Position=0,ParameterSetName = "InputObject")]

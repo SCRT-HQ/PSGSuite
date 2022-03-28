@@ -56,7 +56,9 @@ $($paramBlock -join "`n")
         Write-Verbose "Adding $requestType to the pipeline"
     }
     Process {
-        `$Requests
+        if (`$Requests) {
+            `$Requests
+        }
     }
     End {
         `$newRequest = New-Object '$fullType'
@@ -65,7 +67,7 @@ $($paramBlock -join "`n")
         }
         try {
             New-Object '$BaseType' -Property @{
-                $($requestType.TrimEnd('Request')) = `$newRequest
+                $($requestType -replace 'Request$','') = `$newRequest
             }
         }
         catch {
