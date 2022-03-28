@@ -5,13 +5,22 @@ function Submit-GSSheetBatchUpdate {
 
     .DESCRIPTION
     Submits a batch update request to a Google Sheet.
-    Uses request objects created by Add-GSSheet*Request functions
+    Uses request objects created by Add-GSSheet*Request functions.
 
     .PARAMETER SpreadsheetId
     The unique identifier of the Sheet to be updated.
 
     .PARAMETER Requests
-    The updates to apply to the Sheet. Updates are created with Add-GsSheet*Request functions
+    The updates to apply to the Sheet. Updates are created with Add-GsSheet*Request functions.
+
+    .PARAMETER IncludeSpreadsheetInResponse
+    If $true, include the Spreadsheet object in the response.
+
+    .PARAMETER ResponseIncludeGridData
+    If $true, include Grid Data in response spreadsheet. Implies IncludeSpreadsheetInResponse.
+
+    .PARAMETER ResponseRanges
+    Limits the ranges included in the response spreadsheet. Implies IncludeSpreadsheetInResponse.
 
     .PARAMETER User
     The user to update the Sheet as.
