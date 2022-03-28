@@ -4,13 +4,16 @@ function Import-GSSheet {
     Imports data from a Sheet as if it was a CSV
 
     .DESCRIPTION
-    Imports data from a Sheet as if it was a CSV
+    Imports data from a Sheet as if it was a CSV.
+    Google Sheets are "Spreadsheets" that are comprised of one or more "Sheets".
+    Sheets are the name for the "tabs" you would see at the bottom of a Spreadsheet file.
 
     .PARAMETER SpreadsheetId
     The unique Id of the SpreadSheet to import data from
 
     .PARAMETER SheetName
-    The name of the Sheet to import data from
+    The name of the Sheet to import data from.
+    Either
 
     .PARAMETER User
     The owner of the SpreadSheet
@@ -64,28 +67,38 @@ function Import-GSSheet {
 
     Imports columns B-C as an Array of PSObjects, skipping the first row and treating Row 2 as the header row. Objects in the array will be what's contained in range 'B3:C' after that
     #>
-    [cmdletbinding(DefaultParameterSetName = "Import")]
+    [cmdletbinding(DefaultParameterSetName = "Default")]
     Param
     (
         [parameter(Mandatory = $true)]
         [String]
         $SpreadsheetId,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $true,ParameterSetName = "SheetName_Import")]
+        [parameter(Mandatory = $true,ParameterSetName = "SheetName_Raw")]
+        [parameter(Mandatory = $true,ParameterSetName = "Both_Import")]
+        [parameter(Mandatory = $true,ParameterSetName = "Both_Raw")]
         [String]
         $SheetName,
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $false)]
         [Alias('Owner','PrimaryEmail','UserKey','Mail')]
         [string]
         $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $false)]
+        [parameter(Mandatory = $true,ParameterSetName = "Range_Import")]
+        [parameter(Mandatory = $true,ParameterSetName = "Range_Raw")]
+        [parameter(Mandatory = $true,ParameterSetName = "Both_Import")]
+        [parameter(Mandatory = $true,ParameterSetName = "Both_Raw")]
         [ValidateNotNullOrEmpty()]
         [Alias('SpecifyRange')]
         [string]
         $Range,
-        [parameter(Mandatory = $false,ParameterSetName = "Import")]
+        [parameter(Mandatory = $false,ParameterSetName = "SheetName_Import")]
+        [parameter(Mandatory = $false,ParameterSetName = "Range_Import")]
+        [parameter(Mandatory = $false,ParameterSetName = "Both_Import")]
         [int]
         $RowStart = 1,
-        [parameter(Mandatory = $false,ParameterSetName = "Import")]
+        [parameter(Mandatory = $false,ParameterSetName = "SheetName_Import")]
+        [parameter(Mandatory = $false,ParameterSetName = "Range_Import")]
+        [parameter(Mandatory = $false,ParameterSetName = "Both_Import")]
         [string[]]
         $Headers,
         [parameter(Mandatory = $false)]
@@ -100,15 +113,19 @@ function Import-GSSheet {
         [ValidateSet("ROWS","COLUMNS","DIMENSION_UNSPECIFIED")]
         [string]
         $MajorDimension = "ROWS",
-        [Parameter(Mandatory = $false,ParameterSetName = "Import")]
+        [parameter(Mandatory = $false,ParameterSetName = "SheetName_Import")]
+        [parameter(Mandatory = $false,ParameterSetName = "Range_Import")]
+        [parameter(Mandatory = $false,ParameterSetName = "Both_Import")]
         [ValidateSet("DataRow","PSObject")]
         [string]
         $As = "PSObject",
-        [parameter(Mandatory = $false,ParameterSetName = "Raw")]
+        [parameter(Mandatory = $true,ParameterSetName = "SheetName_Raw")]
+        [parameter(Mandatory = $true,ParameterSetName = "Range_Raw")]
+        [parameter(Mandatory = $true,ParameterSetName = "Both_Raw")]
         [switch]
         $Raw
     )
-    Process {
+    Begin {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -121,6 +138,8 @@ function Import-GSSheet {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
+    }
+    Process {
         try {
             if ($SheetName) {
                 if ($Range -like "'*'!*") {
@@ -132,6 +151,9 @@ function Import-GSSheet {
                 else {
                     $Range = "$SheetName"
                 }
+            }
+            if (-not ($SheetName -or $Range)) {
+                throw "Neither SheetName nor Range was specified, one or both must be specified. SheetName refers to the `"sheets`" or tabs at the bottom of a Spreadsheet, not the title of the Spreadsheet."
             }
             $request = $service.Spreadsheets.Values.BatchGet($SpreadsheetId)
             $request.Ranges = [Google.Apis.Util.Repeatable[String]]::new([String[]]$Range)
