@@ -42,6 +42,7 @@ function Submit-GSSheetBatchUpdate {
         $SpreadsheetId,
         [parameter(Mandatory = $true,Position = 1,ValueFromPipeline = $true)]
         [Google.Apis.Sheets.v4.Data.Request[]]
+        [Alias('Request','Updates','Update')]
         $Requests,
         [parameter(Mandatory = $false)]
         [Switch]
@@ -52,7 +53,7 @@ function Submit-GSSheetBatchUpdate {
         [parameter(Mandatory = $false)]
         [String[]]
         $ResponseRanges,
-        [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $false)]
         [Alias('Owner','PrimaryEmail','UserKey','Mail')]
         [string]
         $User = $Script:PSGSuite.AdminEmail,
@@ -76,6 +77,11 @@ function Submit-GSSheetBatchUpdate {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
+
+        if ($Launch) {
+            $spreadsheet = Get-GSDriveFile -FileId $SpreadsheetId -User $User
+            $SpreadsheetUrl = $spreadsheet.WebViewLink
+        }
     }
     Process {
         foreach ($request in $Requests) {
@@ -88,7 +94,7 @@ function Submit-GSSheetBatchUpdate {
             $body = New-Object 'Google.Apis.Sheets.v4.Data.BatchUpdateSpreadsheetRequest' -Property @{
                 Requests = $requestList
             }
-            if ($IncludeSpreadsheetInResponse -or $Launch) {
+            if ($IncludeSpreadsheetInResponse) {
                 $body.IncludeSpreadsheetInResponse  = $IncludeSpreadsheetInResponse
             }
             if ($ResponseIncludeGridData) {
@@ -103,8 +109,8 @@ function Submit-GSSheetBatchUpdate {
             $request = $service.Spreadsheets.BatchUpdate($body, $SpreadsheetId)
             $response = $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
             if ($Launch) {
-                Write-Verbose "Launching new spreadsheet at $($response.UpdatedSpreadsheet.SpreadsheetUrl)"
-                Start-Process $response.UpdatedSpreadsheet.SpreadsheetUrl
+                Write-Verbose "Launching updated spreadsheet at $SpreadsheetUrl"
+                Start-Process $SpreadsheetUrl
             }
             $response
         }

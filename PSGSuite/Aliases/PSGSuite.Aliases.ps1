@@ -1,6 +1,7 @@
 #    Alias  =>  =>  =>  =>  =>  =>  =>  =>  Function
 @{
     'Add-GSDriveFilePermissions'        = 'Add-GSDrivePermission'
+    'Edit-GSPresentation'               = 'Submit-GSSlideBatchUpdate'
     'Export-PSGSuiteConfiguration'      = 'Set-PSGSuiteConfig'
     'Get-GSCalendarEventList'           = 'Get-GSCalendarEvent'
     'Get-GSCalendarResourceList'        = 'Get-GSResourceList'
