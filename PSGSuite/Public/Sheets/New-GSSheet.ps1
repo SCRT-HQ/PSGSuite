@@ -27,7 +27,7 @@ function New-GSSheet {
         [parameter(Mandatory = $false)]
         [Alias('SheetTitle')]
         [String]
-        $Title = "Untitled spreadsheet",
+        $Title,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [Alias('Owner','PrimaryEmail','UserKey','Mail')]
         [string]
@@ -54,6 +54,9 @@ function New-GSSheet {
             $body = New-Object 'Google.Apis.Sheets.v4.Data.Spreadsheet'
             $body.Properties = New-Object 'Google.Apis.Sheets.v4.Data.SpreadsheetProperties' -Property @{
                 Title = $Title
+            }
+            if (!$Title) {
+                $Title = "Untitled spreadsheet"
             }
             Write-Verbose "Creating Spreadsheet '$Title' for user '$User'"
             $request = $service.Spreadsheets.Create($body)

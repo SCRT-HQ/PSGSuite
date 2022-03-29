@@ -26,7 +26,7 @@ function New-GSPresentation {
     (
         [parameter(Mandatory = $false,ValueFromPipeline = $true,Position = 0)]
         [String]
-        $Title = "Untitled presentation",
+        $Title,
         [parameter(Mandatory = $false)]
         [Alias('Owner','PrimaryEmail','UserKey','Mail')]
         [string]
@@ -54,6 +54,9 @@ function New-GSPresentation {
         try {
             $body = New-Object 'Google.Apis.Slides.v1.Data.Presentation'
             $body.Title = $Title
+            if (!$Title) {
+                $Title = "Untitled presentation"
+            }
             Write-Verbose "Creating Presentation '$Title' for user '$User'"
             $request = $service.Presentations.Create($body)
             $response = $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru

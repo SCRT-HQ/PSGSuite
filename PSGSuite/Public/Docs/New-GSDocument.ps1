@@ -26,7 +26,7 @@ function New-GSDocument {
     (
         [parameter(Mandatory = $false,ValueFromPipeline = $true,Position = 0)]
         [String]
-        $Title = "Untitled document",
+        $Title,
         [parameter(Mandatory = $false)]
         [Alias('Owner','PrimaryEmail','UserKey','Mail')]
         [string]
@@ -54,6 +54,9 @@ function New-GSDocument {
         try {
             $body = New-Object 'Google.Apis.Docs.v1.Data.Document'
             $body.Title = $Title
+            if (!$Title) {
+                $Title = "Untitled document"
+            }
             Write-Verbose "Creating Document '$Title' for user '$User'"
             $request = $service.Documents.Create($body)
             $response = $request.Execute() | Add-Member -MemberType NoteProperty -Name 'User' -Value $User -PassThru
