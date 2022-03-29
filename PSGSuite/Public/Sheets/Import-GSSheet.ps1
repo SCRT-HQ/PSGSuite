@@ -13,13 +13,17 @@ function Import-GSSheet {
 
     .PARAMETER SheetName
     The name of the Sheet to import data from.
-    Either
+    One or more of SheetName and Range must be specified.
+    SheetName is the simpler option, and will import all data from that specific sheet.
 
     .PARAMETER User
     The owner of the SpreadSheet
 
     .PARAMETER Range
-    The specific range to import data from
+    The specific range to import data from.
+    One or more of Range and SheetName must be specified.
+    Range can be specified in addition to SheetName to construct the Range that is queryed.
+    Range can also be specified on its own, this is an advanced option and will require some knowledge of the Sheets API.
 
     .PARAMETER RowStart
     The starting row of data. Useful if the headers for your table are not in Row 1 of the Sheet
@@ -66,6 +70,35 @@ function Import-GSSheet {
     Import-GSSheet -SpreadsheetId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -SheetName Sheet1 -RowStart 2 -Range 'B:C'
 
     Imports columns B-C as an Array of PSObjects, skipping the first row and treating Row 2 as the header row. Objects in the array will be what's contained in range 'B3:C' after that
+
+    .EXAMPLE
+    Import-GSSheet -SpreadsheetId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -SheetName Sheet1
+
+    Imports the entire sheet (or "tab") titled Sheet1. Under the hood, this sets a range of "Sheet1" for the API
+
+    .EXAMPLE
+    Import-GSSheet -SpreadsheetId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -SheetName Sheet1 -Range 'A:C'
+
+    Imports only the first 3 columns of the sheet (or "tab") titled Sheet1. Under the hood, this sets a range of "'Sheet1':A:C" for the API.
+
+    .EXAMPLE
+    Import-GSSheet -SpreadsheetId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -Range 'A:C'
+
+    Imports only the first 3 columns of the sheet (or "tab") that is first in the list. Under the hood, this sets a range of "A:C" for the API.
+
+    .EXAMPLE
+    Import-GSSheet -SpreadsheetId '1rhsAYTOB_vrpvfwImPmWy0TcVa2sgmQa_9u976' -Range 'Sheet1!A:C'
+
+    Imports only the first 3 columns of the sheet (or "tab") titled Sheet1. Under the hood, this sets a range of "Sheet1:A:C" for the API.
+    This is advanced usage, requring you to properly construct a valid Range string to be used by the API.
+
+    .NOTES
+    SheetName and Range are how the API determines which sheet (or "tab") to pull data from.
+    Specifying just a SheetName is the simplest option, most closely replicationg the behavior of Import-CSV, and should work in most cases.
+    If you have some knowledge of how the Sheets API works under the hood, you can additionally use Range to specify which cells on that sheet you return.
+
+    For advanced use cases, you can construct a valid Range query yourself and pass that directly, in either A1 notation or R1C1 notation.
+    Google has documentation on these notations: https://developers.google.com/sheets/api/guides/concepts#cell
     #>
     [cmdletbinding(DefaultParameterSetName = "Import")]
     Param
@@ -145,10 +178,11 @@ function Import-GSSheet {
             $request.Ranges = [Google.Apis.Util.Repeatable[String]]::new([String[]]$Range)
             $request.DateTimeRenderOption = [Google.Apis.Sheets.v4.SpreadsheetsResource+ValuesResource+GetRequest+DateTimeRenderOptionEnum]::$($DateTimeRenderOption -replace "_","")
             $request.ValueRenderOption = [Google.Apis.Sheets.v4.SpreadsheetsResource+ValuesResource+GetRequest+ValueRenderOptionEnum]::$($ValueRenderOption -replace "_","")
-            If (-not $MajorDimension) {
-                $MajorDimension = "ROWS"
-            }
             $request.MajorDimension = [Google.Apis.Sheets.v4.SpreadsheetsResource+ValuesResource+GetRequest+MajorDimensionEnum]::$($MajorDimension -replace "_","")
+            if ($MajorDimension -ne "ROWS" -and !$Raw) {
+                $Raw = $true
+                Write-Warning "Setting -Raw to True -- Parsing requires the MajorDimension to be set to ROWS (default value)"
+            }
             Write-Verbose "Importing Range '$Range' from Spreadsheet '$SpreadsheetId' for user '$User'"
             try {
                 $response = $request.Execute()
