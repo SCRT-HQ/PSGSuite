@@ -67,38 +67,28 @@ function Import-GSSheet {
 
     Imports columns B-C as an Array of PSObjects, skipping the first row and treating Row 2 as the header row. Objects in the array will be what's contained in range 'B3:C' after that
     #>
-    [cmdletbinding(DefaultParameterSetName = "Default")]
+    [cmdletbinding(DefaultParameterSetName = "Import")]
     Param
     (
         [parameter(Mandatory = $true)]
         [String]
         $SpreadsheetId,
-        [parameter(Mandatory = $true,ParameterSetName = "SheetName_Import")]
-        [parameter(Mandatory = $true,ParameterSetName = "SheetName_Raw")]
-        [parameter(Mandatory = $true,ParameterSetName = "Both_Import")]
-        [parameter(Mandatory = $true,ParameterSetName = "Both_Raw")]
+        [parameter(Mandatory = $false)]
         [String]
         $SheetName,
         [parameter(Mandatory = $false)]
-        [Alias('Owner','PrimaryEmail','UserKey','Mail')]
-        [string]
-        $User = $Script:PSGSuite.AdminEmail,
-        [parameter(Mandatory = $true,ParameterSetName = "Range_Import")]
-        [parameter(Mandatory = $true,ParameterSetName = "Range_Raw")]
-        [parameter(Mandatory = $true,ParameterSetName = "Both_Import")]
-        [parameter(Mandatory = $true,ParameterSetName = "Both_Raw")]
         [ValidateNotNullOrEmpty()]
         [Alias('SpecifyRange')]
         [string]
         $Range,
-        [parameter(Mandatory = $false,ParameterSetName = "SheetName_Import")]
-        [parameter(Mandatory = $false,ParameterSetName = "Range_Import")]
-        [parameter(Mandatory = $false,ParameterSetName = "Both_Import")]
+        [parameter(Mandatory = $false)]
+        [Alias('Owner','PrimaryEmail','UserKey','Mail')]
+        [string]
+        $User = $Script:PSGSuite.AdminEmail,
+        [parameter(Mandatory = $false,ParameterSetName = "Import")]
         [int]
         $RowStart = 1,
-        [parameter(Mandatory = $false,ParameterSetName = "SheetName_Import")]
-        [parameter(Mandatory = $false,ParameterSetName = "Range_Import")]
-        [parameter(Mandatory = $false,ParameterSetName = "Both_Import")]
+        [parameter(Mandatory = $false,ParameterSetName = "Import")]
         [string[]]
         $Headers,
         [parameter(Mandatory = $false)]
@@ -113,15 +103,11 @@ function Import-GSSheet {
         [ValidateSet("ROWS","COLUMNS","DIMENSION_UNSPECIFIED")]
         [string]
         $MajorDimension = "ROWS",
-        [parameter(Mandatory = $false,ParameterSetName = "SheetName_Import")]
-        [parameter(Mandatory = $false,ParameterSetName = "Range_Import")]
-        [parameter(Mandatory = $false,ParameterSetName = "Both_Import")]
+        [parameter(Mandatory = $false,ParameterSetName = "Import")]
         [ValidateSet("DataRow","PSObject")]
         [string]
         $As = "PSObject",
-        [parameter(Mandatory = $true,ParameterSetName = "SheetName_Raw")]
-        [parameter(Mandatory = $true,ParameterSetName = "Range_Raw")]
-        [parameter(Mandatory = $true,ParameterSetName = "Both_Raw")]
+        [parameter(Mandatory = $false,ParameterSetName = "Raw")]
         [switch]
         $Raw
     )
@@ -159,13 +145,30 @@ function Import-GSSheet {
             $request.Ranges = [Google.Apis.Util.Repeatable[String]]::new([String[]]$Range)
             $request.DateTimeRenderOption = [Google.Apis.Sheets.v4.SpreadsheetsResource+ValuesResource+GetRequest+DateTimeRenderOptionEnum]::$($DateTimeRenderOption -replace "_","")
             $request.ValueRenderOption = [Google.Apis.Sheets.v4.SpreadsheetsResource+ValuesResource+GetRequest+ValueRenderOptionEnum]::$($ValueRenderOption -replace "_","")
-            $request.MajorDimension = [Google.Apis.Sheets.v4.SpreadsheetsResource+ValuesResource+GetRequest+MajorDimensionEnum]::$($MajorDimension -replace "_","")
-            if ($MajorDimension -ne "ROWS" -and !$Raw) {
-                $Raw = $true
-                Write-Warning "Setting -Raw to True -- Parsing requires the MajorDimension to be set to ROWS (default value)"
+            If (-not $MajorDimension) {
+                $MajorDimension = "ROWS"
             }
+            $request.MajorDimension = [Google.Apis.Sheets.v4.SpreadsheetsResource+ValuesResource+GetRequest+MajorDimensionEnum]::$($MajorDimension -replace "_","")
             Write-Verbose "Importing Range '$Range' from Spreadsheet '$SpreadsheetId' for user '$User'"
-            $response = $request.Execute()
+            try {
+                $response = $request.Execute()
+            }
+            catch {
+                if ($_.Exception.Message -match 'Unable to parse range: [^"]*') {
+                    write-warning $_.Exception.Message
+                    $errMsg = $Matches.0
+                    $file = Get-GSSheetInfo -SpreadsheetId $SpreadsheetId -User $User
+                    if ((($Range -match "'$($file.Title)'!?") -or ($Range -eq $file.Title)) -and ($Range.Split('!')[0] -notin $file.Sheets.Properties.Title)) {
+                        throw "$errMsg. It looks like you may have specified the name of the Spreadsheet as Sheetname, rather than one of the individual sheets (or `"tabs`") of the Spreadsheet"
+                    }
+                    else {
+                        throw "$errMsg. Check that you specified an accurate Sheetname with your request."
+                    }
+                }
+                else {
+                    throw $_
+                }
+            }
             if (!$Raw) {
                 $i = 0
                 $datatable = New-Object System.Data.Datatable
