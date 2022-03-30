@@ -54,7 +54,7 @@ function New-GSPresentation {
         try {
             $body = New-Object 'Google.Apis.Slides.v1.Data.Presentation'
             $body.Title = $Title
-            if (!$Title) {
+            if (-not $Title) {
                 $Title = "Untitled presentation"
             }
             Write-Verbose "Creating Presentation '$Title' for user '$User'"

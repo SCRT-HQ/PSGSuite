@@ -54,7 +54,7 @@ function New-GSDocument {
         try {
             $body = New-Object 'Google.Apis.Docs.v1.Data.Document'
             $body.Title = $Title
-            if (!$Title) {
+            if (-not $Title) {
                 $Title = "Untitled document"
             }
             Write-Verbose "Creating Document '$Title' for user '$User'"

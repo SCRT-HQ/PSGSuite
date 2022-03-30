@@ -55,7 +55,7 @@ function New-GSSheet {
             $body.Properties = New-Object 'Google.Apis.Sheets.v4.Data.SpreadsheetProperties' -Property @{
                 Title = $Title
             }
-            if (!$Title) {
+            if (-not $Title) {
                 $Title = "Untitled spreadsheet"
             }
             Write-Verbose "Creating Spreadsheet '$Title' for user '$User'"

@@ -94,7 +94,7 @@ function Import-GSSheet {
 
     .NOTES
     SheetName and Range are how the API determines which sheet (or "tab") to pull data from.
-    Specifying just a SheetName is the simplest option, most closely replicationg the behavior of Import-CSV, and should work in most cases.
+    Specifying just a SheetName is the simplest option, most closely replicating the behavior of Import-CSV, and should work in most cases.
     If you have some knowledge of how the Sheets API works under the hood, you can additionally use Range to specify which cells on that sheet you return.
 
     For advanced use cases, you can construct a valid Range query yourself and pass that directly, in either A1 notation or R1C1 notation.
