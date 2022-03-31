@@ -110,7 +110,4 @@ Describe "Function AutoGeneration Assumptions" {
         $allDictsNobrackets | Should -BeNullOrEmpty
         $bareDict | Should -BeNullOrEmpty -Because "Generation code only detects and handles Dictionaries when it detects brackets"
     }
-    It "fails" {
-        $allLists | Should -BeNullOrEmpty -Because "this is the help text"
-    }
 }
