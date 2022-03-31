@@ -57,7 +57,13 @@ task Init {
     }
 } -description 'Initialize build environment'
 
-task Clean -depends Init {
+task CleanGenerated -depends Init {
+    $ciGeneratedPath = [System.IO.Path]::Combine($PSScriptRoot,'PSGSuite','Public','Helpers','CIGenerated')
+    Get-ChildItem $ciGeneratedPath -Filter "*.ps1" -Recurse | Remove-Item -Force -Confirm:$false
+    "    Cleaned CI Generated directory [$ciGeneratedPath]"
+} -description 'Cleans CI Generated functions'
+
+task CleanOutput -depends Init {
     $zipPath = [System.IO.Path]::Combine($PSScriptRoot,"$($env:BHProjectName).zip")
     if (Test-Path $zipPath) {
         Remove-Item $zipPath -Force
@@ -84,10 +90,11 @@ task Clean -depends Init {
         New-Item -Path $outputDir -ItemType Directory | Out-Null
     }
     "    Cleaned previous output directory [$outputDir]"
-    $ciGeneratedPath = [System.IO.Path]::Combine($PSScriptRoot,'PSGSuite','Public','Helpers','CIGenerated')
-    Get-ChildItem $ciGeneratedPath -Filter "*.ps1" -Recurse | Remove-Item -Force -Confirm:$false
-    "    Cleaned CI Generated directory [$ciGeneratedPath]"
 } -description 'Cleans module output directory'
+
+task Clean -depends CleanGenerated,CleanOutput {
+
+} -description 'Cleans all build output'
 
 task Nuget -depends Clean {
     if (-not (Test-Path $outputModVerDir)) {
@@ -104,7 +111,7 @@ task Nuget -depends Clean {
     }
 }
 
-task Update -depends Nuget {
+$generateScriptBlock = {
     Get-ChildItem (Join-Path $PSScriptRoot 'ci') -Recurse -Filter "*.ps1" | ForEach-Object {
         . $_.FullName
     }
@@ -139,7 +146,11 @@ task Update -depends Nuget {
     }
 }
 
-task Compile -depends Update {
+task Generate -depends Nuget $generateScriptBlock -description 'Generate BatchUpdate functions'
+
+task GenerateOnly -depends CleanGenerated $generateScriptBlock -description 'Generate BatchUpdate functions [requires you to run Nuget task to download libraries]'
+
+task Compile -depends Generate {
     # Create module output directory
     $functionsToExport = @()
     $sutLib = [System.IO.Path]::Combine($sut,'lib')
@@ -398,12 +409,12 @@ $pesterScriptBlock = {
                 Write-BuildLog "[$($module.Name)] Removing imported module"
                 $imported | Remove-Module
             }
-            Import-Module @module
+            Import-Module @module -Global
         }
         catch {
             Write-BuildLog "[$($module.Name)] Installing missing module"
             Install-Module @module -Repository PSGallery -Scope CurrentUser -Force
-            Import-Module @module
+            Import-Module @module -Global
         }
     }
     Push-Location

@@ -1,7 +1,7 @@
 ﻿[cmdletbinding()]
 param(
     [parameter( Position = 0)]
-    [ValidateSet('Init','Clean','Update','Compile','Import','Test','Full','Deploy','Skip','Docs')]
+    [ValidateSet('Init','Clean','Nuget','Generate','GenerateOnly','Compile','Import','Test','Full','Deploy','Skip','Docs')]
     [string[]]
     $Task = @('Compile','Import'),
     [parameter()]

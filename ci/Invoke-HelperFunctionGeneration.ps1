@@ -3,7 +3,7 @@ function Invoke-HelperFunctionGeneration {
     Param (
         [parameter(Mandatory = $true,Position = 0)]
         [String]
-        $BaseType = 'Google.Apis.Sheets.v4.Data.BandedRange'
+        $BaseType
     )
     $TargetApi = $BaseType.Split('.')[2].TrimEnd('s')
     $OutputPath = [System.IO.Path]::Combine($PSScriptRoot,'..','PSGSuite','Public','Helpers','CIGenerated')
@@ -24,17 +24,32 @@ function Invoke-HelperFunctionGeneration {
             $typeSplit = ($fullType | Select-String -Pattern '([\w|\.]+)\[(.*)\]' -AllMatches).Matches.Groups[1..2].Value
             if ($typeSplit[0] -match 'IList') {
                 $isList = $true
+                $isDict = $false
+                $dictKey = $null
                 $fullType = $typeSplit[1]
             }
             elseif ($typeSplit[0] -match 'IDictionary') {
                 $isDict = $true
-                $fullType = $typeSplit[1].Split(',')[1]
+                $isList = $false
+                $dictKey, $fullType = $typeSplit[1].Split(',')
             }
-            # $isList = $typeSplit[0] -match 'IList'
-            # $fullType = $typeSplit[1]
+            else {
+                # So far the only types that triger this are Nullable values
+                # System.Nullable[int]
+                # System.Nullable[float]
+                # System.Nullable[bool]
+                # System.Nullable[double]
+                # System.Nullable[long]
+                $isList = $false
+                $isDict = $false
+                $dictKey = $null
+                $fullType = $fullType
+            }
         }
         else {
-            $isList = $fullType -match 'IList'
+            $isList = $false
+            $isDict = $false
+            $dictKey = $null
             $fullType = $fullType
         }
         if ($fullType -eq 'bool') {
@@ -49,14 +64,34 @@ function Invoke-HelperFunctionGeneration {
         else {
             $fullType
         }
-        $paramName = $_.Name
         $paramBlock += "        [parameter(ParameterSetName = `"Fields`")]`n        [$paramType]`n        `$$paramName,"
-        if ($paramType -match '^Google\.') {
+        if ($fullType -match '^Google\.') {
             $helperFunctionName = "Add-GS" + $TargetApi + $(if ($fullType -match '\.'){$fullType.Split('.')[-1]}else{$fullType})
-            $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: [$paramType].`n`n    To create this type, use the function $helperFunctionName or instantiate the type directly via New-Object '$fullType'.`n"
+            if ($isList) {
+                $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: [$paramType].`n`n    To create this type, use the function $helperFunctionName or instantiate the type directly via New-Object '$fullType'.`n"
+            }
+            elseif ($isDict) {
+                $dictHelpBlock = ".PARAMETER $paramName`n    Accepts the following type: [$paramType]."
+                $dictHelpBlock += "`n    The key(s) of the Hashtable should be a [$dictKey] and the value(s) should be a [$fullType]"
+                $dictHelpBlock += "`n`n    To create an object of type [$fullType], use the function $helperFunctionName or instantiate the type directly via New-Object '$fullType'.`n"
+                $paramHelpBlock += $dictHelpBlock
+            }
+            else {
+                $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: [$paramType].`n`n    To create this type, use the function $helperFunctionName or instantiate the type directly via New-Object '$fullType'.`n"
+            }
         }
         else {
-            $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: [$paramType].`n"
+            if ($isList) {
+                $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: [$paramType].`n"
+            }
+            elseif ($isDict) {
+                $dictHelpBlock = ".PARAMETER $paramName`n    Accepts the following type: [$paramType]."
+                $dictHelpBlock += "`n    The key(s) of the Hashtable should be a [$dictKey] and the value(s) should be a [$fullType]`n"
+                $paramHelpBlock += $dictHelpBlock
+            }
+            else {
+                $paramHelpBlock += ".PARAMETER $paramName`n    Accepts the following type: [$paramType].`n"
+            }
         }
         $exampleParamString += " -$paramName `$$($paramName.Substring(0,1).ToLower())$($paramName.Substring(1))"
         if ($isList) {
@@ -167,23 +202,29 @@ $($paramBlock -join "`n")
         $fullType = $_.Definition.Split(' ',2)[0]
         if ($fullType -match '\[.*\]') {
             $typeSplit = ($fullType | Select-String -Pattern '([\w|\.]+)\[(.*)\]' -AllMatches).Matches.Groups[1..2].Value
-            $isList = $typeSplit[0] -match 'IList'
-            $fullType = $typeSplit[1]
+            if ($typeSplit[0] -match 'IList') {
+                $fullType = $typeSplit[1]
+            }
+            elseif ($typeSplit[0] -match 'IDictionary') {
+                $fullType = $typeSplit[1].Split(',')[1]
+            }
+            else {
+                # So far the only types that triger this are Nullable values
+                # System.Nullable[int]
+                # System.Nullable[float]
+                # System.Nullable[bool]
+                # System.Nullable[double]
+                # System.Nullable[long]
+                $fullType = $fullType
+            }
         }
         else {
-            $isList = $fullType -match 'IList'
             $fullType = $fullType
         }
         if ($fullType -eq 'bool') {
             $fullType = 'switch'
         }
-        $paramType = if ($isList) {
-            "$fullType[]"
-        }
-        else {
-            $fullType
-        }
-        if ($paramType -match '^Google\.') {
+        if ($fullType -match '^Google\.') {
             Invoke-HelperFunctionGeneration -BaseType $fullType
         }
     }
