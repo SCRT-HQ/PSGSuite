@@ -1,6 +1,6 @@
 # PSGSuite
 <div align="center">
-  <img src="https://github.com/scrthq/PSGSuite/raw/master/bin/img/psgsuite2.0.0.png" alt="PSGSuite 2.0.0 released!" />
+  <img src="https://github.com/scrthq/PSGSuite/raw/main/bin/img/psgsuite2.0.0.png" alt="PSGSuite 2.0.0 released!" />
   <br />
   <br />
   <!-- Azure Pipelines -->
@@ -25,11 +25,6 @@
   </a>
   <br />
   <br />
-  <!-- Codacy -->
-  <a href="https://www.codacy.com/app/scrthq/PSGSuite?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=scrthq/PSGSuite&amp;utm_campaign=Badge_Grade">
-    <img src="https://api.codacy.com/project/badge/Grade/0d5203a1cf1945fe94c46b779eecb7f0"
-      alt="Codacy" title="Codacy" />
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
   <!-- PS Gallery -->
   <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
     <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat&logo=powershell&color=blue"
@@ -56,7 +51,7 @@ Check out [PSGSuite.io](https://psgsuite.io/) for PSGSuite documentation, includ
 
 ## Contributing
 
-Interested in helping out with PSGSuite development? Please check out our [Contribution Guidelines](https://github.com/scrthq/PSGSuite/blob/master/CONTRIBUTING.md)!
+Interested in helping out with PSGSuite development? Please check out our [Contribution Guidelines](https://github.com/scrthq/PSGSuite/blob/main/CONTRIBUTING.md)!
 
 Building the module locally to test changes is as easy as running the `build.ps1` file in the root of the repo. This will compile the module with your changes and import the newly compiled module at the end by default.
 
@@ -68,7 +63,7 @@ Want to run the Pester tests locally? Pass `Test` as the value to the `Task` scr
 
 ## Code of Conduct
 
-Please adhere to our [Code of Conduct](https://github.com/scrthq/PSGSuite/blob/master/CODE_OF_CONDUCT.md) when interacting with this repo.
+Please adhere to our [Code of Conduct](https://github.com/scrthq/PSGSuite/blob/main/CODE_OF_CONDUCT.md) when interacting with this repo.
 
 ## License
 
@@ -76,7 +71,7 @@ Please adhere to our [Code of Conduct](https://github.com/scrthq/PSGSuite/blob/m
 
 ## Changelog
 
-[Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
+[Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/main/CHANGELOG.md)
 
 ***
 
@@ -156,7 +151,7 @@ All other functions are either intact or have an alias included to support backw
 
 ### Most recent changes
 
-[Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
+[Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/main/CHANGELOG.md)
 
 #### 2.36.4 - 2020-03-20
 
