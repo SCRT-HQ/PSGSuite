@@ -86,30 +86,34 @@ function Add-GSSheetValues {
     Finds the first empty row on the Sheet and appends the $items array (excludes header row due to -Append switch) to it starting at that row.
     #>
     [OutputType('Google.Apis.Sheets.v4.Data.Spreadsheet')]
-    [cmdletbinding(DefaultParameterSetName = "CreateNewSheetArray")]
+    [cmdletbinding(DefaultParameterSetName = "CreateNewSpreadsheetArray")]
     Param
     (
         [parameter(Mandatory = $true, Position = 0, ParameterSetName = "UseExistingArray")]
         [parameter(Mandatory = $true, Position = 0, ParameterSetName = "UseExistingValue")]
         [String]
         $SpreadsheetId,
-        [parameter(Mandatory = $false, Position = 0, ParameterSetName = "CreateNewSheetArray")]
-        [parameter(Mandatory = $false, Position = 0, ParameterSetName = "CreateNewSheetValue")]
+        [parameter(Mandatory = $false, Position = 0, ParameterSetName = "CreateNewSpreadsheetArray")]
+        [parameter(Mandatory = $false, Position = 0, ParameterSetName = "CreateNewSpreadsheetValue")]
         [String]
         $NewSheetTitle,
         [parameter(Mandatory = $true, Position = 1, ValueFromPipeline = $true, ParameterSetName = "UseExistingArray")]
-        [parameter(Mandatory = $true, Position = 1, ValueFromPipeline = $true, ParameterSetName = "CreateNewSheetArray")]
+        [parameter(Mandatory = $true, Position = 1, ValueFromPipeline = $true, ParameterSetName = "CreateNewSpreadsheetArray")]
         [object[]]
         $Array,
         [parameter(Mandatory = $true, Position = 1, ParameterSetName = "UseExistingValue")]
-        [parameter(Mandatory = $true, Position = 1, ParameterSetName = "CreateNewSheetValue")]
+        [parameter(Mandatory = $true, Position = 1, ParameterSetName = "CreateNewSpreadsheetValue")]
         [string]
         $Value,
         [parameter(Mandatory = $false)]
         [String]
         $SheetName,
         [parameter(Mandatory = $false, ParameterSetName = "UseExistingArray")]
-        [parameter(Mandatory = $false, ParameterSetName = "CreateNewSheetArray")]
+        [parameter(Mandatory = $false, ParameterSetName = "UseExistingValue")]
+        [switch]
+        $AddNewSheet,
+        [parameter(Mandatory = $false, ParameterSetName = "UseExistingArray")]
+        [parameter(Mandatory = $false, ParameterSetName = "CreateNewSpreadsheetArray")]
         [ValidateSet('Standard', 'Horizontal')]
         [String]
         $Style = "Standard",
@@ -121,7 +125,7 @@ function Add-GSSheetValues {
         [parameter(Mandatory = $false)]
         [switch]
         $Append,
-        [parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
+        [parameter(Mandatory = $false)]
         [Alias('Owner', 'PrimaryEmail', 'UserKey', 'Mail')]
         [string]
         $User = $Script:PSGSuite.AdminEmail,
@@ -148,8 +152,6 @@ function Add-GSSheetValues {
     )
     Begin {
         $values = New-Object 'System.Collections.Generic.List[System.Collections.Generic.IList[Object]]'
-    }
-    Process {
         if ($User -ceq 'me') {
             $User = $Script:PSGSuite.AdminEmail
         }
@@ -162,6 +164,8 @@ function Add-GSSheetValues {
             User        = $User
         }
         $service = New-GoogleService @serviceParams
+    }
+    Process {
         try {
             if ($Value) {
                 $finalArray = $([pscustomobject]@{Value = "$Value" })
@@ -206,7 +210,7 @@ function Add-GSSheetValues {
     }
     End {
         try {
-            if ($PSCmdlet.ParameterSetName -like "CreateNewSheet*") {
+            if ($PSCmdlet.ParameterSetName -like "CreateNewSpreadsheet*") {
                 if ($NewSheetTitle) {
                     Write-Verbose "Creating new spreadsheet titled: $NewSheetTitle"
                 }
@@ -216,8 +220,20 @@ function Add-GSSheetValues {
                 $sheet = New-GSSheet -Title $NewSheetTitle -User $User -Verbose:$false
                 $SpreadsheetId = $sheet.SpreadsheetId
                 $SpreadsheetUrl = $sheet.SpreadsheetUrl
-                $SheetName = 'Sheet1'
+                $oldSheet = $sheet.Sheets[0].Properties
+                if ($SheetName) {
+                    Write-Verbose "Naming first sheet $SheetName"
+                    Rename-GSSheetSheet -SpreadsheetId $SpreadsheetId -SheetId $oldSheet.SheetId -NewTitle $SheetName | Out-Null
+                }
+                else {
+                    $SheetName = $oldSheet.Title
+                }
                 Write-Verbose "New spreadsheet ID: $SpreadsheetId"
+            }
+            elseif ($AddNewSheet) {
+                Add-GSSheetSheet -SpreadsheetId $SpreadSheetId -User $user -Title $SheetName
+                $sheet = Get-GSSheetInfo -SpreadsheetId $SpreadsheetId -User $User -Verbose:$false
+                $SpreadsheetUrl = $sheet.SpreadsheetUrl
             }
             else {
                 $sheet = Get-GSSheetInfo -SpreadsheetId $SpreadsheetId -User $User -Verbose:$false
