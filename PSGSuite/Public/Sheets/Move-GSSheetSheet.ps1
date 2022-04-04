@@ -70,12 +70,14 @@
                 if (-not $sheetProperties) {
                     throw "No Sheet found with title $Title"
                 }
+                Write-Verbose "Found sheet with Title $($sheetProperties.Title) and SheetId $($sheetProperties.SheetId)"
             }
             elseif ($SheetId) {
                 $sheetProperties = $sheetInfo.Sheets.Properties | Where-Object SheetId -eq $SheetId
                 if (-not $sheetProperties) {
                     throw "No Sheet found with Id $SheetId"
                 }
+                Write-Verbose "Found sheet with Title $($sheetProperties.Title) and SheetId $($sheetProperties.SheetId)"
             }
             if (-not $sheetProperties) {
                 throw "No sheet found"
@@ -88,10 +90,12 @@
             # If no index is specified, it will set the index to move the sheet to the end.
             if ((-not $Index) -or $Index -gt $sheetInfo.Sheets.Properties.Index.Count) {
                 $Index = $sheetInfo.Sheets.Properties.Index.Count
+                Write-Verbose "Correcting Index to $Index to move sheet to end of list"
             }
             $sheetProperties.Index = $Index
             $updateSheetRequest = Add-GSSheetUpdateSheetPropertiesRequest -Fields 'Index' -Properties $sheetProperties
 
+            Write-Verbose "Moving Sheet $($sheetProperties.Title) to Index $Index"
             Submit-GSSheetBatchUpdate -SpreadsheetId $SpreadsheetId -Requests $updateSheetRequest -User $User
         }
         catch {

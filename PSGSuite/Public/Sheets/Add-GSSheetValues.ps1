@@ -21,6 +21,9 @@ function Add-GSSheetValues {
     .PARAMETER SheetName
     The name of the Sheet to add the data to. If excluded, defaults to Sheet Id '0'. If a new SpreadSheet is being created, this is set to 'Sheet1' to prevent error
 
+    .PARAMETER AddNewSheet
+    If Specified, will create the sheet given as SheetName. If SheetName already exists, this function will fail.
+
     .PARAMETER Style
     The table style you would like to export the data as
 

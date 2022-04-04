@@ -64,12 +64,14 @@
                 if (-not $sheetProperties) {
                     throw "No Sheet found with title $Title"
                 }
+                Write-Verbose "Found sheet with Title $($sheetProperties.Title) and SheetId $($sheetProperties.SheetId)"
             }
             elseif ($SheetId) {
                 $sheetProperties = $sheetInfo.Sheets.Properties | Where-Object SheetId -eq $SheetId
                 if (-not $sheetProperties) {
                     throw "No Sheet found with Id $SheetId"
                 }
+                Write-Verbose "Found sheet with Title $($sheetProperties.Title) and SheetId $($sheetProperties.SheetId)"
             }
             if (-not $sheetProperties) {
                 throw "No sheet found"
@@ -77,6 +79,7 @@
             $sheetProperties.Title = $NewTitle
             $updateSheetRequest = Add-GSSheetUpdateSheetPropertiesRequest -Fields 'Title' -Properties $sheetProperties
 
+            Write-Verbose "Renaming sheet $($sheetProperties.SheetId) to $NewTitle"
             Submit-GSSheetBatchUpdate -SpreadsheetId $SpreadsheetId -Requests $updateSheetRequest -User $User
         }
         catch {

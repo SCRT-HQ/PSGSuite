@@ -29,7 +29,7 @@
     Deletes the Sheet with SheetId 0 from the Spreadsheet with id $id
     #>
     [OutputType('Google.Apis.Sheets.v4.Data.BatchUpdateSpreadsheetResponse')]
-    [cmdletbinding(DefaultParameterSetName = "Name")]
+    [cmdletbinding(DefaultParameterSetName = "Name", SupportsShouldProcess = $true, ConfirmImpact = "Medium")]
     Param
     (
         [parameter(Mandatory = $true,Position = 0)]
@@ -42,9 +42,6 @@
         [parameter(Mandatory = $true, ParameterSetName= "Id")]
         [Int]
         $SheetId,
-        [parameter(Mandatory = $false)]
-        [switch]
-        $Launch,
         [parameter(Mandatory = $false)]
         [Alias('Owner','PrimaryEmail','UserKey','Mail')]
         [string]
@@ -62,13 +59,18 @@
         try {
             if ($Title) {
                 $sheetInfo = Get-GSSheetInfo -SpreadsheetId $SpreadsheetId -User $User
-                $SheetId = $sheetInfo.Sheets.Properties | Where-Object Title -eq $Title | Select-Object -ExpandProperty SheetId
+                $sheetProperties = $sheetInfo.Sheets.Properties | Where-Object Title -eq $Title
+                $SheetId = $sheetProperties.SheetId
                 if (-not $SheetId) {
                     throw "No Sheet found with title $Title"
                 }
+                Write-Verbose "Found sheet with Title $($sheetProperties.Title) and SheetId $($sheetProperties.SheetId)"
             }
             $deleteSheetRequest = Add-GSSheetDeleteSheetRequest -SheetId $SheetId
-            Submit-GSSheetBatchUpdate -SpreadsheetId $SpreadsheetId -Requests $deleteSheetRequest -User $User
+            if ($PSCmdlet.ShouldProcess("Sheet with Title $($sheetProperties.Title) in Spreadsheet $SpreadsheetId", "Remove")) {
+                Write-Verbose "Removing Sheet with Title $($sheetProperties.Title) in Spreadsheet $SpreadsheetId"
+                Submit-GSSheetBatchUpdate -SpreadsheetId $SpreadsheetId -Requests $deleteSheetRequest -User $User
+            }
         }
         catch {
             if ($ErrorActionPreference -eq 'Stop') {

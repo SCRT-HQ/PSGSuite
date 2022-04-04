@@ -18,6 +18,9 @@
     .PARAMETER User
     The user to create the Sheet for
 
+    .PARAMETER Launch
+    If $true, opens the new SpreadSheet Sheet Url in your default browser
+
     .EXAMPLE
     Add-GSSheetSheet -SpreadsheetId $id -Title "Finance Sheet" -Launch
 
@@ -56,13 +59,24 @@
     Process {
         try {
             $sheetProperties = Add-GSSheetSheetProperties
+            $verboseMsg = "Creating new sheet on Spreadsheet $SpreadsheetId "
             if ($Title) {
                 $sheetProperties.Title = $Title
+                $verboseMsg += "with title $Title "
+            }
+            else {
+                $verboseMsg += "with default title "
             }
             if ($Index) {
                 $sheetProperties.Index = $Index
+                $verboseMsg += "at index $Index "
+            }
+            else {
+                $verboseMsg += "at end of sheet list"
             }
             $addSheetRequest = Add-GSSheetAddSheetRequest -Properties $sheetProperties
+
+            write-verbose $verboseMsg
             $response = Submit-GSSheetBatchUpdate -SpreadsheetId $SpreadsheetId -Requests $addSheetRequest -User $User -IncludeSpreadsheetInResponse:$Launch
             if ($Launch) {
                 $sheetUrl = $response.UpdatedSpreadsheet.SpreadsheetUrl + "#gid=" + $response.Replies[0].AddSheet.Properties.SheetId
