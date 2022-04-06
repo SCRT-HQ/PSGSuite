@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+
     * [2.37.0](#2370)
     * [2.36.5 - 2020-11-01](#2365---2020-11-01)
     * [2.36.4 - 2020-03-20](#2364---2020-03-20)
@@ -114,6 +115,10 @@
 # PSGSuite - ChangeLog
 
 ## 2.26.0
+
+* [Issue #344](https://github.com/SCRT-HQ/PSGSuite/issues/344)
+  * Added 'Update-GSGroup' function to allow updating directory information.
+  * Removed 'Email' parameter in `Update-GSGroupSettings.ps1` as this cannot be updated via Groups Settings API.
 
 * [Issue #125](https://github.com/scrthq/PSGSuite/issues/125)
   * Added: `Submit-GSSheetBatchUpdate` to submit batch updates to a Google Sheet. Includes the following additional functions to create each request:
