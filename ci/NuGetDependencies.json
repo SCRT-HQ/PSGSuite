@@ -132,12 +132,6 @@
     "LatestVersion": "1.41.1.1713"
   },
   {
-    "Name": "Google.Apis.ChromeManagement.v1.dll",
-    "BaseName": "Google.Apis.ChromeManagement.v1",
-    "Target": "Latest",
-    "LatestVersion": "1.55.0.2588 "
-  },
-  {
     "Name": "MimeKit.dll",
     "BaseName": "MimeKit",
     "Target": "Latest",
@@ -147,6 +141,6 @@
     "Name": "Newtonsoft.Json.dll",
     "BaseName": "Newtonsoft.Json",
     "Target": "Latest",
-    "LatestVersion": "13.0.1"
+    "LatestVersion": "12.0.3"
   }
 ]
