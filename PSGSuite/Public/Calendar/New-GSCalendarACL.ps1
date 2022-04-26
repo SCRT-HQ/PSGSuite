@@ -40,6 +40,9 @@ function New-GSCalendarAcl {
 
     Note: The permissions granted to the "default", or public, scope apply to any user, authenticated or not.
 
+    .PARAMETER DisableNotifications
+    When $true, disables sending notifications about the calendar sharing change.
+
     .EXAMPLE
     New-GSCalendarACL -CalendarID jennyappleseed@domain.com -Role reader -Value Jonnyappleseed@domain.com -Type user
 
@@ -70,7 +73,10 @@ function New-GSCalendarAcl {
         [parameter(Mandatory = $false)]
         [ValidateSet("default", "user", "group", "domain")]
         [String]
-        $Type = "user"
+        $Type = "user",
+        [parameter(Mandatory = $false)]
+        [switch]
+        $DisableNotifications
     )
     Process {
         foreach ($U in $User) {
@@ -111,6 +117,7 @@ function New-GSCalendarAcl {
                     Write-Verbose "Inserting new ACL for type '$Type' with value '$Value' in role '$Role'  on calendar '$calId' for user '$U'"
                     $body.Scope = $scopeData
                     $request = $service.Acl.Insert($body, $calId)
+                    $request.sendNotifications = -not $DisableNotifications
                     $request.Execute()
                 }
                 catch {
