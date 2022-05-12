@@ -66,7 +66,11 @@ Function Get-GSChromeDeviceTelemetry {
         [parameter(Mandatory = $false)]
         [Alias('First')]
         [Int]
-        $Limit = 0
+        $Limit = 0,
+        [parameter(Mandatory = $false)]
+        [String]
+        $CustomerID = "my_customer"
+
     )
     Begin {
         $serviceParams = @{
@@ -78,7 +82,7 @@ Function Get-GSChromeDeviceTelemetry {
     Process {
                 $verbString = "Getting all Chrome device telemetry records"
                 try {
-                    $request = $service.Customers.Telemetry.Devices.List('customers/my_customer')
+                    $request = $service.Customers.Telemetry.Devices.List('customers/$CustomerID')
                     $ReadMask = $FieldMask -join ","
                     $verbString += " for fields '$ReadMask'"
                     $Request.ReadMask = $ReadMask
