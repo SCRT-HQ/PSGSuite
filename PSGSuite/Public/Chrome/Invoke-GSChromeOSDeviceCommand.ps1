@@ -75,7 +75,7 @@ Function Invoke-GSChromeOSDeviceCommand {
         $RequestBody = New-Object -Type Google.Apis.Admin.Directory.directory_v1.Data.DirectoryChromeosdevicesIssueCommandRequest        
         Switch ($CommandType){
             "SET_VOLUME" {
-                $RequestBody.Payload = @{"volume" = $PSBoundParameters["Payload"]}
+                $RequestBody.Payload = '{"volume": ' + $PSBoundParameters["Payload"] + '}'
             }
             Default {}
         }            
