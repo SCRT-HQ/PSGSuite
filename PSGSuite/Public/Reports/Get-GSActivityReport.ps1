@@ -13,15 +13,23 @@ function Get-GSActivityReport {
     Application name for which the events are to be retrieved.
 
     Available values are:
+    * "AccessTransparency": Access Transparency logs provide information about the actions of Google staff when they access your data.
     * "Admin": The Admin console application's activity reports return account information about different types of administrator activity events.
     * "Calendar": The G Suite Calendar application's activity reports return information about various Calendar activity events.
+    * "Chat": Track user conversations and room activity
     * "Drive": The Google Drive application's activity reports return information about various Google Drive activity events. The Drive activity report is only available for G Suite Business customers.
+    * "Gcp": Gcp Activity
+    * "Gplus": The Google+ application's activity reports return information about various Google+ activity events.
     * "Groups": The Google Groups application's activity reports return information about various Groups activity events.
-    * "GPlus": The Google+ application's activity reports return information about various Google+ activity events.
+    * "GroupsEnterprise": You can use the Groups Enterprise audit log to see a record of actions performed on groups (including target audiences) and group memberships.
+    * "Jamboard": Track changes to Jamboards
     * "Login": The G Suite Login application's activity reports return account information about different types of Login activity events.
+    * "Meet": Track users' Meet recording activity
     * "Mobile": The G Suite Mobile Audit activity report return information about different types of Mobile Audit activity events.
     * "Rules": The G Suite Rules activity report return information about different types of Rules activity events.
+    * "Saml": View your users' sign-ins to SAML applications
     * "Token": The G Suite Token application's activity reports return account information about different types of Token activity events.
+    * "UserAccounts": You can check critical actions carried out by users on their own accounts. These actions include changes to passwords, account recovery details (telephone numbers, email addresses), and 2-Step Verification enrollment.
 
     Defaults to "Admin"
 
@@ -60,7 +68,7 @@ function Get-GSActivityReport {
         [String]
         $UserKey = 'all',
         [parameter(Mandatory = $false,Position = 1)]
-        [ValidateSet("Admin","Calendar","Drive","Groups","GPlus","Login","Mobile","Rules","Token")]
+        [ValidateSet("AccessTransparency","Admin","Calendar","Chat","Drive","Gcp","Gplus","Groups","GroupsEnterprise","Jamboard","Login","Meet","Mobile","Rules","Saml","Token","UserAccounts")]
         [String]
         $ApplicationName = "Admin",
         [parameter(Mandatory = $false,Position = 2)]
