@@ -15,6 +15,9 @@ function Get-GSGroupMember {
     .PARAMETER Roles
     If specified, returns only the members of the specified role(s)
 
+    .PARAMETER includeDerivedMembership
+    If specified, returns all derived group members
+
     .PARAMETER PageSize
     Page size of the result set
 
@@ -42,6 +45,9 @@ function Get-GSGroupMember {
         [ValidateSet("Owner","Manager","Member")]
         [String[]]
         $Roles,
+        [parameter(Mandatory=$false,ParameterSetName = "List")]
+        [Switch]
+        $includeDerivedMembership,
         [parameter(Mandatory=$false,ParameterSetName = "List")]
         [ValidateRange(1,200)]
         [Int]
@@ -97,6 +103,10 @@ function Get-GSGroupMember {
                         }
                         else {
                             Write-Verbose "Getting all members of group '$Id'"
+                        }
+                        if ($includeDerivedMembership.IsPresent) {
+                            Write-Verbose "Getting all derived members of group '$Id'"
+                            $request.IncludeDerivedMembership = $true
                         }
                         [int]$i = 1
                         $overLimit = $false
