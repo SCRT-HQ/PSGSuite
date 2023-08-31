@@ -158,6 +158,12 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.36.7
+
+* [Issue #374](https://github.com/SCRT-HQ/PSGSuite/issues/374)
+    * Updated license products and SKUs as per https://developers.google.com/admin-sdk/licensing/v1/how-tos/products.
+    * Fixed bug where no response was returned by Get-GSUserLicense if 'checkall' param not passed and a matching license was found.
+
 #### 2.36.4 - 2020-03-20
 
 * [Issue #270](https://github.com/scrthq/PSGSuite/issues/270)

@@ -123,6 +123,7 @@ function Get-GSUserLicense {
                                 catch {}
                                 if (-not $CheckAll -and $response) {
                                     $matchedLicense = $true
+                                    $response
                                     break
                                 }
                                 elseif ($response) {
