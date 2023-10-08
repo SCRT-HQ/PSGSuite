@@ -42,7 +42,7 @@ Function Get-GSContactList {
                 Write-Verbose "Getting all contacts for user '$U'"
                 $Raw = @()
                 do {
-                    $Response = Invoke-WebRequest -Method Get -Uri ([Uri]$Uri) -Headers $headers -ContentType 'application/xml' -Verbose:$false
+                    $Response = Invoke-WebRequest -Method Get -Uri ([Uri]$Uri) -Headers $headers -ContentType 'application/xml' -Verbose:$false -UseBasicParsing
                     $Feed = [xml]$Response.Content
                     $Raw += $feed.feed.entry
                     $Uri = $Feed.Feed.Link | Where-Object {$_.rel -eq "next"} | Select-Object -ExpandProperty Href
