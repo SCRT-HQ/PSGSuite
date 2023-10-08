@@ -158,6 +158,11 @@ All other functions are either intact or have an alias included to support backw
 
 [Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
 
+#### 2.36.7 - 2023-10-07
+
+* [PR #385](https://github.com/SCRT-HQ/PSGSuite/pull/385)
+    * Updated Invoke-Webrequest calls to accommodate systems with the now deprecated IE / MSHTML renderer disabled.
+
 #### 2.36.4 - 2020-03-20
 
 * [Issue #270](https://github.com/scrthq/PSGSuite/issues/270)

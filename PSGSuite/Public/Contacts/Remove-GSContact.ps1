@@ -61,7 +61,7 @@ Function Remove-GSContact {
                 Write-Verbose "Removing contact ID '$Id' for $User"
                 try {
                     $Uri = "https://www.google.com/m8/feeds/contacts/$($User)/full/$($Id)"
-                    $Response = Invoke-WebRequest -Method "Delete" -Uri ([Uri]$Uri) -Headers $headers -Verbose:$false
+                    $Response = Invoke-WebRequest -Method "Delete" -Uri ([Uri]$Uri) -Headers $headers -Verbose:$false -UseBasicParsing
                     If ($Response.StatusCode -eq "200") {
                         Write-Verbose "Successfully deleted contact ID '$Id' for $User"
                     }

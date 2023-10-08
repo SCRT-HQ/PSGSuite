@@ -1,4 +1,5 @@
 * [PSGSuite - ChangeLog](#psgsuite---changelog)
+    * [2.36.7 - 2023-10-07](#2367---2023-10-07)
     * [2.36.6 - 2021-06-06](#2366---2021-06-06)
     * [2.36.5 - 2020-11-01](#2365---2020-11-01)
     * [2.36.4 - 2020-03-20](#2364---2020-03-20)
@@ -112,6 +113,11 @@
 ***
 
 # PSGSuite - ChangeLog
+
+## 2.36.7 - 2023-10-07
+
+* [PR #385](https://github.com/SCRT-HQ/PSGSuite/pull/385)
+    * Updated Invoke-Webrequest calls to accommodate systems with the now deprecated IE / MSHTML renderer disabled.
 
 ## 2.36.6 - 2021-06-06
 
