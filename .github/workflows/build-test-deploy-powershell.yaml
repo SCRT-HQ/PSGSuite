@@ -23,3 +23,9 @@ jobs:
         shell: pwsh
         run: |
           . ./build.ps1
+
+      - name: Collect BuildOutput directory
+        uses: actions/upload-artifact@v4
+        with:
+          name: BuildOutput
+          path: BuildOutput
