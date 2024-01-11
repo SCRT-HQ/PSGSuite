@@ -29,3 +29,66 @@ jobs:
         with:
           name: BuildOutput
           path: BuildOutput
+
+  test_ubu:
+    name: Test Ubuntu
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download BuildOutput directory
+        uses: actions/download-artifact@v4
+        with:
+          name: BuildOutput
+          path: BuildOutput
+
+      - name: Test Module
+        shell: pwsh
+        run: |
+          . ./build.ps1 -Task Test
+
+  test_win:
+    name: Test Windows
+    runs-on: windows-latest
+    needs:
+      - build
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download BuildOutput directory
+        uses: actions/download-artifact@v4
+        with:
+          name: BuildOutput
+          path: BuildOutput
+
+      - name: Test Module
+        shell: pwsh
+        run: |
+          . ./build.ps1 -Task Test
+
+  test_mac:
+    name: Test MacOS
+    runs-on: macos-latest
+    needs:
+      - build
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download BuildOutput directory
+        uses: actions/download-artifact@v4
+        with:
+          name: BuildOutput
+          path: BuildOutput
+
+      - name: Test Module
+        shell: pwsh
+        run: |
+          . ./build.ps1 -Task Test
