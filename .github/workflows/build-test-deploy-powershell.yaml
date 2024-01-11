@@ -92,3 +92,11 @@ jobs:
         shell: pwsh
         run: |
           . ./build.ps1 -Task Test
+
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: NUnit Tests
+          path: '**/Test*.xml'
+          reporter: jest-junit
