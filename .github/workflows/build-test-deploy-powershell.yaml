@@ -61,7 +61,7 @@ jobs:
         id: test_result
         uses: zyborg/pester-tests-report@v1
         with:
-          test_results_path: TestResults.xml
+          test_results_path: BuildOutput/TestResults.xml
           report_name: test_result
           report_title: Test Results - ${{ matrix.os }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
