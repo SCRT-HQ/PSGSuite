@@ -33,6 +33,7 @@ jobs:
   test:
     name: Test Module
     strategy:
+      fail-fast: false
       matrix:
         os:
           - ubuntu-latest
