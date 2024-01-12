@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build Module
     runs-on: windows-latest
     needs: []
     timeout-minutes: 120
@@ -30,9 +30,15 @@ jobs:
           name: BuildOutput
           path: BuildOutput
 
-  test_ubu:
-    name: Test Ubuntu
-    runs-on: ubuntu-latest
+  test:
+    name: Test Module
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
     needs:
       - build
     timeout-minutes: 120
@@ -46,57 +52,16 @@ jobs:
           name: BuildOutput
           path: BuildOutput
 
-      - name: Test Module
+      - name: Test Module - ${{ matrix.os }}
         shell: pwsh
         run: |
           . ./build.ps1 -Task Test
 
-  test_win:
-    name: Test Windows
-    runs-on: windows-latest
-    needs:
-      - build
-    timeout-minutes: 120
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Download BuildOutput directory
-        uses: actions/download-artifact@v4
+      - name: Collect Test Result - ${{ matrix.os }}
+        id: test_result
+        uses: zyborg/pester-tests-report@v1
         with:
-          name: BuildOutput
-          path: BuildOutput
-
-      - name: Test Module
-        shell: pwsh
-        run: |
-          . ./build.ps1 -Task Test
-
-  test_mac:
-    name: Test MacOS
-    runs-on: macos-latest
-    needs:
-      - build
-    timeout-minutes: 120
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Download BuildOutput directory
-        uses: actions/download-artifact@v4
-        with:
-          name: BuildOutput
-          path: BuildOutput
-
-      - name: Test Module
-        shell: pwsh
-        run: |
-          . ./build.ps1 -Task Test
-
-      - name: Test Report
-        uses: dorny/test-reporter@v1
-        if: success() || failure()
-        with:
-          name: NUnit Tests
-          path: '**/Test*.xml'
-          reporter: jest-junit
+          test_results_path: TestResults.xml
+          report_name: test_result
+          report_title: Test Results - ${{ matrix.os }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
