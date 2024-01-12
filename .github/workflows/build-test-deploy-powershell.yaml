@@ -44,6 +44,8 @@ jobs:
     needs:
       - build
     timeout-minutes: 120
+    env:
+      TEST_SHELL: ${{ matrix.os == 'windows-2022' && 'powershell' || 'pwsh' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -54,8 +56,15 @@ jobs:
           name: BuildOutput
           path: BuildOutput
 
-      - name: Test Module - ${{ matrix.os }}
-        shell: "${{ matrix.os == 'windows-2022' && 'powershell' || 'pwsh' }}"
+      - name: Test Module - pwsh (${{ matrix.os }})
+        shell: pwsh
+        if: ${{ matrix.os != 'windows-2022' }}
+        run: |
+          . ./build.ps1 -Task Test
+
+      - name: Test Module - PowerShell (${{ matrix.os }})
+        shell: powershell
+        if: ${{ matrix.os == 'windows-2022' }}
         run: |
           . ./build.ps1 -Task Test
 
