@@ -65,4 +65,5 @@ jobs:
           test_results_path: BuildOutput/TestResults.xml
           report_name: test_result
           report_title: Test Results - ${{ matrix.os }}
+          skip_check_run: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
