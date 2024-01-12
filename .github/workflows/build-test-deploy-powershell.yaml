@@ -32,6 +32,8 @@ jobs:
 
   test:
     name: Test Module
+    needs:
+      - build
     strategy:
       fail-fast: false
       matrix:
@@ -41,11 +43,7 @@ jobs:
           - macos-latest
           - windows-2022
     runs-on: ${{ matrix.os }}
-    needs:
-      - build
     timeout-minutes: 120
-    env:
-      TEST_SHELL: ${{ matrix.os == 'windows-2022' && 'powershell' || 'pwsh' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
