@@ -1,1 +1,2 @@
 azure-pipelines.yml @scrthq
+.github/workflows/** @scrthq
