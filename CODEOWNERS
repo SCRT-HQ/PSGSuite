@@ -1,2 +1,6 @@
+# General approvers/owners
+* @scrthq @jgeron-suhsd
+
+# Pipeline / CI/CD files
 azure-pipelines.yml @scrthq
 .github/workflows/** @scrthq
