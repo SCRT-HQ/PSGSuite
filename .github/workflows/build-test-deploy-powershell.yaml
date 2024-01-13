@@ -8,6 +8,11 @@ on:
     branches:
       - '*'
 
+permissions:
+  contents: read
+  issues: read
+  checks: write
+  pull-requests: write
 
 jobs:
   build:
@@ -67,13 +72,11 @@ jobs:
         run: |
           . ./build.ps1 -Task Test
 
-      - name: Collect Test Result - ${{ matrix.os }}
-        id: test_result
-        uses: zyborg/pester-tests-report@v1
+      - name: Publish Test Results - ${{ matrix.os }}
+        uses: EnricoMi/publish-unit-test-result-action/composite@v2
+        if: always()
         continue-on-error: true
         with:
-          test_results_path: BuildOutput/TestResults.xml
-          report_name: test_result
-          report_title: Test Results - ${{ matrix.os }}
-          skip_check_run: true
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          check_name: Test Results - ${{ matrix.os }}
+          files: |
+            BuildOutput/TestResults.xml
