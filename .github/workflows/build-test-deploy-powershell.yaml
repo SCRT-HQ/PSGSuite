@@ -68,7 +68,7 @@ jobs:
       - name: Test Module - PowerShell (${{ matrix.os }})
         shell: powershell
         if: ${{ matrix.os == 'windows-2022' }}
-        continue-on-error: true
+        # continue-on-error: true
         run: |
           . ./build.ps1 -Task Test
 
