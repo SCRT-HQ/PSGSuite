@@ -346,10 +346,6 @@ $pesterScriptBlock = {
             MinimumVersion = '4.10.1'
             MaximumVersion = '4.99.99'
         }
-        @{
-            Name           = 'Assert'
-            MinimumVersion = '0.9.5'
-        }
     )
     foreach ($module in $dependencies) {
         Write-BuildLog "[$($module.Name)] Resolving"
