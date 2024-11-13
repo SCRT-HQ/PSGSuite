@@ -46,7 +46,6 @@ jobs:
           - ubuntu-latest
           - windows-latest
           - macos-latest
-          - windows-2022
     runs-on: ${{ matrix.os }}
     timeout-minutes: 120
     steps:
@@ -61,14 +60,6 @@ jobs:
 
       - name: Test Module - pwsh (${{ matrix.os }})
         shell: pwsh
-        if: ${{ matrix.os != 'windows-2022' }}
-        run: |
-          . ./build.ps1 -Task Test
-
-      - name: Test Module - PowerShell (${{ matrix.os }})
-        shell: powershell
-        if: ${{ matrix.os == 'windows-2022' }}
-        # continue-on-error: true
         run: |
           . ./build.ps1 -Task Test
 

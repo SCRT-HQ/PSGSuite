@@ -1,4 +1,12 @@
 # PSGSuite
+
+## IMPORTANT - PSGSUITE 3.0.0+ REQUIRES POWERSHELL 6.0+
+
+This is a breaking change introduced with PSGSuite 3.0.0. Please see the
+[CHANGELOG](./CHANGELOG.md) for more information.
+
+---
+
 <div align="center">
   <img src="https://github.com/scrthq/PSGSuite/raw/master/bin/img/psgsuite2.0.0.png" alt="PSGSuite 2.0.0 released!" />
   <br />

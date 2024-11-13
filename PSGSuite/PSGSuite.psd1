@@ -12,7 +12,7 @@
     RootModule            = 'PSGSuite.psm1'
 
     # Version number of this module.
-    ModuleVersion         = '2.37.0'
+    ModuleVersion         = '3.0.0'
 
     # ID used to uniquely identify this module
     GUID                  = '9d751152-e83e-40bb-a6db-4c329092aaec'
@@ -30,7 +30,7 @@
     Description           = "PSGSuite is a Powershell module wrapping Google's .NET SDKs in handy functions, enabling users perform tasks as large as G Suite SuperAdmins automating the administration of their multi-domain G Suite accounts down to free, Google account users sending Gmail messages or uploading content to Drive from home."
 
     # Minimum version of the Windows PowerShell engine required by this module
-    PowerShellVersion     = '5.1'
+    PowerShellVersion     = '6.0'
 
     # Name of the Windows PowerShell host required by this module
     # PowerShellHostName = ''
@@ -95,7 +95,7 @@
             # Prerelease = '-alpha'
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags       = 'GSuite', 'Google', 'Apps', 'API', 'Drive', 'Gmail', 'Admin', 'Automation', 'PSEdition_Core', 'PSEdition_Desktop', 'Windows', 'Linux', 'Mac'
+            Tags       = 'GSuite', 'Google', 'Apps', 'API', 'Drive', 'Gmail', 'Admin', 'Automation', 'PSEdition_Core', 'Windows', 'Linux', 'Mac'
 
             # A URL to the license for this module.
             LicenseUri = 'https://github.com/SCRT-HQ/PSGSuite/blob/master/LICENSE'

@@ -4,14 +4,15 @@ function Import-GoogleSDK {
     Process {
         $lib = Resolve-Path "$($script:ModuleRoot)\lib"
         $refs = @()
-        $sdkPath = if ($PSVersionTable.PSVersion.Major -le 5) {
-            Write-Verbose "Importing the SDK's for net45"
-            "$lib\net45"
-        }
-        else {
-            Write-Verbose "Importing the SDK's for netstandard1.3"
-            "$lib\netstandard1.3"
-        }
+        $sdkPath = $lib
+        # $sdkPath = if ($PSVersionTable.PSVersion.Major -le 5) {
+        #     Write-Verbose "Importing the SDK's for net45"
+        #     "$lib\net45"
+        # }
+        # else {
+        #     Write-Verbose "Importing the SDK's for netstandard1.3"
+        #     "$lib\netstandard1.3"
+        # }
         $dlls = Get-ChildItem $sdkPath -Filter "*.dll"
         $specialGoogleDlls = @('Google.Apis.Auth.dll', 'Google.Apis.Core.dll', 'Google.Apis.dll')
         $googleCore = ($dlls | Where-Object {$_.Name -eq 'Google.Apis.Core.dll'})
