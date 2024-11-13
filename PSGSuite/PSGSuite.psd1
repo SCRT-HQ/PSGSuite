@@ -30,7 +30,7 @@
     Description           = "PSGSuite is a Powershell module wrapping Google's .NET SDKs in handy functions, enabling users perform tasks as large as G Suite SuperAdmins automating the administration of their multi-domain G Suite accounts down to free, Google account users sending Gmail messages or uploading content to Drive from home."
 
     # Minimum version of the Windows PowerShell engine required by this module
-    PowerShellVersion     = '4.0'
+    PowerShellVersion     = '5.1'
 
     # Name of the Windows PowerShell host required by this module
     # PowerShellHostName = ''
