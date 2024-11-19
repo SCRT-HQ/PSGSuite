@@ -1,5 +1,6 @@
 - [3.0.0 - 2024-11-20](#300---2024-11-20)
-    - [BREAKING CHANGES](#breaking-changes)
+    - [Breaking Changes](#breaking-changes)
+    - [Other Changes](#other-changes)
 - [2.36.6 - 2021-06-06](#2366---2021-06-06)
 - [2.36.5 - 2020-11-01](#2365---2020-11-01)
 - [2.36.4 - 2020-03-20](#2364---2020-03-20)
@@ -116,11 +117,17 @@
 
 ## 3.0.0 - 2024-11-20
 
-### BREAKING CHANGES
+### Breaking Changes
 
-- Increased minimum PowerShell version to 6.0
+- Increased minimum PowerShell version to 7.4
     - Necessary due to deprecation of support for .NET Framework 4.5 within the `Google.Apis.*` .NET assemblies used throughout PSGSuite
+    - Aligns minimum version of PowerShell with the current LTS release of PowerShell
+
+### Other Changes
+
 - Restored release capabilities within the backing repository after adding additional owner ([@jgeron-suhsd](https://github.com/jgeron-suhsd))
+- Migrates the CI/CD pipeline from Azure Pipelines to GitHub Actions.
+    - We are currently adding additional maintainers to the project to restore overall project health and return to a regular release cadence, ultimately working through the backlog of issues, fixes and enhancements.
 
 ## 2.36.6 - 2021-06-06
 

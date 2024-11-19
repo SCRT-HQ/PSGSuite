@@ -5,12 +5,12 @@ site_author: 'Nate Ferrell'
 site_url: 'https://psgsuite.io'
 
 # Repository
-repo_name: 'scrthq/PSGSuite'
-repo_url: 'https://github.com/scrthq/PSGSuite'
+repo_name: 'SCRT-HQ/PSGSuite'
+repo_url: 'https://github.com/SCRT-HQ/PSGSuite'
 edit_uri: 'edit/main/docs'
 
 # Copyright
-copyright: 'Copyright &copy; 2015 - 2019 Nate Ferrell'
+copyright: 'Copyright &copy; 2015 - 2024 Nate Ferrell'
 
 # Configuration
 theme:
