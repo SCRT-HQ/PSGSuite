@@ -482,7 +482,7 @@ $deployScriptBlock = {
         }
         $result = Invoke-RestMethod @uploadParams
     }
-    if (($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "main") -or $global:ForceDeploy -eq $true) {
+    if (($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHBranchName -eq "main") -or $global:ForceDeploy -eq $true) {
         if ($null -eq (Get-Module PoshTwit -ListAvailable)) {
             "    Installing PoshTwit module..."
             Install-Module PoshTwit -Scope CurrentUser

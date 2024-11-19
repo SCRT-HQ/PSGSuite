@@ -71,3 +71,35 @@ jobs:
           check_name: Test Results - ${{ matrix.os }}
           files: |
             BuildOutput/TestResults.xml
+
+  deploy:
+    name: Deploy Module
+    needs:
+      - build
+    if: >-
+      ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: powershell-gallery
+    env:
+      GitHubPAT: "${{ secrets.GH_PAT }}"
+      NuGetApiKey: "${{ secrets.PSGALLERY_NUGET_API_KEY }}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download BuildOutput directory
+        uses: actions/download-artifact@v4
+        with:
+          name: BuildOutput
+          path: BuildOutput
+
+      - name: Deploy Module
+        shell: pwsh
+        run: |
+          . ./build.ps1 -Task Deploy
+
+      - name: Update Docs
+        shell: pwsh
+        run: |
+          . ./build.ps1 -Task Docs
