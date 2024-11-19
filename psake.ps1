@@ -419,7 +419,7 @@ $deployScriptBlock = {
             $VersionNumber,
             [parameter(Mandatory = $false)]
             [String]
-            $CommitId = 'master',
+            $CommitId = 'main',
             [parameter(Mandatory = $true)]
             [String]
             $ReleaseNotes,
@@ -482,7 +482,7 @@ $deployScriptBlock = {
         }
         $result = Invoke-RestMethod @uploadParams
     }
-    if (($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") -or $global:ForceDeploy -eq $true) {
+    if (($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "main") -or $global:ForceDeploy -eq $true) {
         if ($null -eq (Get-Module PoshTwit -ListAvailable)) {
             "    Installing PoshTwit module..."
             Install-Module PoshTwit -Scope CurrentUser
@@ -618,7 +618,7 @@ $deployScriptBlock = {
 
     }
     else {
-        Write-Host -ForegroundColor Magenta "Build system is not VSTS, commit message does not contain '!deploy' and/or branch is not 'master' -- skipping module update!"
+        Write-Host -ForegroundColor Magenta "Build system is not VSTS, commit message does not contain '!deploy' and/or branch is not 'main' -- skipping module update!"
     }
 }
 

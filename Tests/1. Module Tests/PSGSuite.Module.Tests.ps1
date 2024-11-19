@@ -2,7 +2,7 @@ $projectRoot = Resolve-Path "$PSScriptRoot\..\.."
 $ModulePath = Resolve-Path "$projectRoot\BuildOutput\$($env:BHProjectName)"
 $decompiledModulePath = Resolve-Path "$projectRoot\$($env:BHProjectName)"
 
-# Verbose output for non-master builds on appveyor
+# Verbose output for non-main builds on appveyor
 # Handy for troubleshooting.
 # Splat @Verbose against commands as needed (here or in pester tests)
 $Verbose = @{}

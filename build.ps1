@@ -110,14 +110,14 @@ else {
             $ENV:BUILD_BUILDURI -notlike 'vstfs:*' -or
             $env:BUILD_SOURCEBRANCH -like '*pull*' -or
             $env:BUILD_SOURCEVERSIONMESSAGE -notmatch '!deploy' -or
-            $env:BUILD_SOURCEBRANCHNAME -ne 'master' -or
+            $env:BUILD_SOURCEBRANCHNAME -ne 'main' -or
             $PSVersionTable.PSVersion.Major -ne 5 -or
             $null -eq $env:NugetApiKey
         )
     ) {
         "Task is 'Deploy', but conditions are not correct for deployment:`n" +
         "    + Current build system is VSTS     : $($env:BUILD_BUILDURI -like 'vstfs:*') [$env:BUILD_BUILDURI]`n" +
-        "    + Current branch is master         : $($env:BUILD_SOURCEBRANCHNAME -eq 'master') [$env:BUILD_SOURCEBRANCHNAME]`n" +
+        "    + Current branch is main         : $($env:BUILD_SOURCEBRANCHNAME -eq 'main') [$env:BUILD_SOURCEBRANCHNAME]`n" +
         "    + Source is not a pull request	    : $($env:BUILD_SOURCEBRANCH -notlike '*pull*') [$env:BUILD_SOURCEBRANCH]`n" +
         "    + Current PS major version is 5    : $($PSVersionTable.PSVersion.Major -eq 5) [$($PSVersionTable.PSVersion.ToString())]`n" +
         "    + NuGet API key is not null        : $($null -ne $env:NugetApiKey)`n" +
@@ -131,7 +131,7 @@ else {
             "Task is 'Deploy' and conditions are correct for deployment:`n" +
             "    + Build script is Force ran        : $($Force)`n" +
             "    + Current build system is VSTS     : $($env:BUILD_BUILDURI -like 'vstfs:*') [$env:BUILD_BUILDURI]`n" +
-            "    + Current branch is master         : $($env:BUILD_SOURCEBRANCHNAME -eq 'master') [$env:BUILD_SOURCEBRANCHNAME]`n" +
+            "    + Current branch is main         : $($env:BUILD_SOURCEBRANCHNAME -eq 'main') [$env:BUILD_SOURCEBRANCHNAME]`n" +
             "    + Source is not a pull request     : $($env:BUILD_SOURCEBRANCH -notlike '*pull*') [$env:BUILD_SOURCEBRANCH]`n" +
             "    + Current PS major version is 5    : $($PSVersionTable.PSVersion.Major -eq 5) [$($PSVersionTable.PSVersion.ToString())]`n" +
             "    + NuGet API key is not null        : $($null -ne $env:NugetApiKey)`n" +
