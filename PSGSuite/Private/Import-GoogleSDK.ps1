@@ -14,13 +14,13 @@ function Import-GoogleSDK {
 
         $batches = @(
             # Load the non-Google DLLs first...
-            ($dlls | Where-Object {$_.Name -notin $refs -and $_.Name -notmatch '^Google'}),
+            ($dlls | Where-Object {$_.Name -notin $refs -and $_.Name -notmatch '^Google'})
             # Then load Google.Apis.Core.dll...
-            $googleCore,
+            $googleCore
             # Then load Google.Apis.dll...
-            $googleApis,
+            $googleApis
             # Then load Google.Apis.Auth.dll...
-            $googleAuth,
+            $googleAuth
             # Then load the rest of the Google DLLs
             ($dlls | Where-Object {$_.Name -notin $refs -and $_.Name -match '^Google' -and $_.Name -notin $specialGoogleDlls})
         )
