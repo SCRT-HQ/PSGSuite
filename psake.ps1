@@ -346,10 +346,6 @@ $pesterScriptBlock = {
             MinimumVersion = '4.10.1'
             MaximumVersion = '4.99.99'
         }
-        @{
-            Name           = 'Assert'
-            MinimumVersion = '0.9.5'
-        }
     )
     foreach ($module in $dependencies) {
         Write-BuildLog "[$($module.Name)] Resolving"
@@ -362,7 +358,7 @@ $pesterScriptBlock = {
         }
         catch {
             Write-BuildLog "[$($module.Name)] Installing missing module"
-            Install-Module @module -Repository PSGallery -Force
+            Install-Module @module -Repository PSGallery -Force -SkipPublisherCheck
             Import-Module @module
         }
     }
@@ -423,7 +419,7 @@ $deployScriptBlock = {
             $VersionNumber,
             [parameter(Mandatory = $false)]
             [String]
-            $CommitId = 'master',
+            $CommitId = 'main',
             [parameter(Mandatory = $true)]
             [String]
             $ReleaseNotes,
@@ -486,7 +482,7 @@ $deployScriptBlock = {
         }
         $result = Invoke-RestMethod @uploadParams
     }
-    if (($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHCommitMessage -match '!deploy' -and $env:BHBranchName -eq "master") -or $global:ForceDeploy -eq $true) {
+    if (($ENV:BHBuildSystem -eq 'VSTS' -and $env:BHBranchName -eq "main") -or $global:ForceDeploy -eq $true) {
         if ($null -eq (Get-Module PoshTwit -ListAvailable)) {
             "    Installing PoshTwit module..."
             Install-Module PoshTwit -Scope CurrentUser
@@ -536,7 +532,7 @@ $deployScriptBlock = {
         # Bump the module version
         if ($versionToDeploy) {
             try {
-                if ($ENV:BHBuildSystem -eq 'VSTS' -and -not [String]::IsNullOrEmpty($env:NugetApiKey)) {
+                if ([String]::IsNullOrEmpty($env:NugetApiKey)) {
                     "    Publishing version [$($versionToDeploy)] to PSGallery..."
                     Update-Metadata -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -PropertyName ModuleVersion -Value $versionToDeploy
                     Publish-Module -Path $outputModVerDir -NuGetApiKey $env:NugetApiKey -Repository PSGallery
@@ -546,24 +542,24 @@ $deployScriptBlock = {
                     "    [SKIPPED] Deployment of version [$($versionToDeploy)] to PSGallery"
                 }
                 $commitId = git rev-parse --verify HEAD
-                if ($ENV:BHBuildSystem -eq 'VSTS' -and -not [String]::IsNullOrEmpty($env:TwitterAccessSecret) -and -not [String]::IsNullOrEmpty($env:TwitterAccessToken) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerKey) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerSecret)) {
-                    "    Publishing tweet about new release..."
-                    $manifest = Import-PowerShellDataFile -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")
-                    $text = "#$($env:BHProjectName) v$($versionToDeploy) is now available on the #PSGallery! https://www.powershellgallery.com/packages/$($env:BHProjectName)/$($versionToDeploy) #PowerShell"
-                    $manifest.PrivateData.PSData.Tags | Foreach-Object {
-                        $text += " #$($_)"
-                    }
-                    if ($text.Length -gt 280) {
-                        "    Trimming [$($text.Length - 280)] extra characters from tweet text to get to 280 character limit..."
-                        $text = $text.Substring(0,280)
-                    }
-                    "    Tweet text: $text"
-                    Publish-Tweet -Tweet $text -ConsumerKey $env:TwitterConsumerKey -ConsumerSecret $env:TwitterConsumerSecret -AccessToken $env:TwitterAccessToken -AccessSecret $env:TwitterAccessSecret
-                    "    Tweet successful!"
-                }
-                else {
-                    "    [SKIPPED] Twitter update of new release"
-                }
+                # if ($ENV:BHBuildSystem -eq 'VSTS' -and -not [String]::IsNullOrEmpty($env:TwitterAccessSecret) -and -not [String]::IsNullOrEmpty($env:TwitterAccessToken) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerKey) -and -not [String]::IsNullOrEmpty($env:TwitterConsumerSecret)) {
+                #     "    Publishing tweet about new release..."
+                #     $manifest = Import-PowerShellDataFile -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1")
+                #     $text = "#$($env:BHProjectName) v$($versionToDeploy) is now available on the #PSGallery! https://www.powershellgallery.com/packages/$($env:BHProjectName)/$($versionToDeploy) #PowerShell"
+                #     $manifest.PrivateData.PSData.Tags | Foreach-Object {
+                #         $text += " #$($_)"
+                #     }
+                #     if ($text.Length -gt 280) {
+                #         "    Trimming [$($text.Length - 280)] extra characters from tweet text to get to 280 character limit..."
+                #         $text = $text.Substring(0,280)
+                #     }
+                #     "    Tweet text: $text"
+                #     Publish-Tweet -Tweet $text -ConsumerKey $env:TwitterConsumerKey -ConsumerSecret $env:TwitterConsumerSecret -AccessToken $env:TwitterAccessToken -AccessSecret $env:TwitterAccessSecret
+                #     "    Tweet successful!"
+                # }
+                # else {
+                #     "    [SKIPPED] Twitter update of new release"
+                # }
                 if (-not [String]::IsNullOrEmpty($env:GitHubPAT)) {
                     "    Creating Release ZIP..."
                     $zipPath = [System.IO.Path]::Combine($PSScriptRoot,"$($env:BHProjectName).zip")
@@ -622,7 +618,7 @@ $deployScriptBlock = {
 
     }
     else {
-        Write-Host -ForegroundColor Magenta "Build system is not VSTS, commit message does not contain '!deploy' and/or branch is not 'master' -- skipping module update!"
+        Write-Host -ForegroundColor Magenta "Build system is not VSTS, commit message does not contain '!deploy' and/or branch is not 'main' -- skipping module update!"
     }
 }
 

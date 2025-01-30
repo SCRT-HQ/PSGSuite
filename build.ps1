@@ -107,35 +107,23 @@ else {
     Add-Heading "Finalizing build prerequisites"
     if (
         $Task -eq 'Deploy' -and -not $Force -and (
-            $ENV:BUILD_BUILDURI -notlike 'vstfs:*' -or
-            $env:BUILD_SOURCEBRANCH -like '*pull*' -or
-            $env:BUILD_SOURCEVERSIONMESSAGE -notmatch '!deploy' -or
-            $env:BUILD_SOURCEBRANCHNAME -ne 'master' -or
-            $PSVersionTable.PSVersion.Major -ne 5 -or
+            $env:GITHUB_REF -ne 'main' -or
             $null -eq $env:NugetApiKey
         )
     ) {
         "Task is 'Deploy', but conditions are not correct for deployment:`n" +
-        "    + Current build system is VSTS     : $($env:BUILD_BUILDURI -like 'vstfs:*') [$env:BUILD_BUILDURI]`n" +
-        "    + Current branch is master         : $($env:BUILD_SOURCEBRANCHNAME -eq 'master') [$env:BUILD_SOURCEBRANCHNAME]`n" +
-        "    + Source is not a pull request	    : $($env:BUILD_SOURCEBRANCH -notlike '*pull*') [$env:BUILD_SOURCEBRANCH]`n" +
-        "    + Current PS major version is 5    : $($PSVersionTable.PSVersion.Major -eq 5) [$($PSVersionTable.PSVersion.ToString())]`n" +
-        "    + NuGet API key is not null        : $($null -ne $env:NugetApiKey)`n" +
-        "    + Build script is not Force ran    : $($Force)`n" +
-        "    + Commit message matches '!deploy' : $($env:BUILD_SOURCEVERSIONMESSAGE -match '!deploy') [$env:BUILD_SOURCEVERSIONMESSAGE]`n" +
+        "    + Build script is not Force ran : $($Force)`n" +
+        "    + Current branch is main        : $($env:GITHUB_REF -eq 'main') [$env:GITHUB_REF]`n" +
+        "    + NuGet API key is not null     : $($null -ne $env:NugetApiKey)`n" +
         "Skipping psake for this job!" | Write-Host -ForegroundColor Yellow
         exit 0
     }
     else {
         if ($Task -eq 'Deploy') {
             "Task is 'Deploy' and conditions are correct for deployment:`n" +
-            "    + Build script is Force ran        : $($Force)`n" +
-            "    + Current build system is VSTS     : $($env:BUILD_BUILDURI -like 'vstfs:*') [$env:BUILD_BUILDURI]`n" +
-            "    + Current branch is master         : $($env:BUILD_SOURCEBRANCHNAME -eq 'master') [$env:BUILD_SOURCEBRANCHNAME]`n" +
-            "    + Source is not a pull request     : $($env:BUILD_SOURCEBRANCH -notlike '*pull*') [$env:BUILD_SOURCEBRANCH]`n" +
-            "    + Current PS major version is 5    : $($PSVersionTable.PSVersion.Major -eq 5) [$($PSVersionTable.PSVersion.ToString())]`n" +
-            "    + NuGet API key is not null        : $($null -ne $env:NugetApiKey)`n" +
-            "    + Commit message matches '!deploy' : $($env:BUILD_SOURCEVERSIONMESSAGE -match '!deploy') [$env:BUILD_SOURCEVERSIONMESSAGE]"| Write-Host -ForegroundColor Green
+            "    + Build script is Force ran     : $($Force)`n" +
+            "    + Current branch is main        : $($env:GITHUB_REF -eq 'main') [$env:GITHUB_REF]`n" +
+            "    + NuGet API key is not null     : $($null -ne $env:NugetApiKey)"| Write-Host -ForegroundColor Green
         }
         Write-BuildLog "Resolving necessary modules"
         foreach ($module in $moduleDependencies) {

@@ -1,0 +1,105 @@
+name: PowerShell - Build Test Deploy
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+permissions:
+  contents: read
+  issues: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  build:
+    name: Build Module
+    runs-on: windows-latest
+    needs: []
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Module
+        shell: pwsh
+        run: |
+          . ./build.ps1
+
+      - name: Collect BuildOutput directory
+        uses: actions/upload-artifact@v4
+        with:
+          name: BuildOutput
+          path: BuildOutput
+
+  test:
+    name: Test Module
+    needs:
+      - build
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download BuildOutput directory
+        uses: actions/download-artifact@v4
+        with:
+          name: BuildOutput
+          path: BuildOutput
+
+      - name: Test Module - pwsh (${{ matrix.os }})
+        shell: pwsh
+        run: |
+          . ./build.ps1 -Task Test
+
+      - name: Publish Test Results - ${{ matrix.os }}
+        uses: EnricoMi/publish-unit-test-result-action/composite@v2
+        if: always()
+        continue-on-error: true
+        with:
+          check_name: Test Results - ${{ matrix.os }}
+          files: |
+            BuildOutput/TestResults.xml
+
+  deploy:
+    name: Deploy Module
+    needs:
+      - build
+    if: >-
+      ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: powershell-gallery
+    env:
+      GitHubPAT: "${{ secrets.GH_PAT }}"
+      NuGetApiKey: "${{ secrets.PSGALLERY_NUGET_API_KEY }}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download BuildOutput directory
+        uses: actions/download-artifact@v4
+        with:
+          name: BuildOutput
+          path: BuildOutput
+
+      - name: Deploy Module
+        shell: pwsh
+        run: |
+          . ./build.ps1 -Task Deploy
+
+      - name: Update Docs
+        shell: pwsh
+        run: |
+          . ./build.ps1 -Task Docs

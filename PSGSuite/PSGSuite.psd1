@@ -12,7 +12,7 @@
     RootModule            = 'PSGSuite.psm1'
 
     # Version number of this module.
-    ModuleVersion         = '2.36.6'
+    ModuleVersion         = '3.0.0'
 
     # ID used to uniquely identify this module
     GUID                  = '9d751152-e83e-40bb-a6db-4c329092aaec'
@@ -24,13 +24,13 @@
     CompanyName           = 'SCRT HQ'
 
     # Copyright statement for this module
-    Copyright             = '(c) SCRT HQ 2016-2019. All rights reserved.'
+    Copyright             = '(c) SCRT HQ 2016-2024. All rights reserved.'
 
     # Description of the functionality provided by this module
     Description           = "PSGSuite is a Powershell module wrapping Google's .NET SDKs in handy functions, enabling users perform tasks as large as G Suite SuperAdmins automating the administration of their multi-domain G Suite accounts down to free, Google account users sending Gmail messages or uploading content to Drive from home."
 
     # Minimum version of the Windows PowerShell engine required by this module
-    PowerShellVersion     = '4.0'
+    PowerShellVersion     = '7.4'
 
     # Name of the Windows PowerShell host required by this module
     # PowerShellHostName = ''
@@ -92,16 +92,16 @@
         PSData = @{
 
             # Denotes this as a prerelease
-            # Prerelease = '-alpha'
+            Prerelease = '-alpha'
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags       = 'GSuite', 'Google', 'Apps', 'API', 'Drive', 'Gmail', 'Admin', 'Automation', 'PSEdition_Core', 'PSEdition_Desktop', 'Windows', 'Linux', 'Mac'
+            Tags       = 'GSuite', 'Google', 'Apps', 'API', 'Drive', 'Gmail', 'Admin', 'Automation', 'PSEdition_Core', 'Windows', 'Linux', 'Mac'
 
             # A URL to the license for this module.
-            LicenseUri = 'https://github.com/scrthq/PSGSuite/blob/master/LICENSE'
+            LicenseUri = 'https://github.com/SCRT-HQ/PSGSuite/blob/main/LICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri = 'https://github.com/scrthq/PSGSuite'
+            ProjectUri = 'https://github.com/SCRT-HQ/PSGSuite'
 
             # A URL to an icon representing this module.
             IconUri    = 'http://centerlyne.com/wp-content/uploads/2016/10/Google_-G-_Logo.svg_.png'
@@ -117,7 +117,7 @@
     } # End of PrivateData hashtable
 
     # HelpInfo URI of this module
-    # HelpInfoURI           = 'https://github.com/scrthq/PSGSuite/wiki'
+    # HelpInfoURI           = 'https://github.com/SCRT-HQ/PSGSuite/wiki'
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''

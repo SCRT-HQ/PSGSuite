@@ -1,4 +1,4 @@
-if ($items = Get-ChildItem (Resolve-Path $PSScriptRoot\..\BuildOutput\PSGSuite\*\lib\net45 -ErrorAction SilentlyContinue).Path -Filter '*.dll' | Where-Object {$_.BaseName -ne 'Google.Apis.Auth.PlatformServices'}) {
+if ($items = Get-ChildItem (Resolve-Path $PSScriptRoot\..\BuildOutput\PSGSuite\*\lib -ErrorAction SilentlyContinue).Path -Filter '*.dll' | Where-Object {$_.BaseName -ne 'Google.Apis.Auth.PlatformServices'}) {
     $items |
     #Where-Object |
     Sort-Object BaseName |

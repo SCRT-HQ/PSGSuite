@@ -51,8 +51,8 @@ function Install-NuGetDependencies {
                         TagId = $inst.BaseName + '#' + $inst.LatestVersion
                     }
                 }
-                Write-BuildLog ("[{0}.{1}] Downloading latest package from NuGet" -f $pkg.Name,$pkg.Version)
                 $extPath = [System.IO.Path]::Combine($dllStgPath,"$($pkg.Name.ToLower().TrimEnd('.dll')).$($pkg.Version)")
+                Write-BuildLog ("[{0}.{1}] Downloading latest package from NuGet to path: {2}" -f $pkg.Name,$pkg.Version,$extPath)
                 if (Test-Path ($extPath)) {
                     Remove-Item $extPath -Recurse -Force
                 }
@@ -77,8 +77,9 @@ function Install-NuGetDependencies {
                 Add-Type -AssemblyName System.IO.Compression
                 [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath,$extPath)
                 foreach ($dest in $Destination) {
-                    foreach ($target in @('net45','netstandard1.3')) {
-                        $targetPath = [System.IO.Path]::Combine($dest,'lib',$target)
+                    $destFound = $false
+                    foreach ($target in @('netstandard1.3','netstandard2.0')) {
+                        $targetPath = [System.IO.Path]::Combine($dest,'lib')
                         if (-not (Test-Path $targetPath)) {
                             New-Item -Path $targetPath -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
                         }
@@ -90,11 +91,13 @@ function Install-NuGetDependencies {
                         }
                         if (Test-Path $sourcePath) {
                             Get-ChildItem $sourcePath -Filter '*.dll' | Copy-Item -Destination $targetPath -Force
+                            $destFound = $true
+                            break
                         }
-                        else {
-                            Write-BuildError "$($pkg.Name) was not downloaded successfully from NuGet!" -ErrorAction Stop
-                            exit 1
-                        }
+                    }
+                    if (!$destFound) {
+                        Write-BuildError "$($pkg.Name) was not downloaded successfully from NuGet!" -ErrorAction Stop
+                        exit 1
                     }
                 }
             }

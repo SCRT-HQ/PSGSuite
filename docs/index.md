@@ -1,6 +1,6 @@
 # PSGSuite
 <div align="center">
-  <img src="https://github.com/scrthq/PSGSuite/raw/master/bin/img/psgsuite2.0.0.png" alt="PSGSuite 2.0.0 released!" />
+  <img src="https://github.com/scrthq/PSGSuite/raw/main/bin/img/psgsuite2.0.0.png" alt="PSGSuite 2.0.0 released!" />
   <br />
   <br />
   <!-- Azure Pipelines -->
@@ -56,7 +56,7 @@ Check out [PSGSuite.io](https://psgsuite.io/) for PSGSuite documentation, includ
 
 ## Contributing
 
-Interested in helping out with PSGSuite development? Please check out our [Contribution Guidelines](https://github.com/scrthq/PSGSuite/blob/master/CONTRIBUTING.md)!
+Interested in helping out with PSGSuite development? Please check out our [Contribution Guidelines](https://github.com/scrthq/PSGSuite/blob/main/CONTRIBUTING.md)!
 
 Building the module locally to test changes is as easy as running the `build.ps1` file in the root of the repo. This will compile the module with your changes and import the newly compiled module at the end by default.
 
@@ -68,7 +68,7 @@ Want to run the Pester tests locally? Pass `Test` as the value to the `Task` scr
 
 ## Code of Conduct
 
-Please adhere to our [Code of Conduct](https://github.com/scrthq/PSGSuite/blob/master/CODE_OF_CONDUCT.md) when interacting with this repo.
+Please adhere to our [Code of Conduct](https://github.com/scrthq/PSGSuite/blob/main/CODE_OF_CONDUCT.md) when interacting with this repo.
 
 ## License
 
@@ -76,7 +76,7 @@ Please adhere to our [Code of Conduct](https://github.com/scrthq/PSGSuite/blob/m
 
 ## Changelog
 
-[Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
+[Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/main/CHANGELOG.md)
 
 ***
 
@@ -156,7 +156,7 @@ All other functions are either intact or have an alias included to support backw
 
 ### Most recent changes
 
-[Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/master/CHANGELOG.md)
+[Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/main/CHANGELOG.md)
 
 #### 2.33.1 - 2019-10-06
 
@@ -177,4 +177,3 @@ All other functions are either intact or have an alias included to support backw
 
 * [Issue #236](https://github.com/scrthq/PSGSuite/issues/236)
     * Fixed: Custom converter for Configuration metadata defaults to `ConvertTo-SecureString` as the preferred function instead of the custom `Secure`. `Secure` is still supported for backwards compatibility.
-

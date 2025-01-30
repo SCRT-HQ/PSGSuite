@@ -2,7 +2,7 @@ $projectRoot = Resolve-Path "$PSScriptRoot\..\.."
 $ModulePath = Resolve-Path "$projectRoot\BuildOutput\$($env:BHProjectName)"
 $decompiledModulePath = Resolve-Path "$projectRoot\$($env:BHProjectName)"
 
-# Verbose output for non-master builds on appveyor
+# Verbose output for non-main builds on appveyor
 # Handy for troubleshooting.
 # Splat @Verbose against commands as needed (here or in pester tests)
 $Verbose = @{}
@@ -35,7 +35,7 @@ Describe "Module tests: $($env:BHProjectName)" -Tag 'Module' {
         $testCase = Get-ChildItem "$decompiledModulePath\Private" -Recurse -Include *.ps1 | Foreach-Object {@{item = $_.BaseName}}
         It "Should throw when checking for '<item>' in the module commands" -TestCases $testCase {
             param($item)
-            {Get-Command -Name $item -Module $env:BHProjectName -ErrorAction Stop} | Should -Throw "The term '$item' is not recognized as the name of a cmdlet, function, script file, or operable program."
+            {Get-Command -Name $item -Module $env:BHProjectName -ErrorAction Stop} | Should -Throw
         }
     }
     Context "Confirm all aliases are created" {

@@ -1,9 +1,61 @@
 function Get-LicenseSkus {
-    ConvertFrom-Json '{"Google-Drive-storage-1TB": {"product": "Google-Drive-storage", "displayName": "Google Drive Storage 1TB", "aliases": ["drive1tb", "1tb", "googledrivestorage1tb"]}, "Google-Apps-For-Government": {"product": "Google-Apps", "displayName": "G Suite Government", "aliases": ["gafg", "gsuitegovernment", "gsuitegov"]}, "Google-Vault": {"product": "Google-Vault", "displayName": "Google Vault", "aliases": ["vault", "googlevault"]}, "Google-Drive-storage-8TB": {"product": "Google-Drive-storage", "displayName": "Google Drive Storage 8TB", "aliases": ["drive8tb", "8tb", "googledrivestorage8tb"]}, "Google-Drive-storage-400GB": {"product": "Google-Drive-storage", "displayName": "Google Drive Storage 400GB", "aliases": ["drive400gb", "400gb", "googledrivestorage400gb"]}, "Google-Drive-storage-16TB": {"product": "Google-Drive-storage", "displayName": "Google Drive Storage 16TB", "aliases": ["drive16tb", "16tb", "googledrivestorage16tb"]}, "1010340002": {"product": "101034", "displayName": "G Suite Business Archived", "aliases": ["gsbau", "businessarchived", "gsuitebusinessarchived"]}, "1010340001": {"product": "101034", "displayName": "G Suite Enterprise Archived", "aliases": ["gseau", "enterprisearchived", "gsuiteenterprisearchived"]}, "Google-Drive-storage-50GB": {"product": "Google-Drive-storage", "displayName": "Google Drive Storage 50GB", "aliases": ["drive50gb","50gb", "googledrivestorage50gb"]}, "Google-Apps": {"product": "Google-Apps", "displayName": "G Suite Free/Standard", "aliases": ["standard", "free"]}, "Google-Drive-storage-4TB": {"product": "Google-Drive-storage", "displayName": "Google Drive Storage 4TB", "aliases": ["drive4tb", "4tb", "googledrivestorage4tb"]}, "Google-Drive-storage-2TB": {"product": "Google-Drive-storage", "displayName": "Google Drive Storage 2TB", "aliases": ["drive2tb", "2tb", "googledrivestorage2tb"]}, "Google-Apps-For-Postini": {"product": "Google-Apps", "displayName": "G Suite Message Security", "aliases": ["gams", "postini", "gsuitegams", "gsuitepostini", "gsuitemessagesecurity"]}, "Google-Apps-Unlimited": {"product": "Google-Apps", "displayName": "G Suite Business", "aliases": ["gau", "gsb", "unlimited", "gsuitebusiness"]}, "Google-Drive-storage-200GB": {"product": "Google-Drive-storage", "displayName": "Google Drive Storage 200GB", "aliases": ["drive200gb", "200gb", "googledrivestorage200gb"]}, "1010010001": {"product": "101001", "displayName": "Cloud Identity", "aliases": ["identity", "cloudidentity"]}, "Google-Coordinate": {"product": "Google-Coordinate", "displayName": "Google Coordinate", "aliases": ["coordinate", "googlecoordinate"]}, "1010330002": {"product": "101033", "displayName": "Google Voice Premier", "aliases": ["gvpremier", "voicepremier", "googlevoicepremier"]}, "1010330003": {"product": "101033", "displayName": "Google Voice Starter", "aliases": ["gvstarter", "voicestarter", "googlevoicestarter"]}, "1010330004": {"product": "101033", "displayName": "Google Voice Standard", "aliases": ["gvstandard", "voicestandard", "googlevoicestandard"]}, "Google-Vault-Former-Employee": {"product": "Google-Vault", "displayName": "Google Vault Former Employee", "aliases": ["vfe", "googlevaultformeremployee"]}, "Google-Apps-For-Business": {"product": "Google-Apps", "displayName": "G Suite Basic", "aliases": ["gafb", "gafw", "basic", "gsuitebasic"]}, "1010060001": {"product": "Google-Apps", "displayName": "Drive Enterprise", "aliases": ["d4e", "driveenterprise", "drive4enterprise"]}, "1010020020": {"product": "Google-Apps", "displayName": "G Suite Enterprise", "aliases": ["gae", "gse", "enterprise", "gsuiteenterprise"]}, "Google-Apps-Lite": {"product": "Google-Apps", "displayName": "G Suite Lite", "aliases": ["gal", "gsl", "lite", "gsuitelite"]}, "1010050001": {"product": "101005", "displayName": "Cloud Identity Premium", "aliases": ["identitypremium", "cloudidentitypremium"]}, "1010310002": {"product": "101031", "displayName": "G Suite Enterprise for Education", "aliases": ["gsefe", "e4e", "gsuiteenterpriseeducation"]}, "1010310003": {"product": "101031", "displayName": "G Suite Enterprise for Education Student", "aliases": ["gsefes", "e4es", "gsuiteenterpriseeducationstudent"]}, "Google-Chrome-Device-Management": {"product": "Google-Chrome-Device-Management", "displayName": "Google Chrome Device Management", "aliases": ["chrome", "cdm", "googlechromedevicemanagement"]}, "Google-Drive-storage-20GB": {"product": "Google-Drive-storage", "displayName": "Google Drive Storage 20GB", "aliases": ["drive20gb", "20gb", "googledrivestorage20gb"]}}'
+    ConvertFrom-Json '{
+        "1010010001": {"aliases": ["identity", "cloudidentity", "ci"], "displayName": "Cloud Identity", "product": "101001"},
+        "1010050001": {"aliases": ["identitypremium", "cloudidentitypremium", "cip"], "displayName": "Cloud Identity Premium", "product": "101005"},
+        "1010020020": {"aliases": ["gae", "gse", "enterprise", "gsuiteenterprise", "gwep", "enterpriseplus"], "displayName": "Google Workspace Enterprise Plus", "product": "Google-Apps"},
+        "1010020025": {"aliases": ["gwbp", "businessplus"], "displayName": "Google Workspace Business Plus", "product": "Google-Apps"},
+        "1010020026": {"aliases": ["gwestandard", "enterprisestandard"], "displayName": "Google Workspace Enterprise Standard", "product": "Google-Apps"},
+        "1010020027": {"aliases": ["gwbstarter", "businessstarter"], "displayName": "Google Workspace Business Starter", "product": "Google-Apps"},
+        "1010020028": {"aliases": ["gwbstandard", "businessstandard"], "displayName": "Google Workspace Business Standard", "product": "Google-Apps"},
+        "1010020029": {"aliases": ["gwestarter", "enterprisestarter"], "displayName": "Google Workspace Enterprise Starter", "product": "Google-Apps"},
+        "1010020030": {"aliases": ["gwfstarter", "frontlinestarter"], "displayName": "Google Workspace Frontline Starter", "product": "Google-Apps"},
+        "1010020031": {"aliases": ["gwfstandard", "frontlinestandard"], "displayName": "Google Workspace Frontline Standard", "product": "Google-Apps"},
+        "1010060001": {"aliases": ["gwe", "essentials"], "displayName": "Google Workspace Essentials", "product": "Google-Apps"},
+        "1010060003": {"aliases": ["gwee", "enterpriseessentials"], "displayName": "Google Workspace Enterprise Essentials", "product": "Google-Apps"},
+        "1010060005": {"aliases": ["gwep", "essentialsplus"], "displayName": "Google Workspace Essentials Plus", "product": "Google-Apps"},
+        "1010310002": {"aliases": ["gsefe", "e4e", "gsuiteenterpriseeducation", "gwepl"], "displayName": "Google Workspace for Education Plus - Legacy", "product": "101031"},
+        "1010310003": {"aliases": ["gsefes", "e4es", "gsuiteenterpriseeducationstudent", "gweplstudent"], "displayName": "Google Workspace for Education Plus - Legacy (Student)", "product": "101031"},
+        "1010310005": {"aliases": ["gwes", "educationstandard"], "displayName": "Google Workspace for Education Standard", "product": "101031"},
+        "1010310006": {"aliases": ["gwesstaff", "educationstandardstaff"], "displayName": "Google Workspace for Education Standard (Staff)", "product": "101031"},
+        "1010310007": {"aliases": ["gwesstudent", "educationstandardstudent"], "displayName": "Google Workspace for Education Standard (Extra Student)", "product": "101031"},
+        "1010310008": {"aliases": ["gwep", "educationplus"], "displayName": "Google Workspace for Education Plus", "product": "101031"},
+        "1010310009": {"aliases": ["gwepstaff", "educationplusstaff"], "displayName": "Google Workspace for Education Plus (Staff)", "product": "101031"},
+        "1010310010": {"aliases": ["gwepstudent", "educationplusstudent"], "displayName": "Google Workspace for Education Plus (Extra Student)", "product": "101031"},
+        "1010370001": {"aliases": ["gwetlu", "educationteachlearnupgrade"], "displayName": "Google Workspace for Education: Teaching and Learning Upgrade", "product": "101037"},
+        "1010380001": {"aliases": ["asc", "appsheetcore"], "displayName": "AppSheet Core", "product": "101038"},
+        "1010380002": {"aliases": ["ases", "appsheetenterprisestandard"], "displayName": "AppSheet Enterprise Standard", "product": "101038"},
+        "1010380003": {"aliases": ["ases2", "appsheetenterpriseplus"], "displayName": "AppSheet Enterprise Plus", "product": "101038"},
+        "1010470003": {"aliases": ["geminibusiness"], "displayName": "Gemini Business", "product": "101047"},
+        "1010470001": {"aliases": ["geminienterprise"], "displayName": "Gemini Enterprise", "product": "101047"},
+        "1010470006": {"aliases": ["aisecurity"], "displayName": "AI Security", "product": "101047"},
+        "1010470007": {"aliases": ["aimeetings"], "displayName": "AI Meetings and Messaging", "product": "101047"},
+        "1010470004": {"aliases": ["geminieducation"], "displayName": "Gemini Education", "product": "101047"},
+        "1010470005": {"aliases": ["geminieducationpremium"], "displayName": "Gemini Education Premium", "product": "101047"},
+        "1010340001": {"aliases": ["gseau", "enterprisearchived", "gsuiteenterprisearchived", "gweparchived", "enterpriseplusarchived"], "displayName": "Google Workspace Enterprise Plus - Archived User", "product": "101034"},
+        "1010340002": {"aliases": ["gsbau", "businessarchived", "gsuitebusinessarchived", "gsba"], "displayName": "G Suite Business - Archived User", "product": "101034"},
+        "1010340003": {"aliases": ["gwbparchived", "businessplusarchived"], "displayName": "Google Workspace Business Plus - Archived User", "product": "101034"},
+        "1010340004": {"aliases": ["gwesarchived", "enterprisestandardarchived"], "displayName": "Google Workspace Enterprise Standard - Archived User", "product": "101034"},
+        "1010340005": {"aliases": ["gwbstarterarchived", "businessstarterarchived"], "displayName": "Google Workspace Business Starter - Archived User", "product": "101034"},
+        "1010340006": {"aliases": ["gwbstandardarchived", "businessstandardarchived"], "displayName": "Google Workspace Business Standard - Archived User", "product": "101034"},
+        "Google-Apps-Unlimited": {"aliases": ["gau", "gsb", "unlimited", "gsuitebusiness"], "displayName": "G Suite Business", "product": "Google-Apps"},
+        "Google-Apps-For-Business": {"aliases": ["gafb", "gafw", "basic", "gsuitebasic"], "displayName": "G Suite Basic", "product": "Google-Apps"},
+        "Google-Apps-Lite": {"aliases": ["gal", "gsl", "lite", "gsuitelite"], "displayName": "G Suite Lite", "product": "Google-Apps"},
+        "Google-Apps-For-Postini": {"aliases": ["gams", "postini", "gsuitegams", "gsuitepostini", "gsuitemessagesecurity"], "displayName": "Google Apps Message Security", "product": "Google-Apps"},
+        "Google-Apps-For-Education": {"aliases": ["gwef", "educationfundamentals"], "displayName": "Google Workspace for Education Fundamentals", "product": "Google-Apps"},
+        "Google-Vault": {"aliases": ["vault", "googlevault", "gv"], "displayName": "Google Vault", "product": "Google-Vault"},
+        "Google-Vault-Former-Employee": {"aliases": ["vfe", "googlevaultformeremployee", "gvfe"], "displayName": "Google Vault Former Employee", "product": "Google-Vault"}
+    }'
 }
 
 function Get-LicenseProducts {
-    ConvertFrom-Json '{"Google-Vault": "Google Vault", "Google-Drive-storage": "Google Drive Storage", "Google-Coordinate": "Google Coordinate", "101034": "G Suite Archived", "101033": "Google Voice", "Google-Apps": "G Suite", "101031": "G Suite Enterprise for Education", "101006": "Drive Enterprise", "Google-Chrome-Device-Management": "Google Chrome Device Management", "101005": "Cloud Identity Premium", "101001": "Cloud Identity Free"}'
+    ConvertFrom-Json '{"101001":"Cloud Identity","101005":"Cloud Identity Premium",
+                        "101031":"Google Workspace for Education",
+                        "101033":"Google Voice",
+                        "101034":"Google Workspace Archived User",
+                        "101037":"Google Workspace for Education",
+                        "101038":"AppSheet",
+                        "Google-Apps":"Google Workspace",
+                        "Google-Vault":"Google Vault"}'
 }
 
 function Get-LicenseProductHash {
