@@ -1,6 +1,6 @@
 # PSGSuite
 
-## IMPORTANT - PSGSUITE 3.0.0+ REQUIRES POWERSHELL 6.0+
+## IMPORTANT - PSGSUITE 3.0.0+ REQUIRES POWERSHELL 7.4+
 
 This is a breaking change introduced with PSGSuite 3.0.0. Please see the
 [CHANGELOG](./CHANGELOG.md) for more information.
