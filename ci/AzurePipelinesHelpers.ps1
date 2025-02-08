@@ -431,6 +431,7 @@ function Set-BuildVariables {
     }
     foreach ($var in $gitVars.Keys) {
         if (-not (Test-Path Env:\$var)) {
+            Write-BuildLog "Setting environment variable: `$env:$var = `"$($gitVars[$var])`""
             Set-EnvironmentVariable $var $gitVars[$var]
         }
     }
