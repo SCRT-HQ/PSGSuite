@@ -81,9 +81,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: powershell-gallery
-    env:
-      GitHubPAT: "${{ secrets.GH_PAT }}"
-      NuGetApiKey: "${{ secrets.PSGALLERY_NUGET_API_KEY }}"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -97,9 +94,13 @@ jobs:
       - name: Deploy Module
         shell: pwsh
         run: |
+          $env:NugetApiKey = "${{ secrets.PSGALLERY_NUGET_API_KEY }}"
+          $env:GitHubPAT = "${{ secrets.GH_PAT }}"
           . ./build.ps1 -Task Deploy
 
       - name: Update Docs
         shell: pwsh
         run: |
+          $env:NugetApiKey = "${{ secrets.PSGALLERY_NUGET_API_KEY }}"
+          $env:GitHubPAT = "${{ secrets.GH_PAT }}"
           . ./build.ps1 -Task Docs

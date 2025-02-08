@@ -107,7 +107,7 @@ else {
     Add-Heading "Finalizing build prerequisites"
     if (
         $Task -eq 'Deploy' -and -not $Force -and (
-            $env:GITHUB_REF -ne 'main' -or
+            $env:GITHUB_REF -notin @('refs/heads/main','main') -or
             $null -eq $env:NugetApiKey
         )
     ) {
@@ -122,7 +122,7 @@ else {
         if ($Task -eq 'Deploy') {
             "Task is 'Deploy' and conditions are correct for deployment:`n" +
             "    + Build script is Force ran     : $($Force)`n" +
-            "    + Current branch is main        : $($env:GITHUB_REF -eq 'main') [$env:GITHUB_REF]`n" +
+            "    + Current branch is main        : $($env:GITHUB_REF -in @('refs/heads/main','main'))[$env:GITHUB_REF]`n" +
             "    + NuGet API key is not null     : $($null -ne $env:NugetApiKey)"| Write-Host -ForegroundColor Green
         }
         Write-BuildLog "Resolving necessary modules"
