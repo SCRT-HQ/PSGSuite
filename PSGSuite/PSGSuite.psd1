@@ -92,7 +92,7 @@
         PSData = @{
 
             # Denotes this as a prerelease
-            Prerelease = '-alpha'
+            Prerelease = 'beta'
 
             # Tags applied to this module. These help with module discovery in online galleries.
             Tags       = 'GSuite', 'Google', 'Apps', 'API', 'Drive', 'Gmail', 'Admin', 'Automation', 'PSEdition_Core', 'Windows', 'Linux', 'Mac'
