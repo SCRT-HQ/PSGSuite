@@ -531,7 +531,7 @@ $deployScriptBlock = {
     # Bump the module version
     if ($versionToDeploy) {
         try {
-            if ([String]::IsNullOrEmpty($env:NugetApiKey)) {
+            if (-not [String]::IsNullOrEmpty($env:NugetApiKey)) {
                 "    Publishing version [$($versionToDeploy)] to PSGallery..."
                 Update-Metadata -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -PropertyName ModuleVersion -Value $versionToDeploy
                 Publish-Module -Path $outputModVerDir -NuGetApiKey $env:NugetApiKey -Repository PSGallery
