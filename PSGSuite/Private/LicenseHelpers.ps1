@@ -21,6 +21,9 @@ function Get-LicenseSkus {
         "1010310008": {"aliases": ["gwep", "educationplus"], "displayName": "Google Workspace for Education Plus", "product": "101031"},
         "1010310009": {"aliases": ["gwepstaff", "educationplusstaff"], "displayName": "Google Workspace for Education Plus (Staff)", "product": "101031"},
         "1010310010": {"aliases": ["gwepstudent", "educationplusstudent"], "displayName": "Google Workspace for Education Plus (Extra Student)", "product": "101031"},
+        "1010330003": {"aliases": ["gvstarter", "voicestarter"], "displayName": "Google Voice Starter", "product": "101033"},
+        "1010330004": {"aliases": ["gvstandard", "voicestandard"], "displayName": "Google Voice Standard", "product": "101033"},
+        "1010330002": {"aliases": ["gvp","gvpremier", "voicepremier"], "displayName": "Google Voice Premier", "product": "101033"},
         "1010370001": {"aliases": ["gwetlu", "educationteachlearnupgrade"], "displayName": "Google Workspace for Education: Teaching and Learning Upgrade", "product": "101037"},
         "1010380001": {"aliases": ["asc", "appsheetcore"], "displayName": "AppSheet Core", "product": "101038"},
         "1010380002": {"aliases": ["ases", "appsheetenterprisestandard"], "displayName": "AppSheet Enterprise Standard", "product": "101038"},
@@ -64,11 +67,11 @@ function Get-LicenseProductHash {
         [String]
         $Key
     )
-    $_result = @{'Cloud-Identity' = '101001'}
+    $_result = @{'Cloud-Identity' = '101001' }
     $_full = Get-LicenseProducts
     $_products = $_full.PSObject.Properties.Name | Sort-Object -Unique
     foreach ($_id in $_products) {
-        $_friendlyname = $_full.$_id -replace '\W+','-'
+        $_friendlyname = $_full.$_id -replace '\W+', '-'
         $_result[$_id] = $_id
         $_result[$_friendlyname] = $_id
     }
@@ -90,7 +93,7 @@ function Get-LicenseSkuHash {
     $_full = Get-LicenseSkus
     $_licenses = $_full.PSObject.Properties.Name | Sort-Object -Unique
     foreach ($_sku in $_licenses) {
-        $_displayName = $_full.$_sku.displayName -replace '\W+','-'
+        $_displayName = $_full.$_sku.displayName -replace '\W+', '-'
         $_result[$_displayName] = $_sku
         foreach ($_alias in $_full.$_sku.aliases) {
             $_result[$_alias] = $_sku
@@ -114,7 +117,7 @@ function Get-LicenseSkuToProductHash {
     $_full = Get-LicenseSkus
     $_licenses = $_full.PSObject.Properties.Name | Sort-Object -Unique
     foreach ($_sku in $_licenses) {
-        $_displayName = $_full.$_sku.displayName -replace '\W+','-'
+        $_displayName = $_full.$_sku.displayName -replace '\W+', '-'
         $_result[$_sku] = $_full.$_sku.product
         $_result[$_displayName] = $_full.$_sku.product
         foreach ($_alias in $_full.$_sku.aliases) {
@@ -129,7 +132,7 @@ function Get-LicenseSkuToProductHash {
     }
 }
 
-function Get-LicenseSkuFromDisplayName  {
+function Get-LicenseSkuFromDisplayName {
     Param (
         [Parameter(Position = 0)]
         [String]
@@ -139,7 +142,7 @@ function Get-LicenseSkuFromDisplayName  {
     $_full = Get-LicenseSkus
     $_licenses = $_full.PSObject.Properties.Name | Sort-Object -Unique
     foreach ($_sku in $_licenses) {
-        $_displayName = $_full.$_sku.displayName -replace '\W+','-'
+        $_displayName = $_full.$_sku.displayName -replace '\W+', '-'
         $_result[$_displayName] = $_sku
     }
     if ($Key) {
@@ -156,11 +159,11 @@ function Get-LicenseProductFromDisplayName {
         [String]
         $Key
     )
-    $_result = @{'Cloud-Identity' = '101001'}
+    $_result = @{'Cloud-Identity' = '101001' }
     $_full = Get-LicenseProducts
     $_products = $_full.PSObject.Properties.Name | Sort-Object -Unique
     foreach ($_id in $_products) {
-        $_friendlyname = $_full.$_id -replace '\W+','-'
+        $_friendlyname = $_full.$_id -replace '\W+', '-'
         $_result[$_friendlyname] = $_id
     }
     if ($Key) {
