@@ -66,7 +66,7 @@
             $choice = switch ($PSCmdlet.ParameterSetName) {
                 Domain {
                     Write-Verbose "Switching active domain to '$Domain'"
-                    $fullConf.Keys | Where-Object {(Decrypt $fullConf[$_]['Domain']) -eq $Domain}
+                    $fullConf.Keys | Where-Object {(Invoke-GSDecrypt $fullConf[$_]['Domain']) -eq $Domain}
                 }
                 ConfigName {
                     Write-Verbose "Switching active config to '$ConfigName'"
