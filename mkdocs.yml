@@ -1,71 +1,107 @@
 # Project information
-site_name: 'PSGSuite'
-site_description: 'PowerShell for G Suite'
-site_author: 'Nate Ferrell'
-site_url: 'https://psgsuite.io'
+site_name: PSGSuite
+site_description: PSGSuite is a Powershell module for Google/Google Workspace API calls wrapped in handy functions. Authentication can be established using a service account via a P12 key to negate the consent popup and allow for a greater hands off automation capabilities.
+site_author: Nate Ferrell
+site_url: https://psgsuite.io
 
 # Repository
-repo_name: 'SCRT-HQ/PSGSuite'
-repo_url: 'https://github.com/SCRT-HQ/PSGSuite'
-edit_uri: 'edit/main/docs'
+repo_name: SCRT-HQ/PSGSuite
+repo_url: https://github.com/SCRT-HQ/PSGSuite
+edit_uri: edit/main/docs
 
 # Copyright
-copyright: 'Copyright &copy; 2015 - 2024 Nate Ferrell'
+copyright: 'Copyright &copy; 2015 - 2025 Nate Ferrell'
 
-# Configuration
+# Theme configuration
 theme:
-  name: 'material'
-  language: 'en'
-  logo:
-    icon: 'keyboard'
+  name: material
+  logo: assets/icons/icons-512.png
+  favicon: assets/icons/icons-192.png
+  language: en
+  features:
+    - announce.dismiss
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - content.tooltips
+    - header.autohide
+    - navigation.footer
+    - navigation.instant
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
   palette:
-    primary: 'blue'
-    accent: 'green'
-  font:
-    text: 'Roboto'
-    code: 'Roboto Mono'
-  feature:
-    tabs: true
-
-# Customization
-extra:
-  disqus: 'psgsuite'
-  manifest: 'manifest.webmanifest'
-  search:
-    tokenizer: '\s+'
-  social:
-    - type: 'github'
-      link: 'https://github.com/scrthq'
-    - type: 'twitter'
-      link: 'https://twitter.com/scrthq'
-    - type: 'linkedin'
-      link: 'https://linkedin.com/in/scrthq'
-
-extra_css:
-  - 'stylesheets/extra.css'
-
-# Google Analytics
-google_analytics:
-  - 'UA-101420411-4'
-  - 'auto'
-
-# Extensions
-markdown_extensions:
-  - admonition
-  - pymdownx.superfences
-  - pymdownx.emoji
-  - pymdownx.tasklist
-  - pymdownx.mark
-  - pymdownx.keys
-  - pymdownx.details
-  - pymdownx.critic
-  - codehilite:
-      guess_lang: true
-  - toc:
-      permalink: true
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      toggle:
+        icon: material/theme-light-dark
+        name: Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      toggle:
+        icon: material/theme-light-dark
+        name: Dark mode
 
 # Plugins
 plugins:
+  - awesome-nav
+  - glightbox:
+      auto_caption: false
+      caption_position: bottom
+      draggable: true
+      effect: zoom
+      height: auto
+      loop: false
+      touchNavigation: true
+      width: 100%
+      zoomable: true
+  - open-in-new-tab
   - search
-  - minify:
-      minify_html: true
+  - social
+
+# Markdown extensions
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji
+  - pymdownx.highlight:
+      auto_title: true
+      auto_title_map:
+        Text Only: Plaintext
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.superfences
+  - pymdownx.tasklist
+  - tables
+  - toc:
+      permalink: true
+
+# Extra configurations
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  analytics:
+    provider: google
+    property: UA-101420411-4
+  disqus: psgsuite
+  manifest: manifest.webmanifest
+  search:
+    tokenizer: '\s+'
+  social:
+    - icon: material/github
+      link: https://github.com/scrthq
+    - icon: material/twitter
+      link: https://twitter.com/scrthq
+    - icon: material/linkedin
+      link: https://linkedin.com/in/scrthq
