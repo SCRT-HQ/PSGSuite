@@ -1,0 +1,7 @@
+nav:
+  - PSGSuite: index.md
+  - Module Installation: pages/module_installation/module_installation.md
+  - Initial Configuration: pages/initial_configuration/initial_configuration.md
+  - Examples: pages/examples
+  - Function Help: pages/function_help
+append_unmatched: true
