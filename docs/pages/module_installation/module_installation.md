@@ -1,62 +1,94 @@
-# Initial Setup
-
-Getting started with PSGSuite.
+# Module Installation
 
 ## Prerequisites
 
 In order to use this module, you will need the following:
 
-* PowerShell 4.0+ or PowerShell Core 6+
-* G Suite account (SuperAdmin needed for full functionality of the module)
+* Version 2.36.4 and earlier:
+    * Windows PowerShell 4.0+
+    * PowerShell 6.0+
+* Version 3.0.0 and newer:
+    * PowerShell 7.4+
+* Full Module Functionality:
+    * Google Workspace SuperAdmin account
+* Partial Module Functionality:
+    * Google Workspace Standard account
+    * Personal Google account
 
 ***
 
 ## Installing the Module
 
-### From the PowerShell Gallery
+### [PowerShell Gallery](https://www.powershellgallery.com/packages/PSGSuite)
 
-Installing items from the Gallery requires the latest version of the PowerShellGet module, which is available in Windows 10, in Windows Management Framework (WMF) 5.0, or in the MSI-based installer (for PowerShell 3 and 4).
+#### Powershell Gallery Requirements
 
-**This will be slightly behind the GitHub repo. Please see below for installation instructions from the GitHub repo.**
+* PowershellGet Module (latest version)
+    * Available in Windows 10 and later
+    * Available in [Windows Management Framework 5.0](http://aka.ms/wmf5download)
+    * Available in the PowerShell 3 and 4 MSI-based installer
 
-1. Open Powershell and run the following command:
+??? info
 
-```PowerShell tab=
+    PowerShell Gallery releases will be slightly behind the GitHub repo. Please see [GitHub Release Page](#github-release-page) if you wish to install a newer version.
+
+```powershell {linenums="1"}
 Install-Module -Name PSGSuite -Scope CurrentUser
 ```
 
-For more information, please visit the [PSGSuite page on the Powershell Gallery](https://www.powershellgallery.com/packages/PSGSuite)
+### GitHub Release Page
 
-### From the GitHub release page
+??? info
+    The GitHub release page will be the same as the PowerShell Gallery. However, if you are looking for a specific version or a pre-release version, you may find it here first.
 
-_**This will be equal to the Powershell Gallery, usually**_
+???+ warning
+    You **must** have the module 'Configuration' installed as a prerequisite. Installing the module from the repo source or the release page does not automatically install dependencies.
 
-**IMPORTANT: You MUST have the module 'Configuration' installed as a prerequisite! Installing the module from the repo source or the release page does not automatically install dependencies!!**
+1. Navigate to the [releases page](https://github.com/nferrell/PSGSuite/releases).
+1. Expand `Assets` and download `PSGSuite.zip`.
+1. Unblock the zip file before unzipping it - this is to prevent from having to unblock each file individually after unzipping.
 
-1. [Click here](https://github.com/nferrell/PSGSuite/releases) to go to the latest releases, then download the *PSGSuite.zip* file attached to the release
-2. Right-click the downloaded zip, select Properties, then unblock the file.
-    _This is to prevent having to unblock each file individually after unzipping._
-3. Unzip the archive.
-4. (Optional) Place the module somewhere in your PSModulePath.
-    * You can view the paths listed by running the environment variable `$env:PSModulePath`
+    ```powershell {linenums="1"}
+    Unblock-File -Path C:\Path\To\PSGSuite.zip -Verbose
+    ```
 
-### Build from the GitHub repo
+1. Unzip the archive.
+1. Place the module somewhere in `$env:PSModulePath`.
 
-_**Bleeding edge fans, contributors, etc**_
+### Build From Source
 
-**IMPORTANT: You MUST have the module 'Configuration' installed as a prerequisite! Installing the module from the repo source or the release page does not automatically install dependencies!!**
+??? note
+    This is intended for developers, contributors and bleeding edge fans.
 
-1. Clone the repo to your computer: `git clone https://github.com/scrthq/PSGSuite.git`
-2. Open the cloned directory: `cd PSGSuite`
-3. Build the module: `.\build.ps1`
+???+ warning
+    You **must** have the module 'Configuration' installed as a prerequisite. Installing the module from the repo source or the release page does not automatically install dependencies.
 
-To import the compiled module in a new session, run this from the repo root:
+1. Clone the repo to your computer
 
-```PowerShell
-Import-Module ./BuildOutput/PSGSuite -Force
-```
+    ```{linenums="1"}
+    git clone https://github.com/scrthq/PSGSuite.git
+    ```
+
+1. Open the cloned directory
+
+    ```{linenums="1"}
+    cd \\Path\To\PSGSuite
+    ```
+
+1. Build the module
+
+    ```powershell {linenums="1"}
+    .\build.ps1
+    ```
+
+1. Import the compiled module in a new session - from the repo root run the following:
+
+    ```powershell {linenums="1"}
+    Import-Module ./BuildOutput/PSGSuite -Force
+    ```
 
 ***
+
 
 ## G Suite Users _with_ SuperAdmin access
 
