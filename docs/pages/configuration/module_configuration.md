@@ -114,7 +114,7 @@ In your Powershell session, create the following variables with the requested in
     ![Customer ID](../../assets/screenshots/customer_id.png)
 1. `$domain`: This is the domain name associated with your Google Workspace account.
 1. `$preference`: This is referenced by certain functions that allow either the Customer ID or Domain to be queried against. You can choose between "CustomerID" or "Domain" for this value.
-1. `$serviceAccountClientId`: This will store the service account client ID in the configuration file and it is purely a convenience parameter. The service account client ID is what you copied on Step 2 when you were setting up [Domain Wide Delegation](../getting_started/google_cloud_configuration.md/#domain-wide-delegation)
+1. `$serviceAccountClientId`: This will store the service account client ID in the configuration file and it is purely a convenience parameter. The service account client ID is what you copied on Step 2 when you were setting up [Domain Wide Delegation](../configuration/google_cloud_configuration.md/#domain-wide-delegation)
 
 Run the following command to create the configuration file:
 

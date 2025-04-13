@@ -139,7 +139,7 @@ Before setting up OAuth 2.0 credentials, you need to set up the OAuth consent sc
     1. Click `Create`.
 1. On the `OAuth client created` pop-up, download the JSON file and save it to a location on your computer. You will need the path where you saved the JSON file later on.
     ![google_cloud_project_oauth_client_id_download.png](../../assets/screenshots/google_cloud_project_oauth_client_id_download.png)
-1. [You can now begin configuring the module](../getting_started/module_configuration.md)
+1. [You can now begin configuring the module](../configuration/module_configuration.md)
 
 ***
 
@@ -233,4 +233,4 @@ In order for the service account to impersonate one or more users in your domain
     https://www.googleapis.com/auth/userinfo.profile
     ```
 
-1. [You can now begin configuring the module](../getting_started/module_configuration.md)
+1. [You can now begin configuring the module](../configuration/module_configuration.md)
