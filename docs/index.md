@@ -66,7 +66,8 @@ PSGSuite is a Powershell module for Google/Google Workspace API calls wrapped in
 
 ## Documentation
 
-* [Getting started](https://psgsuite.io/docs\pages\getting_started\getting_started.md)
+* [Installation](https://psgsuite.io/docs/pages/installation)
+* [Configuration](https://psgsuite.io/docs/pages/configuration)
 * [Examples](https://psgsuite.io/docs/pages/examples)
 * [Function Help](https://psgsuite.io/pages/function_help)
 
