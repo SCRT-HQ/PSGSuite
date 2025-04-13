@@ -1,91 +1,7 @@
 # Module Installation
 
-## Prerequisites
 
-In order to use this module, you will need the following:
 
-* Version 2.36.4 and earlier:
-    * Windows PowerShell 4.0+
-    * PowerShell 6.0+
-* Version 3.0.0 and newer:
-    * PowerShell 7.4+
-* Full Module Functionality:
-    * Google Workspace SuperAdmin account
-* Partial Module Functionality:
-    * Google Workspace Standard account
-    * Personal Google account
-
-***
-
-## Installing the Module
-
-### [PowerShell Gallery](https://www.powershellgallery.com/packages/PSGSuite)
-
-#### Powershell Gallery Requirements
-
-* PowershellGet Module (latest version)
-    * Available in Windows 10 and later
-    * Available in [Windows Management Framework 5.0](http://aka.ms/wmf5download)
-    * Available in the PowerShell 3 and 4 MSI-based installer
-
-??? info
-
-    PowerShell Gallery releases will be slightly behind the GitHub repo. Please see [GitHub Release Page](#github-release-page) if you wish to install a newer version.
-
-```powershell {linenums="1"}
-Install-Module -Name PSGSuite -Scope CurrentUser
-```
-
-### GitHub Release Page
-
-??? info
-    The GitHub release page will be the same as the PowerShell Gallery. However, if you are looking for a specific version or a pre-release version, you may find it here first.
-
-???+ warning
-    You **must** have the module 'Configuration' installed as a prerequisite. Installing the module from the repo source or the release page does not automatically install dependencies.
-
-1. Navigate to the [releases page](https://github.com/nferrell/PSGSuite/releases).
-1. Expand `Assets` and download `PSGSuite.zip`.
-1. Unblock the zip file before unzipping it - this is to prevent from having to unblock each file individually after unzipping.
-
-    ```powershell {linenums="1"}
-    Unblock-File -Path C:\Path\To\PSGSuite.zip -Verbose
-    ```
-
-1. Unzip the archive.
-1. Place the module somewhere in `$env:PSModulePath`.
-
-### Build From Source
-
-??? note
-    This is intended for developers, contributors and bleeding edge fans.
-
-???+ warning
-    You **must** have the module 'Configuration' installed as a prerequisite. Installing the module from the repo source or the release page does not automatically install dependencies.
-
-1. Clone the repo to your computer
-
-    ```{linenums="1"}
-    git clone https://github.com/scrthq/PSGSuite.git
-    ```
-
-1. Open the cloned directory
-
-    ```{linenums="1"}
-    cd \\Path\To\PSGSuite
-    ```
-
-1. Build the module
-
-    ```powershell {linenums="1"}
-    .\build.ps1
-    ```
-
-1. Import the compiled module in a new session - from the repo root run the following:
-
-    ```powershell {linenums="1"}
-    Import-Module ./BuildOutput/PSGSuite -Force
-    ```
 
 ***
 
@@ -111,6 +27,7 @@ Install-Module -Name PSGSuite -Scope CurrentUser
     * Hangouts Chat API
     * People API
     * Tasks API
+*
 2. Leave the dropdown set to 'Create a project' and click the blue 'Continue' button.
     * If you encounter an error stating that `You may not have permission to create projects in this organization. Contact your Google Apps account admin to verify you have the Project Creator role.`, you may need to manually create a project instead as noted in [Issue #116](https://github.com/scrthq/PSGSuite/issues/116). If you are still unable to create a project manually, you will need to contact your domain's G Suite administrators to have them place you in the Project Creator role or create the project for you.
 3. On the next screen, it will run the wizard to assist in adding credentials. Click the blue link that says 'service account' right above the '**Which API are you using?**' question to go to the Service Account Creation page.
