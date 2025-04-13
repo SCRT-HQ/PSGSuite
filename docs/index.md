@@ -60,6 +60,10 @@
 
 ***
 
+## About
+
+PSGSuite is a Powershell module for Google/Google Workspace API calls wrapped in handy functions. Authentication can be established using a service account via a P12 key to negate the consent popup and allow for a greater hands off automation capabilities.
+
 ## Documentation
 
 * [Getting started](https://psgsuite.io/docs\pages\getting_started\getting_started.md)
@@ -68,29 +72,11 @@
 
 ## Contributing
 
-Interested in helping out with PSGSuite development? Please check out our [Contribution Guidelines](https://github.com/scrthq/PSGSuite/blob/main/CONTRIBUTING.md).
-
-### Building PSGSuite Locally
-
-To build the module locally to test changes run `build.ps1` at the root of the repo.
-
-```powershell {linenums="1"}
-.\build.ps1
-```
-
-This will compile the module with your changes and import the newly compiled module at the end by default.
-
-#### Pester Tests
-
-To run the Pester tests locally pass `Test` as the value to the `Task` script parameter like so:
-
-```powershell {linenums="1"}
-.\build.ps1 -Task Test
-```
+Interested in helping out with PSGSuite development? Please check out our [Contribution Guidelines](https://github.com/SCRT-HQ/PSGSuite/blob/main/CONTRIBUTING.md).
 
 ## Code of Conduct
 
-Please adhere to our [Code of Conduct](https://github.com/scrthq/PSGSuite/blob/main/CODE_OF_CONDUCT.md) when interacting with this repo.
+Please adhere to our [Code of Conduct](https://github.com/SCRT-HQ/PSGSuite/blob/main/CODE_OF_CONDUCT.md) when interacting with this repo.
 
 ## License
 
@@ -98,6 +84,4 @@ Please adhere to our [Code of Conduct](https://github.com/scrthq/PSGSuite/blob/m
 
 ## Changelog
 
-[Full CHANGELOG here](https://github.com/scrthq/PSGSuite/blob/main/CHANGELOG.md)
-
-***
+[CHANGELOG](https://github.com/SCRT-HQ/PSGSuite/blob/main/CHANGELOG.md)
