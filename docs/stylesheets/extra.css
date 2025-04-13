@@ -85,3 +85,15 @@
         color: #ffffff;
     }
 }
+
+/* Enable line wrapping for code blocks */
+pre code {
+    white-space: pre-wrap; /* Wrap lines */
+    word-break: break-word; /* Break long words */
+}
+
+/* Optional: Wrap Markdown content */
+.md-typeset p {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
