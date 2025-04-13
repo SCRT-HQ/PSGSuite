@@ -5,9 +5,10 @@ nav:
     - Powershell Gallery: pages/installation/powershell_gallery.md
     - GitHub Releases: pages/installation/github_releases.md
     - Building From Source: pages/installation/building_from_source.md
-  - First Time Configuration:
-    - Google Cloud: pages/first_time_configuration/google_cloud_configuration.md
-    - Module Configuration: pages/first_time_configuration/module_configuration.md
-  - Examples: pages/examples
+  - Getting Started:
+    - Google Cloud: pages/getting_started/google_cloud_configuration.md
+    - Module Configuration: pages/getting_started/module_configuration.md
+  - Examples:
+    - Managing Users: pages/examples/managing_users.md
+    - Multi-Use Configuration: pages/examples/multi_use_configuration.md
   - Function Help: pages/function_help
-append_unmatched: true
