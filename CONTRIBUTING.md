@@ -11,7 +11,6 @@ Thank you for your interest in helping PSGSuite grow! Below you'll find some gui
 - [Getting Started](#getting-started)
     - [Enabling Debug Mode](#enabling-debug-mode)
     - [Google .NET SDK Documentation](#google-net-sdk-documentation)
-        - [.NET/API Documentation Links](#netapi-documentation-links)
 - [Keeping in Touch](#keeping-in-touch)
 
 ## Git and Pull requests
