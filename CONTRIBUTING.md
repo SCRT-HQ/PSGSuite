@@ -5,9 +5,10 @@ Thank you for your interest in helping PSGSuite grow! Below you'll find some gui
 <!-- no toc -->
 - [Git and Pull requests](#git-and-pull-requests)
 - [Overview](#overview)
-    - [Step by Step (High-Level)](#step-by-step-high-level)
-    - [Contributing Guidelines](#contributing-guidelines)
-    - [Updating the Wiki](#updating-the-wiki)
+    - [Code Guidelines](#code-guidelines)
+    - [Documentation Guidelines](#documentation-guidelines)
+        - [Requirements](#requirements)
+        - [Setting up MkDocs Locally](#setting-up-mkdocs-locally)
 - [Getting Started](#getting-started)
     - [Enabling Debug Mode](#enabling-debug-mode)
     - [Google .NET SDK Documentation](#google-net-sdk-documentation)
@@ -24,8 +25,6 @@ Thank you for your interest in helping PSGSuite grow! Below you'll find some gui
 
 ## Overview
 
-### Step by Step (High-Level)
-
 Here's the overall flow of making contributions:
 
 1. Fork the repo
@@ -35,7 +34,7 @@ Here's the overall flow of making contributions:
 5. Pull request is reviewed. Any necessary edits / suggestions will be made
 6. Once changes are approved, the pull request is merged into the origin's main branch and deployed to the PowerShell Gallery once CI tests pass
 
-### Contributing Guidelines
+### Code Guidelines
 
 Please follow these guidelines for any content being added:
 
@@ -66,10 +65,51 @@ Please follow these guidelines for any content being added:
         >
         >This can be copied over from the Changelog entry
 
-### Updating the Wiki
+### Documentation Guidelines
 
-- Wiki updates are scripted during deployment builds, so there is no need to manually update the Wiki.
-- Any new or updated comment-based help content will be transformed to Markdown using `platyPS` and pushed to the Wiki repo when deployment conditions are met.
+The PSGSuite documentation site is built using MkDocs. Follow these steps to spin up MkDocs locally, make changes, and preview your updates before submitting them.
+
+#### Requirements
+
+- Python (version 3.7 or higher):
+    - Download and install Python from [python.org](https://python.org).
+    - Ensure `pip` (Python's package manager) is installed and available in your `PATH`.
+- MkDocs and Dependencies:
+    - Install MkDocs and its dependencies using the provided `requirements.txt` file.
+
+#### Setting up MkDocs Locally
+
+- Fork the PSGSuite repository
+- Clone your forked repository to your local machine
+
+```plaintext
+git clone https://github.com/<your-username>/PSGSuite.git
+```
+
+- Navigate to the cloned repository directory
+
+```plaintext
+cd //path/to/PSGSuite
+```
+
+1. Install dependencies
+
+```plaintext
+pip install -r requirements.txt
+```
+
+1. Start the MkDocs development server and navigate to `http://127.0.0.1:8000` in your web browser
+
+```plaintext
+mkdocs serve
+```
+
+1. Make your edits and submit a pull request
+
+> [!NOTE]
+>
+> The `Function Help` content is automatically updated during the deployment builds. Any new or updated comment-based help will be transformed to Markdown using `platyPS` and pushed when deployment conditions are met.
+Install MkDocs and its dependencies using the provided requirements.txt file.
 
 ## Getting Started
 
