@@ -1,0 +1,12 @@
+cairocffi==1.7.1
+CairoSVG==2.7.1
+Jinja2==3.1.6
+mkdocs-awesome-nav==3.1.1
+mkdocs-glightbox==0.4.0
+mkdocs-material-extensions==1.3.1
+mkdocs-material==9.6.11
+mkdocs-open-in-new-tab==1.0.8
+mkdocs==1.6.1
+Pygments==2.19.1
+pymdown-extensions==10.14.3
+PyYAML==6.0.2
