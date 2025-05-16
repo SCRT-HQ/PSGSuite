@@ -1,25 +1,32 @@
+/* General Styling for Superfences Tabs */
 .superfences-tabs {
     display: flex;
     position: relative;
     flex-wrap: wrap;
+    margin-bottom: 1em;
 }
 
 .superfences-tabs .highlight {
-    background: #ddd;
+    background: var(--md-code-bg-color, #f5f5f5); /* Use theme variable or fallback */
 }
 
 .superfences-tabs .superfences-content {
     display: none;
     order: 99;
     width: 100%;
+    background: var(--md-default-bg-color, #ffffff); /* Use theme variable or fallback */
+    padding: 1em;
+    border-radius: 4px;
 }
 
 .superfences-tabs label {
     width: auto;
     margin: 0 0.5em;
-    padding: 0.25em;
+    padding: 0.25em 0.5em;
     font-size: 120%;
     cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s, color 0.3s;
 }
 
 .superfences-tabs input {
@@ -28,13 +35,65 @@
 }
 
 .superfences-tabs input:nth-child(n+1) {
-    color: #333333;
+    color: var(--md-text-color, #333333); /* Use theme variable or fallback */
 }
 
 .superfences-tabs input:nth-child(n+1):checked + label {
-    color: #2196F3;
+    color: var(--md-primary-fg-color, #2196F3); /* Use theme variable or fallback */
+    font-weight: bold;
 }
 
 .superfences-tabs input:nth-child(n+1):checked + label + .superfences-content {
     display: block;
+}
+
+/* Light Mode Specific Styling */
+@media (prefers-color-scheme: light) {
+    .superfences-tabs .highlight {
+        background: #f5f5f5;
+    }
+
+    .superfences-tabs label {
+        background: #e0e0e0;
+        color: #333333;
+    }
+
+    .superfences-tabs input:nth-child(n+1):checked + label {
+        background: #ffffff;
+        color: #2196F3;
+    }
+}
+
+/* Dark Mode Specific Styling */
+@media (prefers-color-scheme: dark) {
+    .superfences-tabs .highlight {
+        background: #333333;
+    }
+
+    .superfences-tabs label {
+        background: #444444;
+        color: #cccccc;
+    }
+
+    .superfences-tabs input:nth-child(n+1):checked + label {
+        background: #555555;
+        color: #90caf9; /* Lighter blue for better contrast in dark mode */
+    }
+
+    .superfences-tabs .superfences-content {
+        background: #222222;
+        color: #ffffff;
+    }
+}
+
+/* Enable line wrapping for code blocks */
+pre code {
+    white-space: pre-wrap; /* Wrap lines */
+    word-break: break-word; /* Break long words */
+}
+
+/* Optional: Wrap Markdown content */
+.md-typeset p {
+    white-space: pre-wrap;
+    word-break: break-word;
 }

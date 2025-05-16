@@ -1,40 +1,42 @@
 # PSGSuite
 
-## IMPORTANT - PSGSUITE 3.0.0+ REQUIRES POWERSHELL 7.4+
-
-This is a breaking change introduced with PSGSuite 3.0.0. Please see the
+> [!CAUTION]
+>
+> PSGSuite 3.0.0 and later **requires** Powershell 7.4 or newer
+>
+> This is a breaking change introduced with PSGSuite 3.0.0. Please see the
 [CHANGELOG](./CHANGELOG.md) for more information.
 
----
+***
 
 <div align="center">
-  <!-- Discord -->
-  <a href="https://discord.gg/G66zVG7">
-    <img src="https://img.shields.io/discord/235574673155293194.svg?style=flat&label=Discord&logo=discord&color=purple"
-      alt="Discord - Chat" title="Discord - Chat" />
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <!-- Slack -->
-  <a href="https://scrthq-slack-invite.herokuapp.com/">
-    <img src="https://img.shields.io/badge/chat-on%20slack-orange.svg?style=flat&logo=slack"
-      alt="Slack - Chat" title="Slack - Chat" />
-  </a>
-  <br />
-  <br />
-  <!-- PS Gallery -->
-  <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
-    <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat&logo=powershell&color=blue"
-      alt="PowerShell Gallery" title="PowerShell Gallery" />
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <!-- GitHub Releases -->
-  <a href="https://github.com/scrthq/PSGSuite/releases/latest">
-    <img src="https://img.shields.io/github/downloads/scrthq/PSGSuite/total.svg?logo=github&color=blue"
-      alt="GitHub Releases" title="GitHub Releases" />
-  </a>&nbsp;&nbsp;&nbsp;&nbsp;
-  <!-- GitHub Releases -->
-  <a href="https://github.com/scrthq/PSGSuite/releases/latest">
-    <img src="https://img.shields.io/github/release/scrthq/PSGSuite.svg?label=version&logo=github"
-      alt="GitHub Releases" title="GitHub Releases" />
-  </a>
+    <!-- Discord -->
+    <a href="https://discord.gg/G66zVG7">
+        <img src="https://img.shields.io/discord/235574673155293194.svg?style=flat&label=Discord&logo=discord&color=purple"
+            alt="Discord - Chat" title="Discord - Chat" />
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <!-- Slack -->
+    <a href="https://scrthq-slack-invite.herokuapp.com/">
+        <img src="https://img.shields.io/badge/chat-on%20slack-orange.svg?style=flat&logo=slack" alt="Slack - Chat"
+            title="Slack - Chat" />
+    </a>
+    <br />
+    <br />
+    <!-- PS Gallery -->
+    <a href="https://www.PowerShellGallery.com/packages/PSGSuite">
+        <img src="https://img.shields.io/powershellgallery/dt/PSGSuite.svg?style=flat&logo=powershell&color=blue"
+            alt="PowerShell Gallery" title="PowerShell Gallery" />
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <!-- GitHub Releases -->
+    <a href="https://github.com/scrthq/PSGSuite/releases/latest">
+        <img src="https://img.shields.io/github/downloads/scrthq/PSGSuite/total.svg?logo=github&color=blue"
+            alt="GitHub Releases" title="GitHub Releases" />
+    </a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <!-- GitHub Releases -->
+    <a href="https://github.com/scrthq/PSGSuite/releases/latest">
+        <img src="https://img.shields.io/github/release/scrthq/PSGSuite.svg?label=version&logo=github"
+            alt="GitHub Releases" title="GitHub Releases" />
+    </a>
 </div>
 <br />
 
@@ -42,19 +44,11 @@ This is a breaking change introduced with PSGSuite 3.0.0. Please see the
 
 ## Documentation
 
-Check out [PSGSuite.io](https://psgsuite.io/) for PSGSuite documentation, including [initial setup](https://psgsuite.io/Initial%20Setup/) help as well as function help!
+Check out [PSGSuite.io](https://psgsuite.io/) for PSGSuite documentation, including [configuration](https://psgsuite.io/pages/configuration) help as well as function help!
 
 ## Contributing
 
 Interested in helping out with PSGSuite development? Please check out our [Contribution Guidelines](https://github.com/scrthq/PSGSuite/blob/main/CONTRIBUTING.md)!
-
-Building the module locally to test changes is as easy as running the `build.ps1` file in the root of the repo. This will compile the module with your changes and import the newly compiled module at the end by default.
-
-Want to run the Pester tests locally? Pass `Test` as the value to the `Task` script parameter like so:
-
-```powershell
-.\build.ps1 -Task Test
-```
 
 ## Code of Conduct
 
