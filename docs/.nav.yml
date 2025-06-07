@@ -1,0 +1,16 @@
+nav:
+  - PSGSuite: index.md
+  - Installation:
+    - Overview: pages/installation/overview.md
+    - Powershell Gallery: pages/installation/powershell_gallery.md
+    - GitHub Releases: pages/installation/github_releases.md
+    - Building From Source: pages/installation/building_from_source.md
+  - Configuration:
+    - Google Cloud: pages/configuration/google_cloud_configuration.md
+    - Module Configuration: pages/configuration/module_configuration.md
+  - Examples:
+    - User Management: pages/examples/user_management.md
+    - License Management: pages/examples/license_management.md
+    - Custom Schema Management: pages/examples/custom_schemas_management.md
+    - Multi-Use Configuration: pages/examples/multi_use_configuration.md
+  - Function Help: pages/function_help
