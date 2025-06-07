@@ -115,6 +115,18 @@
 
 # PSGSuite - ChangeLog
 
+## 3.x.x - 2025-xx-xx
+
+- Added `-lib` parameter to `Import-GoogleSDK` that defines the path of the directory containing the Google API libraries.
+- Added functionality to programmatically generate module components during the module build process. Further details can be found at [ci\templates\README.md](ci\templates\README.md).
+- Added two additional tasks `Download` and `Generate` to the module build process.
+    - `Download` task performs the downloading of NuGet dependencies which was previously performed by the `Compile` task.
+    - `Generate` task performs the programmatic generation of module content.
+- Changed the `Compile` task of the module build process to support including content from the `Module` and `Classes` directories in the compiled `psgsuite.psm1` file. Content from the module source directories will be compiled into the module in the following order; `Class`, `Private`, `Public`, `Module`
+- Moved the existing module initialization code out of the `Compile` task of the module build process and split into two parts:
+    - The dynamic alias logic has been moved into the `templates\Module\Aliases.ps1` template file.
+    - The static module initialization logic has been moved into  the `Module\Initialization.ps1` file.
+
 ## 3.0.0 - 2024-11-20
 
 ### Breaking Changes

@@ -1,8 +1,9 @@
 function Import-GoogleSDK {
     [CmdletBinding()]
-    Param()
+    Param(
+        [string]$lib = (Resolve-Path "$($script:ModuleRoot)\lib")
+    )
     Process {
-        $lib = Resolve-Path "$($script:ModuleRoot)\lib"
         $refs = @()
         $sdkPath = $lib
         $dlls = Get-ChildItem $sdkPath -Filter "*.dll"
