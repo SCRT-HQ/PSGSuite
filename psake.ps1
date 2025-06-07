@@ -141,7 +141,10 @@ Task Generate -Depends Clean, Download {
     $ExecutionOrder | ForEach-Object {
         
         $RelativeTemplatePath = $_.FullName.Substring($TemplatesPath.Length + 1)
-        $RelativeDirectory = $_.DirectoryName.Substring($TemplatesPath.Length + 1)
+        $RelativeDirectory = $_.DirectoryName.Substring($TemplatesPath.Length)
+        If ($RelativeDirectory -match '^[\\/]'){
+            $RelativeDirectory = $RelativeDirectory.Substring(1)
+        }
         
         Write-BuildLog "Executing template: $RelativeTemplatePath"
         $TemplateResult = & $_.FullName -SourceDirectory $PSScriptRoot
