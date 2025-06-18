@@ -100,21 +100,42 @@ Task Compile -Depends Clean {
     Write-BuildLog 'Creating psm1...'
     $psm1 = Copy-Item -Path (Join-Path -Path $sut -ChildPath 'PSGSuite.psm1') -Destination (Join-Path -Path $outputModVerDir -ChildPath "$($ENV:BHProjectName).psm1") -PassThru
 
-    foreach ($scope in @('Private', 'Public')) {
-        Write-BuildLog "Copying contents from files in source folder to PSM1: $($scope)"
-        $gciPath = Join-Path $sut $scope
-        if (Test-Path $gciPath) {
-            Get-ChildItem -Path $gciPath -Filter "*.ps1" -Recurse -File | ForEach-Object {
-                Write-BuildLog "Working on: $scope$([System.IO.Path]::DirectorySeparatorChar)$($_.FullName.Replace("$gciPath$([System.IO.Path]::DirectorySeparatorChar)",'') -replace '\.ps1$')"
-                [System.IO.File]::AppendAllText($psm1, ("$([System.IO.File]::ReadAllText($_.FullName))`n"))
-                if ($scope -eq 'Public') {
-                    $functionsToExport += $_.BaseName
-                    [System.IO.File]::AppendAllText($psm1, ("Export-ModuleMember -Function '$($_.BaseName)'`n"))
+    If (-not $ENV:BuildDebug){
+        
+        # Normal build
+        # Source code will be copied into the compiled module
+        foreach ($scope in @('Private', 'Public')) {
+            Write-BuildLog "Copying contents from files in source folder to PSM1: $($scope)"
+            $gciPath = Join-Path $sut $scope
+            if (Test-Path $gciPath) {
+                Get-ChildItem -Path $gciPath -Filter "*.ps1" -Recurse -File | ForEach-Object {
+                    Write-BuildLog "Working on: $scope$([System.IO.Path]::DirectorySeparatorChar)$($_.FullName.Replace("$gciPath$([System.IO.Path]::DirectorySeparatorChar)",'') -replace '\.ps1$')"
+                    [System.IO.File]::AppendAllText($psm1, ("$([System.IO.File]::ReadAllText($_.FullName))`n"))
+                    if ($scope -eq 'Public') {
+                        $functionsToExport += $_.BaseName
+                        [System.IO.File]::AppendAllText($psm1, ("Export-ModuleMember -Function '$($_.BaseName)'`n"))
+                    }
                 }
             }
         }
-    }
+    
+    } else {
+        
+        # Debug Build
+        # The module will link directly to the .ps1 files in the source directory for convenient debugging.
+        foreach ($scope in @('Private', 'Public')) {
+            Write-BuildLog "Linking files in source folder to PSM1: $($scope)"
+            $gciPath = Join-Path $sut $scope
+            if (Test-Path $gciPath) {
+                Get-ChildItem -Path $gciPath -Filter "*.ps1" -Recurse -File | ForEach-Object {
+                    Write-BuildLog "Working on: $scope$([System.IO.Path]::DirectorySeparatorChar)$($_.FullName.Replace("$gciPath$([System.IO.Path]::DirectorySeparatorChar)",'') -replace '\.ps1$')"
+                    [System.IO.File]::AppendAllText($psm1, (". '$($_.FullName)'`n"))
+                }
+            }
+        }
+        [System.IO.File]::AppendAllText($psm1, ("Export-ModuleMember -Function * -Variable *"))
 
+    }
 
     Invoke-CommandWithLog { Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue -Force -Verbose:$false }
 
@@ -259,7 +280,15 @@ catch {
     Copy-Item -Path $env:BHPSModuleManifest -Destination $outputModVerDir
 
     # Update FunctionsToExport on manifest
-    Update-ModuleManifest -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -FunctionsToExport ($functionsToExport | Sort-Object) -AliasesToExport ($aliasesToExport | Sort-Object)
+    If (-not $ENV:BuildDebug){
+        # Normal build
+        Update-ModuleManifest -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -FunctionsToExport ($functionsToExport | Sort-Object) -AliasesToExport ($aliasesToExport | Sort-Object)
+    } else {
+        #Debug build
+        write-host $outputModVerDir
+        write-host "$($env:BHProjectName).psd1"
+        Update-ModuleManifest -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -FunctionsToExport '*' -AliasesToExport '*' -VariablesToExport '*'
+    }
 
     if ((Get-ChildItem $outputModVerDir | Where-Object { $_.Name -eq "$($env:BHProjectName).psd1" }).BaseName -cne $env:BHProjectName) {
         "    Renaming manifest to correct casing"

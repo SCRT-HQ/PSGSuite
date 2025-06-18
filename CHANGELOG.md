@@ -115,6 +115,12 @@
 
 # PSGSuite - ChangeLog
 
+## 3.#.# - 2025-##-##
+
+- Added `-DebugBuild` switch to `build.ps1` for improved module debugging. The compiled `PSGSuite.psm1` file will:
+  - Link directly to each source code file found in the `PSGSuite` directory.
+  - Export all module functions and variables to the PowerShell session.
+
 ## 3.0.0 - 2024-11-20
 
 ### Breaking Changes

@@ -10,7 +10,8 @@ param(
 
     [switch]$UpdateModules,
     [switch]$Force,
-    [switch]$Help
+    [switch]$Help,
+    [switch]$DebugBuild
 )
 $env:_BuildStart = Get-Date -Format 'o'
 $ModuleName = 'PSGSuite'
@@ -45,6 +46,7 @@ else {
 
     $env:BuildProjectName = $ModuleName
     $env:BuildScriptPath = $PSScriptRoot
+    $env:BuildDebug = $DebugBuild
 
     if ($Task -contains 'Docs') {
         $env:NoNugetRestore = $true
