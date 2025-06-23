@@ -1,16 +1,17 @@
 ﻿[cmdletbinding()]
 param(
     [parameter( Position = 0)]
-    [ValidateSet('Init','Clean','Compile','Import','Test','Full','Deploy','Skip','Docs')]
+    [ValidateSet('Init','Clean', 'Download', 'Generate', 'Compile','Import','Test','Full','Deploy','Skip','Docs')]
     [string[]]
-    $Task = @('Init','Clean','Compile','Import'),
+    $Task = @('Init','Clean', 'Download', 'Generate', 'Compile','Import'),
     [parameter()]
     [Alias('nr','nor')]
     [switch]$NoRestore,
 
     [switch]$UpdateModules,
     [switch]$Force,
-    [switch]$Help
+    [switch]$Help,
+    [switch]$DebugBuild
 )
 $env:_BuildStart = Get-Date -Format 'o'
 $ModuleName = 'PSGSuite'
@@ -45,6 +46,7 @@ else {
 
     $env:BuildProjectName = $ModuleName
     $env:BuildScriptPath = $PSScriptRoot
+    $env:Build_Debug = $DebugBuild
 
     if ($Task -contains 'Docs') {
         $env:NoNugetRestore = $true

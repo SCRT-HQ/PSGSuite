@@ -115,8 +115,12 @@ Install MkDocs and its dependencies using the provided requirements.txt file.
 
 ### Enabling Debug Mode
 
-> [!WARNING]
-> TODO: Add instructions for how to use `build.ps1` to enable debug mode for the module.
+A debug build of the module can be built by providing the `-DebugBuild` switch to `build.ps1`.
+
+Debug builds contain the following changes:
+
+- All source code is dot sourced within the compiled module instead of being copied directly into the `psgsuite.psm1` file.
+- All module functions and variables are exported to the PowerShell session.
 
 ### Google .NET SDK Documentation
 
