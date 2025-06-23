@@ -134,13 +134,15 @@
 - Added `PSGSuiteValidServiceValues` class that contains and validates the Google API service names that are used by PSGSuite. eg, `Google.Apis.Slides.v1.SlidesService`
 - Added `PSGSuiteValidFunctionValues` class that contains and validates the list of public PSGSuite function names. eg, `Get-GSPresentation`
 - Added `PSGSuiteValidOAuthScopeValues` class that contains and validates the list of OAuth scopes that are used by PSGSuite. eg, `https://www.googleapis.com/auth/drive`
+- Added `PSGSuiteValidClientSecretOAuthScopeValues` class that contains and validates all valid values from `PSGSuityeValidServiceValues`, `PSGSuiteValidFunctionValues` & `PSGSuiteValidOAuthScopeValues`.
 - Added `ci\templates\OAuthScopes.ps1` generation template that scans the PSGSuite source directory for the OAuth scopes, function names and Google API service names that are used by PSGSuite. The discovered data is then used to programmatically produce the following items:
     - `Module\OAuthScopes.ps1` - Contains the module variable `$script:_PSGSuiteOAuthScopes` that contains the dataset used by `Get-PSGSuiteOAuthScope`
     - `Class\PSGSuiteValidServiceValues.ps1`
     - `Class\PSGSuiteValidFunctionValues.ps1`
     - `Class\PSGSuiteValidOAuthScopeValues.ps1`
-
-
+    - `Class\PSGSuiteValidClientSecretOAuthScopeValues.ps1`
+- Added `ClientSecretOAuthScopes` property to the module configuration schema. This property defines the list of OAuth scopes that are requested by default when Client Secrets authentication is used. If no OAuth scopes are specified or a command requires an OAuth scope that is not included in this list, PSGSuite will fallback to requesting each additional OAuth scope when they are used.
+- Added `-ClientSecretOAuthScopes` parameter to `Set-PSGSuiteConfig`. This parameter is validated and accepts any valid Function, API service, or OAuth scope that is used by PSGSuite. eg, `Get-GSPresentation`, `https://www.googleapis.com/auth/drive` or `Google.Apis.Slides.v1.SlidesService`.
 
 ## 3.0.0 - 2024-11-20
 
