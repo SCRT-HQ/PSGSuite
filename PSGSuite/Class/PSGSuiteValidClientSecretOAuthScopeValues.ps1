@@ -1,10 +1,21 @@
 # Programmatically generated from template 'OAuthScopes.ps1'
 # This file will be overwritten during the module build process.
 
-# Class that provides parameter validation for the names of the public PSGSuite functions.
-class PSGSuiteValidFunctionValues : System.Management.Automation.IValidateSetValuesGenerator {
+class PSGSuiteValidClientSecretOAuthScopeValues : System.Management.Automation.IValidateSetValuesGenerator {
     [string[]] GetValidValues() {
         $Values = @(
+            'Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService',
+            'Google.Apis.Admin.Directory.directory_v1.DirectoryService',
+            'Google.Apis.Admin.Reports.reports_v1.ReportsService',
+            'Google.Apis.Calendar.v3.CalendarService',
+            'Google.Apis.Classroom.v1.ClassroomService',
+            'Google.Apis.Drive.v3.DriveService',
+            'Google.Apis.Gmail.v1.GmailService',
+            'Google.Apis.Groupssettings.v1.GroupssettingsService',
+            'Google.Apis.HangoutsChat.v1.HangoutsChatService',
+            'Google.Apis.Licensing.v1.LicensingService',
+            'Google.Apis.Sheets.v4.SheetsService',
+            'Google.Apis.Slides.v1.SlidesService',
             'Add-GSCalendarEventReminder',
             'Add-GSCalendarNotification',
             'Add-GSCalendarSubscription',
@@ -223,7 +234,35 @@ class PSGSuiteValidFunctionValues : System.Management.Automation.IValidateSetVal
             'Update-GSUserLicense',
             'Update-GSUserPhoto',
             'Update-GSUserSchema',
-            'Watch-GSDriveUpload'
+            'Watch-GSDriveUpload',
+            'https://www.googleapis.com/auth/admin.datatransfer',
+            'https://www.googleapis.com/auth/admin.directory.customer',
+            'https://www.googleapis.com/auth/admin.directory.device.chromeos',
+            'https://www.googleapis.com/auth/admin.directory.device.mobile',
+            'https://www.googleapis.com/auth/admin.directory.domain',
+            'https://www.googleapis.com/auth/admin.directory.group',
+            'https://www.googleapis.com/auth/admin.directory.orgunit',
+            'https://www.googleapis.com/auth/admin.directory.resource.calendar',
+            'https://www.googleapis.com/auth/admin.directory.rolemanagement',
+            'https://www.googleapis.com/auth/admin.directory.rolemanagement.readonly',
+            'https://www.googleapis.com/auth/admin.directory.user',
+            'https://www.googleapis.com/auth/admin.directory.user.readonly',
+            'https://www.googleapis.com/auth/admin.directory.user.security',
+            'https://www.googleapis.com/auth/admin.directory.userschema',
+            'https://www.googleapis.com/auth/admin.reports.audit.readonly',
+            'https://www.googleapis.com/auth/admin.reports.usage.readonly',
+            'https://www.googleapis.com/auth/apps.groups.settings',
+            'https://www.googleapis.com/auth/apps.licensing',
+            'https://www.googleapis.com/auth/calendar',
+            'https://www.googleapis.com/auth/chat.bot',
+            'https://www.googleapis.com/auth/classroom.courses',
+            'https://www.googleapis.com/auth/classroom.guardianlinks.students',
+            'https://www.googleapis.com/auth/classroom.profile.emails',
+            'https://www.googleapis.com/auth/classroom.profile.photos',
+            'https://www.googleapis.com/auth/classroom.rosters',
+            'https://www.googleapis.com/auth/drive',
+            'https://www.googleapis.com/auth/gmail.settings.basic',
+            'https://www.googleapis.com/auth/gmail.settings.sharing'
         )
         return $Values
     }

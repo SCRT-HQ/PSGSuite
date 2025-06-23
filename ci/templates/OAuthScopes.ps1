@@ -185,9 +185,15 @@ ForEach ($FunctionName in $Script:FunctionScopes.keys){
 }
 
 # Generate datasets that will be used to validate function parameters
-$ValidServices = $OutputScopes | Select-Object -ExpandProperty 'Service' -Unique
-$ValidFunctions = $OutputScopes | Select-Object -ExpandProperty 'Function' -Unique
-$ValidScopes = $OutputScopes | Select-Object -ExpandProperty 'Scope' -Unique
+$OutputScopes = $OutputScopes | Sort-Object -Property Service, Function, Scope
+$ValidServices = $OutputScopes | Select-Object -ExpandProperty 'Service' -Unique | Sort-Object
+$ValidFunctions = $OutputScopes | Select-Object -ExpandProperty 'Function' -Unique | Sort-Object
+$ValidScopes = $OutputScopes | Select-Object -ExpandProperty 'Scope' -Unique | Sort-Object
+$ValidAllValues = @(
+    $ValidServices
+    $ValidFunctions
+    $ValidScopes
+)
 
 # Return the output
 $HashOutput = @{}
@@ -246,6 +252,20 @@ class PSGSuiteValidOAuthScopeValues : System.Management.Automation.IValidateSetV
 }
 "@
 $HashOutput['\Class\PSGSuiteValidOAuthScopeValues.ps1'] = $Code
+
+
+# \Class\PSGSuiteValidClientSecretOAuthScopeValues
+$Code = @"
+class PSGSuiteValidClientSecretOAuthScopeValues : System.Management.Automation.IValidateSetValuesGenerator {
+    [string[]] GetValidValues() {
+        `$Values = @(
+            '$($ValidAllValues -join "',`n            '")'
+        )
+        return `$Values
+    }
+}
+"@
+$HashOutput['\Class\PSGSuiteValidClientSecretOAuthScopeValues.ps1'] = $Code
 
 
 $HashOutput
