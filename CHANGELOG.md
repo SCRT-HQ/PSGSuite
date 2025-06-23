@@ -129,6 +129,18 @@
 - Added `-DebugBuild` switch to `build.ps1` for improved module debugging. When built with this switch the compiled `PSGSuite.psm1` file will:
   - Link directly to each source code file found in the `PSGSuite` directory.
   - Export all module functions and variables to the PowerShell session.
+- Added `Get-PSGSuiteOAuthScope` function that returns the OAuth scopes that are currently used by PSGSuite.
+- Added `Get-PSGSuiteScope` alias to the `Get-PSGSuiteOAuthScope` function.
+- Added `PSGSuiteValidServiceValues` class that contains and validates the Google API service names that are used by PSGSuite. eg, `Google.Apis.Slides.v1.SlidesService`
+- Added `PSGSuiteValidFunctionValues` class that contains and validates the list of public PSGSuite function names. eg, `Get-GSPresentation`
+- Added `PSGSuiteValidOAuthScopeValues` class that contains and validates the list of OAuth scopes that are used by PSGSuite. eg, `https://www.googleapis.com/auth/drive`
+- Added `ci\templates\OAuthScopes.ps1` generation template that scans the PSGSuite source directory for the OAuth scopes, function names and Google API service names that are used by PSGSuite. The discovered data is then used to programmatically produce the following items:
+    - `Module\OAuthScopes.ps1` - Contains the module variable `$script:_PSGSuiteOAuthScopes` that contains the dataset used by `Get-PSGSuiteOAuthScope`
+    - `Class\PSGSuiteValidServiceValues.ps1`
+    - `Class\PSGSuiteValidFunctionValues.ps1`
+    - `Class\PSGSuiteValidOAuthScopeValues.ps1`
+
+
 
 ## 3.0.0 - 2024-11-20
 
