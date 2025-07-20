@@ -1,4 +1,4 @@
-# Programmatically generated from template 'OAuthScopes.ps1'
+# Programmatically generated from template 'oauthscopes.ps1'
 # This file will be overwritten during the module build process.
 
 # Class that provides parameter validation for the names of the public PSGSuite functions.
@@ -97,6 +97,7 @@ class PSGSuiteValidFunctionValues : System.Management.Automation.IValidateSetVal
             'Get-GSOrganizationalUnit',
             'Get-GSPresentation',
             'Get-GSResource',
+            'Get-GSScope',
             'Get-GSSheetInfo',
             'Get-GSStudentGuardian',
             'Get-GSStudentGuardianInvitation',
@@ -109,9 +110,11 @@ class PSGSuiteValidFunctionValues : System.Management.Automation.IValidateSetVal
             'Get-GSUserSchema',
             'Get-GSUserToken',
             'Get-GSUserVerificationCodes',
+            'Get-PSGSuiteAuthenticationMethod',
             'Get-PSGSuiteConfig',
-            'Get-PSGSuiteOAuthScope',
+            'Get-PSGSuiteScope',
             'Get-PSGSuiteServiceCache',
+            'Grant-GSScope',
             'Hide-GSDrive',
             'Import-GSSheet',
             'Import-PSGSuiteConfig',
@@ -176,8 +179,11 @@ class PSGSuiteValidFunctionValues : System.Management.Automation.IValidateSetVal
             'Remove-GSUserPhoto',
             'Remove-GSUserSchema',
             'Remove-GSUserToken',
+            'Resolve-PSGSuiteScope',
             'Restore-GSUser',
+            'Revoke-GSScope',
             'Revoke-GSStudentGuardianInvitation',
+            'Revoke-GSToken',
             'Revoke-GSUserVerificationCodes',
             'Send-GSChatMessage',
             'Send-GSGmailSendAsConfirmation',

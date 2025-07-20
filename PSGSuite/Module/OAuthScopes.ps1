@@ -1,9 +1,19 @@
-# Programmatically generated from template 'OAuthScopes.ps1'
+# Programmatically generated from template 'oauthscopes.ps1'
 # This file will be overwritten during the module build process.
 
-# Scope data that is used by the Get-PSGSuiteOAuthScope function.
-$script:_PSGSuiteOAuthScopes = @'
+# Scope data that is used by the Get-PSGSuiteScope function.
+$script:_PSGSuiteScopes = @'
 [
+  {
+    "Function": null,
+    "Service": null,
+    "Scope": "https://www.googleapis.com/auth/userinfo.email"
+  },
+  {
+    "Function": null,
+    "Service": null,
+    "Scope": "openid"
+  },
   {
     "Function": "Add-GSCalendarEventReminder",
     "Service": null,
@@ -145,17 +155,32 @@ $script:_PSGSuiteOAuthScopes = @'
     "Scope": null
   },
   {
+    "Function": "Get-GSScope",
+    "Service": null,
+    "Scope": null
+  },
+  {
+    "Function": "Get-PSGSuiteAuthenticationMethod",
+    "Service": null,
+    "Scope": null
+  },
+  {
     "Function": "Get-PSGSuiteConfig",
     "Service": null,
     "Scope": null
   },
   {
-    "Function": "Get-PSGSuiteOAuthScope",
+    "Function": "Get-PSGSuiteScope",
     "Service": null,
     "Scope": null
   },
   {
     "Function": "Get-PSGSuiteServiceCache",
+    "Service": null,
+    "Scope": null
+  },
+  {
+    "Function": "Grant-GSScope",
     "Service": null,
     "Scope": null
   },
@@ -171,6 +196,21 @@ $script:_PSGSuiteOAuthScopes = @'
   },
   {
     "Function": "New-GSPresentationUpdateRequest",
+    "Service": null,
+    "Scope": null
+  },
+  {
+    "Function": "Resolve-PSGSuiteScope",
+    "Service": null,
+    "Scope": null
+  },
+  {
+    "Function": "Revoke-GSScope",
+    "Service": null,
+    "Scope": null
+  },
+  {
+    "Function": "Revoke-GSToken",
     "Service": null,
     "Scope": null
   },

@@ -1,4 +1,4 @@
-# Programmatically generated from template 'OAuthScopes.ps1'
+# Programmatically generated from template 'oauthscopes.ps1'
 # This file will be overwritten during the module build process.
 
 # Class that provides parameter validation for the list of OAuth scopes that are used by all PSGSuite functions.
@@ -32,7 +32,9 @@ class PSGSuiteValidOAuthScopeValues : System.Management.Automation.IValidateSetV
             'https://www.googleapis.com/auth/classroom.rosters',
             'https://www.googleapis.com/auth/drive',
             'https://www.googleapis.com/auth/gmail.settings.basic',
-            'https://www.googleapis.com/auth/gmail.settings.sharing'
+            'https://www.googleapis.com/auth/gmail.settings.sharing',
+            'https://www.googleapis.com/auth/userinfo.email',
+            'openid'
         )
         return $Values
     }

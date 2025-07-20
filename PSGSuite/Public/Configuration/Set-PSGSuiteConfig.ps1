@@ -30,7 +30,7 @@ function Set-PSGSuiteConfig {
     .PARAMETER ClientSecrets
     The string contents of the Client Secrets JSON file downloaded from the Google Developer's Console. Using the ClientSecrets JSON will prompt the user to complete OAuth2 authentication in their browser on the first run and store the retrieved Refresh and Access tokens in the user's home directory. If JSONServiceAccountKeyPath or P12KeyPath is also specified, ClientSecrets will be ignored.
 
-    .PARAMETER ClientSecretOAuthScopes
+    .PARAMETER ClientSecretScopes
     The list of OAuth scopes that are requested by default when Client Secrets authentication is used. If no OAuth scopes are specified or a command requires an OAuth scope that is not included in this list, PSGSuite will fallback to requesting the missing OAuth scopes when they are used.
 
     Accepted values are:
@@ -40,7 +40,7 @@ function Set-PSGSuiteConfig {
 
     When an API service or PSGSuite function is specified the values will be resolved to their respective OAuth scopes.
 
-    See PSGSuite help or use `Get-PSGSuiteOAuthScope` to see the list of OAuth scopes, functions and API services.
+    See PSGSuite help or use `Get-PSGSuiteScope` to see the list of OAuth scopes, functions and API services.
 
     .PARAMETER AppEmail
     The application email from the Google Developer's Console. This typically looks like the following:
@@ -92,7 +92,7 @@ function Set-PSGSuiteConfig {
     This builds a config names "personal" and sets it as the default config
 
     .EXAMPLE
-    Set-PSGSuiteConfig -ConfigName "personal" -ClientSecretsPath "C:\Keys\Client_Secret.json" -ClientSecretOAuthScopes @("Get-GSUser", "Google.Apis.Calendar.v3.CalendarService") -AdminEmail "user@domain.com" -SetAsDefaultConfig
+    Set-PSGSuiteConfig -ConfigName "personal" -ClientSecretsPath "C:\Keys\Client_Secret.json" -ClientSecretScopes @("Get-GSUser", "Google.Apis.Calendar.v3.CalendarService") -AdminEmail "user@domain.com" -SetAsDefaultConfig
 
     This builds a config named "personal" and sets it as the default config. Client Secrets authentication is used and the OAuth scopes used by the "Get-GSUser" function and the Google Calendar API service are specified for use during OAuth authentication.
     #>
@@ -136,9 +136,9 @@ function Set-PSGSuiteConfig {
         [string]
         $ClientSecrets,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
-        [ValidateSet([PSGSuiteValidClientSecretOAuthScopeValues])]
+        [ValidateSet([PSGSuiteValidScopeIdentifierValues])]
         [string[]]
-        $ClientSecretOAuthScopes,
+        $ClientSecretScopes,
         [parameter(Mandatory = $false,ValueFromPipelineByPropertyName = $true)]
         [string]
         $AppEmail,
@@ -188,7 +188,7 @@ function Set-PSGSuiteConfig {
             }
         }
         Write-Verbose "Setting config name '$ConfigName'"
-        $configParams = @('P12Key','P12KeyPath','P12KeyPassword','JSONServiceAccountKeyPath','JSONServiceAccountKey','ClientSecretsPath','ClientSecrets','ClientSecretOAuthScopes','AppEmail','AdminEmail','CustomerID','Domain','Preference','ServiceAccountClientID','Webhook','Space')
+        $configParams = @('P12Key','P12KeyPath','P12KeyPassword','JSONServiceAccountKeyPath','JSONServiceAccountKey','ClientSecretsPath','ClientSecrets','ClientSecretScopes','AppEmail','AdminEmail','CustomerID','Domain','Preference','ServiceAccountClientID','Webhook','Space')
         if ($SetAsDefaultConfig -or !$configHash["DefaultConfig"]) {
             $configHash["DefaultConfig"] = $ConfigName
         }
@@ -226,10 +226,10 @@ function Set-PSGSuiteConfig {
                         $configHash["$ConfigName"]['ClientSecrets'] = (Invoke-GSEncrypt $(Get-Content $PSBoundParameters[$key] -Raw))
                     }
                 }
-                ClientSecretOAuthScopes {
-                    $configHash["$ConfigName"]['ClientSecretOAuthScopes']  = @()
+                ClientSecretScopes {
+                    $configHash["$ConfigName"]['ClientSecretScopes']  = @()
                     foreach ($Entry in $PSBoundParameters[$key]){
-                        $configHash["$ConfigName"]['ClientSecretOAuthScopes'] += Invoke-GSEncrypt $Entry
+                        $configHash["$ConfigName"]['ClientSecretScopes'] += Invoke-GSEncrypt $Entry
                     }
                 }
                 Webhook {

@@ -1,4 +1,4 @@
-# Programmatically generated from template 'OAuthScopes.ps1'
+# Programmatically generated from template 'oauthscopes.ps1'
 # This file will be overwritten during the module build process.
 
 # Class that provides parameter validation for the Google API services that are used by PSGSuite.

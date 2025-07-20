@@ -17,7 +17,7 @@ Param(
     5. If any API services or OAuth scopes were found for the referenced function, they are copied to the current function.
 
     The items found for all public functions are used to generate the PowerShell code that defines the following items:
-    - $script:_PSGSuiteOAuthScopes - This is an array that contains all items that were found.
+    - $script:_PSGSuiteScopes - This is an array that contains all items that were found.
     - class [PSGSuiteValidServiceValues] - This is a parameter validation class that contains all Google API services that were found.
     - class [PSGSuiteValidFunctionValues] - This is a parameter validation class that contains all of the public PSGSuite function names.
     - class [PSGSuiteValidOAuthScopeValues] - This is a parameter validation class that contains all of the OAuth scopes that were found.
@@ -184,6 +184,19 @@ ForEach ($FunctionName in $Script:FunctionScopes.keys){
     }
 }
 
+# Manual scope entry for the mandatory userinfo.email and openid scopes
+# They are required for validating the owner of generated UserCredentials
+$OutputScopes += [PSCustomObject]@{
+    'Function' = $null
+    'Service' = $null
+    'Scope' = 'https://www.googleapis.com/auth/userinfo.email'
+}
+$OutputScopes += [PSCustomObject]@{
+    'Function' = $null
+    'Service' = $null
+    'Scope' = 'openid'
+}
+
 # Generate datasets that will be used to validate function parameters
 $OutputScopes = $OutputScopes | Sort-Object -Property Service, Function, Scope
 $ValidServices = $OutputScopes | Select-Object -ExpandProperty 'Service' -Unique | Sort-Object
@@ -201,8 +214,8 @@ $HashOutput = @{}
 
 # \Module\OAuthScopes.ps1
 $Code = @"
-# Scope data that is used by the Get-PSGSuiteOAuthScope function.
-`$script:_PSGSuiteOAuthScopes = @'
+# Scope data that is used by the Get-PSGSuiteScope function.
+`$script:_PSGSuiteScopes = @'
 $($OutputScopes | ConvertTo-Json)
 '@ | ConvertFrom-Json
 "@
@@ -254,9 +267,9 @@ class PSGSuiteValidOAuthScopeValues : System.Management.Automation.IValidateSetV
 $HashOutput['\Class\PSGSuiteValidOAuthScopeValues.ps1'] = $Code
 
 
-# \Class\PSGSuiteValidClientSecretOAuthScopeValues
+# \Class\PSGSuiteValidScopeIdentifierValues
 $Code = @"
-class PSGSuiteValidClientSecretOAuthScopeValues : System.Management.Automation.IValidateSetValuesGenerator {
+class PSGSuiteValidScopeIdentifierValues : System.Management.Automation.IValidateSetValuesGenerator {
     [string[]] GetValidValues() {
         `$Values = @(
             '$($ValidAllValues -join "',`n            '")'
@@ -265,7 +278,7 @@ class PSGSuiteValidClientSecretOAuthScopeValues : System.Management.Automation.I
     }
 }
 "@
-$HashOutput['\Class\PSGSuiteValidClientSecretOAuthScopeValues.ps1'] = $Code
+$HashOutput['\Class\PSGSuiteValidScopeIdentifierValues.ps1'] = $Code
 
 
 $HashOutput

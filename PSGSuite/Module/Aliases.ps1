@@ -45,7 +45,6 @@ $aliasHash = #    Alias  =>  =>  =>  =>  =>  =>  =>  =>  Function
     'Update-GSGmailSendAsSettings'      = 'Update-GSGmailSendAsAlias'
     'Update-GSSheetValue'               = 'Export-GSSheet'
     'Update-GSTeamDrive'                = 'Update-GSDrive'
-    'Get-PSGSuiteScope'                 = 'Get-PSGSuiteOAuthScope'
 }
 
 foreach ($key in $aliasHash.Keys) {

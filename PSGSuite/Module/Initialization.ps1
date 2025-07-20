@@ -108,3 +108,6 @@ Get-PSGSuiteConfig -Path '$ModuleRoot\$env:USERNAME-$env:COMPUTERNAME-$env:PSGSu
 catch {
     Write-Warning "There was no config returned! Please make sure you are using the correct key or have a configuration already saved."
 }
+
+# File path to the directory where Google OAuth tokens are persisted on disk
+$Script:_PSGSuiteCredPath = Join-Path (Resolve-Path (Join-Path "~" ".scrthq")) "PSGSuite"

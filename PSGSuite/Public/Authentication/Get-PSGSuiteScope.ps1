@@ -1,4 +1,4 @@
-Function Get-PSGSuiteOAuthScope {
+Function Get-PSGSuiteScope {
     <#
     .SYNOPSIS
     Returns the OAuth scopes used by PSGSuite
@@ -32,7 +32,7 @@ Function Get-PSGSuiteOAuthScope {
     Returns the unique scope values only
 
     .EXAMPLE
-    PS > Get-PSGSuiteOAuthScope -Service Google.Apis.Slides.v1.SlidesService
+    PS > Get-PSGSuiteScope -Service Google.Apis.Slides.v1.SlidesService
 
     Function            Service                             Scope
     --------            -------                             -----
@@ -40,13 +40,13 @@ Function Get-PSGSuiteOAuthScope {
     Edit-GSPresentation Google.Apis.Slides.v1.SlidesService https://www.googleapis.com/auth/drive
 
     .EXAMPLE
-    PS > Get-PSGSuiteOAuthScope -Function 'Get-GSUser' -ValueOnly
+    PS > Get-PSGSuiteScope -Function 'Get-GSUser' -ValueOnly
 
     https://www.googleapis.com/auth/admin.directory.user
     https://www.googleapis.com/auth/admin.directory.user.readonly
 
     .EXAMPLE
-    PS > Get-PSGSuiteOAuthScope -Scope https://www.googleapis.com/auth/chat.bot
+    PS > Get-PSGSuiteScope -Scope https://www.googleapis.com/auth/chat.bot
 
     Function             Service                                         Scope
     --------             -------                                         -----
@@ -58,7 +58,7 @@ Function Get-PSGSuiteOAuthScope {
     Get-GSChatMember     Google.Apis.HangoutsChat.v1.HangoutsChatService https://www.googleapis.com/auth/chat.bot
 
     .LINK
-    https://psgsuite.io/Function%20Help/Authentication/Get-PSGSuiteOAuthScope/
+    https://psgsuite.io/Function%20Help/Authentication/Get-PSGSuiteScope/
 
     .LINK
     https://developers.google.com/identity/protocols/oauth2/scopes
@@ -88,7 +88,7 @@ Function Get-PSGSuiteOAuthScope {
     )
 
     begin {
-        If (-not $Script:_PSGSuiteOAuthScopes){
+        If (-not $script:_PSGSuiteScopes){
             $PSCmdlet.ThrowTerminatingError((ThrowTerm "The PSGSuite scopes were not found"))
         }
     }
@@ -99,11 +99,11 @@ Function Get-PSGSuiteOAuthScope {
             
             'GetService' {
                 If ($ValueOnly){
-                    Write-Verbose "Getting all unique scope values objects for service '$Service'"
-                    $script:_PSGSuiteOAuthScopes | Where-Object {$_.Service -eq $Service} | Select-Object -ExpandProperty 'Scope' -Unique
+                    Write-Verbose "Getting all unique OAuth scope values for service '$Service'"
+                    $script:_PSGSuiteScopes | Where-Object {$_.Service -eq $Service} | Select-Object -ExpandProperty 'Scope' -Unique
                 } else {
-                    Write-Verbose "Getting all scope objects for service '$Service'"
-                    $script:_PSGSuiteOAuthScopes | Where-Object {$_.Service -eq $Service} | ForEach-Object {
+                    Write-Verbose "Getting all OAuth scope objects for service '$Service'"
+                    $script:_PSGSuiteScopes | Where-Object {$_.Service -eq $Service} | ForEach-Object {
                         $_.psobject.Copy()
                     }
                 }
@@ -111,11 +111,11 @@ Function Get-PSGSuiteOAuthScope {
 
             'GetFunction' {
                 If ($ValueOnly){
-                    Write-Verbose "Getting all unique scope values for function '$Function'"
-                    $script:_PSGSuiteOAuthScopes | Where-Object {$_.Function -eq $Function} | Select-Object -ExpandProperty 'Scope' -Unique
+                    Write-Verbose "Getting all unique OAuth scope values for function '$Function'"
+                    $script:_PSGSuiteScopes | Where-Object {$_.Function -eq $Function} | Select-Object -ExpandProperty 'Scope' -Unique
                 } else {
-                    Write-Verbose "Getting all scope objects for function '$Function'"
-                    $script:_PSGSuiteOAuthScopes | Where-Object {$_.Function -eq $Function} | ForEach-Object {
+                    Write-Verbose "Getting all OAuth scope objects for function '$Function'"
+                    $script:_PSGSuiteScopes | Where-Object {$_.Function -eq $Function} | ForEach-Object {
                         $_.psobject.Copy()
                     }
                 }
@@ -123,11 +123,11 @@ Function Get-PSGSuiteOAuthScope {
 
             'GetScope' {
                 If ($ValueOnly){
-                    Write-Verbose "Getting all unique scope values for scope '$Scope'"
-                    $script:_PSGSuiteOAuthScopes | Where-Object {$_.Scope -eq $Scope} | Select-Object -ExpandProperty 'Scope' -Unique
+                    Write-Verbose "Getting all unique OAuth scope values for scope '$Scope'"
+                    $script:_PSGSuiteScopes | Where-Object {$_.Scope -eq $Scope} | Select-Object -ExpandProperty 'Scope' -Unique
                 } else {
-                    Write-Verbose "Getting all scope objects for scope '$Scope'"
-                    $script:_PSGSuiteOAuthScopes | Where-Object {$_.Scope -eq $Scope} | ForEach-Object {
+                    Write-Verbose "Getting all OAuth scope objects for scope '$Scope'"
+                    $script:_PSGSuiteScopes | Where-Object {$_.Scope -eq $Scope} | ForEach-Object {
                         $_.psobject.Copy()
                     }
                 }
@@ -135,11 +135,11 @@ Function Get-PSGSuiteOAuthScope {
 
             'GetAll' {
                 If ($ValueOnly){
-                    Write-Verbose "Getting all unique scope values"
-                    $script:_PSGSuiteOAuthScopes | Select-Object -ExpandProperty 'Scope' -Unique
+                    Write-Verbose "Getting all unique OAuth scope values"
+                    $script:_PSGSuiteScopes | Select-Object -ExpandProperty 'Scope' -Unique
                 } else {
-                    Write-Verbose "Getting all scope objects"
-                    $script:_PSGSuiteOAuthScopes | ForEach-Object {
+                    Write-Verbose "Getting all OAuth scope objects"
+                    $script:_PSGSuiteScopes | ForEach-Object {
                         $_.psobject.Copy()
                     }
                 }

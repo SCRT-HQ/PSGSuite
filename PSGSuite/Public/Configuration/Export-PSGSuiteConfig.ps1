@@ -41,7 +41,7 @@ function Export-PSGSuiteConfig {
     Process {
         try {
             Write-Verbose "Exporting config '$ConfigName' to path: $Path"
-            $baseConf | Select-Object ConfigName,P12Key,ClientSecrets,ClientSecretOAuthScopes,AppEmail,AdminEmail,CustomerId,Domain,Preference | ConvertTo-Json -Depth 5 -Compress -Verbose:$false | Set-Content -Path $Path -Verbose:$false
+            $baseConf | Select-Object ConfigName,P12Key,ClientSecrets,ClientSecretScopes,AppEmail,AdminEmail,CustomerId,Domain,Preference | ConvertTo-Json -Depth 5 -Compress -Verbose:$false | Set-Content -Path $Path -Verbose:$false
         }
         catch {
             $PSCmdlet.ThrowTerminatingError($_)

@@ -1,7 +1,7 @@
-# Programmatically generated from template 'OAuthScopes.ps1'
+# Programmatically generated from template 'oauthscopes.ps1'
 # This file will be overwritten during the module build process.
 
-class PSGSuiteValidClientSecretOAuthScopeValues : System.Management.Automation.IValidateSetValuesGenerator {
+class PSGSuiteValidScopeIdentifierValues : System.Management.Automation.IValidateSetValuesGenerator {
     [string[]] GetValidValues() {
         $Values = @(
             'Google.Apis.Admin.DataTransfer.datatransfer_v1.DataTransferService',
@@ -108,6 +108,7 @@ class PSGSuiteValidClientSecretOAuthScopeValues : System.Management.Automation.I
             'Get-GSOrganizationalUnit',
             'Get-GSPresentation',
             'Get-GSResource',
+            'Get-GSScope',
             'Get-GSSheetInfo',
             'Get-GSStudentGuardian',
             'Get-GSStudentGuardianInvitation',
@@ -120,9 +121,11 @@ class PSGSuiteValidClientSecretOAuthScopeValues : System.Management.Automation.I
             'Get-GSUserSchema',
             'Get-GSUserToken',
             'Get-GSUserVerificationCodes',
+            'Get-PSGSuiteAuthenticationMethod',
             'Get-PSGSuiteConfig',
-            'Get-PSGSuiteOAuthScope',
+            'Get-PSGSuiteScope',
             'Get-PSGSuiteServiceCache',
+            'Grant-GSScope',
             'Hide-GSDrive',
             'Import-GSSheet',
             'Import-PSGSuiteConfig',
@@ -187,8 +190,11 @@ class PSGSuiteValidClientSecretOAuthScopeValues : System.Management.Automation.I
             'Remove-GSUserPhoto',
             'Remove-GSUserSchema',
             'Remove-GSUserToken',
+            'Resolve-PSGSuiteScope',
             'Restore-GSUser',
+            'Revoke-GSScope',
             'Revoke-GSStudentGuardianInvitation',
+            'Revoke-GSToken',
             'Revoke-GSUserVerificationCodes',
             'Send-GSChatMessage',
             'Send-GSGmailSendAsConfirmation',
@@ -262,7 +268,9 @@ class PSGSuiteValidClientSecretOAuthScopeValues : System.Management.Automation.I
             'https://www.googleapis.com/auth/classroom.rosters',
             'https://www.googleapis.com/auth/drive',
             'https://www.googleapis.com/auth/gmail.settings.basic',
-            'https://www.googleapis.com/auth/gmail.settings.sharing'
+            'https://www.googleapis.com/auth/gmail.settings.sharing',
+            'https://www.googleapis.com/auth/userinfo.email',
+            'openid'
         )
         return $Values
     }
