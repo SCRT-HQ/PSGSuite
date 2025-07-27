@@ -115,6 +115,68 @@
 
 # PSGSuite - ChangeLog
 
+## 3.x.x - 2025-xx-xx
+
+The way PSGSuite handles Client Secrets authentication has been significantly updated, requiring some changes to your setup. Service Account (JSON or P12 key) authentication is not affected by these changes.
+
+### Breaking Changes
+
+- Refactored Client Secrets Authentication
+    - Flexible OAuth Scope Management:
+        - The previous static list of OAuth Scopes is replaced by the new `ClientSecretScopes` configuration property. This property allows you to define a custom list of OAuth Scopes that are included in all authorization requests by default.
+        - If a required OAuth scope is missing from `ClientSecretScopes`, PSGSuite will now incrementally request authorization for each additional scope as needed. This change enables all PSGSuite functions to be used with Client Secrets authentication.
+        - **Action Required:** Update your Cloud Projects to include all OAuth Scopes you intend to use. To avoid individual authorization prompts for new scopes, add all necessary scopes to the `ClientSecretScopes` configuration property.
+    - Per-Configuration OAuth Token Tracking:
+        - Saved OAuth tokens are now tracked per PSGSuite configuration. This means you can use the same user account with multiple PSGSuite configurations, each with different authorized OAuth scopes.
+        - **Action Required**: All existing OAuth tokens must be re-authorized. After updating, you'll be prompted to re-authorize PSGSuite to access your user account.
+    - Updated OAuth Authorization Workflow:
+        - PSGSuite now exclusively uses `LocalServerCodeReceiver` for user authorization prompts. This replaces the deprecated `PromptCodeReceiver`.
+        - **Requirement:** A web browser must be installed on the local system for this method to work.
+    - Enhanced Authorization Token Validation:
+        - Authorization tokens are now validated to ensure they were issued for the user who initiated the authorization. This prevents commands from being executed against the wrong user account.
+        - If a token is issued for an incorrect user, it will be revoked, and the command will fail. Previously, the token would be accepted regardless of the linked user.
+        - To enable this validation, PSGSuite will always request the `https://www.googleapis.com/auth/userinfo.email` OAuth Scope when authorizing user accounts, regardless of the `ClientSecretScopes` configuration.
+        - **Action Required:** Update all Cloud Projects to include the `https://www.googleapis.com/auth/userinfo.email` scope. 
+
+### Other Changes
+
+- Added `-lib` parameter to `Import-GoogleSDK` that defines the path of the directory containing the Google API libraries.
+- Added functionality to programmatically generate module components during the module build process. Further details can be found at [ci\templates\README.md](ci\templates\README.md).
+- Added two additional tasks `Download` and `Generate` to the module build process.
+    - `Download` task performs the downloading of NuGet dependencies which was previously performed by the `Compile` task.
+    - `Generate` task performs the programmatic generation of module content.
+- Changed the `Compile` task of the module build process to support including content from the `Module` and `Classes` directories in the compiled `psgsuite.psm1` file. Content from the module source directories will be compiled into the module in the following order; `Class`, `Private`, `Public`, `Module`
+- Moved the existing module initialization code out of the `Compile` task of the module build process and split into two parts:
+    - The dynamic alias logic has been moved into the `templates\Module\Aliases.ps1` template file.
+    - The static module initialization logic has been moved into  the `Module\Initialization.ps1` file.
+- Added `-DebugBuild` switch to `build.ps1` for improved module debugging. When built with this switch the compiled `PSGSuite.psm1` file will:
+  - Link directly to each source code file found in the `PSGSuite` directory.
+  - Export all module functions and variables to the PowerShell session.
+- Added new functions:
+    * `Get-PSGSuiteScope`: Returns the OAuth scopes used by PSGSuite.
+    * `Get-GSScope`: Returns the OAuth scopes PSGSuite is authorized to access for a specified user when Client Secrets authentication is used.
+    * `Get-PSGSuiteAuthenticationMethod`: Returns the name of the currently configured authentication method (e.g., `Service-Account-JSON-Key`, `Service-Account-P12-Key`, `Client-Secrets-OAuth`).
+    - `Grant-GSScope`: Supports `Client Secrets` authentication only. Requests authorization for PSGSuite to access the specified OAuth scopes.
+    - `Revoke-GSScope`: Supports `Client Secrets` authentication only. Revokes PSGSuite's authorization to access the specified OAuth scopes.
+    - `Revoke-GSToken`: Supports `Client Secrets` authentication only. Revokes PSGSuite's authorization to access the specified user account.
+    - `Resolve-PSGSuiteScope`: Resolves the provided OAuth scope identifiers to their corresponding OAuth scope values.
+- Added new parameter validation classes:
+    * `PSGSuiteValidServiceValues`: Validates Google API service names (e.g., `Google.Apis.Slides.v1.SlidesService`).
+    * `PSGSuiteValidFunctionValues`: Validates public PSGSuite function names (e.g., `Get-GSPresentation`).
+    * `PSGSuiteValidScopeValues`: Validates OAuth scopes used by PSGSuite (e.g., `https://www.googleapis.com/auth/drive`).
+    * `PSGSuiteValidScopeIdentifierValues`: Validates all values from `PSGSuiteValidServiceValues`, `PSGSuiteValidFunctionValues`, and `PSGSuiteValidScopeValues`.
+- Added dynamic content generation templates:
+* Added `ClientSecretScopes` property to the module configuration schema. This property defines the default OAuth scopes requested during Client Secrets authentication.
+* Updated `Set-PSGSuiteConfig`, `Export-PSGSuiteConfig` and `Get-GSDecryptedConfig` with support for the `ClientSecretScopes` configuration property.
+* Refactored `New-GoogleService` moving the existing authentication code into new private functions `New-ServiceAccountCredential` and `New-GoogleUserCredential` for improved code re-usability.
+* Added template `ci\templates\OAuthScopes.ps1` that scans the PSGSuite source directory to automatically generate:
+    * `Module\OAuthScopes.ps1` (containing `$script:_PSGSuiteScopes` used by `Get-PSGSuiteScope`)
+    * `Class\PSGSuiteValidServiceValues.ps1`
+    * `Class\PSGSuiteValidFunctionValues.ps1`
+    * `Class\PSGSuiteValidOAuthScopeValues.ps1`
+    * `Class\PSGSuiteValidScopeIdentifierValues.ps1`
+
+
 ## 3.0.0 - 2024-11-20
 
 ### Breaking Changes

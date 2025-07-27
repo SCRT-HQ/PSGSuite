@@ -86,38 +86,8 @@ Task Clean -Depends Init {
     "    Cleaned previous output directory [$outputDir]"
 } -Description 'Cleans module output directory'
 
-Task Compile -Depends Clean {
-    # Create module output directory
-    $functionsToExport = @()
-    $sutLib = [System.IO.Path]::Combine($sut, 'lib')
-    $aliasesToExport = (. $sut\Aliases\PSGSuite.Aliases.ps1).Keys
-    if (-not (Test-Path $outputModVerDir)) {
-        $modDir = New-Item -Path $outputModDir -ItemType Directory -ErrorAction SilentlyContinue
-        New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
-    }
 
-    # Append items to psm1
-    Write-BuildLog 'Creating psm1...'
-    $psm1 = Copy-Item -Path (Join-Path -Path $sut -ChildPath 'PSGSuite.psm1') -Destination (Join-Path -Path $outputModVerDir -ChildPath "$($ENV:BHProjectName).psm1") -PassThru
-
-    foreach ($scope in @('Private', 'Public')) {
-        Write-BuildLog "Copying contents from files in source folder to PSM1: $($scope)"
-        $gciPath = Join-Path $sut $scope
-        if (Test-Path $gciPath) {
-            Get-ChildItem -Path $gciPath -Filter "*.ps1" -Recurse -File | ForEach-Object {
-                Write-BuildLog "Working on: $scope$([System.IO.Path]::DirectorySeparatorChar)$($_.FullName.Replace("$gciPath$([System.IO.Path]::DirectorySeparatorChar)",'') -replace '\.ps1$')"
-                [System.IO.File]::AppendAllText($psm1, ("$([System.IO.File]::ReadAllText($_.FullName))`n"))
-                if ($scope -eq 'Public') {
-                    $functionsToExport += $_.BaseName
-                    [System.IO.File]::AppendAllText($psm1, ("Export-ModuleMember -Function '$($_.BaseName)'`n"))
-                }
-            }
-        }
-    }
-
-
-    Invoke-CommandWithLog { Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue -Force -Verbose:$false }
-
+Task Download -Depends Clean {
     if ("$env:NoNugetRestore" -ne 'True') {
         New-Item -Path "$outputModVerDir\lib" -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
         Write-BuildLog "Installing NuGet dependencies..."
@@ -126,140 +96,184 @@ Task Compile -Depends Clean {
     else {
         Write-BuildLog "Skipping NuGet Restore due to `$env:NoNugetRestore = '$env:NoNugetRestore'"
     }
+} -Description 'Downloads module third-party dependencies'
 
-    $aliasHashContents = (Get-Content "$sut\Aliases\PSGSuite.Aliases.ps1" -Raw).Trim()
+Task Generate -Depends Clean, Download {
+    # Load the Google SDKs for use during dynamic content generation
+    Write-BuildLog "Importing the Google SDK"
+    . (Join-Path $Sut 'Private\Import-GoogleSDK.ps1')
+    Import-GoogleSDK -Lib (Join-Path $outputModVerDir 'lib')
 
-    # Set remainder of PSM1 contents
-    @"
+    # Dynamically generate module content by executing all .ps1 files in the template folder.
+    # Each template is expected to output a string value that will be saved in the corresponding file in the source folder.
+    # Child scope is used to minimise interference and pollution of build variables.
+    $TemplatesPath = Join-Path $PSScriptRoot "ci" "templates"
+    $SourceDirectory = $Sut
 
-Import-GoogleSDK
-
-if (`$global:PSGSuiteKey -and `$MyInvocation.BoundParameters['Debug']) {
-    `$prevDebugPref = `$DebugPreference
-    `$DebugPreference = "Continue"
-    Write-Debug "```$global:PSGSuiteKey is set to a `$(`$global:PSGSuiteKey.Count * 8)-bit key!"
-    `$DebugPreference = `$prevDebugPref
-}
-
-`$aliasHash = $aliasHashContents
-
-foreach (`$key in `$aliasHash.Keys) {
-    try {
-        New-Alias -Name `$key -Value `$aliasHash[`$key] -Force
+    $DefaultPriority = 5
+    $TemplatePriorities = @{
+        1 = @()
+        2 = @()
+        3 = @()
+        4 = @()
+        5 = @()
+        6 = @()
+        7 = @()
+        8 = @()
+        9 = @()
     }
-    catch {
-        Write-Error "[ALIAS: `$(`$key)] `$(`$_.Exception.Message.ToString())"
-    }
-}
-
-Export-ModuleMember -Alias '*'
-
-if (!(Test-Path (Join-Path "~" ".scrthq"))) {
-    New-Item -Path (Join-Path "~" ".scrthq") -ItemType Directory -Force | Out-Null
-}
-
-if (`$PSVersionTable.ContainsKey('PSEdition') -and `$PSVersionTable.PSEdition -eq 'Core' -and !`$Global:PSGSuiteKey -and !`$IsWindows) {
-    if (!(Test-Path (Join-Path (Join-Path "~" ".scrthq") "BlockCoreCLREncryptionWarning.txt"))) {
-        Write-Warning "CoreCLR does not support DPAPI encryption! Setting a basic AES key to prevent errors. Please create a unique key as soon as possible as this will only obfuscate secrets from plain text in the Configuration, the key is not secure as is. If you would like to prevent this message from displaying in the future, run the following command:`n`nBlock-CoreCLREncryptionWarning`n"
-    }
-    `$Global:PSGSuiteKey = [Byte[]]@(1..16)
-    `$ConfigScope = "User"
-}
-
-if (`$Global:PSGSuiteKey -is [System.Security.SecureString]) {
-    `$Method = "SecureString"
-    if (!`$ConfigScope) {
-        `$ConfigScope = "Machine"
-    }
-}
-elseif (`$Global:PSGSuiteKey -is [System.Byte[]]) {
-    `$Method = "AES Key"
-    if (!`$ConfigScope) {
-        `$ConfigScope = "Machine"
-    }
-}
-else {
-    `$Method = "DPAPI"
-    `$ConfigScope = "User"
-}
-
-Add-MetadataConverter -Converters @{
-    [SecureString] = {
-        `$encParams = @{}
-        if (`$Global:PSGSuiteKey -is [System.Byte[]]) {
-            `$encParams["Key"] = `$Global:PSGSuiteKey
+    Get-ChildItem -Path $TemplatesPath -Filter "*.ps1" -Recurse -File | ForEach-Object {
+        If ($_.Name -match "^(?<priority>[1-9])-"){
+            $TemplatePriorities[[int]$Matches.priority] += $_
+        } else {
+            $TemplatePriorities[$DefaultPriority] += $_
         }
-        elseif (`$Global:PSGSuiteKey -is [System.Security.SecureString]) {
-            `$encParams["SecureKey"] = `$Global:PSGSuiteKey
-        }
-        'ConvertTo-SecureString "{0}"' -f (ConvertFrom-SecureString `$_ @encParams)
     }
-    "Secure" = {
-        param([string]`$String)
-        `$encParams = @{}
-        if (`$Global:PSGSuiteKey -is [System.Byte[]]) {
-            `$encParams["Key"] = `$Global:PSGSuiteKey
-        }
-        elseif (`$Global:PSGSuiteKey -is [System.Security.SecureString]) {
-            `$encParams["SecureKey"] = `$Global:PSGSuiteKey
-        }
-        ConvertTo-SecureString `$String @encParams
-    }
-    "ConvertTo-SecureString" = {
-        param([string]`$String)
-        `$encParams = @{}
-        if (`$Global:PSGSuiteKey -is [System.Byte[]]) {
-            `$encParams["Key"] = `$Global:PSGSuiteKey
-        }
-        elseif (`$Global:PSGSuiteKey -is [System.Security.SecureString]) {
-            `$encParams["SecureKey"] = `$Global:PSGSuiteKey
-        }
-        ConvertTo-SecureString `$String @encParams
-    }
-}
 
-try {
-    `$confParams = @{
-        Scope = `$ConfigScope
+    $ExecutionOrder = @()
+    ForEach ($Priority in @(1..9)){
+        $TemplatePriorities[$Priority] = $TemplatePriorities[$Priority] | Sort-Object
+        $TemplatePriorities[$Priority] | ForEach-Object {
+            $ExecutionOrder += $_
+        }
     }
-    if (`$ConfigName) {
-        `$confParams["ConfigName"] = `$ConfigName
-        `$Script:ConfigName = `$ConfigName
-    }
-    try {
-        if (`$global:PSGSuite) {
-            Write-Warning "Using config `$(if (`$global:PSGSuite.ConfigName){"name '`$(`$global:PSGSuite.ConfigName)' "})found in variable: ```$global:PSGSuite"
-            Write-Verbose "`$((`$global:PSGSuite | Format-List | Out-String).Trim())"
-            if (`$global:PSGSuite -is [System.Collections.Hashtable]) {
-                `$global:PSGSuite = New-Object PSObject -Property `$global:PSGSuite
+    
+    $ExecutionOrder | ForEach-Object {
+        
+        $RelativeTemplatePath = $_.FullName.Substring($TemplatesPath.Length + 1)
+        $RelativeDirectory = $_.DirectoryName.Substring($TemplatesPath.Length)
+        If ($RelativeDirectory -match '^[\\/]'){
+            $RelativeDirectory = $RelativeDirectory.Substring(1)
+        }
+        
+        Write-BuildLog "Executing template: $RelativeTemplatePath"
+        $TemplateResult = & $_.FullName -SourceDirectory $PSScriptRoot
+        
+        If ($TemplateResult){
+            
+            $OutputDirectory = Join-Path $SourceDirectory $RelativeDirectory
+            
+            If ($TemplateResult -is [hashtable]){
+                
+                ForEach ($key in $TemplateResult.keys){
+                    
+                    If ($Key -match '^[\\/]'){
+                        $OutputPath = Join-Path $SourceDirectory $Key
+                    } else {
+                        $OutputPath = Join-Path $OutputDirectory $(Split-Path $Key -Leaf)
+                    }
+
+                    if (-not (Test-Path (Split-Path $OutputPath -Parent))){
+                        New-Item -Path (Split-Path $OutputPath -Parent) -ItemType Directory -Force | Out-Null
+                    }
+
+                    $OutputValue = $TemplateResult[$Key]
+                    @"
+# Programmatically generated from template '$($RelativeTemplatePath.ToLower())'
+# This file will be overwritten during the module build process.
+
+$OutputValue
+"@ | Out-File -Path $OutputPath -Encoding UTF8 -Force
+                    Write-BuildLog "Template output written to: $OutputPath"
+
+                }
+
+            } else {
+                If ($_.Name -Match "^[1-9]-"){
+                    $OutputPath = Join-Path $OutputDirectory $_.Name.Substring(2)
+                } else {
+                    $OutputPath = Join-Path $OutputDirectory $_.Name
+                }
+
+                if (-not (Test-Path (Split-Path $OutputPath -Parent))){
+                    New-Item -Path (Split-Path $OutputPath -Parent) -ItemType Directory -Force | Out-Null
+                }
+                
+                @"
+# Programmatically generated from template '$($RelativeTemplatePath.ToLower())'
+# This file will be overwritten during the module build process.
+
+$TemplateResult
+"@ | Out-File -Path $OutputPath -Encoding UTF8 -Force
+                Write-BuildLog "Template output written to: $OutputPath"
+
             }
-            `$script:PSGSuite = `$global:PSGSuite
+            
+        } else {
+            Write-BuildLog "Template did not output any content" -Severe
         }
-        else {
-            Get-PSGSuiteConfig @confParams -ErrorAction Stop
-        }
-    }
-    catch {
-        if (Test-Path "`$ModuleRoot\`$env:USERNAME-`$env:COMPUTERNAME-`$env:PSGSuiteDefaultDomain-PSGSuite.xml") {
-            Get-PSGSuiteConfig -Path "`$ModuleRoot\`$env:USERNAME-`$env:COMPUTERNAME-`$env:PSGSuiteDefaultDomain-PSGSuite.xml" -ErrorAction Stop
-            Write-Warning "No Configuration.psd1 found at scope '`$ConfigScope'; falling back to legacy XML. If you would like to convert your legacy XML to the newer Configuration.psd1, run the following command:`n`nGet-PSGSuiteConfig -Path '`$ModuleRoot\`$env:USERNAME-`$env:COMPUTERNAME-`$env:PSGSuiteDefaultDomain-PSGSuite.xml' -PassThru | Set-PSGSuiteConfig`n"
-        }
-        else {
-            Write-Warning "There was no config returned! Please make sure you are using the correct key or have a configuration already saved."
-        }
-    }
-}
-catch {
-    Write-Warning "There was no config returned! Please make sure you are using the correct key or have a configuration already saved."
-}
 
-"@ | Add-Content -Path $psm1 -Encoding UTF8
+    Write-BuildLog "Completed template: $RelativeTemplatePath"
+    }
+} -Description "Generates module content from template files"
+
+Task Compile -Depends Clean, Download, Generate {
+    # Create module output directory
+    $functionsToExport = @()
+    $aliasesToExport = (. $sut\Aliases\PSGSuite.Aliases.ps1).Keys
+    if (-not (Test-Path $outputModVerDir)) {
+        $modDir = New-Item -Path $outputModDir -ItemType Directory -ErrorAction SilentlyContinue
+        New-Item -Path $outputModVerDir -ItemType Directory -ErrorAction SilentlyContinue | Out-Null
+    }
+
+    # Create the PSM1 using module source files
+    Write-BuildLog 'Creating psm1...'
+    $psm1 = Copy-Item -Path (Join-Path -Path $sut -ChildPath 'PSGSuite.psm1') -Destination (Join-Path -Path $outputModVerDir -ChildPath "$($ENV:BHProjectName).psm1") -PassThru
+    
+    # Normal builds:
+    #  All source files will be copied directly into the PSM1 file.
+    # Debug Builds:
+    #  All Public, Private and Module source code will be dot sourced inside the PSM1 file.
+    #  Classes cannot be dot sourced within a module, so they will always be copied.
+    #  See: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_classes?view=powershell-7.5#manually-importing-classes-from-a-powershell-module
+    foreach ($scope in @('Class', 'Private', 'Public', 'Module')) {
+        If (($Scope -eq "Class") -or (-not ($ENV:Build_Debug -eq "True"))){
+            #Normal or Class
+            Write-BuildLog "Copying contents from files in source folder to PSM1: $($scope)"
+        } else  {
+            #Debug
+            Write-BuildLog "Linking files in source folder to PSM1: $($scope)"
+        }
+        
+        $gciPath = Join-Path $sut $scope
+        if (Test-Path $gciPath) {
+            Get-ChildItem -Path $gciPath -Filter "*.ps1" -Recurse -File | ForEach-Object {
+                Write-BuildLog "Working on: $scope$([System.IO.Path]::DirectorySeparatorChar)$($_.FullName.Replace("$gciPath$([System.IO.Path]::DirectorySeparatorChar)",'') -replace '\.ps1$')"
+                If (($Scope -eq "Class") -or (-not ($ENV:Build_Debug -eq "True"))){
+                    #Normal or Class
+                    [System.IO.File]::AppendAllText($psm1, ("$([System.IO.File]::ReadAllText($_.FullName))`n"))
+                    if ($scope -eq 'Public') {
+                        $functionsToExport += $_.BaseName
+                        [System.IO.File]::AppendAllText($psm1, ("Export-ModuleMember -Function '$($_.BaseName)'`n"))
+                    }
+                } else  {
+                    #Debug
+                    [System.IO.File]::AppendAllText($psm1, (". '$($_.FullName)'`n"))
+                }
+                
+                
+            }
+        }
+    }
+    If ($ENV:Build_Debug -eq "True"){
+        [System.IO.File]::AppendAllText($psm1, ("Export-ModuleMember -Function * -Variable * -Alias *"))
+    }
+
+    Invoke-CommandWithLog { Remove-Module $env:BHProjectName -ErrorAction SilentlyContinue -Force -Verbose:$false }
 
     # Copy over manifest
     Copy-Item -Path $env:BHPSModuleManifest -Destination $outputModVerDir
 
     # Update FunctionsToExport on manifest
-    Update-ModuleManifest -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -FunctionsToExport ($functionsToExport | Sort-Object) -AliasesToExport ($aliasesToExport | Sort-Object)
+    If (-not ($ENV:Build_Debug -eq "True")){
+        # Normal build
+        Update-ModuleManifest -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -FunctionsToExport ($functionsToExport | Sort-Object) -AliasesToExport ($aliasesToExport | Sort-Object)
+    } else {
+        #Debug build
+        write-host $outputModVerDir
+        write-host "$($env:BHProjectName).psd1"
+        Update-ModuleManifest -Path (Join-Path $outputModVerDir "$($env:BHProjectName).psd1") -FunctionsToExport '*' -AliasesToExport '*' -VariablesToExport '*'
+    }
 
     if ((Get-ChildItem $outputModVerDir | Where-Object { $_.Name -eq "$($env:BHProjectName).psd1" }).BaseName -cne $env:BHProjectName) {
         "    Renaming manifest to correct casing"

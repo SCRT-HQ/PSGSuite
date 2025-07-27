@@ -22,6 +22,16 @@ function Get-GSDecryptedConfig {
             @{l = 'JSONServiceAccountKey'; e = {Invoke-GSDecrypt $_.JSONServiceAccountKey}}
             @{l = 'ClientSecretsPath'; e = { Invoke-GSDecrypt $_.ClientSecretsPath } }
             @{l = 'ClientSecrets'; e = { Invoke-GSDecrypt $_.ClientSecrets } }
+            @{l = 'ClientSecretScopes'; e = {
+                    $array = @()
+                    If ($_.ClientSecretScopes){
+                        foreach ($entry in $_.ClientSecretScopes){
+                            $array += Invoke-GSDecrypt $Entry
+                        }
+                    }
+                    $array
+                }
+            }
             @{l = 'AppEmail'; e = {
                     if ($_.JSONServiceAccountKey) {
                         (Invoke-GSDecrypt $_.JSONServiceAccountKey | ConvertFrom-Json).client_email
