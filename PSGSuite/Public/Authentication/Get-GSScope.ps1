@@ -46,19 +46,13 @@ Function Get-GSScope {
 
         Resolve-Email ([ref]$User)
 
-        # The $TokenKey is used as the key when retrieving tokens from disk or the in-memory user credential cache.
-        # We will create the key such that all tokens will be unique per PSGSuite config and user combination. Allowing the same user to have different
-        # tokens per PSGSuite configuration.
-        # https://github.com/googleapis/google-api-dotnet-client/issues/2709
-        $TokenKey = @($script:PSGSuite.ConfigName, $User) -Join '-'
-
         Write-Verbose "Getting the authorized OAuth scopes for user '$user'"
 
         # Try the memory cache first before fetching from disk
         $AuthorizedToken = If ($script:_PSGSuiteUserCredentials){
-            If ($script:_PSGSuiteUserCredentials.ContainsKey($TokenKey)){
-                Write-Verbose "UserCredential '$TokenKey' was found in memory"
-                $script:_PSGSuiteUserCredentials[$TokenKey].Token
+            If ($script:_PSGSuiteUserCredentials.ContainsKey($User)){
+                Write-Verbose "UserCredential for '$User' was found in memory"
+                $script:_PSGSuiteUserCredentials[$User].Token
             }
         }
 
@@ -67,9 +61,9 @@ Function Get-GSScope {
             # Initialize the FileDataStore used for storing and retrieving cached OAuth tokens.
             $Datastore = New-Object 'Google.Apis.Util.Store.FileDataStore' -ArgumentList $Script:_PSGSuiteCredPath,$true
             # Search the datastore
-            $AuthorizedToken = $Datastore.getAsync[Google.Apis.Auth.OAuth2.Responses.TokenResponse]($TokenKey).GetAwaiter().GetResult()
+            $AuthorizedToken = $Datastore.getAsync[Google.Apis.Auth.OAuth2.Responses.TokenResponse]($User).GetAwaiter().GetResult()
             If ($AuthorizedToken){
-                Write-Verbose "UserCredential '$TokenKey' was found on disk"
+                Write-Verbose "UserCredential for '$User' was found on disk"
             }
         }
 
@@ -84,7 +78,7 @@ Function Get-GSScope {
             }
 
         } else {
-            Write-Verbose "UserCredential '$TokenKey' does not exist"
+            Write-Verbose "UserCredential for '$User' does not exist"
         }
 
     }

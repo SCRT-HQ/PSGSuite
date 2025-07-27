@@ -86,7 +86,20 @@ function Get-PSGSuiteConfig {
         $decryptedConfig = $encConf | Get-GSDecryptedConfig @decryptParams
         Write-Verbose "Retrieved configuration '$choice'"
         if (!$NoImport) {
+            
+            # Clear cached user credentials
+            If ($script:PSGSuite){
+                write-verbose 'Clearing cached credentials from memory'
+                Clear-PSGSuiteServiceCache
+                If ($script:_PSGSuiteUserCredentials){
+                    $script:_PSGSuiteUserCredentials.Clear()
+                }
+            }
+
             $script:PSGSuite = $decryptedConfig
+
+            # File path to the directory where Google OAuth tokens are persisted on disk
+            $Script:_PSGSuiteCredPath = Join-Path (Resolve-Path (Join-Path "~" ".scrthq")) "PSGSuite" $Script:PSGSuite.ConfigName
         }
         if ($PassThru) {
             $decryptedConfig

@@ -190,12 +190,7 @@ function New-GoogleUserCredential {
         
         Write-Verbose "Generating UserCredential for user '$user' in '$($PSCmdlet.ParameterSetName)' mode."
 
-        # The $TokenKey is used as the key when retrieving tokens (UserCredentials) from disk.
-        # We will create the key such that all tokens will be unique per PSGSuite config and user combination. Allowing the same user to have different
-        # tokens per PSGSuite configuration.
-        # https://github.com/googleapis/google-api-dotnet-client/issues/2709
-        $TokenKey = @($script:PSGSuite.ConfigName, $User) -Join '-'
-        $TokenName = [Google.Apis.Util.Store.FileDataStore]::GenerateStoredKey($TokenKey, [Google.Apis.Auth.OAuth2.Responses.TokenResponse])
+        $TokenName = [Google.Apis.Util.Store.FileDataStore]::GenerateStoredKey($User, [Google.Apis.Auth.OAuth2.Responses.TokenResponse])
         $TokenPath = Join-Path $Datastore.FolderPath $TokenName
 
 
@@ -239,17 +234,17 @@ function New-GoogleUserCredential {
         # Find the existing credential if one exists
         #
         # Search in memory first. Otherwise try the disk datastore.
-        $ExistingCredential = If ($script:_PSGSuiteUserCredentials.containsKey($TokenKey)){
+        $ExistingCredential = If ($script:_PSGSuiteUserCredentials.containsKey($User)){
             
-            Write-Verbose "Getting existing UserCredential '$TokenKey' from memory"
-            $script:_PSGSuiteUserCredentials[$TokenKey]
+            Write-Verbose "Getting existing UserCredential for '$User' from memory"
+            $script:_PSGSuiteUserCredentials[$User]
 
         } else {
 
             If ((Test-Path $TokenPath)){
                 # Online flows - Load the existing credential
                 If ($PSCmdlet.ParameterSetName -ne "Offline"){
-                    Write-Verbose "Invoking the offline flow to get existing UserCredential '$TokenKey' from disk"
+                    Write-Verbose "Invoking the offline flow to get existing UserCredential for '$User' from disk"
                     New-GoogleUserCredential -User $User -Offline
                 }
             } else {
@@ -290,7 +285,7 @@ function New-GoogleUserCredential {
                     }
                 }
             } else {
-                Write-Verbose "Existing UserCredential '$TokenKey' not found."
+                Write-Verbose "Existing UserCredential for '$User' not found."
             }
         }
 
@@ -423,8 +418,8 @@ function New-GoogleUserCredential {
         # Online flows - Revoke existing OAuth Token
         #
         # If the token scopes are changing a new token will be generated.
-        # When creating a UserCredential the GoogleWebAuthorizationBroker loads the existing credential from disk (based on $tokenKey) without verifying if all scopes exist.
-        # To force fetching a new UserCredential from Google we need to make sure no entry in the diskDatastore exists for $tokenKey.
+        # When creating a UserCredential the GoogleWebAuthorizationBroker loads the existing credential from disk without verifying if all scopes exist.
+        # To force fetching a new UserCredential from Google we need to make sure no entry in the diskDatastore exists for $User.
         if ($ExistingCredential){
             Write-Verbose "Revoking the existing UserCredential."
             Revoke-GSToken -UserCredential $ExistingCredential -confirm:$False
@@ -435,7 +430,7 @@ function New-GoogleUserCredential {
         # Online flows - Request the new OAuth Token
         # Offline flow - Load the existing OAuth token from disk
         Try {
-            Write-Verbose "Building UserCredential '$TokenKey' from ClientSecrets and prompting for authorization if necessary."
+            Write-Verbose "Building UserCredential for '$User' from ClientSecrets and prompting for authorization if necessary."
             $Initializer = [Google.Apis.Auth.OAuth2.Flows.GoogleAuthorizationCodeFlow+Initializer]::new()
             $Initializer.ClientSecrets = $script:_PSGSuiteClientSecrets
             $Initializer.LoginHint = $User
@@ -447,7 +442,7 @@ function New-GoogleUserCredential {
             $credential = [Google.Apis.Auth.OAuth2.GoogleWebAuthorizationBroker]::AuthorizeAsync(
                 $Initializer,
                 [string[]]@($ScopesToRequest),
-                $TokenKey,
+                $User,
                 [System.Threading.CancellationToken]::None,
                 $Datastore,
                 $CodeReceiver
@@ -460,7 +455,7 @@ function New-GoogleUserCredential {
         If ($null -eq $Credential){
             $PSCmdlet.ThrowTerminatingError((ThrowTerm "Failed to create UserCredential. The authorisation prompt was likely cancelled, please try the request again."))
         }
-        Write-Verbose "UserCredential '$TokenKey' has been created"
+        Write-Verbose "UserCredential for '$User' has been created"
 
 
 
@@ -546,7 +541,7 @@ function New-GoogleUserCredential {
         }
         
         # Save the newly created credential in memory for later use
-        $script:_PSGSuiteUserCredentials[$tokenKey] = $credential
+        $script:_PSGSuiteUserCredentials[$User] = $credential
         
         Write-Verbose "UserCredential for user '$user' was successfully created and includes $($TokenScopes.count) authorised OAuth scopes."
         Return $Credential

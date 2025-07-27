@@ -60,9 +60,10 @@ Function Revoke-GSToken {
             
             Try {
                 If ($NoDelete){
-                    # To prevent deleting the token from the disk cache we will call revoke with a non-existent TokenKey that will silently fail on deletion
+                    # To prevent deleting the token from the disk cache we will call revoke with a non-existent UserID (key) that will silently fail on deletion
                     # Ideally we would call $UserCredential.Flow.RevokeTokenAsync('NonexistentKey', $AccessToken, ...) but Flow is not Common Language Specification (CLS) compliant and errors out.
-                    # So instead we will repackage the token into a new UserCredential referencing a non-existent key, and trigger revocation from there.
+                    # So instead we will repackage the token into a new UserCredential located in memory referencing a non-existent userID (key), and trigger revocation from there.
+                    # The userId property of the credential is used to build the path to the credential in the FileDataStore, it is not used for issuing any API commands.
                     $repackagedCredential = [Google.Apis.Auth.OAuth2.UserCredential]::new($UserCredential.Flow, 'NonexistentKey', $UserCredential.Token)
                     $repackagedCredential.RevokeTokenAsync([System.Threading.CancellationToken]::None).GetAwaiter().GetResult() | Out-Null
                     Write-Verbose "Successfully revoked UserCredential '$($UserCredential.UserId)' and persisted on disk."
