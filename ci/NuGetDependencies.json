@@ -42,6 +42,12 @@
     "LatestVersion": "1.41.1.1713"
   },
   {
+    "Name": "Google.Apis.ChromePolicy.v1.dll",
+    "BaseName": "Google.Apis.ChromePolicy.v1",
+    "Target": "Latest",
+    "LatestVersion": "1.69.0.3776"
+  },
+  {
     "Name": "Google.Apis.Classroom.v1.dll",
     "BaseName": "Google.Apis.Classroom.v1",
     "Target": "Latest",
