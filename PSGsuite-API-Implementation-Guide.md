@@ -1,10 +1,10 @@
-# Adding Chrome Policy Functions to PSGSuite
+# PSGSuite API Implementation Guide
 
-This document explains how to implement Chrome Policy API functions in PSGSuite and serves as a guide for adding new Google API services to the module.
+This document explains how to implement Google API functions in PSGSuite and serves as a comprehensive guide for adding new Google API services to the module. While it uses Chrome Policy API as the primary example, the patterns and practices apply to any Google API integration.
 
 ## Overview
 
-PSGSuite is a PowerShell module that wraps Google's .NET SDKs, enabling administrators to manage Google Workspace (formerly G Suite) services through PowerShell. The module uses Google's official .NET client libraries (NuGet packages) and provides PowerShell functions that follow consistent patterns.
+PSGSuite is a PowerShell module that wraps Google's .NET SDKs, enabling administrators to manage Google Workspace (formerly G Suite) services through PowerShell. The module uses Google's official .NET client libraries (NuGet packages) and provides PowerShell functions that follow consistent patterns across all supported APIs.
 
 ## Architecture Understanding
 
@@ -122,6 +122,64 @@ function Get-GSExample {
 4. **Pagination**: Implement pagination for list operations
 5. **Verbose Output**: Use `Write-Verbose` for operation feedback
 6. **Output Types**: Specify `[OutputType()]` with Google API data types
+7. **ShouldProcess Support**: Add confirmation prompts for destructive operations
+
+#### Adding ShouldProcess Support
+
+For functions that modify or delete policies, implement `ShouldProcess` to provide confirmation prompts:
+
+```powershell
+function Set-GSPolicyOrgUnit {
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    Param(
+        [Parameter(Mandatory = $true)]
+        [String]$OrgUnitId,
+        
+        [Parameter(Mandatory = $true)]
+        [String]$PolicySchema,
+        
+        [Parameter(Mandatory = $true)]
+        [Object]$PolicyValue
+    )
+    
+    Process {
+        $target = "Organizational Unit: $OrgUnitId"
+        $action = "Set Chrome Policy: $PolicySchema"
+        
+        if ($PSCmdlet.ShouldProcess($target, $action)) {
+            # Perform the actual API call
+            try {
+                # Implementation here
+                Write-Verbose "Setting policy $PolicySchema for $target"
+            }
+            catch {
+                # Error handling
+            }
+        }
+    }
+}
+```
+
+**ShouldProcess Guidelines:**
+- **ConfirmImpact Levels**:
+  - `'High'` - For destructive operations (Remove functions)
+  - `'Medium'` - For modification operations (Set functions)
+  - `'Low'` - For minor changes or creation operations
+- **Target Description**: Clearly identify what resource is being affected
+- **Action Description**: Describe what operation is being performed
+- **Common Parameters**: This automatically adds `-Confirm`, `-WhatIf`, and related parameters
+
+**Example Usage with Confirmation:**
+```powershell
+# Prompts for confirmation
+Set-GSPolicyOrgUnit -OrgUnitId "03ph8a2z1qtgfqh" -PolicySchema "chrome.users.URLAllowlist" -PolicyValue $value
+
+# Skip confirmation
+Set-GSPolicyOrgUnit -OrgUnitId "03ph8a2z1qtgfqh" -PolicySchema "chrome.users.URLAllowlist" -PolicyValue $value -Confirm:$false
+
+# Show what would happen without making changes
+Set-GSPolicyOrgUnit -OrgUnitId "03ph8a2z1qtgfqh" -PolicySchema "chrome.users.URLAllowlist" -PolicyValue $value -WhatIf
+```
 
 ### Step 5: Implemented Chrome Policy Functions
 
@@ -205,6 +263,65 @@ Set-GSPolicyOrgUnit -OrgUnitId "03ph8a2z1qtgfqh" -PolicySchema "chrome.users.URL
 3. **Error Handling**: Use consistent error handling patterns
 4. **Scoping**: Use minimal required permissions
 5. **Testing**: Test with real API calls when possible
+6. **ShouldProcess**: Add confirmation prompts for destructive operations
+7. **Helper Functions**: Extract common patterns into reusable private functions
+
+### Recommended Helper Functions
+
+To reduce code duplication and improve maintainability, consider implementing these private helper functions:
+
+#### Resolve-GSCustomer
+```powershell
+function Resolve-GSCustomer {
+    <#
+    .SYNOPSIS
+    Resolves the customer ID from configuration or returns default
+    
+    .DESCRIPTION
+    Private helper function to get customer ID from PSGSuite configuration
+    or return "my_customer" as fallback
+    #>
+    [CmdletBinding()]
+    param()
+    
+    if ($Script:PSGSuite.CustomerID) {
+        return $Script:PSGSuite.CustomerID
+    }
+    else {
+        return "my_customer"
+    }
+}
+```
+
+#### Invoke-GSPaginatedRequest
+```powershell
+function Invoke-GSPaginatedRequest {
+    <#
+    .SYNOPSIS
+    Handles paginated API requests with consistent patterns
+    
+    .DESCRIPTION
+    Private helper function that handles pagination, limits, and page size
+    management for Chrome Policy API requests
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [Object]$Request,
+        
+        [Parameter(Mandatory = $false)]
+        [Int]$PageSize = 100,
+        
+        [Parameter(Mandatory = $false)]
+        [Int]$Limit = 0
+    )
+    
+    # Implementation handles pagination logic consistently
+    # Returns all results respecting limits and page sizes
+}
+```
+
+These helper functions can be placed in `PSGSuite/Private/` directory and will be automatically available to all public functions without being exported to users.
 
 ### Common Patterns
 - Use `$Script:PSGSuite.CustomerID` for customer identification
@@ -229,6 +346,14 @@ Set-GSPolicyOrgUnit -OrgUnitId "03ph8a2z1qtgfqh" -PolicySchema "chrome.users.URL
 
 ## Conclusion
 
-Adding Chrome Policy functions to PSGSuite follows the established patterns used throughout the module. The key is understanding how PSGSuite wraps Google's .NET SDKs and following consistent patterns for authentication, error handling, and API interaction.
+Adding new API functions to PSGSuite follows established patterns used throughout the module. The key is understanding how PSGSuite wraps Google's .NET SDKs and following consistent patterns for authentication, error handling, and API interaction.
 
-This approach can be applied to any Google API that has a corresponding .NET SDK package available on NuGet.
+The Chrome Policy API implementation serves as a reference example, but these same principles and patterns apply to any Google API:
+- **Directory API** - User and organizational unit management
+- **Gmail API** - Email management and automation  
+- **Drive API** - File and folder operations
+- **Calendar API** - Calendar and event management
+- **Sheets API** - Spreadsheet operations
+- **Any Google API** - With corresponding .NET SDK support
+
+This standardized approach ensures consistency across all PSGSuite functions and makes it easier for users to learn and use new API integrations as they are added to the module.
