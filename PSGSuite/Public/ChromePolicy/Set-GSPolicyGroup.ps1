@@ -47,7 +47,7 @@ function Set-GSPolicyGroup {
     Sets multiple policies using the PolicyModifications parameter
     #>
     [OutputType('Google.Apis.ChromePolicy.v1.Data.GoogleChromePolicyV1BatchModifyGroupPoliciesResponse')]
-    [CmdletBinding(DefaultParameterSetName = "Single")]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = "Medium", DefaultParameterSetName = "Single")]
     Param(
         [Parameter(Mandatory = $true, Position = 0)]
         [String]
@@ -81,7 +81,13 @@ function Set-GSPolicyGroup {
     }
     Process {
         try {
-            Write-Verbose "Modifying Chrome policies for group '$GroupId'"
+            $description = switch ($PSCmdlet.ParameterSetName) {
+                "Single" { "Setting Chrome Policy '$PolicySchema' for Group '$GroupId'" }
+                "Batch" { "Setting Chrome Policies (Batch: $($PolicyModifications.Count) policies) for Group '$GroupId'" }
+            }
+            
+            if ($PSCmdlet.ShouldProcess($description)) {
+                Write-Verbose "Modifying Chrome policies for group '$GroupId'"
             
             # Create the request body
             $body = New-Object 'Google.Apis.ChromePolicy.v1.Data.GoogleChromePolicyV1BatchModifyGroupPoliciesRequest'
@@ -154,6 +160,7 @@ function Set-GSPolicyGroup {
             if ($result) {
                 Write-Verbose "Successfully modified policies for group '$GroupId'"
                 $result
+            }
             }
         }
         catch {

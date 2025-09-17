@@ -27,7 +27,7 @@ function Set-GSPolicyOrgUnitInherit {
     Sets multiple policies to inherit from parent using the PolicySchemas parameter
     #>
     [OutputType('Google.Apis.ChromePolicy.v1.Data.GoogleChromePolicyV1BatchInheritOrgUnitPoliciesResponse')]
-    [CmdletBinding(DefaultParameterSetName = "Single")]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = "Medium", DefaultParameterSetName = "Single")]
     Param(
         [Parameter(Mandatory = $true, Position = 0)]
         [String]
@@ -55,7 +55,19 @@ function Set-GSPolicyOrgUnitInherit {
     }
     Process {
         try {
-            Write-Verbose "Setting Chrome policies to inherit from parent for organizational unit '$OrgUnitId'"
+            $schemasToProcess = switch ($PSCmdlet.ParameterSetName) {
+                "Single" { @($PolicySchema) }
+                "Multiple" { $PolicySchemas }
+            }
+            
+            $description = if ($schemasToProcess.Count -eq 1) {
+                "Setting Chrome Policy '$($schemasToProcess[0])' to inherit from parent for Organizational Unit '$OrgUnitId'"
+            } else {
+                "Setting Chrome Policies (Count: $($schemasToProcess.Count)) to inherit from parent for Organizational Unit '$OrgUnitId'"
+            }
+            
+            if ($PSCmdlet.ShouldProcess($description)) {
+                Write-Verbose "Setting Chrome policies to inherit from parent for organizational unit '$OrgUnitId'"
             
             # Create the request body
             $body = New-Object 'Google.Apis.ChromePolicy.v1.Data.GoogleChromePolicyV1BatchInheritOrgUnitPoliciesRequest'
@@ -90,6 +102,7 @@ function Set-GSPolicyOrgUnitInherit {
             if ($result) {
                 Write-Verbose "Successfully set policies to inherit from parent for organizational unit '$OrgUnitId'"
                 $result
+            }
             }
         }
         catch {

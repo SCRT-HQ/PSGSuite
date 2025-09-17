@@ -1,7 +1,13 @@
 function Remove-GSPolicyGroup {
     <#
     .SYNOPSIS
-    Removes Chrome policies from groups
+    Rem            $description = if ($schemasToProcess.Count -eq 1) {
+                "Removing Chrome Policy '$($schemasToProcess[0])' from Group '$GroupId'"
+            } else {
+                "Removing Chrome Policies (Count: $($schemasToProcess.Count)) from Group '$GroupId'"
+            }
+            
+            if ($PSCmdlet.ShouldProcess($description)) {ome policies from groups
 
     .DESCRIPTION
     Deletes multiple Chrome policy values that are applied to a specific group.
@@ -27,7 +33,7 @@ function Remove-GSPolicyGroup {
     Removes multiple policies from the group using the PolicySchemas parameter
     #>
     [OutputType('Google.Apis.ChromePolicy.v1.Data.GoogleChromePolicyV1BatchDeleteGroupPoliciesResponse')]
-    [CmdletBinding(DefaultParameterSetName = "Single")]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = "High", DefaultParameterSetName = "Single")]
     Param(
         [Parameter(Mandatory = $true, Position = 0)]
         [String]
@@ -55,7 +61,21 @@ function Remove-GSPolicyGroup {
     }
     Process {
         try {
-            Write-Verbose "Removing Chrome policies from group '$GroupId'"
+            # Determine which schemas to process
+            $schemasToProcess = switch ($PSCmdlet.ParameterSetName) {
+                "Single" { @($PolicySchema) }
+                "Multiple" { $PolicySchemas }
+            }
+            
+            $target = "Group: $GroupId"
+            $action = if ($schemasToProcess.Count -eq 1) {
+                "Remove Chrome Policy: $($schemasToProcess[0])"
+            } else {
+                "Remove Chrome Policies (Count: $($schemasToProcess.Count))"
+            }
+            
+            if ($PSCmdlet.ShouldProcess($target, $action)) {
+                Write-Verbose "Removing Chrome policies from group '$GroupId'"
             
             # Create the request body
             $body = New-Object 'Google.Apis.ChromePolicy.v1.Data.GoogleChromePolicyV1BatchDeleteGroupPoliciesRequest'
@@ -90,6 +110,7 @@ function Remove-GSPolicyGroup {
             if ($result) {
                 Write-Verbose "Successfully removed policies from group '$GroupId'"
                 $result
+            }
             }
         }
         catch {
