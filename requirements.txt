@@ -8,5 +8,5 @@ mkdocs-material==9.6.11
 mkdocs-open-in-new-tab==1.0.8
 mkdocs==1.6.1
 Pygments==2.19.1
-pymdown-extensions==10.14.3
+pymdown-extensions==10.16.1
 PyYAML==6.0.2
