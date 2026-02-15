@@ -115,6 +115,12 @@
 
 # PSGSuite - ChangeLog
 
+## 3.X.X - XXXX-XX-XX
+
+- Added function `Get-GSChromePolicySchema` to allow viewing the Chrome Policies that are available in the Admin Console.
+- Added function `Resolve-GSChromePolicySchema` to allow viewing the Chrome Policies that have been configured in the Admin Console.
+- Added private function `Invoke-GSPaginatedRequest` for handling paginated requests.
+
 ## 3.0.0 - 2024-11-20
 
 ### Breaking Changes
